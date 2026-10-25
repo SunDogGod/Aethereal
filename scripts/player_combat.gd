@@ -5,9 +5,11 @@ extends Node
 ## Lives under the Player as "Combat". Enemies call take_hit() on it.
 ##   Q / right stick click: lock on
 ##   F, left click / X: attack. Tap = an instant light swing; HOLD to wind up, release to
-##     swing. The longer the hold (up to charge_time), the harder the hit.
-##   G / Y: a full-power swing at once (no hold)
-##   right click (hold) / LB: block; tap for a parry
+##     swing. The longer the hold (up to charge_time), the harder the hit. With the sword in
+##     its scabbard (player_sword.gd) the first attack is the quick draw: tap = draw and cut
+##     at once; hold = the iai stance (feet planted, hand on the hilt), release = the draw cut.
+##   G / Y: a full-power swing (or draw) at once (no hold)
+##   right click (hold) / LB: block; tap for a parry (from the scabbard, the sword comes out at once)
 ##   Space / B while locked on: dodge roll (jump and crouch otherwise)
 
 signal health_changed(health: float, max_health: float)
@@ -58,17 +60,39 @@ var _dodge_dir := Vector3.ZERO
 var _riposte_target: Node3D
 var _charging := false
 var _charge := 0.0
+var _drawing := false  # this charge is the iai stance: its release is the quick draw
+var sword: PlayerSword  ## whether the sword is out, and when he puts it away
 
 
 func _ready() -> void:
-	_ensure_actions()
+	CombatInput.ensure_actions()
 	health = max_health
 	stamina = max_stamina
+	sword = PlayerSword.new(self)
+	player.respawned.connect(sword.reset)
 
 
 func _physics_process(delta: float) -> void:
 	_tick(delta)
+	player.rooted = _charging and _drawing  # the iai stance plants his feet
+	if blocking:
+		sword.draw_now()  # blocking from the scabbard: the sword comes straight out
 	player.show_block(blocking)  # the Animator raises or lowers the blade
+	sword.tick(delta)
+
+
+func is_charging() -> bool:
+	return _charging
+
+
+## Starts an attack: winds up a drawn sword, or takes the iai stance with it sheathed.
+func _begin_attack() -> void:
+	_drawing = not sword.drawn()
+	sword.swung()
+	if _drawing:
+		player.iai_stance()
+	else:
+		player.wind_up()
 
 
 func _tick(delta: float) -> void:
@@ -92,14 +116,16 @@ func _tick(delta: float) -> void:
 			move = Move.NONE
 			_charging = true
 			_charge = 0.0
+			_drawing = false
+			sword.swung()
 			player.wind_up(true)  # chained: the return stroke
 		return
 	if _charging:
-		# Winding up: he keeps the pose until the button comes up, then swings.
+		# Winding up (or in the iai stance): he keeps the pose until the button comes up, then cuts.
 		_charge += delta
 		if not Input.is_action_pressed("attack"):
 			_charging = false
-			_swing(clampf(_charge / charge_time, 0.0, 1.0))
+			_swing(clampf(_charge / charge_time, 0.0, 1.0), _drawing)
 		return
 	blocking = Input.is_action_pressed("block") and player.is_on_floor() and not player.is_crouched
 	if Input.is_action_just_pressed("block"):
@@ -110,10 +136,10 @@ func _tick(delta: float) -> void:
 		_charging = true
 		_charge = 0.0
 		blocking = false
-		player.wind_up()
+		_begin_attack()
 	elif Input.is_action_just_pressed("heavy_attack"):
-		player.wind_up()
-		_swing(1.0)
+		_begin_attack()
+		_swing(1.0, _drawing)
 	elif lock_target and Input.is_action_just_pressed("jump"):
 		_start_dodge()
 
@@ -153,6 +179,7 @@ func set_erupting(on: bool) -> void:
 	move = Move.NONE
 	blocking = false
 	_charging = false
+	_drawing = false
 	player.cancel_swing()
 	if on:
 		_set_lock(null)
@@ -177,10 +204,11 @@ func heal_full() -> void:
 	stamina_changed.emit(stamina, max_stamina)
 
 
-## The swing itself: the cut starts at once (the blade is already wound up) and the hit lands
-## when the animation's blade crosses his front. Harder the longer the hold.
-## A riposte is always full power.
-func _swing(power: float) -> void:
+## The swing itself: the cut starts at once (the blade is already wound up, or his hand is on
+## the hilt for the quick draw) and the hit lands when the animation's blade crosses his front.
+## Harder the longer the hold. A riposte is always full power.
+func _swing(power: float, draw := false) -> void:
+	_drawing = false
 	if _riposte_target:
 		power = 1.0
 	var cost := lerpf(16.0, 30.0, power)
@@ -189,14 +217,18 @@ func _swing(power: float) -> void:
 		return  # too winded; Souls lets you swing on fumes, but not on nothing
 	_spend(cost)
 	move = Move.SWING
-	# The hit lands when the blade crosses his front in the animation (a few hundredths of a second).
-	_move_spec = {"windup": player.swing_hit_time(power), "active": 0.1, "recovery": lerpf(0.22, 0.48, power), "damage": lerpf(light_damage, heavy_damage, power)}
+	sword.swung()
+	# The hit lands when the blade crosses his front in the animation (about a tenth of a second).
+	_move_spec = {"windup": player.swing_hit_time(power, draw), "active": 0.1, "recovery": lerpf(0.22, 0.48, power), "damage": lerpf(light_damage, heavy_damage, power)}
 	_move_time = 0.0
 	_hit_done = false
 	blocking = false
 	if lock_target:
 		player.face(lock_target.global_position)
-	player.release_swing(power)
+	if draw:
+		player.release_draw(power)
+	else:
+		player.release_swing(power)
 	SfxBus.play("swing_whoosh", player.global_position, lerpf(-8.0, 0.0, power), 0.12)  # harder = louder
 
 
@@ -265,21 +297,7 @@ func _toggle_lock() -> void:
 	if lock_target:
 		_set_lock(null)
 		return
-	var best: Node3D = null
-	var best_score := INF
-	var camera: Node3D = player.camera_pivot.get_node("SpringArm3D/Camera3D")
-	var forward: Vector3 = -camera.global_basis.z
-	for enemy in get_tree().get_nodes_in_group("enemies"):
-		if not enemy.can_be_locked():
-			continue
-		var to: Vector3 = enemy.global_position - player.global_position
-		if to.length() > lock_range:
-			continue
-		var score: float = to.length() + rad_to_deg(forward.angle_to(to)) * 0.1
-		if score < best_score:
-			best = enemy
-			best_score = score
-	_set_lock(best)
+	_set_lock(CombatInput.pick_lock_target(player, lock_range))
 
 
 func _keep_lock() -> void:
@@ -322,6 +340,7 @@ func _cancel_move() -> void:
 		move = Move.NONE
 	if _charging:
 		_charging = false
+		_drawing = false
 		player.cancel_swing()
 
 
@@ -335,35 +354,3 @@ func _takedown_available() -> bool:
 	var takedown := player.get_node_or_null("Takedown")
 	return takedown != null and takedown.has_target()
 
-
-## Combat buttons are registered here (like sprint), so the Input Map needn't be edited.
-func _ensure_actions() -> void:
-	_action("heavy_attack", [_key(KEY_G)], [_button(JOY_BUTTON_Y)])
-	_action("block", [_mouse(MOUSE_BUTTON_RIGHT)], [_button(JOY_BUTTON_LEFT_SHOULDER)])
-	_action("lock_on", [_key(KEY_Q)], [_button(JOY_BUTTON_RIGHT_STICK)])
-
-
-func _action(name: String, keys: Array, buttons: Array) -> void:
-	if InputMap.has_action(name):
-		return
-	InputMap.add_action(name)
-	for e in keys + buttons:
-		InputMap.action_add_event(name, e)
-
-
-func _key(code: Key) -> InputEventKey:
-	var e := InputEventKey.new()
-	e.physical_keycode = code
-	return e
-
-
-func _mouse(index: MouseButton) -> InputEventMouseButton:
-	var e := InputEventMouseButton.new()
-	e.button_index = index
-	return e
-
-
-func _button(index: JoyButton) -> InputEventJoypadButton:
-	var e := InputEventJoypadButton.new()
-	e.button_index = index
-	return e

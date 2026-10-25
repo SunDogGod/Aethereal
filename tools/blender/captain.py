@@ -1,0 +1,184 @@
+"""The Agency captain: the boss of the Empty Town. Taller and broader than his agents, with only his
+LEFT arm (the right is gone at the shoulder: the uniform's sleeve is folded and pinned over the
+stump). He wears his white Agency coat draped around his shoulders like a cape, sleeves hanging
+empty, over a dark uniform and breastplate. The helmet is the Agency's, with a tall crimson crest.
+He fights left-handed with a longer blade (captain_anims.py).
+
+Rebuild:  .\\tools\\blender\\rebuild.ps1 captain   (or blender -b --factory-startup -P tools/blender/captain.py)
+
+What the game recolours (scripts/guard_look.gd): "Coat" (the draped coat, its collar and empty
+sleeves) takes GuardData.coat_color, "Trim" (the epaulettes and the cuffs of the empty sleeves)
+GuardData.trim_color, the "Visor" glows in GuardData.visor_color. The coat's crimson lining and hem
+band are painted in, so they stay crimson under a white coat colour.
+"""
+import math
+import os
+import sys
+sys.dont_write_bytecode = True
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+
+import bpy                    # noqa: E402
+import character_base as cb   # noqa: E402
+import base_body as bb        # noqa: E402
+import body                   # noqa: E402
+import pose                   # noqa: E402
+import rig as rigmod          # noqa: E402
+import agency_parts as ap     # noqa: E402
+import agent                  # noqa: E402
+import captain_gear as gear   # noqa: E402
+import captain_anims          # noqa: E402
+from agency_parts import C, at_z, shell, limb_shell  # noqa: E402
+from paint import rgb, shade  # noqa: E402
+
+HEIGHT, SHOULDERS = 1.95, 1.16
+HELM_SCALE = 1.12
+BLADE_LENGTH = 0.92                    # the agents' blades are 0.78
+K = {k: rgb(v) for k, v in {           # the coat: near-white (tinted in game) with crimson painted in
+    "cloth": "#f2f2ef", "fold": "#d2d2ce", "seam": "#a0a09b", "lining": "#6e1414", "lining_dk": "#4a0d0d",
+    "band": "#7a1616", "dust": "#ab9f8a", "grime": "#80766a", "gold": "#e8e4dc"}.items()}
+U = {k: rgb(v) for k, v in {           # the dark uniform under it
+    "cloth": "#1d1f26", "fold": "#2a2d36", "seam": "#101116", "pin": "#9a8a5c", "crest": "#7d1512",
+    "crest_hi": "#a3221b", "wrap": "#5a1210"}.items()}
+# The uniform tunic: the agent's coat torso, and a shorter skirt (to mid-thigh).
+TUNIC = agent.COAT_TORSO
+TUNIC_SKIRT = [r for r in agent.SKIRT if r[0] >= 0.62]
+SLEEVE = [(0.0, 0.066, 0.068), (0.25, 0.064, 0.066), (0.7, 0.058, 0.060), (1.0, 0.054, 0.056),
+          (1.3, 0.054, 0.056), (1.75, 0.048, 0.050)]
+
+
+def forward_grip_left(ch):
+    """His blade rides Weapon_L, turned into the exact mirror of Weapon_R (a forward grip, blade out
+    of the thumb side) instead of the shared rig's reverse grip; the rest pose is read again."""
+    arm = ch.arm
+    bpy.context.view_layer.objects.active = arm
+    bpy.ops.object.mode_set(mode='EDIT')
+    eb = arm.data.edit_bones
+    r, l = eb["Weapon_R"], eb["Weapon_L"]
+    l.head, l.tail = rigmod.mirror(r.head), rigmod.mirror(r.tail)
+    l.align_roll(rigmod.mirror(r.z_axis))
+    bpy.ops.object.mode_set(mode='OBJECT')
+    ch.rig = pose.Rig(arm)
+
+
+def build():
+    ch = cb.Character("captain", height=HEIGHT, shoulders=SHOULDERS)
+    forward_grip_left(ch)
+    J, A = ch.J, ch.atlas
+    P, T, M = ch.part("Body"), ch.part("Coat"), ch.part("Trim")
+    s = J["height"] / 1.72
+    R = {n: A.rect(n, w, h) for n, w, h in (
+        ("helm", 128, 72), ("cape", 112, 72), ("cuirass", 96, 48), ("tskirt", 64, 32), ("sleeve", 48, 40),
+        ("boot", 48, 40), ("tunic", 32, 32), ("trousers", 40, 32), ("foot", 40, 24), ("csleeve", 32, 40),
+        ("gauntlet", 32, 24), ("collar", 48, 16), ("lame", 32, 12), ("hand", 24, 16), ("belt", 64, 8),
+        ("stump", 24, 16), ("knee", 16, 16), ("pouch", 16, 12), ("neck", 16, 12), ("lining", 8, 8),
+        ("tlining", 8, 8), ("plate_in", 8, 8), ("buckle", 8, 8), ("visor", 16, 8), ("crest", 16, 8),
+        ("disc", 8, 8), ("trim", 16, 8), ("board", 16, 8), ("fringe", 16, 8))}
+    arm = (body.arm_joints(J), ("UpperArm_R", "LowerArm_R"))
+
+    # --- The dark uniform: tunic, its skirt, the left sleeve, the pinned stump on the right.
+    shell(P, J, R["tunic"], TUNIC, segs=14, cap0="pole")
+
+    def skirt_half():
+        def w(z):
+            k = 0.9 * max(0.0, min(1.0, (0.95 - z) / 0.40)) ** 0.6
+            return {"Hips": 1 - k, "UpperLeg_R": k} if k > 0 else {"Hips": 1.0}
+        shell(P, J, R["tskirt"], [r[:5] for r in TUNIC_SKIRT], segs=10, thickness=0.007 * s, lining=R["tlining"],
+              weights=w, arcs=[(-90 + r[6], 90 - r[5]) for r in TUNIC_SKIRT])
+    bb.mirrored(P, skirt_half)
+    ap.left_only(P, lambda: body.limb(P, J, *arm, R["sleeve"], SLEEVE, cap0="pole"))
+    gear.stump(P, J, R["stump"])
+    # --- Armour: the breastplate, plates down his sword arm, the belt.
+    rows = []
+    for z in agent.CUIRASS_Z:
+        rx, ryf, ryb, n = at_z(TUNIC, z)
+        flare = 0.026 if z < 1.02 else 0.0
+        rows.append((z, rx + 0.014 + flare, ryf + 0.018 + flare, ryb + 0.012 + flare, min(2.9, n + 0.15)))
+    shell(P, J, R["cuirass"], rows, segs=18, r=lambda th: 1.0 + 0.05 * max(0.0, math.sin(math.radians(th))) ** 14)
+    for t0 in (0.20, 0.33):
+        ap.left_only(P, lambda t0=t0: limb_shell(P, J, *arm, R["lame"], [(t0, 0.073, 0.074), (t0 + 0.15, 0.080, 0.081)],
+                                                 (55, 305), lining=R["plate_in"]))
+    agent.belt(P, J, R, TUNIC, TUNIC_SKIRT, pouches=(148,))   # the others would push through the coat
+    # --- Helmet with the tall crest; neck under the collar.
+    body.neck(P, J, R["neck"], r=0.054)
+    head = body.Head(J, rows=ap.HELM, brow=0.0, scale=HELM_SCALE)
+    head.build(P, R["helm"], segs=20)
+    ap.crest(P, head, R["crest"], tall=2.6)
+    bb.mirrored(P, lambda: ap.disc(P, head, R["disc"]))
+    # --- His one gauntlet and fist, legs and boots.
+    ap.left_only(P, lambda: body.limb(P, J, *arm, R["gauntlet"], agent.GAUNTLET, hand_bone="Hand_R"))
+    ap.left_only(P, lambda: body.fist(P, J, R["hand"], size=1.12))
+    agent.lower(P, J, R)
+    # --- The white coat over his shoulders, its collar and empty sleeves; trim on it.
+    gear.cape(T, J, R["cape"], R["lining"])
+    gear.collar(T, J, R["collar"], R["lining"])
+    gear.empty_sleeves(T, M, J, R["csleeve"], R["trim"])
+    gear.epaulettes(M, J, R["board"], R["fringe"])
+    paint(R, head)
+    ap.visor(ch, head, R["visor"])
+    ap.blade(ch.prop("BladeMesh", "Weapon_L", "Blade"), A, length=BLADE_LENGTH, grip=U["wrap"],
+             wrap=shade(U["wrap"], 0.6))
+    return ch
+
+
+def paint(R, head):
+    ap.paint_helm(R, head, crest_col=U["crest"])
+    R["crest"].hline(0.7, U["crest_hi"])
+    agent.paint_armour(R)
+    agent.paint_lower(R)
+    # The uniform.
+    for n in ("tunic", "tskirt", "sleeve", "stump"):
+        R[n].fill(U["cloth"])
+    R["tlining"].fill(U["seam"])
+    ts = R["tskirt"]
+    ts.box(0, 0, 1, 0.1, U["fold"])
+    ts.hline(0.11, U["seam"])
+    ts.vline(0.94, U["seam"])
+    R["sleeve"].seam(0.5, U["seam"], U["fold"], 0.0, 0.85)
+    st = R["stump"]
+    st.hline(0.55, U["seam"], 2)                       # the fold
+    st.box(0.40, 0.62, 0.52, 0.80, U["pin"])          # the pin holding it
+    st.box(0.0, 0.85, 1.0, 1.0, U["fold"])
+    # The coat (near-white: the game tints it with the coat colour), crimson inside.
+    for n in ("cape", "collar", "csleeve"):
+        R[n].fill(K["cloth"])
+    c = R["cape"]
+    c.box(0, 0.0, 1, 0.035, K["fold"])                 # turned hem
+    c.box(0, 0.05, 1, 0.075, K["band"])               # a crimson band above it
+    c.hline(0.085, K["seam"])
+    for u in (0.12, 0.3, 0.5, 0.7, 0.88):              # long folds hanging from the shoulders
+        c.vline(u, K["fold"], 1, 0.1, 0.86)
+    c.box(0.0, 0.0, 0.025, 1.0, K["lining"])          # the crimson lining shows at both front edges
+    c.box(0.975, 0.0, 1.0, 1.0, K["lining"])
+    c.hline(0.93, K["seam"])                           # yoke seam across the shoulders
+    ap.weather(c, 0.30, K["dust"], K["grime"], seed=11, waves=4)
+    R["lining"].fill(K["lining"])
+    R["lining"].hline(0.5, K["lining_dk"])
+    co = R["collar"]
+    co.box(0, 0.82, 1, 1.0, K["fold"])
+    co.hline(0.80, K["seam"])
+    cs = R["csleeve"]
+    cs.vline(0.5, K["seam"])
+    cs.hline(0.5, K["fold"])
+    ap.weather(cs, 0.14, K["dust"], seed=13, strength=0.3, flip=True)
+    # Trim (near-white: tinted with the trim colour): cuffs, epaulette boards and fringe.
+    for n in ("trim", "board"):
+        R[n].fill(K["gold"])
+        R[n].hline(0.15, K["seam"])
+        R[n].hline(0.85, K["seam"])
+    R["board"].dot(0.5, 0.5, K["seam"], 2)
+    f = R["fringe"]
+    f.fill(K["gold"])
+    for k in range(8):
+        f.vline(0.06 + k * 0.125, K["seam"])
+    R["disc"].fill(C["plate"])
+    R["disc"].box(0.3, 0.3, 0.7, 0.7, C["plate_hi"])
+
+
+animations = captain_anims.animations
+
+
+if __name__ == "__main__":
+    ch = build()
+    for name, part in ch.parts.items():
+        print("CHARACTER part %s: %d triangles" % (name, part.tris()))
+    ch.finish(animations=animations)

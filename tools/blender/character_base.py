@@ -138,6 +138,8 @@ class Character:
             "props_glb": res + n + "_props.glb" if has_props else "",
             "scene": "res://scenes/characters/%s_model.tscn" % n,
             "attach": [],
+            # A script for the model scene's root (e.g. Aeneas's outfit switches), if the character has one.
+            "root_script": getattr(self, "root_script", ""),
         }
         nodes = {}
         for name, (part, bone, node) in self.props.items():

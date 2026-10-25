@@ -1,25 +1,25 @@
 [gd_scene format=3]
 
 [ext_resource type="Script" path="res://scripts/block.gd" id="1_jb07p"]
-[ext_resource type="Material" path="res://materials/concrete_dark.tres" id="2_i3j7n"]
+[ext_resource type="Material" path="res://materials/concrete_dark_worn.tres" id="2_i3j7n"]
 [ext_resource type="Material" path="res://materials/black_cube.tres" id="3_bjaku"]
-[ext_resource type="Material" path="res://materials/trim_pipe.tres" id="4_1m23x"]
-[ext_resource type="Material" path="res://materials/metal.tres" id="4_1rnr7"]
-[ext_resource type="Material" path="res://materials/trim_rail.tres" id="5_1un0n"]
-[ext_resource type="Material" path="res://materials/metal_plates.tres" id="6_1m23x"]
+[ext_resource type="Material" path="res://materials/trim_pipe_worn.tres" id="4_1m23x"]
+[ext_resource type="Material" path="res://materials/metal_worn.tres" id="4_1rnr7"]
+[ext_resource type="Material" path="res://materials/trim_rail_worn.tres" id="5_1un0n"]
+[ext_resource type="Material" path="res://materials/metal_plates_worn.tres" id="6_1m23x"]
 [ext_resource type="Material" path="res://materials/window_glow.tres" id="6_m6bg3"]
-[ext_resource type="Material" path="res://materials/building.tres" id="9_1un0n"]
-[ext_resource type="Material" path="res://materials/concrete.tres" id="9_02bqp"]
+[ext_resource type="Material" path="res://materials/building_worn.tres" id="9_1un0n"]
+[ext_resource type="Material" path="res://materials/concrete_worn.tres" id="9_02bqp"]
 [ext_resource type="Material" path="res://materials/neon_pink.tres" id="10_4mqyq"]
 [ext_resource type="Material" path="res://materials/neon_cyan.tres" id="11_0y7j7"]
-[ext_resource type="Material" path="res://materials/pavement.tres" id="12_jywo1"]
+[ext_resource type="Material" path="res://materials/pavement_worn.tres" id="12_jywo1"]
 [ext_resource type="Material" path="res://materials/neon_amber.tres" id="12_qxh3j"]
 [ext_resource type="Shader" path="res://shaders/ps1_surface.gdshader" id="13_rqy1w"]
 [ext_resource type="Material" path="res://materials/trim_neon_pink.tres" id="13_uq12w"]
 [ext_resource type="PackedScene" path="res://scenes/player.tscn" id="14_gkbgp"]
 [ext_resource type="Material" path="res://materials/trim_neon_cyan.tres" id="14_h30vo"]
 [ext_resource type="Material" path="res://materials/trim_neon_amber.tres" id="15_xwkxk"]
-[ext_resource type="Material" path="res://materials/trim_vent.tres" id="16_bhe7q"]
+[ext_resource type="Material" path="res://materials/trim_vent_worn.tres" id="16_bhe7q"]
 [ext_resource type="AudioStream" path="res://audio/cube_drone.wav" id="19_bi0ad"]
 [ext_resource type="Resource" path="res://data/enemies/agency_agent.tres" id="20_6hhm0"]
 [ext_resource type="PackedScene" path="res://scenes/kael.tscn" id="21_1un0n"]
@@ -31,8 +31,8 @@
 [ext_resource type="Resource" path="res://data/enemies/agency_lieutenant.tres" id="27_tte5t"]
 [ext_resource type="Script" path="res://scripts/player.gd" id="28_vtmm7"]
 [ext_resource type="Script" path="res://scripts/guard.gd" id="30_r8ac1"]
-[ext_resource type="Material" path="res://materials/trim_stripes.tres" id="35_xvw6m"]
-[ext_resource type="Material" path="res://materials/trim_rust.tres" id="36_f7ila"]
+[ext_resource type="Material" path="res://materials/trim_stripes_worn.tres" id="35_xvw6m"]
+[ext_resource type="Material" path="res://materials/trim_rust_worn.tres" id="36_f7ila"]
 [ext_resource type="Material" path="res://materials/trim_cable.tres" id="37_6m8jh"]
 [ext_resource type="Material" path="res://materials/sign_pink.tres" id="38_0jtdj"]
 [ext_resource type="Material" path="res://materials/sign_cyan.tres" id="39_i05aa"]
@@ -46,7 +46,7 @@
 [ext_resource type="Texture2D" path="res://textures/decal_grime.png" id="45_3w4sp"]
 [ext_resource type="Material" path="res://materials/terracotta.tres" id="45_bhe7q"]
 [ext_resource type="Texture2D" path="res://textures/decal_poster.png" id="46_ac0n1"]
-[ext_resource type="Material" path="res://materials/building_unlit.tres" id="47_h30vo"]
+[ext_resource type="Material" path="res://materials/building_unlit_worn.tres" id="47_h30vo"]
 [ext_resource type="Script" path="res://scripts/tv_window.gd" id="49_xwkxk"]
 [ext_resource type="Script" path="res://scripts/steam_vent.gd" id="50_bhe7q"]
 [ext_resource type="Script" path="res://scripts/drip.gd" id="51_rjpm0"]
@@ -74,6 +74,14 @@
 [ext_resource type="Material" path="res://materials/rubber.tres" id="r3_rubber"]
 [ext_resource type="Script" path="res://scripts/props/street_prop.gd" id="r3_street_prop"]
 [ext_resource type="Script" path="res://scripts/story_trigger.gd" id="story_trigger_script"]
+[ext_resource type="Texture2D" path="res://textures/decal_rust_streak.png" id="r3_decal_rust_streak"]
+[ext_resource type="Texture2D" path="res://textures/decal_soot.png" id="r3_decal_soot"]
+[ext_resource type="Texture2D" path="res://textures/decal_water_streak.png" id="r3_decal_water_streak"]
+[ext_resource type="Texture2D" path="res://textures/decal_moss.png" id="r3_decal_moss"]
+[ext_resource type="Texture2D" path="res://textures/decal_cracks.png" id="r3_decal_cracks"]
+[ext_resource type="Texture2D" path="res://textures/decal_plate_gone.png" id="r3_decal_plate_gone"]
+[ext_resource type="Texture2D" path="res://textures/decal_rust_through.png" id="r3_decal_rust_through"]
+[ext_resource type="Script" path="res://scripts/props/ruin_prop.gd" id="r3_ruin_prop"]
 
 [sub_resource type="Environment" id="Environment_6hhm0"]
 background_mode = 1
@@ -955,6 +963,7 @@ size = Vector3(8, 8, 2)
 material = ExtResource("9_02bqp")
 
 [node name="RimRailWest" type="StaticBody3D" parent="SouthDistrict" unique_id=1124195014]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.5, 24.5, 9.15)
 script = ExtResource("1_jb07p")
 size = Vector3(11, 1, 0.3000002)
@@ -3206,84 +3215,84 @@ upper_fade = 0.0
 cull_mask = 1
 
 [node name="Poster0" type="Decal" parent="Decals" unique_id=708435728]
-transform = Transform3D(-4.371139e-08, -1, -4.371139e-08, 0, -4.371139e-08, 1, -1, 4.371139e-08, 1.9106855e-15, -2.95, 25.4, 20.5)
+transform = Transform3D(0.00000004371139, -1.0, 0.00000004371139, 0.0, -0.00000004371139, -1.0, 1.0, 0.00000004371139, -0.0, -2.95, 25.4, 20.5)
 size = Vector3(0.75, 0.3, 1)
 texture_albedo = ExtResource("46_ac0n1")
 upper_fade = 0.0
 cull_mask = 1
 
 [node name="Poster1" type="Decal" parent="Decals" unique_id=1919884368]
-transform = Transform3D(-4.371139e-08, 1, 4.371139e-08, 0, -4.371139e-08, 1, 1, 4.371139e-08, 1.9106855e-15, -17.05, 9.6, 2)
+transform = Transform3D(0.00000004371139, 1.0, -0.00000004371139, 0.0, -0.00000004371139, -1.0, -1.0, 0.00000004371139, -0.0, -17.05, 9.6, 2.0)
 size = Vector3(0.75, 0.3, 1)
 texture_albedo = ExtResource("46_ac0n1")
 upper_fade = 0.0
 cull_mask = 1
 
 [node name="Poster2" type="Decal" parent="Decals" unique_id=1234358181]
-transform = Transform3D(-4.371139e-08, -1, -4.371139e-08, 0, -4.371139e-08, 1, -1, 4.371139e-08, 1.9106855e-15, 8.95, 1.6, 4)
+transform = Transform3D(0.00000004371139, -1.0, 0.00000004371139, 0.0, -0.00000004371139, -1.0, 1.0, 0.00000004371139, -0.0, 8.95, 1.6, 4.0)
 size = Vector3(0.75, 0.3, 1)
 texture_albedo = ExtResource("46_ac0n1")
 upper_fade = 0.0
 cull_mask = 1
 
 [node name="NoticeAlley1" type="Decal" parent="Decals" unique_id=1421335091]
-transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, -13.2, 9.5, -3.97)
+transform = Transform3D(-1.0, 0.0, 0.0, 0.0, 0.0, -1.0, 0.0, -1.0, 0.0, -13.2, 9.5, -3.97)
 size = Vector3(0.48, 0.3, 0.64)
 texture_albedo = ExtResource("r3_decal_notice")
 upper_fade = 0.0
 cull_mask = 1
 
 [node name="NoticeAlley2" type="Decal" parent="Decals" unique_id=512253209]
-transform = Transform3D(0, 1, 0, 0, 0, 1, 1, 0, 0, -17.03, 9.5, 0.95)
+transform = Transform3D(0.0, 1.0, 0.0, 0.0, 0.0, -1.0, -1.0, 0.0, 0.0, -17.03, 9.5, 0.95)
 size = Vector3(0.48, 0.3, 0.64)
 texture_albedo = ExtResource("r3_decal_notice")
 upper_fade = 0.0
 cull_mask = 1
 
 [node name="FlyerAlley" type="Decal" parent="Decals" unique_id=995672292]
-transform = Transform3D(-1, 0, 0, 0, 0, 1, 0, 1, 0, -15.5, 9.5, 8.97)
+transform = Transform3D(1.0, 0.0, 0.0, 0.0, 0.0, -1.0, 0.0, 1.0, 0.0, -15.5, 9.5, 8.97)
 size = Vector3(0.48, 0.3, 0.64)
 texture_albedo = ExtResource("r3_decal_flyer")
 upper_fade = 0.0
 cull_mask = 1
 
 [node name="NoticeCourt" type="Decal" parent="Decals" unique_id=1239752966]
-transform = Transform3D(-1, 0, 0, 0, 0, 1, 0, 1, 0, -2.2, 1.6, 8.97)
+transform = Transform3D(1.0, 0.0, 0.0, 0.0, 0.0, -1.0, 0.0, 1.0, 0.0, -2.2, 1.6, 8.97)
 size = Vector3(0.48, 0.3, 0.64)
 texture_albedo = ExtResource("r3_decal_notice")
 upper_fade = 0.0
 cull_mask = 1
 
 [node name="NoticeHall" type="Decal" parent="Decals" unique_id=1195358055]
-transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, -5.5, 1.6, -8.97)
+transform = Transform3D(-1.0, 0.0, 0.0, 0.0, 0.0, -1.0, 0.0, -1.0, 0.0, -5.5, 1.6, -8.97)
 size = Vector3(0.48, 0.3, 0.64)
 texture_albedo = ExtResource("r3_decal_notice")
 upper_fade = 0.0
 cull_mask = 1
 
 [node name="FlyerCourt" type="Decal" parent="Decals" unique_id=290207086]
-transform = Transform3D(-1, 0, 0, 0, 0, 1, 0, 1, 0, 6.8, 1.7, 8.97)
+transform = Transform3D(1.0, 0.0, 0.0, 0.0, 0.0, -1.0, 0.0, 1.0, 0.0, 6.8, 1.7, 8.97)
 size = Vector3(0.48, 0.3, 0.64)
 texture_albedo = ExtResource("r3_decal_flyer")
 upper_fade = 0.0
 cull_mask = 1
 
 [node name="PosterGateEast" type="Decal" parent="Decals" unique_id=425177640]
-transform = Transform3D(0, 1, 0, 0, 0, 1, 1, 0, 0, 2.97, 25.9, 17)
+transform = Transform3D(0.0, 1.0, 0.0, 0.0, 0.0, -1.0, -1.0, 0.0, 0.0, 2.97, 25.9, 17.0)
 size = Vector3(0.75, 0.3, 1)
 texture_albedo = ExtResource("46_ac0n1")
 upper_fade = 0.0
 cull_mask = 1
 
 [node name="PosterRim" type="Decal" parent="Decals" unique_id=1113009318]
-transform = Transform3D(-1, 0, 0, 0, 0, 1, 0, 1, 0, 12.5, 25.6, 12.97)
+transform = Transform3D(1.0, 0.0, 0.0, 0.0, 0.0, -1.0, 0.0, 1.0, 0.0, 12.5, 25.6, 12.97)
 size = Vector3(0.75, 0.3, 1)
 texture_albedo = ExtResource("46_ac0n1")
 upper_fade = 0.0
 cull_mask = 1
 
 [node name="PosterTower4" type="Decal" parent="Decals" unique_id=279087597]
-transform = Transform3D(-1, 0, 0, 0, 0, 1, 0, 1, 0, 22.3, 25.6, 13.97)
+transform = Transform3D(1.0, 0.0, 0.0, 0.0, 0.0, -1.0, 0.0, 1.0, 0.0, 22.3, 25.6, 13.97)
 size = Vector3(0.75, 0.3, 1)
 texture_albedo = ExtResource("46_ac0n1")
 upper_fade = 0.0
@@ -6702,3 +6711,1673 @@ shape = SubResource("BoxShape3D_5iox7")
 
 [node name="Navigation" type="NavigationRegion3D" parent="." unique_id=1346963485]
 navigation_mesh = ExtResource("91_nav")
+
+[node name="r4_rust_streaks" type="Node3D" parent="Decals"]
+
+[node name="Rust0_GateSignA" type="Decal" parent="Decals/r4_rust_streaks"]
+transform = Transform3D(0, 1, 0, 0, 0, -1, -1, 0, 0, -3.0000002, 29.38633, 25)
+size = Vector3(0.4, 0.3, 0.8073412)
+texture_albedo = ExtResource("r3_decal_rust_streak")
+upper_fade = 0.0
+lower_fade = 0.0
+normal_fade = 0.3
+distance_fade_enabled = true
+distance_fade_begin = 45.0
+distance_fade_length = 10.0
+cull_mask = 1
+modulate = Color(1, 1, 1, 0.9)
+
+[node name="Rust1_GateSignB" type="Decal" parent="Decals/r4_rust_streaks"]
+transform = Transform3D(0, -1, 0, 0, 0, -1, 1, 0, 0, 3.0000002, 32.9028, 19)
+size = Vector3(0.4, 0.3, 1.1744003)
+texture_albedo = ExtResource("r3_decal_rust_streak")
+upper_fade = 0.0
+lower_fade = 0.0
+normal_fade = 0.3
+distance_fade_enabled = true
+distance_fade_begin = 45.0
+distance_fade_length = 10.0
+cull_mask = 1
+modulate = Color(1, 1, 1, 0.9)
+
+[node name="Rust2_GateAC1" type="Decal" parent="Decals/r4_rust_streaks"]
+transform = Transform3D(0, -1, 0, 0, 0, -1, 1, 0, 0, 3, 27.870136, 26.4)
+size = Vector3(0.8638155, 0.3, 2.7797263)
+texture_albedo = ExtResource("r3_decal_rust_streak")
+upper_fade = 0.0
+lower_fade = 0.0
+normal_fade = 0.3
+distance_fade_enabled = true
+distance_fade_begin = 45.0
+distance_fade_length = 10.0
+cull_mask = 1
+modulate = Color(1, 1, 1, 0.9)
+
+[node name="Rust3_RimSign" type="Decal" parent="Decals/r4_rust_streaks"]
+transform = Transform3D(-1, 0, 0, 0, 0, -1, 0, -1, 0, 10, 27.4418, 13)
+size = Vector3(0.4, 0.3, 1.0964047)
+texture_albedo = ExtResource("r3_decal_rust_streak")
+upper_fade = 0.0
+lower_fade = 0.0
+normal_fade = 0.3
+distance_fade_enabled = true
+distance_fade_begin = 45.0
+distance_fade_length = 10.0
+cull_mask = 1
+modulate = Color(1, 1, 1, 0.9)
+
+[node name="Rust4_DeckAC1" type="Decal" parent="Decals/r4_rust_streaks"]
+transform = Transform3D(0, -1, 0, 0, 0, -1, 1, 0, 0, 23, 18.68481, 2)
+size = Vector3(0.8050554, 0.3, 2.1503806)
+texture_albedo = ExtResource("r3_decal_rust_streak")
+upper_fade = 0.0
+lower_fade = 0.0
+normal_fade = 0.3
+distance_fade_enabled = true
+distance_fade_begin = 45.0
+distance_fade_length = 10.0
+cull_mask = 1
+modulate = Color(1, 1, 1, 0.9)
+
+[node name="Rust5_DeckAC2" type="Decal" parent="Decals/r4_rust_streaks"]
+transform = Transform3D(0, -1, 0, 0, 0, -1, 1, 0, 0, 23, 22.780312, -6)
+size = Vector3(0.8376339, 0.3, 1.9593776)
+texture_albedo = ExtResource("r3_decal_rust_streak")
+upper_fade = 0.0
+lower_fade = 0.0
+normal_fade = 0.3
+distance_fade_enabled = true
+distance_fade_begin = 45.0
+distance_fade_length = 10.0
+cull_mask = 1
+modulate = Color(1, 1, 1, 0.9)
+
+[node name="Rust6_AlleyAC1" type="Decal" parent="Decals/r4_rust_streaks"]
+transform = Transform3D(0, 1, 0, 0, 0, -1, -1, 0, 0, -12, 9.809122, -6)
+size = Vector3(0.96360046, 0.3, 1.9017555)
+texture_albedo = ExtResource("r3_decal_rust_streak")
+upper_fade = 0.0
+lower_fade = 0.0
+normal_fade = 0.3
+distance_fade_enabled = true
+distance_fade_begin = 45.0
+distance_fade_length = 10.0
+cull_mask = 1
+modulate = Color(1, 1, 1, 0.9)
+
+[node name="Rust7_AlleyAC2" type="Decal" parent="Decals/r4_rust_streaks"]
+transform = Transform3D(0, 1, 0, 0, 0, -1, -1, 0, 0, -20, 11.67552, -4.5)
+size = Vector3(0.93916065, 0.3, 2.1689608)
+texture_albedo = ExtResource("r3_decal_rust_streak")
+upper_fade = 0.0
+lower_fade = 0.0
+normal_fade = 0.3
+distance_fade_enabled = true
+distance_fade_begin = 45.0
+distance_fade_length = 10.0
+cull_mask = 1
+modulate = Color(1, 1, 1, 0.9)
+
+[node name="Rust8_AlleySign" type="Decal" parent="Decals/r4_rust_streaks"]
+transform = Transform3D(0, -1, 0, 0, 0, -1, 1, 0, 0, -17, 10.828986, 3.6)
+size = Vector3(0.4, 0.3, 1.322028)
+texture_albedo = ExtResource("r3_decal_rust_streak")
+upper_fade = 0.0
+lower_fade = 0.0
+normal_fade = 0.3
+distance_fade_enabled = true
+distance_fade_begin = 45.0
+distance_fade_length = 10.0
+cull_mask = 1
+modulate = Color(1, 1, 1, 0.9)
+
+[node name="Rust9_HallDoorSign" type="Decal" parent="Decals/r4_rust_streaks"]
+transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 0, 6.905509, -9)
+size = Vector3(0.4, 0.3, 0.9689814)
+texture_albedo = ExtResource("r3_decal_rust_streak")
+upper_fade = 0.0
+lower_fade = 0.0
+normal_fade = 0.3
+distance_fade_enabled = true
+distance_fade_begin = 45.0
+distance_fade_length = 10.0
+cull_mask = 1
+modulate = Color(1, 1, 1, 0.9)
+
+[node name="Rust10_CourtAC1" type="Decal" parent="Decals/r4_rust_streaks"]
+transform = Transform3D(0, 1, 0, 0, 0, -1, -1, 0, 0, -9, 3.0992856, -3.5)
+size = Vector3(0.8130547, 0.3, 2.5214283)
+texture_albedo = ExtResource("r3_decal_rust_streak")
+upper_fade = 0.0
+lower_fade = 0.0
+normal_fade = 0.3
+distance_fade_enabled = true
+distance_fade_begin = 45.0
+distance_fade_length = 10.0
+cull_mask = 1
+modulate = Color(1, 1, 1, 0.9)
+
+[node name="Rust11_CourtAC2" type="Decal" parent="Decals/r4_rust_streaks"]
+transform = Transform3D(0, -1, 0, 0, 0, -1, 1, 0, 0, 9, 4.435, -3)
+size = Vector3(0.87375987, 0.3, 1.6499997)
+texture_albedo = ExtResource("r3_decal_rust_streak")
+upper_fade = 0.0
+lower_fade = 0.0
+normal_fade = 0.3
+distance_fade_enabled = true
+distance_fade_begin = 45.0
+distance_fade_length = 10.0
+cull_mask = 1
+modulate = Color(1, 1, 1, 0.9)
+
+[node name="Rust12_CourtAC3" type="Decal" parent="Decals/r4_rust_streaks"]
+transform = Transform3D(0, 1, 0, 0, 0, -1, -1, 0, 0, -9, 5.422927, -5)
+size = Vector3(0.9586365, 0.3, 1.6741459)
+texture_albedo = ExtResource("r3_decal_rust_streak")
+upper_fade = 0.0
+lower_fade = 0.0
+normal_fade = 0.3
+distance_fade_enabled = true
+distance_fade_begin = 45.0
+distance_fade_length = 10.0
+cull_mask = 1
+modulate = Color(1, 1, 1, 0.9)
+
+[node name="Rust13_AC0" type="Decal" parent="Decals/r4_rust_streaks"]
+transform = Transform3D(0, 1, 0, 0, 0, -1, -1, 0, 0, -3, 28.385, 17.5)
+size = Vector3(0.90198344, 0.3, 1.7499985)
+texture_albedo = ExtResource("r3_decal_rust_streak")
+upper_fade = 0.0
+lower_fade = 0.0
+normal_fade = 0.3
+distance_fade_enabled = true
+distance_fade_begin = 45.0
+distance_fade_length = 10.0
+cull_mask = 1
+modulate = Color(1, 1, 1, 0.9)
+
+[node name="Rust14_AC1" type="Decal" parent="Decals/r4_rust_streaks"]
+transform = Transform3D(0, 1, 0, 0, 0, -1, -1, 0, 0, -3, 33.767246, 24)
+size = Vector3(0.8396868, 0.3, 1.9855103)
+texture_albedo = ExtResource("r3_decal_rust_streak")
+upper_fade = 0.0
+lower_fade = 0.0
+normal_fade = 0.3
+distance_fade_enabled = true
+distance_fade_begin = 45.0
+distance_fade_length = 10.0
+cull_mask = 1
+modulate = Color(1, 1, 1, 0.9)
+
+[node name="Rust15_AC2" type="Decal" parent="Decals/r4_rust_streaks"]
+transform = Transform3D(0, 1, 0, 0, 0, -1, -1, 0, 0, -3, 37.458637, 19.5)
+size = Vector3(0.89850855, 0.3, 1.6027322)
+texture_albedo = ExtResource("r3_decal_rust_streak")
+upper_fade = 0.0
+lower_fade = 0.0
+normal_fade = 0.3
+distance_fade_enabled = true
+distance_fade_begin = 45.0
+distance_fade_length = 10.0
+cull_mask = 1
+modulate = Color(1, 1, 1, 0.9)
+
+[node name="Rust16_AC3" type="Decal" parent="Decals/r4_rust_streaks"]
+transform = Transform3D(0, 1, 0, 0, 0, -1, -1, 0, 0, -3, 25.335, 28.5)
+size = Vector3(0.88846064, 0.3, 1.8500007)
+texture_albedo = ExtResource("r3_decal_rust_streak")
+upper_fade = 0.0
+lower_fade = 0.0
+normal_fade = 0.3
+distance_fade_enabled = true
+distance_fade_begin = 45.0
+distance_fade_length = 10.0
+cull_mask = 1
+modulate = Color(1, 1, 1, 0.9)
+
+[node name="Rust17_AC4" type="Decal" parent="Decals/r4_rust_streaks"]
+transform = Transform3D(0, -1, 0, 0, 0, -1, 1, 0, 0, 3, 32.31, 16)
+size = Vector3(0.9392907, 0.3, 0.9)
+texture_albedo = ExtResource("r3_decal_rust_streak")
+upper_fade = 0.0
+lower_fade = 0.0
+normal_fade = 0.3
+distance_fade_enabled = true
+distance_fade_begin = 45.0
+distance_fade_length = 10.0
+cull_mask = 1
+modulate = Color(1, 1, 1, 0.9)
+
+[node name="Rust18_AC5" type="Decal" parent="Decals/r4_rust_streaks"]
+transform = Transform3D(0, -1, 0, 0, 0, -1, 1, 0, 0, 3, 34.655952, 22.5)
+size = Vector3(0.8153155, 0.3, 2.2080986)
+texture_albedo = ExtResource("r3_decal_rust_streak")
+upper_fade = 0.0
+lower_fade = 0.0
+normal_fade = 0.3
+distance_fade_enabled = true
+distance_fade_begin = 45.0
+distance_fade_length = 10.0
+cull_mask = 1
+modulate = Color(1, 1, 1, 0.9)
+
+[node name="Rust19_AC6" type="Decal" parent="Decals/r4_rust_streaks"]
+transform = Transform3D(0, -1, 0, 0, 0, -1, 1, 0, 0, 3, 39.594643, 27)
+size = Vector3(0.9875475, 0.3, 2.3307192)
+texture_albedo = ExtResource("r3_decal_rust_streak")
+upper_fade = 0.0
+lower_fade = 0.0
+normal_fade = 0.3
+distance_fade_enabled = true
+distance_fade_begin = 45.0
+distance_fade_length = 10.0
+cull_mask = 1
+modulate = Color(1, 1, 1, 0.9)
+
+[node name="Rust20_AC7" type="Decal" parent="Decals/r4_rust_streaks"]
+transform = Transform3D(-1, 0, 0, 0, 0, -1, 0, -1, 0, -4.5, 28.91441, 14)
+size = Vector3(0.91225296, 0.3, 2.6911817)
+texture_albedo = ExtResource("r3_decal_rust_streak")
+upper_fade = 0.0
+lower_fade = 0.0
+normal_fade = 0.3
+distance_fade_enabled = true
+distance_fade_begin = 45.0
+distance_fade_length = 10.0
+cull_mask = 1
+modulate = Color(1, 1, 1, 0.9)
+
+[node name="Rust21_AC8" type="Decal" parent="Decals/r4_rust_streaks"]
+transform = Transform3D(-1, 0, 0, 0, 0, -1, 0, -1, 0, -10, 31.600773, 14)
+size = Vector3(0.8105019, 0.3, 2.3184576)
+texture_albedo = ExtResource("r3_decal_rust_streak")
+upper_fade = 0.0
+lower_fade = 0.0
+normal_fade = 0.3
+distance_fade_enabled = true
+distance_fade_begin = 45.0
+distance_fade_length = 10.0
+cull_mask = 1
+modulate = Color(1, 1, 1, 0.9)
+
+[node name="Rust22_AC9" type="Decal" parent="Decals/r4_rust_streaks"]
+transform = Transform3D(-1, 0, 0, 0, 0, -1, 0, -1, 0, 8, 27.831703, 13)
+size = Vector3(0.99356145, 0.3, 1.8565923)
+texture_albedo = ExtResource("r3_decal_rust_streak")
+upper_fade = 0.0
+lower_fade = 0.0
+normal_fade = 0.3
+distance_fade_enabled = true
+distance_fade_begin = 45.0
+distance_fade_length = 10.0
+cull_mask = 1
+modulate = Color(1, 1, 1, 0.9)
+
+[node name="Rust23_AC10" type="Decal" parent="Decals/r4_rust_streaks"]
+transform = Transform3D(-1, 0, 0, 0, 0, -1, 0, -1, 0, 12, 33.879425, 13)
+size = Vector3(0.82722825, 0.3, 2.7611523)
+texture_albedo = ExtResource("r3_decal_rust_streak")
+upper_fade = 0.0
+lower_fade = 0.0
+normal_fade = 0.3
+distance_fade_enabled = true
+distance_fade_begin = 45.0
+distance_fade_length = 10.0
+cull_mask = 1
+modulate = Color(1, 1, 1, 0.9)
+
+[node name="Rust24_AC11" type="Decal" parent="Decals/r4_rust_streaks"]
+transform = Transform3D(0, -1, 0, 0, 0, -1, 1, 0, 0, 16, 30.928926, 20)
+size = Vector3(0.9688252, 0.3, 1.6621478)
+texture_albedo = ExtResource("r3_decal_rust_streak")
+upper_fade = 0.0
+lower_fade = 0.0
+normal_fade = 0.3
+distance_fade_enabled = true
+distance_fade_begin = 45.0
+distance_fade_length = 10.0
+cull_mask = 1
+modulate = Color(1, 1, 1, 0.9)
+
+[node name="Rust25_AC12" type="Decal" parent="Decals/r4_rust_streaks"]
+transform = Transform3D(0, -1, 0, 0, 0, -1, 1, 0, 0, 16, 26.37334, 26)
+size = Vector3(0.9341724, 0.3, 1.7733177)
+texture_albedo = ExtResource("r3_decal_rust_streak")
+upper_fade = 0.0
+lower_fade = 0.0
+normal_fade = 0.3
+distance_fade_enabled = true
+distance_fade_begin = 45.0
+distance_fade_length = 10.0
+cull_mask = 1
+modulate = Color(1, 1, 1, 0.9)
+
+[node name="Rust26_AC13" type="Decal" parent="Decals/r4_rust_streaks"]
+transform = Transform3D(0, -1, 0, 0, 0, -1, 1, 0, 0, 12, 19.683582, 3)
+size = Vector3(0.81876093, 0.3, 2.1528347)
+texture_albedo = ExtResource("r3_decal_rust_streak")
+upper_fade = 0.0
+lower_fade = 0.0
+normal_fade = 0.3
+distance_fade_enabled = true
+distance_fade_begin = 45.0
+distance_fade_length = 10.0
+cull_mask = 1
+modulate = Color(1, 1, 1, 0.9)
+
+[node name="Rust27_AC14" type="Decal" parent="Decals/r4_rust_streaks"]
+transform = Transform3D(0, -1, 0, 0, 0, -1, 1, 0, 0, 12, 24.187052, 7)
+size = Vector3(0.8400624, 0.3, 2.1458964)
+texture_albedo = ExtResource("r3_decal_rust_streak")
+upper_fade = 0.0
+lower_fade = 0.0
+normal_fade = 0.3
+distance_fade_enabled = true
+distance_fade_begin = 45.0
+distance_fade_length = 10.0
+cull_mask = 1
+modulate = Color(1, 1, 1, 0.9)
+
+[node name="Rust28_AC15" type="Decal" parent="Decals/r4_rust_streaks"]
+transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, -4, 13.059288, -9)
+size = Vector3(0.8662109, 0.3, 2.4014251)
+texture_albedo = ExtResource("r3_decal_rust_streak")
+upper_fade = 0.0
+lower_fade = 0.0
+normal_fade = 0.3
+distance_fade_enabled = true
+distance_fade_begin = 45.0
+distance_fade_length = 10.0
+cull_mask = 1
+modulate = Color(1, 1, 1, 0.9)
+
+[node name="Rust29_AC16" type="Decal" parent="Decals/r4_rust_streaks"]
+transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 3, 16.6069, -9)
+size = Vector3(0.90999705, 0.3, 2.3062012)
+texture_albedo = ExtResource("r3_decal_rust_streak")
+upper_fade = 0.0
+lower_fade = 0.0
+normal_fade = 0.3
+distance_fade_enabled = true
+distance_fade_begin = 45.0
+distance_fade_length = 10.0
+cull_mask = 1
+modulate = Color(1, 1, 1, 0.9)
+
+[node name="Rust30_AC17" type="Decal" parent="Decals/r4_rust_streaks"]
+transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 6.5, 23.393734, -9)
+size = Vector3(0.80742246, 0.3, 1.732532)
+texture_albedo = ExtResource("r3_decal_rust_streak")
+upper_fade = 0.0
+lower_fade = 0.0
+normal_fade = 0.3
+distance_fade_enabled = true
+distance_fade_begin = 45.0
+distance_fade_length = 10.0
+cull_mask = 1
+modulate = Color(1, 1, 1, 0.9)
+
+[node name="Rust31_AC18" type="Decal" parent="Decals/r4_rust_streaks"]
+transform = Transform3D(0, 1, 0, 0, 0, -1, -1, 0, 0, -20, 11.317091, -6.5)
+size = Vector3(0.8996455, 0.3, 2.0858202)
+texture_albedo = ExtResource("r3_decal_rust_streak")
+upper_fade = 0.0
+lower_fade = 0.0
+normal_fade = 0.3
+distance_fade_enabled = true
+distance_fade_begin = 45.0
+distance_fade_length = 10.0
+cull_mask = 1
+modulate = Color(1, 1, 1, 0.9)
+
+[node name="Rust32_AC19" type="Decal" parent="Decals/r4_rust_streaks"]
+transform = Transform3D(0, 1, 0, 0, 0, -1, -1, 0, 0, -20, 10.635, 5.5)
+size = Vector3(0.97660446, 0.3, 1.2499994)
+texture_albedo = ExtResource("r3_decal_rust_streak")
+upper_fade = 0.0
+lower_fade = 0.0
+normal_fade = 0.3
+distance_fade_enabled = true
+distance_fade_begin = 45.0
+distance_fade_length = 10.0
+cull_mask = 1
+modulate = Color(1, 1, 1, 0.9)
+
+[node name="Rust33_AC20" type="Decal" parent="Decals/r4_rust_streaks"]
+transform = Transform3D(0, 1, 0, 0, 0, -1, -1, 0, 0, -20, 15.647503, 8)
+size = Vector3(0.9677675, 0.3, 2.2249951)
+texture_albedo = ExtResource("r3_decal_rust_streak")
+upper_fade = 0.0
+lower_fade = 0.0
+normal_fade = 0.3
+distance_fade_enabled = true
+distance_fade_begin = 45.0
+distance_fade_length = 10.0
+cull_mask = 1
+modulate = Color(1, 1, 1, 0.9)
+
+[node name="Rust34_AC21" type="Decal" parent="Decals/r4_rust_streaks"]
+transform = Transform3D(0, -1, 0, 0, 0, -1, 1, 0, 0, -17, 13.476837, -7.5)
+size = Vector3(0.9583268, 0.3, 2.5663252)
+texture_albedo = ExtResource("r3_decal_rust_streak")
+upper_fade = 0.0
+lower_fade = 0.0
+normal_fade = 0.3
+distance_fade_enabled = true
+distance_fade_begin = 45.0
+distance_fade_length = 10.0
+cull_mask = 1
+modulate = Color(1, 1, 1, 0.9)
+
+[node name="Rust35_AC22" type="Decal" parent="Decals/r4_rust_streaks"]
+transform = Transform3D(0, -1, 0, 0, 0, -1, 1, 0, 0, -17, 17.185, 2.5)
+size = Vector3(0.962122, 0.3, 2.15)
+texture_albedo = ExtResource("r3_decal_rust_streak")
+upper_fade = 0.0
+lower_fade = 0.0
+normal_fade = 0.3
+distance_fade_enabled = true
+distance_fade_begin = 45.0
+distance_fade_length = 10.0
+cull_mask = 1
+modulate = Color(1, 1, 1, 0.9)
+
+[node name="Rust36_AC24" type="Decal" parent="Decals/r4_rust_streaks"]
+transform = Transform3D(0, 1, 0, 0, 0, -1, -1, 0, 0, -9, 2.3048773, -6)
+size = Vector3(0.85613775, 0.3, 1.9102454)
+texture_albedo = ExtResource("r3_decal_rust_streak")
+upper_fade = 0.0
+lower_fade = 0.0
+normal_fade = 0.3
+distance_fade_enabled = true
+distance_fade_begin = 45.0
+distance_fade_length = 10.0
+cull_mask = 1
+modulate = Color(1, 1, 1, 0.9)
+
+[node name="Rust37_AC25" type="Decal" parent="Decals/r4_rust_streaks"]
+transform = Transform3D(0, 1, 0, 0, 0, -1, -1, 0, 0, -9, 4.3263636, -1.5)
+size = Vector3(0.8778457, 0.3, 1.8672723)
+texture_albedo = ExtResource("r3_decal_rust_streak")
+upper_fade = 0.0
+lower_fade = 0.0
+normal_fade = 0.3
+distance_fade_enabled = true
+distance_fade_begin = 45.0
+distance_fade_length = 10.0
+cull_mask = 1
+modulate = Color(1, 1, 1, 0.9)
+
+[node name="Rust38_AC26" type="Decal" parent="Decals/r4_rust_streaks"]
+transform = Transform3D(0, -1, 0, 0, 0, -1, 1, 0, 0, 9, 1.9883163, 2)
+size = Vector3(0.9745479, 0.3, 2.5433674)
+texture_albedo = ExtResource("r3_decal_rust_streak")
+upper_fade = 0.0
+lower_fade = 0.0
+normal_fade = 0.3
+distance_fade_enabled = true
+distance_fade_begin = 45.0
+distance_fade_length = 10.0
+cull_mask = 1
+modulate = Color(1, 1, 1, 0.9)
+
+[node name="Rust39_AC27" type="Decal" parent="Decals/r4_rust_streaks"]
+transform = Transform3D(0, -1, 0, 0, 0, -1, 1, 0, 0, 9, 4.96, -5)
+size = Vector3(0.8081624, 0.3, 2.6)
+texture_albedo = ExtResource("r3_decal_rust_streak")
+upper_fade = 0.0
+lower_fade = 0.0
+normal_fade = 0.3
+distance_fade_enabled = true
+distance_fade_begin = 45.0
+distance_fade_length = 10.0
+cull_mask = 1
+modulate = Color(1, 1, 1, 0.9)
+
+[node name="Rust40_Lamp_GateDoor" type="Decal" parent="Decals/r4_rust_streaks"]
+transform = Transform3D(0, 1, 0, 0, 0, -1, -1, 0, 0, -2.9999998, 26.350409, 26.5)
+size = Vector3(0.4, 0.3, 1.019187)
+texture_albedo = ExtResource("r3_decal_rust_streak")
+upper_fade = 0.0
+lower_fade = 0.0
+normal_fade = 0.3
+distance_fade_enabled = true
+distance_fade_begin = 45.0
+distance_fade_length = 10.0
+cull_mask = 1
+modulate = Color(1, 1, 1, 0.9)
+
+[node name="Rust41_Lamp_GateEast" type="Decal" parent="Decals/r4_rust_streaks"]
+transform = Transform3D(0, -1, 0, 0, 0, -1, 1, 0, 0, 2.9999998, 26.212875, 21)
+size = Vector3(0.4, 0.3, 0.8942535)
+texture_albedo = ExtResource("r3_decal_rust_streak")
+upper_fade = 0.0
+lower_fade = 0.0
+normal_fade = 0.3
+distance_fade_enabled = true
+distance_fade_begin = 45.0
+distance_fade_length = 10.0
+cull_mask = 1
+modulate = Color(1, 1, 1, 0.9)
+
+[node name="Rust42_Lamp_Rim3" type="Decal" parent="Decals/r4_rust_streaks"]
+transform = Transform3D(-1, 0, 0, 0, 0, -1, 0, -1, 0, 5.5, 26.022451, 13)
+size = Vector3(0.4, 0.3, 1.2751018)
+texture_albedo = ExtResource("r3_decal_rust_streak")
+upper_fade = 0.0
+lower_fade = 0.0
+normal_fade = 0.3
+distance_fade_enabled = true
+distance_fade_begin = 45.0
+distance_fade_length = 10.0
+cull_mask = 1
+modulate = Color(1, 1, 1, 0.9)
+
+[node name="Rust43_Lamp_RimRamp" type="Decal" parent="Decals/r4_rust_streaks"]
+transform = Transform3D(-1, 0, 0, 0, 0, -1, 0, -1, 0, 19, 26.087566, 14)
+size = Vector3(0.4, 0.3, 1.1448705)
+texture_albedo = ExtResource("r3_decal_rust_streak")
+upper_fade = 0.0
+lower_fade = 0.0
+normal_fade = 0.3
+distance_fade_enabled = true
+distance_fade_begin = 45.0
+distance_fade_length = 10.0
+cull_mask = 1
+modulate = Color(1, 1, 1, 0.9)
+
+[node name="Rust44_Lamp_Tower6" type="Decal" parent="Decals/r4_rust_streaks"]
+transform = Transform3D(-1, 0, 0, 0, 0, -1, 0, -1, 0, 16.4, 17.961151, 1.9999998)
+size = Vector3(0.4, 0.3, 1.3977013)
+texture_albedo = ExtResource("r3_decal_rust_streak")
+upper_fade = 0.0
+lower_fade = 0.0
+normal_fade = 0.3
+distance_fade_enabled = true
+distance_fade_begin = 45.0
+distance_fade_length = 10.0
+cull_mask = 1
+modulate = Color(1, 1, 1, 0.9)
+
+[node name="Rust45_Lamp_Deck" type="Decal" parent="Decals/r4_rust_streaks"]
+transform = Transform3D(0, -1, 0, 0, 0, -1, 1, 0, 0, 23, 18.212675, -3)
+size = Vector3(0.4, 0.3, 0.8946531)
+texture_albedo = ExtResource("r3_decal_rust_streak")
+upper_fade = 0.0
+lower_fade = 0.0
+normal_fade = 0.3
+distance_fade_enabled = true
+distance_fade_begin = 45.0
+distance_fade_length = 10.0
+cull_mask = 1
+modulate = Color(1, 1, 1, 0.9)
+
+[node name="Rust46_Sign_Deck" type="Decal" parent="Decals/r4_rust_streaks"]
+transform = Transform3D(0, -1, 0, 0, 0, -1, 1, 0, 0, 23, 18.224413, 3.5)
+size = Vector3(0.4, 0.3, 0.9311755)
+texture_albedo = ExtResource("r3_decal_rust_streak")
+upper_fade = 0.0
+lower_fade = 0.0
+normal_fade = 0.3
+distance_fade_enabled = true
+distance_fade_begin = 45.0
+distance_fade_length = 10.0
+cull_mask = 1
+modulate = Color(1, 1, 1, 0.9)
+
+[node name="Rust47_Lamp_AlleyWest" type="Decal" parent="Decals/r4_rust_streaks"]
+transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, -15, 10.125, -4)
+size = Vector3(0.4, 0.3, 1.0699991)
+texture_albedo = ExtResource("r3_decal_rust_streak")
+upper_fade = 0.0
+lower_fade = 0.0
+normal_fade = 0.3
+distance_fade_enabled = true
+distance_fade_begin = 45.0
+distance_fade_length = 10.0
+cull_mask = 1
+modulate = Color(1, 1, 1, 0.9)
+
+[node name="Rust48_Lamp_AlleyEast" type="Decal" parent="Decals/r4_rust_streaks"]
+transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, -10.8, 10.694319, 6.5)
+size = Vector3(0.4, 0.3, 1.0313635)
+texture_albedo = ExtResource("r3_decal_rust_streak")
+upper_fade = 0.0
+lower_fade = 0.0
+normal_fade = 0.3
+distance_fade_enabled = true
+distance_fade_begin = 45.0
+distance_fade_length = 10.0
+cull_mask = 1
+modulate = Color(1, 1, 1, 0.9)
+
+[node name="Rust49_Mailboxes_Alley" type="Decal" parent="Decals/r4_rust_streaks"]
+transform = Transform3D(0, 1, 0, 0, 0, -1, -1, 0, 0, -20, 8.685, 2.8)
+size = Vector3(0.8878088, 0.3, 0.54999864)
+texture_albedo = ExtResource("r3_decal_rust_streak")
+upper_fade = 0.0
+lower_fade = 0.0
+normal_fade = 0.3
+distance_fade_enabled = true
+distance_fade_begin = 45.0
+distance_fade_length = 10.0
+cull_mask = 1
+modulate = Color(1, 1, 1, 0.9)
+
+[node name="Rust50_Lamp_Ramp" type="Decal" parent="Decals/r4_rust_streaks"]
+transform = Transform3D(0, 1, 0, 0, 0, -1, -1, 0, 0, -9, 6.564776, 2)
+size = Vector3(0.4, 0.3, 1.2904485)
+texture_albedo = ExtResource("r3_decal_rust_streak")
+upper_fade = 0.0
+lower_fade = 0.0
+normal_fade = 0.3
+distance_fade_enabled = true
+distance_fade_begin = 45.0
+distance_fade_length = 10.0
+cull_mask = 1
+modulate = Color(1, 1, 1, 0.9)
+
+[node name="Rust51_Lamp_Court" type="Decal" parent="Decals/r4_rust_streaks"]
+transform = Transform3D(-1, 0, 0, 0, 0, -1, 0, -1, 0, 5.5, 2.1280956, 9)
+size = Vector3(0.4, 0.3, 1.0638087)
+texture_albedo = ExtResource("r3_decal_rust_streak")
+upper_fade = 0.0
+lower_fade = 0.0
+normal_fade = 0.3
+distance_fade_enabled = true
+distance_fade_begin = 45.0
+distance_fade_length = 10.0
+cull_mask = 1
+modulate = Color(1, 1, 1, 0.9)
+
+[node name="Rust52_Sign_AlleyEast" type="Decal" parent="Decals/r4_rust_streaks"]
+transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, -15.5, 10.697825, 6.5)
+size = Vector3(0.4, 0.3, 0.9843511)
+texture_albedo = ExtResource("r3_decal_rust_streak")
+upper_fade = 0.0
+lower_fade = 0.0
+normal_fade = 0.3
+distance_fade_enabled = true
+distance_fade_begin = 45.0
+distance_fade_length = 10.0
+cull_mask = 1
+modulate = Color(1, 1, 1, 0.9)
+
+[node name="Rust53_Sign_Rim" type="Decal" parent="Decals/r4_rust_streaks"]
+transform = Transform3D(-1, 0, 0, 0, 0, -1, 0, -1, 0, 28.5, 26.04433, 14)
+size = Vector3(0.4, 0.3, 1.291338)
+texture_albedo = ExtResource("r3_decal_rust_streak")
+upper_fade = 0.0
+lower_fade = 0.0
+normal_fade = 0.3
+distance_fade_enabled = true
+distance_fade_begin = 45.0
+distance_fade_length = 10.0
+cull_mask = 1
+modulate = Color(1, 1, 1, 0.9)
+
+[node name="r4_soot" type="Node3D" parent="Decals"]
+
+[node name="Soot_SteamGateGrille" type="Decal" parent="Decals/r4_soot"]
+transform = Transform3D(0, 1, 0, 0, 0, -1, -1, 0, 0, -3.0000002, 25.6, 19.5)
+size = Vector3(1.1, 0.3, 1.6)
+texture_albedo = ExtResource("r3_decal_soot")
+upper_fade = 0.0
+lower_fade = 0.0
+normal_fade = 0.3
+distance_fade_enabled = true
+distance_fade_begin = 45.0
+distance_fade_length = 10.0
+cull_mask = 1
+modulate = Color(1, 1, 1, 0.85)
+
+[node name="Soot_SteamDeckGrille" type="Decal" parent="Decals/r4_soot"]
+transform = Transform3D(0, -1, 0, 0, 0, -1, 1, 0, 0, 23, 17.550001, 0)
+size = Vector3(1.1, 0.3, 1.6)
+texture_albedo = ExtResource("r3_decal_soot")
+upper_fade = 0.0
+lower_fade = 0.0
+normal_fade = 0.3
+distance_fade_enabled = true
+distance_fade_begin = 45.0
+distance_fade_length = 10.0
+cull_mask = 1
+modulate = Color(1, 1, 1, 0.85)
+
+[node name="Soot_SteamAlleyGrille" type="Decal" parent="Decals/r4_soot"]
+transform = Transform3D(0, -1, 0, 0, 0, -1, 1, 0, 0, -17, 9.55, -8.5)
+size = Vector3(1.1, 0.3, 1.6)
+texture_albedo = ExtResource("r3_decal_soot")
+upper_fade = 0.0
+lower_fade = 0.0
+normal_fade = 0.3
+distance_fade_enabled = true
+distance_fade_begin = 45.0
+distance_fade_length = 10.0
+cull_mask = 1
+modulate = Color(1, 1, 1, 0.85)
+
+[node name="Soot_SteamCourtyardGrille" type="Decal" parent="Decals/r4_soot"]
+transform = Transform3D(0, -1, 0, 0, 0, -1, 1, 0, 0, 9, 1.6500001, 4)
+size = Vector3(1.1, 0.3, 1.6)
+texture_albedo = ExtResource("r3_decal_soot")
+upper_fade = 0.0
+lower_fade = 0.0
+normal_fade = 0.3
+distance_fade_enabled = true
+distance_fade_begin = 45.0
+distance_fade_length = 10.0
+cull_mask = 1
+modulate = Color(1, 1, 1, 0.85)
+
+[node name="r4_water" type="Node3D" parent="Decals"]
+
+[node name="Water0" type="Decal" parent="Decals/r4_water"]
+transform = Transform3D(-1, 0, 0, 0, 0, -1, 0, -1, 0, 5, 33.7, 13)
+size = Vector3(1.6, 0.3, 4.5)
+texture_albedo = ExtResource("r3_decal_water_streak")
+upper_fade = 0.0
+lower_fade = 0.0
+normal_fade = 0.3
+distance_fade_enabled = true
+distance_fade_begin = 45.0
+distance_fade_length = 10.0
+cull_mask = 1
+modulate = Color(1, 1, 1, 0.85)
+
+[node name="Water1" type="Decal" parent="Decals/r4_water"]
+transform = Transform3D(-1, 0, 0, 0, 0, -1, 0, -1, 0, 7.4, 34.2, 13)
+size = Vector3(1.2, 0.3, 3.5)
+texture_albedo = ExtResource("r3_decal_water_streak")
+upper_fade = 0.0
+lower_fade = 0.0
+normal_fade = 0.3
+distance_fade_enabled = true
+distance_fade_begin = 45.0
+distance_fade_length = 10.0
+cull_mask = 1
+modulate = Color(1, 1, 1, 0.85)
+
+[node name="Water2" type="Decal" parent="Decals/r4_water"]
+transform = Transform3D(-1, 0, 0, 0, 0, -1, 0, -1, 0, 9.9, 33.2, 13)
+size = Vector3(1.8, 0.3, 5.5)
+texture_albedo = ExtResource("r3_decal_water_streak")
+upper_fade = 0.0
+lower_fade = 0.0
+normal_fade = 0.3
+distance_fade_enabled = true
+distance_fade_begin = 45.0
+distance_fade_length = 10.0
+cull_mask = 1
+modulate = Color(1, 1, 1, 0.85)
+
+[node name="Water3" type="Decal" parent="Decals/r4_water"]
+transform = Transform3D(-1, 0, 0, 0, 0, -1, 0, -1, 0, 12.2, 34.45, 13)
+size = Vector3(1.3, 0.3, 3)
+texture_albedo = ExtResource("r3_decal_water_streak")
+upper_fade = 0.0
+lower_fade = 0.0
+normal_fade = 0.3
+distance_fade_enabled = true
+distance_fade_begin = 45.0
+distance_fade_length = 10.0
+cull_mask = 1
+modulate = Color(1, 1, 1, 0.85)
+
+[node name="Water4" type="Decal" parent="Decals/r4_water"]
+transform = Transform3D(0, 1, 0, 0, 0, -1, -1, 0, 0, -9.3, 17.7, 1.8)
+size = Vector3(1.4, 0.3, 4.5)
+texture_albedo = ExtResource("r3_decal_water_streak")
+upper_fade = 0.0
+lower_fade = 0.0
+normal_fade = 0.3
+distance_fade_enabled = true
+distance_fade_begin = 45.0
+distance_fade_length = 10.0
+cull_mask = 1
+modulate = Color(1, 1, 1, 0.85)
+
+[node name="Water5" type="Decal" parent="Decals/r4_water"]
+transform = Transform3D(0, 1, 0, 0, 0, -1, -1, 0, 0, -9.3, 16.95, 3.7)
+size = Vector3(1.8, 0.3, 6)
+texture_albedo = ExtResource("r3_decal_water_streak")
+upper_fade = 0.0
+lower_fade = 0.0
+normal_fade = 0.3
+distance_fade_enabled = true
+distance_fade_begin = 45.0
+distance_fade_length = 10.0
+cull_mask = 1
+modulate = Color(1, 1, 1, 0.85)
+
+[node name="Water6" type="Decal" parent="Decals/r4_water"]
+transform = Transform3D(0, 1, 0, 0, 0, -1, -1, 0, 0, -9.3, 18.2, 5.3)
+size = Vector3(1.2, 0.3, 3.5)
+texture_albedo = ExtResource("r3_decal_water_streak")
+upper_fade = 0.0
+lower_fade = 0.0
+normal_fade = 0.3
+distance_fade_enabled = true
+distance_fade_begin = 45.0
+distance_fade_length = 10.0
+cull_mask = 1
+modulate = Color(1, 1, 1, 0.85)
+
+[node name="Water7" type="Decal" parent="Decals/r4_water"]
+transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, -4.6, 17.45, -9)
+size = Vector3(1.8, 0.3, 5)
+texture_albedo = ExtResource("r3_decal_water_streak")
+upper_fade = 0.0
+lower_fade = 0.0
+normal_fade = 0.3
+distance_fade_enabled = true
+distance_fade_begin = 45.0
+distance_fade_length = 10.0
+cull_mask = 1
+modulate = Color(1, 1, 1, 0.85)
+
+[node name="Water8" type="Decal" parent="Decals/r4_water"]
+transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, -1.8, 16.45, -9)
+size = Vector3(1.4, 0.3, 7)
+texture_albedo = ExtResource("r3_decal_water_streak")
+upper_fade = 0.0
+lower_fade = 0.0
+normal_fade = 0.3
+distance_fade_enabled = true
+distance_fade_begin = 45.0
+distance_fade_length = 10.0
+cull_mask = 1
+modulate = Color(1, 1, 1, 0.85)
+
+[node name="Water9" type="Decal" parent="Decals/r4_water"]
+transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 1.5, 16.95, -9)
+size = Vector3(1.8, 0.3, 6)
+texture_albedo = ExtResource("r3_decal_water_streak")
+upper_fade = 0.0
+lower_fade = 0.0
+normal_fade = 0.3
+distance_fade_enabled = true
+distance_fade_begin = 45.0
+distance_fade_length = 10.0
+cull_mask = 1
+modulate = Color(1, 1, 1, 0.85)
+
+[node name="Water10" type="Decal" parent="Decals/r4_water"]
+transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 4.4, 17.95, -9)
+size = Vector3(1.4, 0.3, 4)
+texture_albedo = ExtResource("r3_decal_water_streak")
+upper_fade = 0.0
+lower_fade = 0.0
+normal_fade = 0.3
+distance_fade_enabled = true
+distance_fade_begin = 45.0
+distance_fade_length = 10.0
+cull_mask = 1
+modulate = Color(1, 1, 1, 0.85)
+
+[node name="Water11" type="Decal" parent="Decals/r4_water"]
+transform = Transform3D(-1, 0, 0, 0, 0, -1, 0, -1, 0, -7.5, 19.5, 9)
+size = Vector3(2, 0.3, 9)
+texture_albedo = ExtResource("r3_decal_water_streak")
+upper_fade = 0.0
+lower_fade = 0.0
+normal_fade = 0.3
+distance_fade_enabled = true
+distance_fade_begin = 45.0
+distance_fade_length = 10.0
+cull_mask = 1
+modulate = Color(1, 1, 1, 0.85)
+
+[node name="Water12" type="Decal" parent="Decals/r4_water"]
+transform = Transform3D(-1, 0, 0, 0, 0, -1, 0, -1, 0, -4.6, 20.5, 9)
+size = Vector3(1.6, 0.3, 7)
+texture_albedo = ExtResource("r3_decal_water_streak")
+upper_fade = 0.0
+lower_fade = 0.0
+normal_fade = 0.3
+distance_fade_enabled = true
+distance_fade_begin = 45.0
+distance_fade_length = 10.0
+cull_mask = 1
+modulate = Color(1, 1, 1, 0.85)
+
+[node name="Water13" type="Decal" parent="Decals/r4_water"]
+transform = Transform3D(-1, 0, 0, 0, 0, -1, 0, -1, 0, -1.2, 19, 9)
+size = Vector3(1.8, 0.3, 8)
+texture_albedo = ExtResource("r3_decal_water_streak")
+upper_fade = 0.0
+lower_fade = 0.0
+normal_fade = 0.3
+distance_fade_enabled = true
+distance_fade_begin = 45.0
+distance_fade_length = 10.0
+cull_mask = 1
+modulate = Color(1, 1, 1, 0.85)
+
+[node name="Water14" type="Decal" parent="Decals/r4_water"]
+transform = Transform3D(-1, 0, 0, 0, 0, -1, 0, -1, 0, 1.6, 20, 9)
+size = Vector3(1.4, 0.3, 6)
+texture_albedo = ExtResource("r3_decal_water_streak")
+upper_fade = 0.0
+lower_fade = 0.0
+normal_fade = 0.3
+distance_fade_enabled = true
+distance_fade_begin = 45.0
+distance_fade_length = 10.0
+cull_mask = 1
+modulate = Color(1, 1, 1, 0.85)
+
+[node name="Water15" type="Decal" parent="Decals/r4_water"]
+transform = Transform3D(-1, 0, 0, 0, 0, -1, 0, -1, 0, 4.4, 19, 9)
+size = Vector3(2, 0.3, 10)
+texture_albedo = ExtResource("r3_decal_water_streak")
+upper_fade = 0.0
+lower_fade = 0.0
+normal_fade = 0.3
+distance_fade_enabled = true
+distance_fade_begin = 45.0
+distance_fade_length = 10.0
+cull_mask = 1
+modulate = Color(1, 1, 1, 0.85)
+
+[node name="Water16" type="Decal" parent="Decals/r4_water"]
+transform = Transform3D(-1, 0, 0, 0, 0, -1, 0, -1, 0, 7.3, 21, 9)
+size = Vector3(1.5, 0.3, 6)
+texture_albedo = ExtResource("r3_decal_water_streak")
+upper_fade = 0.0
+lower_fade = 0.0
+normal_fade = 0.3
+distance_fade_enabled = true
+distance_fade_begin = 45.0
+distance_fade_length = 10.0
+cull_mask = 1
+modulate = Color(1, 1, 1, 0.85)
+
+[node name="Water17" type="Decal" parent="Decals/r4_water"]
+transform = Transform3D(0, -1, 0, 0, 0, -1, 1, 0, 0, 9, 12, -7)
+size = Vector3(1.8, 0.3, 8)
+texture_albedo = ExtResource("r3_decal_water_streak")
+upper_fade = 0.0
+lower_fade = 0.0
+normal_fade = 0.3
+distance_fade_enabled = true
+distance_fade_begin = 45.0
+distance_fade_length = 10.0
+cull_mask = 1
+modulate = Color(1, 1, 1, 0.85)
+
+[node name="Water18" type="Decal" parent="Decals/r4_water"]
+transform = Transform3D(0, -1, 0, 0, 0, -1, 1, 0, 0, 9, 13, -4.4)
+size = Vector3(1.4, 0.3, 6)
+texture_albedo = ExtResource("r3_decal_water_streak")
+upper_fade = 0.0
+lower_fade = 0.0
+normal_fade = 0.3
+distance_fade_enabled = true
+distance_fade_begin = 45.0
+distance_fade_length = 10.0
+cull_mask = 1
+modulate = Color(1, 1, 1, 0.85)
+
+[node name="Water19" type="Decal" parent="Decals/r4_water"]
+transform = Transform3D(0, -1, 0, 0, 0, -1, 1, 0, 0, 9, 11.5, 2.5)
+size = Vector3(2, 0.3, 9)
+texture_albedo = ExtResource("r3_decal_water_streak")
+upper_fade = 0.0
+lower_fade = 0.0
+normal_fade = 0.3
+distance_fade_enabled = true
+distance_fade_begin = 45.0
+distance_fade_length = 10.0
+cull_mask = 1
+modulate = Color(1, 1, 1, 0.85)
+
+[node name="Water20" type="Decal" parent="Decals/r4_water"]
+transform = Transform3D(0, -1, 0, 0, 0, -1, 1, 0, 0, 9, 12.5, 6.5)
+size = Vector3(1.5, 0.3, 7)
+texture_albedo = ExtResource("r3_decal_water_streak")
+upper_fade = 0.0
+lower_fade = 0.0
+normal_fade = 0.3
+distance_fade_enabled = true
+distance_fade_begin = 45.0
+distance_fade_length = 10.0
+cull_mask = 1
+modulate = Color(1, 1, 1, 0.85)
+
+[node name="Water21" type="Decal" parent="Decals/r4_water"]
+transform = Transform3D(0, 1, 0, 0, 0, -1, -1, 0, 0, -9, 4.75, -7.4)
+size = Vector3(1.6, 0.3, 6.5)
+texture_albedo = ExtResource("r3_decal_water_streak")
+upper_fade = 0.0
+lower_fade = 0.0
+normal_fade = 0.3
+distance_fade_enabled = true
+distance_fade_begin = 45.0
+distance_fade_length = 10.0
+cull_mask = 1
+modulate = Color(1, 1, 1, 0.85)
+
+[node name="r4_moss" type="Node3D" parent="Decals"]
+
+[node name="Foot0" type="Decal" parent="Decals/r4_moss"]
+transform = Transform3D(-1, 0, 0, 0, 0, -1, 0, -1, 0, 7.6, 0.65, 9)
+size = Vector3(2.2, 0.3, 1.3)
+texture_albedo = ExtResource("r3_decal_moss")
+upper_fade = 0.0
+lower_fade = 0.0
+normal_fade = 0.3
+distance_fade_enabled = true
+distance_fade_begin = 45.0
+distance_fade_length = 10.0
+cull_mask = 1
+modulate = Color(1, 1, 1, 0.9)
+
+[node name="Foot1" type="Decal" parent="Decals/r4_moss"]
+transform = Transform3D(0, -1, 0, 0, 0, -1, 1, 0, 0, 9, 0.65, 7.8)
+size = Vector3(2.2, 0.3, 1.3)
+texture_albedo = ExtResource("r3_decal_moss")
+upper_fade = 0.0
+lower_fade = 0.0
+normal_fade = 0.3
+distance_fade_enabled = true
+distance_fade_begin = 45.0
+distance_fade_length = 10.0
+cull_mask = 1
+modulate = Color(1, 1, 1, 0.9)
+
+[node name="Foot2" type="Decal" parent="Decals/r4_moss"]
+transform = Transform3D(0, -1, 0, 0, 0, -1, 1, 0, 0, 9, 0.65, -7.4)
+size = Vector3(2.2, 0.3, 1.3)
+texture_albedo = ExtResource("r3_decal_moss")
+upper_fade = 0.0
+lower_fade = 0.0
+normal_fade = 0.3
+distance_fade_enabled = true
+distance_fade_begin = 45.0
+distance_fade_length = 10.0
+cull_mask = 1
+modulate = Color(1, 1, 1, 0.9)
+
+[node name="Foot3" type="Decal" parent="Decals/r4_moss"]
+transform = Transform3D(0, 1, 0, 0, 0, -1, -1, 0, 0, -9, 0.75, -7.6)
+size = Vector3(2.2, 0.3, 1.5)
+texture_albedo = ExtResource("r3_decal_moss")
+upper_fade = 0.0
+lower_fade = 0.0
+normal_fade = 0.3
+distance_fade_enabled = true
+distance_fade_begin = 45.0
+distance_fade_length = 10.0
+cull_mask = 1
+modulate = Color(1, 1, 1, 0.9)
+
+[node name="Foot4" type="Decal" parent="Decals/r4_moss"]
+transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, -7.6, 0.6, -9)
+size = Vector3(2.2, 0.3, 1.2)
+texture_albedo = ExtResource("r3_decal_moss")
+upper_fade = 0.0
+lower_fade = 0.0
+normal_fade = 0.3
+distance_fade_enabled = true
+distance_fade_begin = 45.0
+distance_fade_length = 10.0
+cull_mask = 1
+modulate = Color(1, 1, 1, 0.9)
+
+[node name="Foot5" type="Decal" parent="Decals/r4_moss"]
+transform = Transform3D(-1, 0, 0, 0, 0, -1, 0, -1, 0, -14, 8.599999, 9)
+size = Vector3(2.2, 0.3, 1.2)
+texture_albedo = ExtResource("r3_decal_moss")
+upper_fade = 0.0
+lower_fade = 0.0
+normal_fade = 0.3
+distance_fade_enabled = true
+distance_fade_begin = 45.0
+distance_fade_length = 10.0
+cull_mask = 1
+modulate = Color(1, 1, 1, 0.9)
+
+[node name="Lip0" type="Decal" parent="Decals/r4_moss"]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, -7.5, 23.45, 9)
+size = Vector3(2.3, 0.3, 1.1)
+texture_albedo = ExtResource("r3_decal_moss")
+upper_fade = 0.0
+lower_fade = 0.0
+normal_fade = 0.3
+distance_fade_enabled = true
+distance_fade_begin = 45.0
+distance_fade_length = 10.0
+cull_mask = 1
+modulate = Color(1, 1, 1, 0.85)
+
+[node name="Lip1" type="Decal" parent="Decals/r4_moss"]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 4.4, 23.45, 9)
+size = Vector3(2.3, 0.3, 1.1)
+texture_albedo = ExtResource("r3_decal_moss")
+upper_fade = 0.0
+lower_fade = 0.0
+normal_fade = 0.3
+distance_fade_enabled = true
+distance_fade_begin = 45.0
+distance_fade_length = 10.0
+cull_mask = 1
+modulate = Color(1, 1, 1, 0.85)
+
+[node name="Lip2" type="Decal" parent="Decals/r4_moss"]
+transform = Transform3D(0, -1, 0, 0, 0, 1, -1, 0, 0, 9, 15.45, 2.5)
+size = Vector3(2.3, 0.3, 1.1)
+texture_albedo = ExtResource("r3_decal_moss")
+upper_fade = 0.0
+lower_fade = 0.0
+normal_fade = 0.3
+distance_fade_enabled = true
+distance_fade_begin = 45.0
+distance_fade_length = 10.0
+cull_mask = 1
+modulate = Color(1, 1, 1, 0.85)
+
+[node name="Lip3" type="Decal" parent="Decals/r4_moss"]
+transform = Transform3D(0, 1, 0, 0, 0, 1, 1, 0, 0, -9, 7.45, -7.4)
+size = Vector3(2.3, 0.3, 1.1)
+texture_albedo = ExtResource("r3_decal_moss")
+upper_fade = 0.0
+lower_fade = 0.0
+normal_fade = 0.3
+distance_fade_enabled = true
+distance_fade_begin = 45.0
+distance_fade_length = 10.0
+cull_mask = 1
+modulate = Color(1, 1, 1, 0.85)
+
+[node name="r4_floor" type="Node3D" parent="Decals"]
+
+[node name="Cracks0" type="Decal" parent="Decals/r4_floor"]
+transform = Transform3D(0.921061, 0, 0.38941833, 0, 1, 0, -0.38941833, 0, 0.921061, -9.5, 24.05, 11.8)
+size = Vector3(1.8, 0.4, 1.8)
+texture_albedo = ExtResource("r3_decal_cracks")
+upper_fade = 0.0
+lower_fade = 0.0
+normal_fade = 0.3
+distance_fade_enabled = true
+distance_fade_begin = 45.0
+distance_fade_length = 10.0
+cull_mask = 1
+modulate = Color(1, 1, 1, 0.85)
+
+[node name="Cracks1" type="Decal" parent="Decals/r4_floor"]
+transform = Transform3D(-0.41614684, 0, 0.9092974, 0, 1, 0, -0.9092974, 0, -0.41614684, 13.5, 24.05, 11.2)
+size = Vector3(1.8, 0.4, 1.8)
+texture_albedo = ExtResource("r3_decal_cracks")
+upper_fade = 0.0
+lower_fade = 0.0
+normal_fade = 0.3
+distance_fade_enabled = true
+distance_fade_begin = 45.0
+distance_fade_length = 10.0
+cull_mask = 1
+modulate = Color(1, 1, 1, 0.85)
+
+[node name="Cracks2" type="Decal" parent="Decals/r4_floor"]
+transform = Transform3D(0.4535961, 0, 0.8912074, 0, 1, 0, -0.8912074, 0, 0.4535961, 1.6, 24.05, 25.5)
+size = Vector3(1.8, 0.4, 1.8)
+texture_albedo = ExtResource("r3_decal_cracks")
+upper_fade = 0.0
+lower_fade = 0.0
+normal_fade = 0.3
+distance_fade_enabled = true
+distance_fade_begin = 45.0
+distance_fade_length = 10.0
+cull_mask = 1
+modulate = Color(1, 1, 1, 0.85)
+
+[node name="Cracks3" type="Decal" parent="Decals/r4_floor"]
+transform = Transform3D(0.9553365, 0, 0.29552022, 0, 1, 0, -0.29552022, 0, 0.9553365, 12.5, 16.05, -2.3)
+size = Vector3(1.8, 0.4, 1.8)
+texture_albedo = ExtResource("r3_decal_cracks")
+upper_fade = 0.0
+lower_fade = 0.0
+normal_fade = 0.3
+distance_fade_enabled = true
+distance_fade_begin = 45.0
+distance_fade_length = 10.0
+cull_mask = 1
+modulate = Color(1, 1, 1, 0.85)
+
+[node name="Cracks4" type="Decal" parent="Decals/r4_floor"]
+transform = Transform3D(-0.8011436, 0, 0.5984721, 0, 1, 0, -0.5984721, 0, -0.8011436, -13, 8.05, -1.2)
+size = Vector3(1.8, 0.4, 1.8)
+texture_albedo = ExtResource("r3_decal_cracks")
+upper_fade = 0.0
+lower_fade = 0.0
+normal_fade = 0.3
+distance_fade_enabled = true
+distance_fade_begin = 45.0
+distance_fade_length = 10.0
+cull_mask = 1
+modulate = Color(1, 1, 1, 0.85)
+
+[node name="Cracks5" type="Decal" parent="Decals/r4_floor"]
+transform = Transform3D(-0.32328954, 0, 0.9463001, 0, 1, 0, -0.9463001, 0, -0.32328954, -18.6, 8.05, 4.5)
+size = Vector3(1.8, 0.4, 1.8)
+texture_albedo = ExtResource("r3_decal_cracks")
+upper_fade = 0.0
+lower_fade = 0.0
+normal_fade = 0.3
+distance_fade_enabled = true
+distance_fade_begin = 45.0
+distance_fade_length = 10.0
+cull_mask = 1
+modulate = Color(1, 1, 1, 0.85)
+
+[node name="Cracks6" type="Decal" parent="Decals/r4_floor"]
+transform = Transform3D(0.7648422, 0, 0.64421767, 0, 1, 0, -0.64421767, 0, 0.7648422, 4.8, 0.05, -3.2)
+size = Vector3(1.8, 0.4, 1.8)
+texture_albedo = ExtResource("r3_decal_cracks")
+upper_fade = 0.0
+lower_fade = 0.0
+normal_fade = 0.3
+distance_fade_enabled = true
+distance_fade_begin = 45.0
+distance_fade_length = 10.0
+cull_mask = 1
+modulate = Color(1, 1, 1, 0.85)
+
+[node name="Cracks7" type="Decal" parent="Decals/r4_floor"]
+transform = Transform3D(-0.58850116, 0, 0.80849636, 0, 1, 0, -0.80849636, 0, -0.58850116, -3.5, 0.05, 5.5)
+size = Vector3(1.8, 0.4, 1.8)
+texture_albedo = ExtResource("r3_decal_cracks")
+upper_fade = 0.0
+lower_fade = 0.0
+normal_fade = 0.3
+distance_fade_enabled = true
+distance_fade_begin = 45.0
+distance_fade_length = 10.0
+cull_mask = 1
+modulate = Color(1, 1, 1, 0.85)
+
+[node name="Cracks8" type="Decal" parent="Decals/r4_floor"]
+transform = Transform3D(0.26749888, 0, 0.9635582, 0, 1, 0, -0.9635582, 0, 0.26749888, -4.5, 0.05, -15.5)
+size = Vector3(1.8, 0.4, 1.8)
+texture_albedo = ExtResource("r3_decal_cracks")
+upper_fade = 0.0
+lower_fade = 0.0
+normal_fade = 0.3
+distance_fade_enabled = true
+distance_fade_begin = 45.0
+distance_fade_length = 10.0
+cull_mask = 1
+modulate = Color(1, 1, 1, 0.85)
+
+[node name="Cracks9" type="Decal" parent="Decals/r4_floor"]
+transform = Transform3D(0.9800666, 0, 0.19866933, 0, 1, 0, -0.19866933, 0, 0.9800666, 5, 0.05, -19)
+size = Vector3(1.8, 0.4, 1.8)
+texture_albedo = ExtResource("r3_decal_cracks")
+upper_fade = 0.0
+lower_fade = 0.0
+normal_fade = 0.3
+distance_fade_enabled = true
+distance_fade_begin = 45.0
+distance_fade_length = 10.0
+cull_mask = 1
+modulate = Color(1, 1, 1, 0.85)
+
+[node name="PlateGone0" type="Decal" parent="Decals/r4_floor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 24.05, 51.5)
+size = Vector3(0.98, 0.4, 0.98)
+texture_albedo = ExtResource("r3_decal_plate_gone")
+upper_fade = 0.0
+lower_fade = 0.0
+normal_fade = 0.3
+distance_fade_enabled = true
+distance_fade_begin = 45.0
+distance_fade_length = 10.0
+cull_mask = 1
+
+[node name="PlateGone1" type="Decal" parent="Decals/r4_floor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 24.05, 73.5)
+size = Vector3(0.98, 0.4, 0.98)
+texture_albedo = ExtResource("r3_decal_plate_gone")
+upper_fade = 0.0
+lower_fade = 0.0
+normal_fade = 0.3
+distance_fade_enabled = true
+distance_fade_begin = 45.0
+distance_fade_length = 10.0
+cull_mask = 1
+
+[node name="PlateGone2" type="Decal" parent="Decals/r4_floor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 24.05, 38.5)
+size = Vector3(0.98, 0.4, 0.98)
+texture_albedo = ExtResource("r3_decal_plate_gone")
+upper_fade = 0.0
+lower_fade = 0.0
+normal_fade = 0.3
+distance_fade_enabled = true
+distance_fade_begin = 45.0
+distance_fade_length = 10.0
+cull_mask = 1
+
+[node name="PlateGone3" type="Decal" parent="Decals/r4_floor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.5, 24.05, 99.5)
+size = Vector3(0.98, 0.4, 0.98)
+texture_albedo = ExtResource("r3_decal_plate_gone")
+upper_fade = 0.0
+lower_fade = 0.0
+normal_fade = 0.3
+distance_fade_enabled = true
+distance_fade_begin = 45.0
+distance_fade_length = 10.0
+cull_mask = 1
+
+[node name="PlateGone4" type="Decal" parent="Decals/r4_floor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.5, 24.05, 103.5)
+size = Vector3(0.98, 0.4, 0.98)
+texture_albedo = ExtResource("r3_decal_plate_gone")
+upper_fade = 0.0
+lower_fade = 0.0
+normal_fade = 0.3
+distance_fade_enabled = true
+distance_fade_begin = 45.0
+distance_fade_length = 10.0
+cull_mask = 1
+
+[node name="RustThrough0" type="Decal" parent="Decals/r4_floor"]
+transform = Transform3D(0, -1, 0, 0, 0, -1, 1, 0, 0, 22.45, 20.494999, 4)
+size = Vector3(0.45, 0.3, 0.45)
+texture_albedo = ExtResource("r3_decal_rust_through")
+upper_fade = 0.0
+lower_fade = 0.0
+normal_fade = 0.3
+distance_fade_enabled = true
+distance_fade_begin = 45.0
+distance_fade_length = 10.0
+cull_mask = 1
+
+[node name="RustThrough1" type="Decal" parent="Decals/r4_floor"]
+transform = Transform3D(-1, 0, 0, 0, 0, -1, 0, -1, 0, -14.5, 10.59, 8.6)
+size = Vector3(0.38, 0.3, 0.38)
+texture_albedo = ExtResource("r3_decal_rust_through")
+upper_fade = 0.0
+lower_fade = 0.0
+normal_fade = 0.3
+distance_fade_enabled = true
+distance_fade_begin = 45.0
+distance_fade_length = 10.0
+cull_mask = 1
+
+[node name="RustThrough2" type="Decal" parent="Decals/r4_floor"]
+transform = Transform3D(-1, 0, 0, 0, 0, -1, 0, -1, 0, 0.8, 31, 14.55)
+size = Vector3(0.8, 0.3, 0.8)
+texture_albedo = ExtResource("r3_decal_rust_through")
+upper_fade = 0.0
+lower_fade = 0.0
+normal_fade = 0.3
+distance_fade_enabled = true
+distance_fade_begin = 45.0
+distance_fade_length = 10.0
+cull_mask = 1
+
+[node name="RustThrough3" type="Decal" parent="Decals/r4_floor"]
+transform = Transform3D(-1, 0, 0, 0, 0, -1, 0, -1, 0, 8, 24.51, 12.57)
+size = Vector3(0.3, 0.3, 0.3)
+texture_albedo = ExtResource("r3_decal_rust_through")
+upper_fade = 0.0
+lower_fade = 0.0
+normal_fade = 0.3
+distance_fade_enabled = true
+distance_fade_begin = 45.0
+distance_fade_length = 10.0
+cull_mask = 1
+
+[node name="RustThrough4" type="Decal" parent="Decals/r4_floor"]
+transform = Transform3D(0, -1, 0, 0, 0, -1, 1, 0, 0, 8.3, 2.905, -4)
+size = Vector3(0.55, 0.3, 0.55)
+texture_albedo = ExtResource("r3_decal_rust_through")
+upper_fade = 0.0
+lower_fade = 0.0
+normal_fade = 0.3
+distance_fade_enabled = true
+distance_fade_begin = 45.0
+distance_fade_length = 10.0
+cull_mask = 1
+
+[node name="r4_Ruin" type="Node3D" parent="Dressing2"]
+
+[node name="BrokenRailWest" type="Node3D" parent="Dressing2/r4_Ruin"]
+
+[node name="RailA" type="StaticBody3D" parent="Dressing2/r4_Ruin/BrokenRailWest"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.8, 24.5, 9.15)
+collision_layer = 0
+script = ExtResource("1_jb07p")
+size = Vector3(4.4, 1, 0.3)
+material = ExtResource("5_1un0n")
+grime = 0.35
+trim = true
+
+[node name="RailB" type="StaticBody3D" parent="Dressing2/r4_Ruin/BrokenRailWest"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.2, 24.5, 9.15)
+collision_layer = 0
+script = ExtResource("1_jb07p")
+size = Vector3(4.4, 1, 0.3)
+material = ExtResource("5_1un0n")
+grime = 0.35
+trim = true
+
+[node name="Stub" type="StaticBody3D" parent="Dressing2/r4_Ruin/BrokenRailWest"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.5, 24.11, 9.15)
+collision_layer = 0
+script = ExtResource("1_jb07p")
+size = Vector3(2.2, 0.22, 0.3)
+material = ExtResource("5_1un0n")
+grime = 0.35
+trim = true
+
+[node name="Hanging" type="StaticBody3D" parent="Dressing2/r4_Ruin/BrokenRailWest"]
+transform = Transform3D(0.70167875, 0.5965131, 0.3896395, -0.64770275, 0.76189315, 1.4901161e-08, -0.29686365, -0.25237057, 0.92096746, -8.9, 24.3, 8.875)
+collision_layer = 0
+script = ExtResource("1_jb07p")
+size = Vector3(1.8526999, 0.14, 0.26)
+material = ExtResource("5_1un0n")
+grime = 0.0
+trim = true
+
+[node name="BentRailRim" type="Node3D" parent="Dressing2/r4_Ruin"]
+transform = Transform3D(0.9689124, 0, 0.24740396, 0, 1, 0, -0.24740396, 0, 0.9689124, -8.3, 24, 10.3)
+script = ExtResource("r3_ruin_prop")
+kind = 6
+
+[node name="DebrisRailGap" type="Node3D" parent="Dressing2/r4_Ruin"]
+transform = Transform3D(0.3623577, 0, 0.9320391, 0, 1, 0, -0.9320391, 0, 0.3623577, -8.6, 24, 10.2)
+script = ExtResource("r3_ruin_prop")
+kind = 1
+variant = 2
+
+[node name="RubbleRim" type="Node3D" parent="Dressing2/r4_Ruin"]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -8.5, 24, 13.9)
+script = ExtResource("r3_ruin_prop")
+kind = 0
+
+[node name="RubbleDeckPocket" type="Node3D" parent="Dressing2/r4_Ruin"]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 11.2, 16, 3)
+script = ExtResource("r3_ruin_prop")
+kind = 0
+variant = 1
+
+[node name="RubbleCourt" type="Node3D" parent="Dressing2/r4_Ruin"]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 5, 0, 8.85)
+script = ExtResource("r3_ruin_prop")
+kind = 0
+variant = 2
+
+[node name="Debris0" type="Node3D" parent="Dressing2/r4_Ruin"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.6, 24, 12)
+script = ExtResource("r3_ruin_prop")
+kind = 1
+variant = 3
+
+[node name="Debris1" type="Node3D" parent="Dressing2/r4_Ruin"]
+transform = Transform3D(0.26749888, 0, 0.9635582, 0, 1, 0, -0.9635582, 0, 0.26749888, 2, 24, 25)
+script = ExtResource("r3_ruin_prop")
+kind = 1
+variant = 4
+
+[node name="Debris2" type="Node3D" parent="Dressing2/r4_Ruin"]
+transform = Transform3D(-0.8568887, 0, 0.51550144, 0, 1, 0, -0.51550144, 0, -0.8568887, 14.5, 16, -3.5)
+script = ExtResource("r3_ruin_prop")
+kind = 1
+variant = 5
+
+[node name="Debris3" type="Node3D" parent="Dressing2/r4_Ruin"]
+transform = Transform3D(-0.72593224, 0, -0.68776625, 0, 1, 0, 0.68776625, 0, -0.72593224, -12.5, 8, 7.6)
+script = ExtResource("r3_ruin_prop")
+kind = 1
+variant = 6
+
+[node name="Debris4" type="Node3D" parent="Dressing2/r4_Ruin"]
+transform = Transform3D(0.4685165, 0, -0.88345474, 0, 1, 0, 0.88345474, 0, 0.4685165, -4.5, 0, -2.5)
+script = ExtResource("r3_ruin_prop")
+kind = 1
+variant = 7
+
+[node name="Debris5" type="Node3D" parent="Dressing2/r4_Ruin"]
+transform = Transform3D(0.97658765, 0, 0.21511999, 0, 1, 0, -0.21511999, 0, 0.97658765, 3.5, 0, -14)
+script = ExtResource("r3_ruin_prop")
+kind = 1
+variant = 8
+
+[node name="FallenSign" type="Node3D" parent="Dressing2/r4_Ruin"]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 11.2, 16, 5.6)
+script = ExtResource("r3_ruin_prop")
+kind = 2
+
+[node name="RebarTower7" type="Node3D" parent="Dressing2/r4_Ruin"]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -7, 20.25, 3.5)
+script = ExtResource("r3_ruin_prop")
+kind = 3
+length = 0.7
+
+[node name="RebarTower3" type="Node3D" parent="Dressing2/r4_Ruin"]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 8.5, 36.3, 10)
+script = ExtResource("r3_ruin_prop")
+kind = 3
+variant = 1
+length = 0.9
+
+[node name="RebarWell" type="Node3D" parent="Dressing2/r4_Ruin"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 20.3, -6)
+script = ExtResource("r3_ruin_prop")
+kind = 3
+variant = 1
+length = 0.8
+
+[node name="AwningDown" type="Node3D" parent="Dressing2/r4_Ruin"]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -20, 8, -6.4)
+script = ExtResource("r3_ruin_prop")
+kind = 7
+length = 2.7
+
+[node name="TarpAlley" type="Node3D" parent="Dressing2/r4_Ruin"]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -20, 8, 7.2)
+script = ExtResource("r3_ruin_prop")
+kind = 4
+
+[node name="PatchGate" type="Node3D" parent="Dressing2/r4_Ruin"]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 3, 25.7, 24)
+script = ExtResource("r3_ruin_prop")
+kind = 5
+
+[node name="PatchCourt" type="Node3D" parent="Dressing2/r4_Ruin"]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 9, 1.9, -6)
+script = ExtResource("r3_ruin_prop")
+kind = 5
+variant = 1
+
+[node name="PatchAlley" type="Node3D" parent="Dressing2/r4_Ruin"]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -20, 9.6, -2.4)
+script = ExtResource("r3_ruin_prop")
+kind = 5
+variant = 2
+
+[node name="DeadCable0" type="Node3D" parent="Dressing2/r4_Ruin"]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -3, 30.5, 22.8)
+script = ExtResource("r3_ruin_prop")
+kind = 9
+length = 2.2
+
+[node name="DeadCable1" type="Node3D" parent="Dressing2/r4_Ruin"]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 16, 21.5, -7)
+script = ExtResource("r3_ruin_prop")
+kind = 9
+variant = 1
+length = 2.4
+
+[node name="DeadCable2" type="Node3D" parent="Dressing2/r4_Ruin"]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -20, 14.5, -3.6)
+script = ExtResource("r3_ruin_prop")
+kind = 9
+variant = 2
+length = 2.6
+
+[node name="DeadCable3" type="Node3D" parent="Dressing2/r4_Ruin"]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -9, 7, -8)
+script = ExtResource("r3_ruin_prop")
+kind = 9
+variant = 3
+length = 2.5
+
+[node name="BurstPipe" type="Node3D" parent="Dressing2/r4_Ruin"]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -17, 8, 3.2)
+script = ExtResource("r3_ruin_prop")
+kind = 8
+length = 3.0
+
+[node name="BurstPipeUp" type="Node3D" parent="Ducts/RoundPipes"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -17.1, 11, 3.2)
+script = ExtResource("r3_pipe_run")
+points = PackedVector3Array(0, 0, 0, 0, 9.5, 0)
+radius = 0.08
+material = ExtResource("r3_pipe_rust")
+
+[node name="r4_burst" type="Node3D" parent="Decals"]
+
+[node name="PipeStain" type="Decal" parent="Decals/r4_burst"]
+transform = Transform3D(0, -1, 0, 0, 0, -1, 1, 0, 0, -17, 8.724999, 3.2)
+size = Vector3(0.7, 0.3, 1.35)
+texture_albedo = ExtResource("r3_decal_water_streak")
+upper_fade = 0.0
+lower_fade = 0.0
+normal_fade = 0.3
+distance_fade_enabled = true
+distance_fade_begin = 45.0
+distance_fade_length = 10.0
+cull_mask = 1
+
+[node name="PipeMoss" type="Decal" parent="Decals/r4_burst"]
+transform = Transform3D(0, -1, 0, 0, 0, -1, 1, 0, 0, -17, 8.400001, 3.2)
+size = Vector3(1.4, 0.3, 0.8)
+texture_albedo = ExtResource("r3_decal_moss")
+upper_fade = 0.0
+lower_fade = 0.0
+normal_fade = 0.3
+distance_fade_enabled = true
+distance_fade_begin = 45.0
+distance_fade_length = 10.0
+cull_mask = 1
+modulate = Color(1, 1, 1, 0.9)
+
+[node name="PipePuddle" type="Decal" parent="Decals/r4_burst"]
+transform = Transform3D(0.921061, 0, 0.38941833, 0, 1, 0, -0.38941833, 0, 0.921061, -17.6, 8.05, 3.2)
+size = Vector3(1.4, 0.4, 1)
+texture_albedo = ExtResource("44_k0bv6")
+upper_fade = 0.0
+lower_fade = 0.0
+normal_fade = 0.3
+distance_fade_enabled = true
+distance_fade_begin = 45.0
+distance_fade_length = 10.0
+cull_mask = 1
+
+[node name="DripBurstPipe" type="Node3D" parent="Life"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -17.25, 9.3, 3.2)
+script = ExtResource("51_rjpm0")

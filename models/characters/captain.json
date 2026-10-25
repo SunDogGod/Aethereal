@@ -1,0 +1,24 @@
+{
+ "name": "captain",
+ "root": "CaptainModel",
+ "glb": "res://models/characters/captain.glb",
+ "props_glb": "res://models/characters/captain_props.glb",
+ "scene": "res://scenes/characters/captain_model.tscn",
+ "attach": [
+  {
+   "node": "HeadGear",
+   "bone": "Head",
+   "props": [
+    "Visor"
+   ]
+  },
+  {
+   "node": "Blade",
+   "bone": "Weapon_L",
+   "props": [
+    "BladeMesh"
+   ]
+  }
+ ],
+ "root_script": ""
+}

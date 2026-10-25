@@ -2,7 +2,7 @@
 #   Right-click > Run with PowerShell, or in a terminal:  .\tools\blender\rebuild.ps1 aeneas kael
 # With no names it rebuilds every character. Close the Godot editor first (or reopen the
 # project afterwards) so it picks up the new models.
-param([string[]]$Names = @("aeneas", "kael", "isabella", "agent"))
+param([string[]]$Names = @("aeneas", "kael", "isabella", "agent", "captain"))
 
 $Blender = "C:\Program Files\Blender Foundation\Blender 5.2\blender.exe"
 $Godot = "C:\Users\ArmandoSanchez\OneDrive - Ucio IT Services\Documents\Godot_v4.7.2-stable_win64_console.exe"

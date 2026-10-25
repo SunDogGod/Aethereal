@@ -25,7 +25,7 @@ blend_shape_mode = 0
 resource_name = "agent_props_BladeMesh"
 _surfaces = [{
 "aabb": AABB(-0.017, -0.055, -0.86999995, 0.034, 0.11, 1.0059999),
-"attribute_data": PackedByteArray("f8V/qj/Rdak/0X+qf8V1qT/Rf6r/3HWp/9x/qj/Rdan/3H+qv+h1qb/of6r/3HWpv+h/qn/0dal/9H+qv+h1qX/Fdak/0Y6jP9F1qX/FjqM/0XWp/9yOo//cdak/0Y6j/9x1qb/ojqO/6HWp/9yOo7/odal/9I6jf/R1qb/ojqN/xY6jP9GNoD/RjqN/xY2gP9GOo//cjaD/3I6jP9GNoP/cjqO/6I2gv+iOo//cjaC/6I6jf/SNoH/0jqO/6I2gf8WNoD/Rf58/0Y2gf8V/nz/RjaD/3H+f/9yNoD/Rf5//3I2gv+h/n7/ojaD/3H+fv+iNoH/0f59/9I2gv+h/n3/Ff59fy3+fP9F/nz/Rf58f13+f/9x/n//cf5/f4n+fv+h/n7/of5+f7n+ff/R/n38Bf7z/A/S1/wN/vH8B9LX/A3+xfwF/sX8Gf7F/BvS1fwZ/vP8If7H/CPS1/wh/vH8Lf7F/C/S1fwt/vP8Nf7H/DfS1fxB/sf8Nf7x/EPS1fxB/vH8Tf7h/Gn+xfxp/uH8Tf7F/E3+4fxp/sX8af7h/E3+xfxN/uH8af7F/Gn+4fxN/sX8Tf7h/Gn+xfxp/uH8Tf7F/E3+4fxp/sX8af7h/E3+xfxN/uH8af7F/Gn+4fxN/sX8Tf7h/Gn+xfxp/uH8Tf7F/E3+4fxp/sX8af7h/E3+xfxN/uH8af7F/Gn+4fxN/sX8Tf7h/Gn+xfxp/uH8Tf7F/E3+4fxp/sX8af7h/E3+xfxN/uH8af7F/Gn+4fxN/sQ=="),
+"attribute_data": PackedByteArray("fwF/vD8Ndbs/DX+8fwF1uz8Nf7z/GHW7/xh/vD8Ndbv/GH+8vyR1u78kf7z/GHW7vyR/vH8wdbt/MH+8vyR1u38Bdbs/DY61Pw11u38BjrU/DXW7/xiOtf8Ydbs/DY61/xh1u78kjrW/JHW7/xiOtb8kdbt/MI61fzB1u78kjrV/AY61Pw2Nsj8NjrV/AY2yPw2Otf8YjbL/GI61Pw2Nsv8YjrW/JI2yvySOtf8YjbK/JI61fzCNsn8wjrW/JI2yfwGNsj8Nf7E/DY2yfwF/sT8NjbL/GH+x/xiNsj8Nf7H/GI2yvyR/sb8kjbL/GH+xvySNsn8wf7F/MI2yvyR/sX8Bf7FfB3+xPw1/sT8Nf7EfE3+x/xh/sf8Yf7HfHn+xvyR/sb8kf7GfKn+xfzB/sX8zf7z/NfS1/zV/vH8z9LX/NX+xfzN/sX84f7F/OPS1fzh/vP86f7H/OvS1/zp/vH89f7F/PfS1fz1/vP8/f7H/P/S1f0J/sf8/f7x/QvS1f0J/vH9Ff7h/TH+xf0x/uH9Ff7F/RX+4f0x/sX9Mf7h/RX+xf0V/uH9Mf7F/TH+4f0V/sX9Ff7h/TH+xf0x/uH9Ff7F/RX+4f0x/sX9Mf7h/RX+xf0V/uH9Mf7F/TH+4f0V/sX9Ff7h/TH+xf0x/uH9Ff7F/RX+4f0x/sX9Mf7h/RX+xf0V/uH9Mf7F/TH+4f0V/sX9Ff7h/TH+xf0x/uH9Ff7F/RX+4f0x/sX9Mf7h/RX+xf0V/uH9Mf7F/TH+4f0V/sQ=="),
 "format": 34896613399,
 "index_count": 252,
 "index_data": PackedByteArray("AAABAAIAAAADAAEABAAFAAYABAAHAAUACAAJAAoACAALAAkADAANAA4ADAAPAA0AEAARABIAEAATABEAFAAVABYAFAAXABUAGAAZABoAGAAbABkAHAAdAB4AHAAfAB0AIAAhACIAIAAjACEAJAAlACYAJAAnACUAKAApACoAKAArACkALAAtAC4ALAAvAC0AMAAxADIAMAAzADEANAA1ADYANAA3ADUAOAA5ADoAOAA7ADkAPAA9AD4APAA/AD0AQABBAEIAQwBEAEUARgBHAEgASQBKAEsATABNAE4ATABPAE0ATwBQAE0ATwBRAFAATQBQAFIATgBNAFMATQBSAFMATgBTAFQAUwBSAFUAVABTAFYAUwBVAFYAVABWAFcAVgBVAFgAVwBWAFkAVgBYAFkAVwBZAFoAWQBYAFsAWgBZAFwAWQBbAFwAXABbAF0AWgBcAF4AXABdAF8AXgBcAF8AXgBfAGAAYQBiAGMAYQBkAGIAZQBmAGcAZQBoAGYAaQBqAGsAaQBsAGoAbQBuAG8AbQBwAG4AcQByAHMAcQB0AHIAdQB2AHcAdQB4AHYAeQB6AHsAeQB8AHoAfQB+AH8AfQCAAH4AgQCCAIMAgQCEAIIAhQCGAIcAhQCIAIYAiQCKAIsAiQCMAIoAjQCOAI8AjQCQAI4A"),
@@ -38,31 +38,31 @@ _surfaces = [{
 }]
 blend_shape_mode = 0
 
-[node name="AgentModel" type="Node3D" unique_id=1001470419]
+[node name="AgentModel" type="Node3D" unique_id=2131655913]
 
-[node name="agent" type="Node3D" parent="." unique_id=605170712 instance=ExtResource("1_srapr")]
+[node name="agent" type="Node3D" parent="." unique_id=2105445940 instance=ExtResource("1_srapr")]
 
-[node name="HeadGear" type="BoneAttachment3D" parent="." unique_id=1435405582]
+[node name="HeadGear" type="BoneAttachment3D" parent="." unique_id=1760898446]
 bone_name = "Head"
-bone_idx = 6
+bone_idx = 8
 use_external_skeleton = true
 external_skeleton = NodePath("../agent/Armature/Skeleton3D")
 
-[node name="Visor" type="MeshInstance3D" parent="HeadGear" unique_id=191478176]
+[node name="Visor" type="MeshInstance3D" parent="HeadGear" unique_id=1783277921]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0)
 layers = 2
 mesh = SubResource("ArrayMesh_r0bac")
 
-[node name="Blade" type="BoneAttachment3D" parent="." unique_id=1371005869]
+[node name="Blade" type="BoneAttachment3D" parent="." unique_id=1387117901]
 bone_name = "Weapon_R"
-bone_idx = 16
+bone_idx = 18
 use_external_skeleton = true
 external_skeleton = NodePath("../agent/Armature/Skeleton3D")
 
-[node name="BladeMesh" type="MeshInstance3D" parent="Blade" unique_id=940441325]
+[node name="BladeMesh" type="MeshInstance3D" parent="Blade" unique_id=1089783964]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0)
 layers = 2
 mesh = SubResource("ArrayMesh_k4axd")
 
-[node name="Animator" type="Node" parent="." unique_id=1361190420]
+[node name="Animator" type="Node" parent="." unique_id=1687024411]
 script = ExtResource("3_kb33u")

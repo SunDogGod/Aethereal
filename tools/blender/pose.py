@@ -12,6 +12,11 @@ A pose is a dict. Angles are degrees, positions metres, all in the character's o
         hand as 'blade': (yaw, pitch, roll) for the held weapon's direction, 'hand': (x, y, z)
         rotation, or nothing (the hand follows the forearm).
         Or {'fk': [upper, lower, hand]} rotations.
+        Placing the held item instead of the wrist: {'grip': (x, y, z)} or {'gripc': (angle, radius,
+        height)} with 'blade' puts the weapon grip there; {'hold': (bone, t, roll)} grips an attach
+        bone's axis t metres along it (the right hand on the sheathed sword: ('Scabbard', 0, 0);
+        the left hand round the scabbard's mouth: ('Scabbard', 0.13, roll)).
+    'Scabbard', 'Knife': (x, y, z) rotations of those attach bones (the scabbard tilts in a draw).
     'leg_R' / 'leg_L': {'ankle': (x, y, z), 'pole': knee direction, 'foot': (pitch, yaw)}
         (pitch + = toes up; yaw + = toes turned to his left), or {'fk': [upper, lower, foot]}.
 Animations are lists of keys (time, pose[, ease]) or a function of time; every frame is solved
@@ -24,6 +29,7 @@ from mathutils import Vector, Matrix, Euler
 FPS = 30
 I3 = Matrix.Identity(3)
 TORSO = ("Spine", "Chest", "Neck", "Head", "Shoulder_L", "Shoulder_R")
+ROTATED = TORSO + ("Scabbard", "Knife")   # bones a pose may turn directly
 
 
 def eul(r):
@@ -50,6 +56,22 @@ def blade_dirs(yaw, pitch, roll):
     return d, e
 
 
+def dirs_to_blade(d, e, ref_yaw=0.0):
+    """The (yaw, pitch, roll) that blade_dirs() turns into direction d and edge e; yaw is picked
+    within 180 degrees of ref_yaw so keys blend the short way round."""
+    d = Vector(d).normalized()
+    p = math.asin(max(-1.0, min(1.0, d.z)))
+    t = math.atan2(-d.x, d.y)
+    e0 = Vector((math.cos(t), math.sin(t), 0.0))
+    r = math.atan2(Vector(e).dot(d.cross(e0)), Vector(e).dot(e0))
+    yaw = math.degrees(t)
+    while yaw - ref_yaw > 180.0:
+        yaw -= 360.0
+    while yaw - ref_yaw < -180.0:
+        yaw += 360.0
+    return (yaw, math.degrees(p), math.degrees(r))
+
+
 class Rig:
     """Rest-pose data of an armature, and the solver."""
 
@@ -71,14 +93,57 @@ class Rig:
     def head(self, name):
         return self.rest[name][0]
 
+    def attach_frame(self, hold, Q, D, P):
+        """Grip point, item direction and edge direction for a 'hold' on an attach bone (a child
+        of an already-posed bone, e.g. the Scabbard on the Hips), turned `roll` degrees about it."""
+        bone, t, roll = hold
+        h, R, parent = self.rest[bone]
+        M = D[parent] @ Q.get(bone, I3) @ R
+        y, z = M.col[1].to_3d(), M.col[2].to_3d()
+        r = math.radians(roll)
+        z = z * math.cos(r) + y.cross(z) * math.sin(r)
+        base = D[parent] @ (h - self.rest[parent][0]) + P[parent]
+        return base + y * t, y, z
+
+    def ikc_as_grip(self, pose, side):
+        """The same pose with arm_<side>'s 'ikc' wrist written as a 'gripc' weapon grip."""
+        arm = dict(pose["arm_" + side])
+        ang, rad, z = arm.pop("ikc")
+        t = math.radians(ang)
+        hw, Rw, _ = self.rest["Weapon_" + side]
+        g = Vector((-rad * math.sin(t), rad * math.cos(t), z)) + \
+            (frame(*blade_dirs(*arm["blade"])) @ Rw.transposed()) @ (hw - self.rest["Hand_" + side][0])
+        arm["gripc"] = (math.degrees(math.atan2(-g.x, g.y)), Vector((g.x, g.y)).length, g.z)
+        out = dict(pose)
+        out["arm_" + side] = arm
+        return out
+
+    def hold_as_grip(self, pose, side, ref_yaw=0.0):
+        """The same pose with arm_<side>'s 'hold' written as 'gripc' + 'blade', so a key that
+        holds the scabbard can blend smoothly into keys that swing the blade freely."""
+        arm = dict(pose["arm_" + side])
+        hips = pose.get("hips", {})
+        Q = {"Hips": eul(hips.get("rot", (0, 0, 0)))}
+        for b in ROTATED:
+            if b in pose and b in self.rest:
+                Q[b] = eul(pose[b])
+        D, P = {"Hips": Q["Hips"]}, {"Hips": self.rest["Hips"][0] + Vector(hips.get("loc", (0, 0, 0)))}
+        g, d, e = self.attach_frame(arm.pop("hold"), Q, D, P)
+        ang = math.degrees(math.atan2(-g.x, g.y))
+        arm["gripc"] = (ang, Vector((g.x, g.y)).length, g.z)
+        arm["blade"] = dirs_to_blade(d, e, ref_yaw)
+        out = dict(pose)
+        out["arm_" + side] = arm
+        return out
+
     def solve(self, spec):
         """Returns ({bone: rotation in rest axes}, hips offset)."""
         Q = {}
         hips = spec.get("hips", {})
         loc = Vector(hips.get("loc", (0, 0, 0)))
         Q["Hips"] = eul(hips.get("rot", (0, 0, 0)))
-        for b in TORSO:
-            if b in spec:
+        for b in ROTATED:
+            if b in spec and b in self.rest:
                 Q[b] = eul(spec[b])
         D, P = {}, {}
         for b in self.order:
@@ -109,7 +174,21 @@ class Rig:
         h1, R1, _ = self.rest[n1]
         h2, R2, _ = self.rest[n2]
         S = D[parent] @ (h0 - self.rest[parent][0]) + P[parent]
-        if "ikc" in sub:
+        Dg = None   # the hand's turn when the spec places the held item's grip instead of the wrist
+        if limb == "arm" and ("hold" in sub or "grip" in sub or "gripc" in sub):
+            hw, Rw, _ = self.rest["Weapon_" + side]
+            if "hold" in sub:
+                g, bd, be = self.attach_frame(sub["hold"], Q, D, P)
+            else:
+                bd, be = blade_dirs(*sub["blade"])
+                if "grip" in sub:
+                    g = Vector(sub["grip"])
+                else:
+                    ang, rad, z = sub["gripc"]
+                    g = Vector((-rad * math.sin(math.radians(ang)), rad * math.cos(math.radians(ang)), z))
+            Dg = frame(bd, be) @ Rw.transposed()
+            W = g - Dg @ (hw - h2)
+        elif "ikc" in sub:
             ang, rad, z = sub["ikc"]
             t = math.radians(ang)
             W = Vector((-rad * math.sin(t), rad * math.cos(t), z))
@@ -144,7 +223,9 @@ class Rig:
         # The end bone: hand / foot orientation.
         D2 = None
         if limb == "arm":
-            if "blade" in sub:
+            if Dg is not None:
+                D2 = Dg
+            elif "blade" in sub:
                 bd, be = blade_dirs(*sub["blade"])
                 Rw = self.rest["Weapon_" + side][1]
                 D2 = frame(bd, be) @ Rw.transposed()

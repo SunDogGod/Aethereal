@@ -10,9 +10,12 @@ Bone names are fixed; scripts and every animation rely on them:
       Hand_R > Weapon_R      grip of the main weapon (blade along the bone, +Y)
       Hand_L > Weapon_L      grip of an off-hand item (Aeneas's knife in a stab)
       Chest > Back           something slung across the back (Aeneas's rifle)
-      Hips > Sheath          a blade at the left hip (Aeneas's knife)
+      Hips > Sheath          a small item at the left hip (Isabella's bell)
+      Hips > Scabbard        a sword worn at the left hip: the head is where the sheathed sword's
+                             grip sits, +Y runs down the scabbard (Aeneas's Rocinante)
+      Hips > Knife           a knife across the small of the back, handle at his left (Aeneas)
       Hips > UpperLeg_L/R > LowerLeg_L/R > Foot_L/R
-Attach bones (Weapon_*, Back, Sheath) never deform the mesh. A prop modelled with its grip at
+Attach bones (Weapon_*, Back, Sheath, Scabbard, Knife) never deform the mesh. A prop modelled with its grip at
 the origin and its length along +Y sits on them exactly (see make_wrapper.gd).
 """
 import math
@@ -24,10 +27,17 @@ BONE_PARENTS = {
     "Shoulder_L": "Chest", "UpperArm_L": "Shoulder_L", "LowerArm_L": "UpperArm_L", "Hand_L": "LowerArm_L",
     "Shoulder_R": "Chest", "UpperArm_R": "Shoulder_R", "LowerArm_R": "UpperArm_R", "Hand_R": "LowerArm_R",
     "Weapon_R": "Hand_R", "Weapon_L": "Hand_L", "Back": "Chest", "Sheath": "Hips",
+    "Scabbard": "Hips", "Knife": "Hips",
     "UpperLeg_L": "Hips", "LowerLeg_L": "UpperLeg_L", "Foot_L": "LowerLeg_L",
     "UpperLeg_R": "Hips", "LowerLeg_R": "UpperLeg_R", "Foot_R": "LowerLeg_R",
 }
-DEFORM_BONES = [b for b in BONE_PARENTS if b not in ("Weapon_R", "Weapon_L", "Back", "Sheath")]
+ATTACH_BONES = ("Weapon_R", "Weapon_L", "Back", "Sheath", "Scabbard", "Knife")
+DEFORM_BONES = [b for b in BONE_PARENTS if b not in ATTACH_BONES]
+# The sword at the left hip: where its guard meets the scabbard's mouth (the throat), and the
+# way the scabbard runs from there (back, down, a little out). For a 1.72 m body.
+SCABBARD_THROAT = (-0.215, 0.07, 0.95)
+SCABBARD_DIR = (-0.24, -0.90, -0.30)
+GUARD_FROM_GRIP = 0.10   # props.sword: the guard sits this far up the blade from the grip
 
 
 def _n(v):
@@ -110,6 +120,16 @@ def build_rig(name, J):
     # Sheath: a knife at the left hip, handle up and forward, blade down and a little back.
     sheath = Vector((-0.165 * s, 0.05 * s, 0.925 * s))
     bone("Sheath", sheath, sheath + _n((0.0, -0.35, -1.0)) * 0.1, fwd, "Hips")
+    # Scabbard: its head is the sheathed sword's grip, so the Sword attachment can move between
+    # Weapon_R and Scabbard and the blade lands in the scabbard. Edge (+Z) up: the flat lies
+    # against his hip and the cross-guard stands upright.
+    d = _n(SCABBARD_DIR)
+    grip = Vector(SCABBARD_THROAT) * s - d * GUARD_FROM_GRIP * s
+    bone("Scabbard", grip, grip + d * 0.1, up, "Hips")
+    # Knife: across the small of the back at the belt, handle at his left, blade pointing right
+    # and a touch down, edge down.
+    knife = Vector((-0.115 * s, -0.128 * s, 0.965 * s))
+    bone("Knife", knife, knife + _n((1.0, 0.0, -0.12)) * 0.1, Vector((0, 0, -1)), "Hips")
     # Back: a long item across the back, its +Y end up over the right shoulder.
     back = Vector((0.0, -0.15 * s, 1.17 * s))
     bone("Back", back, back + _n((0.70, 0.0, 0.72)) * 0.1, Vector((0, -1, 0)), "Chest")

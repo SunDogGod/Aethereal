@@ -24,10 +24,11 @@ def spine_w(J, z):
     return mix("Chest", "Neck", zn - 0.01, zn + 0.05)
 
 
-def trunk(part, J, rect, profile, segs=16, arc=None, thickness=0.0, lining=None, cap0=None):
+def trunk(part, J, rect, profile, segs=16, arc=None, thickness=0.0, lining=None, cap0=None, legs=0.0):
     """The torso or anything worn around it (shirt, jacket, coat, belt).
     profile: rows (z, rx, ry_front, ry_back, n[, y_offset[, front gap]]) for a 1.72 m body.
-    With arc (an open shell such as an open jacket) the 7th number is the front opening's half-angle."""
+    With arc (an open shell such as an open jacket) the 7th number is the front opening's half-angle.
+    legs (0..1): how much of a hem below the hips follows the thighs at the front."""
     s = J["height"] / 1.72
     rings = []
     for row in profile:
@@ -48,6 +49,20 @@ def trunk(part, J, rect, profile, segs=16, arc=None, thickness=0.0, lining=None,
                 out["Shoulder_R" if c > 0 else "Shoulder_L"] = k
                 return out
             ring["wf"] = wf
+        low = J["hips"].z + 0.03 * s - z
+        if legs > 0.0 and low > 0.0:
+            # A hem below the hips: its front rides on the thighs (a crouch, a high knee), so a
+            # raised thigh lifts the jacket instead of poking through it.
+            k = legs * min(1.0, low / (0.08 * s))
+            def wl(th, w=w, k=k):
+                c, front = math.cos(math.radians(th)), max(0.0, math.sin(math.radians(th)))
+                right = min(1.0, max(0.0, 0.5 + 0.8 * c))
+                out = {b: v * (1 - k * front) for b, v in w.items()}
+                for side, share in (("R", right), ("L", 1.0 - right)):
+                    if share > 0.0:
+                        out["UpperLeg_" + side] = k * front * share
+                return out
+            ring["wf"] = wl
         rings.append(ring)
     return loft(part, rings, segs, rect.uv, arc=arc, thickness=thickness,
                 lining=lining.uv if lining else None, cap0=cap0)

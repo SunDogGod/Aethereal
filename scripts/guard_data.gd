@@ -6,7 +6,9 @@ extends Resource
 @export var display_name := "Agency agent"
 
 @export_group("Look")
-@export var coat_color := Color(0.08, 0.08, 0.1)
+@export var model_scene: PackedScene  ## his own model (the captain); empty = the agent in guard.tscn
+@export var coat_color := Color(0.93, 0.91, 0.86)  ## the coat (the Agency wear white); multiplies the painted cloth
+@export var trim_color := Color(0.14, 0.14, 0.16)  ## collar, cuffs and armband (meshes named Trim)
 @export var visor_color := Color(1.0, 0.15, 0.1)  ## the eye-light that shows where he's looking
 
 @export_group("Patrol")

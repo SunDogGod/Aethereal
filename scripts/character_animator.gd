@@ -1,23 +1,18 @@
 class_name CharacterAnimator
-extends Node
+extends CharacterAnimLayers
 ## Plays a character's animations (made by tools/blender) from what its body is doing.
 ## It lives in every character model scene (scenes/characters/*_model.tscn) as "Animator".
 ## Standing, walking, running, sprinting, crouching and falling follow the body by themselves
 ## (from how fast it moves, is_crouched, and whether it's on the floor). Scripts call the
 ## one-shots: swing_windup / swing_release / swing_cancel, set_block, roll, hit, stab, die,
-## revive, telegraph, strike, stagger, cast.
-## Layers: the legs walk; an upper-body layer (wind-ups, block, telegraph) plays over them; a
-## whole-body layer (cuts, rolls, deaths) plays over everything.
+## revive, telegraph, strike, stagger, cast; and for Aeneas's sheathed sword iai_stance,
+## draw_release, draw_instant and sheathe. The layers, the tree and the props that change hands
+## are in character_anim_layers.gd.
 
 ## Metres one walk / run / sprint / crouch-walk cycle carries him (tools/blender/anims_loco.py).
 const STRIDE := {"walk": 1.5, "run": 3.4, "sprint": 4.8, "crouch_walk": 1.9}
 const SWEEP_HIT := 0.07     ## a sweep's blade crosses his front this long after it starts
-const STAB_DRAW := 0.13     ## in the stab, the knife leaves the sheath for the left hand...
-const STAB_SHEATHE := 0.64  ## ...and goes back
-const UPPER_BONES := ["Spine", "Chest", "Neck", "Head", "Shoulder_L", "Shoulder_R", "UpperArm_L",
-		"UpperArm_R", "LowerArm_L", "LowerArm_R", "Hand_L", "Hand_R", "Weapon_L", "Weapon_R", "Back"]
-const UPPER := ["windup_L", "windup_R", "block", "telegraph", "cast"]
-const FULL := ["sweep_LR", "sweep_RL", "dodge_roll", "dodge_back", "hit", "stab", "death", "strike", "stagger"]
+const DRAW_HIT := 0.105     ## the quick draw's blade crosses his front (tools/blender/aeneas_anims.py)
 
 @export var body_path: NodePath        ## the body to follow (empty: the model's parent)
 @export var walk_speed := 1.6          ## speeds (m/s) where each cycle plays on its own
@@ -27,9 +22,6 @@ const FULL := ["sweep_LR", "sweep_RL", "dodge_roll", "dodge_back", "hit", "stab"
 
 var body: Node3D
 var dead := false
-var _player: AnimationPlayer
-var _tree: AnimationTree
-var _knife: BoneAttachment3D
 var _last_pos := Vector3.ZERO
 var _speed := 0.0
 var _air := 0.0
@@ -38,22 +30,18 @@ var _crouch := 0.0
 var _vel := Vector3.ZERO      # smoothed ground velocity
 var _twist: Node             # character_twist.gd under the skeleton
 var _backwards := false
-var _layers := {
-	"upper": {"anim": "", "time": 0.0, "length": 0.0, "hold": false, "amount": 0.0, "target": 0.0, "fade": 0.1},
-	"full": {"anim": "", "time": 0.0, "length": 0.0, "hold": false, "amount": 0.0, "target": 0.0, "fade": 0.1},
-}
 
 
 func _ready() -> void:
 	var model := get_parent()
 	body = get_node_or_null(body_path) if not body_path.is_empty() else model.get_parent() as Node3D
-	_player = model.find_child("AnimationPlayer", true, false)
-	_knife = model.get_node_or_null("Knife") as BoneAttachment3D
 	for mesh: MeshInstance3D in model.find_children("*", "MeshInstance3D", true, false):
 		mesh.layers = 2  # the characters render layer: blob shadows skip it
-	if _player == null or body == null:
+	if body == null:
 		return
-	_build_tree()
+	_setup_layers(model, {"walk": walk_speed, "run": run_speed, "sprint": sprint_speed, "crouch_walk": crouch_walk_speed})
+	if _tree == null:
+		return
 	_last_pos = body.global_position
 	var skeleton: Skeleton3D = model.find_child("Skeleton3D", true, false)
 	if skeleton:
@@ -68,7 +56,7 @@ func _physics_process(delta: float) -> void:
 	_follow_body(delta)
 	for key: String in _layers:
 		_step_layer(key, delta)
-	_update_knife()
+	_step_props(delta)
 
 
 ## How the legs move: speed, crouch and air from the body, and the cycle rate that keeps feet planted.
@@ -88,9 +76,10 @@ func _follow_body(delta: float) -> void:
 	_crouch = move_toward(_crouch, 1.0 if body.get("is_crouched") == true else 0.0, delta / 0.15)
 	# A child-sized model (the Massacre memory) takes shorter steps: judge his speed at his size.
 	var sized := _speed / maxf(0.05, get_parent().global_basis.get_scale().y)
-	_tree.set("parameters/stand/blend_position", minf(sized, sprint_speed))
-	_tree.set("parameters/crouch/blend_position", minf(sized, crouch_walk_speed))
-	_tree.set("parameters/crouch_mix/blend_amount", _crouch)
+	for sfx: String in (["", "_s"] if has_carry else [""]):
+		_tree.set("parameters/stand%s/blend_position" % sfx, minf(sized, sprint_speed))
+		_tree.set("parameters/crouch%s/blend_position" % sfx, minf(sized, crouch_walk_speed))
+		_tree.set("parameters/crouch_mix%s/blend_amount" % sfx, _crouch)
 	_tree.set("parameters/air/blend_position", clampf(v.y / 5.0, -1.0, 1.0))
 	_tree.set("parameters/air_mix/blend_amount", _air)
 	var rate := lerpf(_stand_rate(sized), _crouch_rate(sized), _crouch)
@@ -136,51 +125,13 @@ func _crouch_rate(v: float) -> float:
 	return v / STRIDE.crouch_walk
 
 
-func _step_layer(key: String, delta: float) -> void:
-	var l: Dictionary = _layers[key]
-	l.time += delta
-	if not l.hold and l.anim != "" and l.time >= l.length:
-		l.target = 0.0
-		l.fade = 0.18
-	l.amount = move_toward(l.amount, l.target, delta / maxf(l.fade, 0.001))
-	if l.amount <= 0.0 and l.target <= 0.0:
-		l.anim = ""
-	_tree.set("parameters/%s_mix/blend_amount" % key, l.amount)
-
-
-func _play(key: String, anim: String, rate := 1.0, hold := false, fade := 0.05) -> void:
-	if _tree == null or not _player.has_animation(anim):
-		return
-	var l: Dictionary = _layers[key]
-	l.anim = anim
-	l.time = 0.0
-	l.length = _player.get_animation(anim).length / rate
-	l.hold = hold
-	l.target = 1.0
-	l.fade = fade
-	_tree.set("parameters/%s/transition_request" % key, anim)
-	_tree.set("parameters/%s_rate/scale" % key, rate)
-
-
-func _stop(key: String, fade := 0.12) -> void:
-	var l: Dictionary = _layers[key]
-	l.target = 0.0
-	l.fade = fade
-	if fade <= 0.0:
-		l.amount = 0.0
-		l.anim = ""
-
-
-func playing(key: String) -> String:
-	return _layers[key].anim
-
-
 # ---------------------------------------------------------------- the one-shots
 ## Cocks the sword: side 1 = across his body to the left (a left-to-right cut follows),
 ## -1 = out to his right (the return stroke). Held until release or cancel.
 func swing_windup(side: int) -> void:
 	if dead:
 		return
+	put_sword(true)  # (Aeneas opens with the quick draw; this is only a safety net)
 	_stop("full", 0.06)  # a chained swing: come out of the last cut into this wind-up
 	_play("upper", "windup_L" if side > 0 else "windup_R", 1.0, true, 0.05)
 
@@ -193,9 +144,12 @@ func swing_release(side: int, power: float) -> void:
 	_stop("upper", 0.1)
 
 
+## Lowers a wound-up blade, or rises out of the iai stance without drawing.
 func swing_cancel() -> void:
 	if playing("upper").begins_with("windup"):
 		_stop("upper", 0.12)
+	if playing("full") == "iai":
+		_stop("full", 0.12)
 
 
 func sweep_rate(power: float) -> float:
@@ -207,8 +161,49 @@ func sweep_hit_time(power: float) -> float:
 	return SWEEP_HIT / sweep_rate(power)
 
 
+## Aeneas: the iai stance (right hand on the hilt, knees bent), held until draw_release() or
+## swing_cancel(). The sword stays in its scabbard meanwhile.
+func iai_stance() -> void:
+	if dead:
+		return
+	_play("full", "iai", 1.0, true, 0.06)
+	_stop("upper", 0.06)
+
+
+## The quick draw: out of the scabbard and across in one cut (same speeds as swing_release).
+func draw_release(power: float) -> void:
+	if dead:
+		return
+	put_sword(true)  # his hand already grips it where it sits, so it leaves the scabbard with the hand
+	_play("full", "draw_cut", sweep_rate(power), false, 0.035)
+	_stop("upper", 0.06)
+
+
+func draw_hit_time(power: float) -> float:
+	return DRAW_HIT / sweep_rate(power)
+
+
+## The sword straight into his hand (blocking from the scabbard).
+func draw_instant() -> void:
+	if playing("upper") == "sheathe":
+		_stop("upper", 0.08)
+	put_sword(true)
+
+
+## Back into the scabbard (an upper-body action, so he can keep walking). Anything else he does
+## before the blade is home leaves it in his hand.
+func sheathe() -> void:
+	if has_carry and sword_in_hand and not dead and playing("full") == "" and playing("upper") == "":
+		_play("upper", "sheathe", 1.0, false, 0.12)
+
+
+func sheathing() -> bool:
+	return playing("upper") == "sheathe" and _layers.upper.target > 0.0
+
+
 func set_block(on: bool) -> void:
 	if on and not dead and playing("upper") != "block" and playing("full") == "":
+		put_sword(true)
 		_play("upper", "block", 1.0, true, 0.06)
 	elif not on and playing("upper") == "block":
 		_stop("upper", 0.12)
@@ -238,12 +233,16 @@ func die() -> void:
 	_stop("upper", 0.06)
 
 
-## Back on his feet at once (a checkpoint restart).
+## Back on his feet at once (a checkpoint restart), the sword back in its scabbard.
 func revive() -> void:
 	dead = false
 	_stop("full", 0.0)
 	_stop("upper", 0.0)
-	_update_knife()
+	if has_carry:
+		put_sword(false)
+		_carry = 1.0
+	if _tree:
+		_step_props(0.0)
 
 
 ## A guard's raised blade, timed to reach the top as the wind-up ends; held until strike().
@@ -271,32 +270,3 @@ func stagger(seconds: float) -> void:
 func cast() -> void:
 	if not dead:
 		_play("upper", "cast", 1.0, false, 0.05)
-
-
-## The knife rides the left hand during the middle of the stab, the sheath otherwise.
-func _update_knife() -> void:
-	if _knife == null:
-		return
-	var l: Dictionary = _layers.full
-	var in_hand: bool = l.anim == "stab" and l.time * _tree.get("parameters/full_rate/scale") >= STAB_DRAW \
-			and l.time * _tree.get("parameters/full_rate/scale") < STAB_SHEATHE
-	var bone := "Weapon_L" if in_hand else "Sheath"
-	if _knife.bone_name != bone:
-		_knife.bone_name = bone
-
-
-# ---------------------------------------------------------------- the blend tree
-func _build_tree() -> void:
-	for anim: String in ["idle", "walk", "run", "sprint", "crouch_idle", "crouch_walk", "fall"]:
-		if _player.has_animation(anim):
-			_player.get_animation(anim).loop_mode = Animation.LOOP_LINEAR
-	var speeds := {"walk": walk_speed, "run": run_speed, "sprint": sprint_speed, "crouch_walk": crouch_walk_speed}
-	_tree = AnimationTree.new()
-	_tree.name = "Tree"
-	add_child(_tree)
-	_tree.anim_player = _tree.get_path_to(_player)
-	_tree.root_node = _tree.get_path_to(_player.get_node(_player.root_node))
-	_tree.tree_root = CharacterAnimTree.build(_player, speeds, UPPER, FULL, UPPER_BONES)
-	_tree.active = true
-	for n in ["rate", "upper_rate", "full_rate"]:
-		_tree.set("parameters/%s/scale" % n, 1.0)

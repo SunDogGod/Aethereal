@@ -43,6 +43,7 @@ var controls_enabled := true  ## off during takedowns and while being sent back 
 var in_cutscene := false      ## set by the Story player; guards don't look for him meanwhile
 var falling_back := false     ## a fall is sending him to the checkpoint (from the landing until he is put back)
 var companion: Companion      ## Isabella, if she's following him (she signs herself up)
+var rooted := false           ## his feet stay planted (Combat sets it while he holds the iai stance)
 
 var _coyote_timer := 0.0
 var _jump_buffer_timer := 0.0
@@ -117,7 +118,7 @@ func _handle_jump(delta: float) -> void:
 
 func _handle_run(delta: float) -> void:
 	var input := Vector2.ZERO
-	if controls_enabled:
+	if controls_enabled and not rooted:
 		input = Input.get_vector("move_left", "move_right", "move_forward", "move_back")
 	# Turn the input so "forward" always means "away from the camera".
 	var direction := Vector3(input.x, 0.0, input.y).rotated(Vector3.UP, camera_pivot.global_rotation.y)
@@ -208,7 +209,7 @@ func face(point: Vector3) -> void:
 	model.rotation.y = atan2(-look.x, -look.z)
 
 
-## The knife takedown (the Animator draws the knife from his hip, stabs and sheathes it).
+## The knife takedown (the Animator draws the knife from the small of his back, stabs, sheathes it).
 func stab() -> void:
 	if animator:
 		animator.stab()
@@ -218,6 +219,8 @@ func stab() -> void:
 ## LEFT, release_swing() cuts left to right (seen from the camera behind him). A swing chained
 ## onto the last one (tapped as it lands) goes the other way, right to left, and they keep
 ## alternating; a fresh attack always opens left to right. cancel_swing() lowers the blade.
+## With the sword in its scabbard the opening cut is the quick draw instead: iai_stance() (hand
+## on the hilt) then release_draw(), out of the scabbard and left to right in one motion.
 var _swing_side := 1  # +1: cocked on his left, cuts to the right; -1: the return stroke
 
 
@@ -234,15 +237,28 @@ func release_swing(power: float) -> void:
 	_swing_side = -_swing_side  # chained swings alternate, like a real flurry
 
 
+func iai_stance() -> void:
+	if animator:
+		animator.iai_stance()
+
+
+func release_draw(power: float) -> void:
+	if animator:
+		animator.draw_release(power)
+	_swing_side = -1  # the draw cut goes left to right, so a chained swing comes back
+
+
 func cancel_swing() -> void:
 	_swing_side = 1
 	if animator:
 		animator.swing_cancel()
 
 
-## Seconds from releasing a swing until the blade crosses his front: when the hit lands.
-func swing_hit_time(power: float) -> float:
-	return animator.sweep_hit_time(power) if animator else 0.0
+## Seconds from releasing a swing (or the draw) until the blade crosses his front: when the hit lands.
+func swing_hit_time(power: float, draw := false) -> float:
+	if animator == null:
+		return 0.0
+	return animator.draw_hit_time(power) if draw else animator.sweep_hit_time(power)
 
 
 func show_block(on: bool) -> void:
@@ -270,40 +286,14 @@ func _on_respawned() -> void:
 		animator.revive()
 
 
-## The eruption's visual: a dark ring that races out along the floor.
+## The eruption's visual: a dark ring that races out along the floor (player_fx.gd).
 func shockwave_ring(reach: float) -> void:
-	var ring := MeshInstance3D.new()
-	var mesh := TorusMesh.new()
-	mesh.inner_radius = 0.8
-	mesh.outer_radius = 1.0
-	mesh.rings = 16
-	mesh.ring_segments = 4
-	var mat := ShaderMaterial.new()
-	mat.shader = load("res://shaders/ps1_surface.gdshader")
-	mat.set_shader_parameter("albedo_color", Color(0.1, 0.05, 0.2))
-	mat.set_shader_parameter("emission_color", Color(0.5, 0.3, 1.0))
-	mat.set_shader_parameter("emission_energy", 2.0)
-	mesh.material = mat
-	ring.mesh = mesh
-	get_parent().add_child(ring)
-	ring.global_position = global_position + Vector3.UP * 0.15
-	var tween := create_tween()
-	tween.tween_property(ring, "scale", Vector3(reach, 1.0, reach), 0.35).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
-	tween.tween_callback(ring.queue_free)
+	PlayerFx.shockwave_ring(self, reach)
 
 
-## A brief tint on the whole stand-in (hit = red, parry = white).
+## A brief tint on his whole model (hit = red, parry = white).
 func flash(color: Color) -> void:
-	for part in model.find_children("*", "MeshInstance3D"):
-		var mat: Material = part.get_active_material(0)
-		if mat is ShaderMaterial:
-			var copy: ShaderMaterial = mat.duplicate()
-			var base: Color = mat.get_shader_parameter("albedo_color") if mat.get_shader_parameter("albedo_color") != null else Color.WHITE
-			copy.set_shader_parameter("albedo_color", color)
-			part.material_override = copy
-			var tween := create_tween()
-			tween.tween_property(copy, "shader_parameter/albedo_color", base, 0.25)
-			tween.tween_callback(func() -> void: part.material_override = null)
+	PlayerFx.flash(self, color)
 
 
 func _handle_falling() -> void:

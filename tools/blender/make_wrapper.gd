@@ -26,6 +26,8 @@ func _build(char_name: String) -> String:
 		return "can't load %s (run Godot's import first)" % spec.glb
 	var root := Node3D.new()
 	root.name = spec.root
+	if spec.get("root_script", "") != "":
+		root.set_script(load(spec.root_script))  # e.g. Aeneas's outfit switches (the Poncho tick box)
 	var model := glb.instantiate()
 	model.name = char_name
 	root.add_child(model)

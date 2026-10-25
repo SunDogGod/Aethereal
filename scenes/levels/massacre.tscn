@@ -3199,6 +3199,7 @@ shape = SubResource("CapsuleShape3D_4tttw")
 
 [node name="Model" parent="Player" unique_id=2121672931]
 transform = Transform3D(0.58, 0, 0, 0, 0.58, 0, 0, 0, 0.58, 0, 0, 0)
+poncho = false
 
 [node name="Knife" parent="Player/Model" unique_id=986811228]
 visible = false
@@ -3207,6 +3208,9 @@ visible = false
 visible = false
 
 [node name="Sword" parent="Player/Model"]
+visible = false
+
+[node name="Scabbard" parent="Player/Model"]
 visible = false
 
 [node name="BlobShadow" parent="Player" unique_id=44944355]

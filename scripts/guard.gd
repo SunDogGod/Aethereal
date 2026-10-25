@@ -13,7 +13,6 @@ signal health_changed(health: float, max_health: float)
 enum State { PATROL, SUSPICIOUS, SPOTTED, DOWN, FIGHTING, STAGGERED }
 
 const GRAVITY := 22.0
-const COAT_GAIN := 2.5  ## see _coat_color(): how much brighter than coat_color the coat shows
 
 @export var data: GuardData
 @export var fights := false  ## true: being spotted starts a fight instead of a restart
@@ -52,6 +51,7 @@ func _enter_tree() -> void:
 
 
 func _ready() -> void:
+	GuardLook.swap_model(self)  # the captain wears his own model (GuardData.model_scene)
 	# Read the route before anything moves (the markers ride along with him).
 	var route := get_node_or_null("Route")
 	if route:
@@ -175,7 +175,7 @@ func take_hit(damage: float, from: Vector3) -> void:
 	if state == State.DOWN or dormant:
 		return  # a fight that hasn't started can't be cut short (or shocked awake by the eruption)
 	if invulnerable:
-		_tint(Color(0.6, 0.6, 0.7))  # it lands, and it doesn't matter
+		_tint(Color(0.42, 0.44, 0.55))  # it lands, and it doesn't matter
 		SfxBus.play("hit_thud", global_position + Vector3.UP, -10.0)
 		return
 	health = maxf(0.0, health - damage)
@@ -206,7 +206,7 @@ func stagger(seconds: float) -> void:
 	alert.visible = true
 	alert.text = "!"
 	alert.modulate = Color(1.0, 0.95, 0.6)
-	_tint(Color(1, 1, 0.8))
+	_tint(Color(1.0, 0.78, 0.2))  # a gold flash: open for a riposte (a pale flash would vanish on a white coat)
 	if animator:
 		animator.stagger(seconds)
 
@@ -229,15 +229,7 @@ func strike() -> void:
 
 
 func _tint(color: Color) -> void:
-	for part in _coat_parts():
-		var mat: ShaderMaterial = part.material_override
-		if mat == null:
-			continue
-		var copy: ShaderMaterial = mat.duplicate()
-		copy.set_shader_parameter("albedo_color", color)
-		part.material_override = copy
-		var tween := create_tween()
-		tween.tween_property(copy, "shader_parameter/albedo_color", _coat_color(), 0.25)
+	GuardLook.flash(self, color)
 
 
 ## Killed by Aeneas's knife: he drops face-first and blood spreads under him.
@@ -389,31 +381,6 @@ func _update_alert() -> void:
 	alert.scale = Vector3.ONE * (0.6 + 0.6 * suspicion)
 
 
-## The coat's colour on screen. The model paints the coat in light greys so it can take any
-## colour; COAT_GAIN brightens coat_color so a near-black coat still shows its folds and seams.
-func _coat_color() -> Color:
-	var c := data.coat_color
-	return Color(c.r * COAT_GAIN, c.g * COAT_GAIN, c.b * COAT_GAIN)
-
-
-## Colors from the GuardData file. Each guard gets his own copies so kinds can differ.
+## Colours from the GuardData file (guard_look.gd).
 func _apply_look() -> void:
-	for part in _coat_parts():
-		var coat: ShaderMaterial = part.get_active_material(0).duplicate()
-		coat.set_shader_parameter("albedo_color", _coat_color())
-		part.material_override = coat
-	var eye_light: ShaderMaterial = visor.get_active_material(0).duplicate()
-	eye_light.set_shader_parameter("albedo_color", data.visor_color)
-	eye_light.set_shader_parameter("emission_color", data.visor_color)
-	eye_light.set_shader_parameter("emission_energy", 2.0)
-	visor.material_override = eye_light
-
-
-## The parts of his model that take the coat colour: meshes named "Coat..." (or in the
-## guard_coat group).
-func _coat_parts() -> Array[MeshInstance3D]:
-	var parts: Array[MeshInstance3D] = []
-	for part: MeshInstance3D in model.find_children("*", "MeshInstance3D", true, false):
-		if part.name.begins_with("Coat") or part.is_in_group("guard_coat"):
-			parts.append(part)
-	return parts
+	GuardLook.apply(self)

@@ -1,6 +1,10 @@
 """Aeneas, about sixteen: brown hair short at the sides and longer on top with a thin tail at the
 nape, a dark brown leather jacket (high collar, light trim) worn open over a cream shirt, dark
-trousers, brown boots. Sword (Rocinante) in his right hand, knife at his left hip, rifle on his back.
+trousers, brown boots. His sword (Rocinante) rides in a scabbard at his left hip (his left hand
+holds it there while he moves; the game moves the sword to his right hand when he draws), a knife
+across the small of his back, a rifle on his back. In the first arc he wears a travel poncho over
+it all (aeneas_gear.py): set PONCHO = False to build him without it, or untick Poncho on his Model
+in Godot (scripts/aeneas_outfit.gd) to hide it.
 
 Rebuild:  blender -b --factory-startup -P tools/blender/aeneas.py
 then Godot's import and make_wrapper.gd (see tools/blender/README.md).
@@ -13,15 +17,24 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import character_base as cb   # noqa: E402
 import base_body as bb        # noqa: E402
 import body                   # noqa: E402
+import mesh                   # noqa: E402
 import props                  # noqa: E402
+import aeneas_gear as gear    # noqa: E402
+import aeneas_anims           # noqa: E402
+import anims_combat           # noqa: E402
 from paint import rgb, shade  # noqa: E402
+
+PONCHO = True   # build the first arc's poncho (its own object, "Poncho", so the game can hide it)
 
 C = {k: rgb(v) for k, v in {
     "skin": "#e2b593", "hair": "#5e3c25", "hair_dark": "#3f2717", "eye": "#3a2a1e", "iris": "#6b4a2b",
     "lip": "#b27a66", "brow": "#4a2e1b",
     "jacket": "#4d3020", "trim": "#a4805a", "lining": "#2b1b12", "seam": "#352113",
     "shirt": "#e9dec4", "trousers": "#2c2b33", "boot": "#6e4729", "boot_cuff": "#8c5d38", "sole": "#2a1d14",
-    "belt": "#3a2415", "brass": "#c9a24a", "strap": "#5a3d26"}.items()}
+    "belt": "#3a2415", "brass": "#c9a24a", "strap": "#5a3d26",
+    # The poncho (Proposed): dusty, sun-faded olive with rust and bone stripes and a patch.
+    "poncho": "#6e6a50", "poncho_dk": "#46432f", "poncho_band": "#7a4532", "poncho_line": "#b3a581",
+    "patch": "#86704f"}.items()}
 
 # The jacket: a little bigger than the torso, open at the front (last number: opening half-angle).
 JACKET = [(0.90, 0.172, 0.100, 0.108, 2.5, 0.0, 36), (0.97, 0.165, 0.100, 0.104, 2.5, 0.0, 32),
@@ -83,7 +96,7 @@ def build():
                   hairline=hair_line, iris=C["iris"])
     _hair(P, head, r_hair, J)
     # Jacket, collar, sleeves.
-    body.trunk(P, J, r_jacket, JACKET, segs=18, arc=(126, 414), thickness=0.008, lining=r_lining)
+    body.trunk(P, J, r_jacket, JACKET, segs=18, arc=(126, 414), thickness=0.008, lining=r_lining, legs=0.6)
     body.trunk(P, J, r_collar, COLLAR, segs=12, arc=(134, 406), thickness=0.007, lining=r_lining)
     _paint_jacket(r_jacket, r_collar, r_lining, r_sleeve)
     bb.mirrored(P, lambda: body.limb(P, J, body.arm_joints(J), ("UpperArm_R", "LowerArm_R"), r_sleeve,
@@ -98,7 +111,7 @@ def build():
     r_belt.box(0.46, 0.15, 0.54, 0.85, C["brass"])
     r_belt.box(0.48, 0.35, 0.52, 0.65, C["belt"])
     _strap(P, J, r_strap)
-    _sheath(P, J, r_sheath)
+    gear.knife_sheath(P, J, r_sheath, C["belt"], C["brass"])
     # Trousers and boots.
     bb.mirrored(P, lambda: body.limb(P, J, body.leg_joints(J), ("UpperLeg_R", "LowerLeg_R"), r_trousers, TROUSERS))
     r_trousers.fill(C["trousers"])
@@ -113,11 +126,36 @@ def build():
         (-0.09, 0.034, 0.038, -0.034), (-0.065, 0.045, 0.056, -0.024), (0.0, 0.050, 0.062, -0.018),
         (0.075, 0.053, 0.043, -0.040), (0.14, 0.053, 0.032, -0.052), (0.195, 0.045, 0.025, -0.06)]))
     _paint_foot(r_foot)
-    # Props.
+    # The poncho: its own object so the game can switch it off.
+    if PONCHO:
+        Q = ch.part("Poncho")
+        r_poncho, r_hood = A.rect("poncho", 128, 40), A.rect("hood", 48, 20)
+        r_pin = A.rect("poncho_in", 8, 8)
+        gear.poncho(Q, J, r_poncho, r_pin)
+        gear.hood(Q, J, r_hood)
+        gear.sling(Q, J, r_strap)
+        gear.paint_poncho(r_poncho, r_hood, r_pin, C)
+    # Props. The sword starts in his hand (Weapon_R); the game moves it to the Scabbard bone.
     props.sword(ch.prop("Rocinante", "Weapon_R", "Sword"), A, name="rocinante")
-    props.knife(ch.prop("KnifeMesh", "Sheath", "Knife"), A)
-    props.rifle(ch.prop("RifleMesh", "Back", "Rifle"), A)
+    props.scabbard(ch.prop("ScabbardMesh", "Scabbard", "Scabbard"), A)
+    props.knife(ch.prop("KnifeMesh", "Knife", "Knife"), A)
+    rifle = ch.prop("RifleMesh", "Back", "Rifle")
+    props.rifle(rifle, A)
+    mesh.transform_part(rifle, mesh_offset(0.0, 0.0, 0.04))   # +Z is away from his back: clear the poncho
+    ch.root_script = "res://scripts/aeneas_outfit.gd"
     return ch
+
+
+def mesh_offset(x, y, z):
+    from mathutils import Matrix
+    return Matrix.Translation((x, y, z))
+
+
+def animations(rig):
+    """His locomotion (aeneas_anims.add_loco: the shared cycles, his left arm tamed for the poncho),
+    the shared fighting set, then his own (the sheathed carry, iai, draw, sheathe)."""
+    anims_combat.add_all(rig)
+    aeneas_anims.add_all(rig)
 
 
 def _paint_foot(r):
@@ -208,23 +246,6 @@ def _strap(P, J, r):
     r.vline(0.75, shade(C["strap"], 1.35))
 
 
-def _sheath(P, J, r):
-    """The knife's sheath on the left hip, along the Sheath bone."""
-    import mesh
-    rest = J["height"] / 1.72
-    h = body.Vector((-0.165 * rest, 0.05 * rest, 0.925 * rest))
-    d = body.Vector((0.0, -0.35, -1.0)).normalized()
-    x, y = mesh.frame_along(d, (1, 0, 0))
-    rings = []
-    for t, rx, ry in ((0.045, 0.020, 0.010), (0.06, 0.022, 0.011), (0.20, 0.016, 0.009), (0.235, 0.008, 0.006)):
-        rings.append({"c": h + d * t * rest, "x": x, "y": y, "rx": rx * rest, "ry": ry * rest, "n": 2.4,
-                      "w": {"Hips": 1.0}})
-    mesh.loft(P, rings, 6, r.uv, cap0="pole", cap1="pole")
-    r.fill(C["belt"])
-    r.box(0, 0.85, 1, 1.0, C["brass"])
-    r.hline(0.4, shade(C["belt"], 1.4))
-
-
 if __name__ == "__main__":
     ch = build()
-    ch.finish(preview=None)
+    ch.finish(animations=animations)

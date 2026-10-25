@@ -5,7 +5,8 @@
 [resource]
 script = ExtResource("1_data")
 display_name = "Agency agent"
-coat_color = Color(0.08, 0.08, 0.1, 1)
+coat_color = Color(0.93, 0.91, 0.86, 1)
+trim_color = Color(0.14, 0.14, 0.16, 1)
 visor_color = Color(1, 0.15, 0.1, 1)
 walk_speed = 1.6
 turn_speed = 5.0

@@ -64,6 +64,30 @@ def sword(part, atlas, length=0.86, width=0.024, steel="#c4cad3", guard="#b08a3e
     r_guard.hline(0.5, shade(gd, 1.3))
 
 
+def scabbard(part, atlas, length=0.86, width=0.024, leather="#3a2416", metal="#a8873e", name="scabbard"):
+    """The scabbard for sword(): built in the sword's own frame, so with the sword's grip at the
+    origin the blade sits inside it. A brass locket at the mouth (just past the guard), a belt
+    loop below it, a worn leather body and a brass chape at the tip."""
+    r_body = atlas.rect(name + "_body", 48, 12)
+    r_metal = atlas.rect(name + "_metal", 16, 8)
+    lt, mt = rgb(leather), rgb(metal)
+    w, t = width + 0.009, 0.0125   # half width (along the edge, +Z) and half thickness
+    L0, L1 = 0.104, 0.104 + length + 0.02
+    rod(part, [(L0, w * 1.12, t * 1.25), (L0 + 0.045, w * 1.12, t * 1.25)], r_metal.uv, sides=6)
+    rod(part, [(L0 + 0.04, w, t), (L0 + 0.35, w * 0.97, t * 0.96), (L1 - 0.09, w * 0.80, t * 0.86),
+               (L1 - 0.02, w * 0.62, t * 0.8)], r_body.uv, sides=6)
+    rod(part, [(L1 - 0.075, w * 0.86, t * 1.05), (L1 - 0.01, w * 0.66, t * 0.95), (L1 + 0.012, 0.0, 0.0)],
+        r_metal.uv, sides=6)
+    rod(part, [(L0 + 0.10, w * 1.18, t * 1.6), (L0 + 0.13, w * 1.18, t * 1.6)], r_metal.uv, sides=6)  # loop
+    r_body.fill(lt)
+    r_body.vgrad(shade(lt, 1.1), shade(lt, 0.8))         # v runs mouth to tip: darker toward the tip
+    for u in (0.25, 0.75):
+        r_body.vline(u, shade(lt, 1.35), 1, 0.05, 0.98)  # the edges catch the light
+    r_body.hline(0.55, shade(lt, 0.7))                    # a scuffed seam
+    r_metal.fill(mt)
+    r_metal.hline(0.5, shade(mt, 0.7))
+
+
 def knife(part, atlas, name="knife"):
     r_blade = atlas.rect(name + "_blade", 24, 8)
     r_hilt = atlas.rect(name + "_hilt", 16, 8)
