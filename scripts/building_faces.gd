@@ -7,6 +7,13 @@ extends RefCounted
 ## parapet along the top. Roofs and undersides are plain concrete. Faces too small for bays are
 ## plain wall. Everything maps into textures/building_atlas.png with the mesh's own UVs.
 ##
+## The faces look at what stands around them (building_context.gd), like a real building would:
+## doors and shopfronts only where a floor runs right in front at their foot (never facing a
+## drop, never hanging over a roof or under a slab); a face with no floor in front gets no ground
+## floor at all; a courtyard or deck running along a face partway up puts the ground floor there;
+## no window where something solid stands within 1.5 m in front of it.
+## Set the Block's metadata "faces_context" to false to switch that off for one block.
+##
 ## THE ATLAS (1024 x 128): 16 columns of 64 px, 2 rows of 64 px. One column is one 3 m bay.
 ## A window column holds two storeys (row 0 sits above row 1) and repeats vertically, so a whole
 ## stack of storeys is one quad whose v runs past 1. The painter (scratchpad
@@ -15,8 +22,7 @@ const ATLAS_W := 1024
 const ATLAS_H := 128
 const TILE := 64
 const COL_BLANK := 0  # plain wall in both rows: corner piers, margins, small faces
-const COL_WINDOW_FIRST := 1  # columns 1..7: window bays, two lit states per column
-const COL_WINDOW_COUNT := 7
+const WINDOW_COLS: Array[int] = [1, 2, 3, 4, 5, 6, 7, 13, 14, 15]  # window bays, two looks each
 const COL_BASE_BLANK := 8  # ground-floor wall: row 1 plain, row 0 with a vent box
 const COL_DOOR := 9  # row 1 a metal door with a lamp, row 0 a wider second door
 const COL_SHOP := 10  # row 1 shutter down, row 0 dark glass under a sign plate
@@ -32,9 +38,17 @@ const MARGIN_MIN := 1.0
 const MIN_FACE_W := 5.0
 const MIN_FACE_H := 4.0
 const ROOF_SPLIT := 6.0
+const Context := preload("res://scripts/building_context.gd")
+
+## Set before build() to get a list of what went where (used by placement and audit scripts):
+## {face, kind ("window"/"blank"/"door"/"shop"/"plinth"), u0, u1, y0, y1, col}, in face metres.
+var record := false
+var cells: Array = []
 
 var _st: SurfaceTool
 var _block  # the Block being built (untyped: block.gd calls this class, so no circular typing)
+var _ctx: Context  # null when the block isn't in a scene yet (or faces_context is off)
+var _face := ""
 var _n: Vector3
 var _u_axis: Vector3
 var _v_axis: Vector3
@@ -48,11 +62,17 @@ func _init(st: SurfaceTool, block) -> void:
 
 
 func build() -> void:
+	if _block.is_inside_tree() and _block.get_meta("faces_context", true):
+		_ctx = Context.new(_block)
 	var h: Vector3 = _block.size * 0.5
-	_side(Vector3(0, 0, 1), Vector3(1, 0, 0), h)  # front
-	_side(Vector3(0, 0, -1), Vector3(-1, 0, 0), h)  # back
-	_side(Vector3(1, 0, 0), Vector3(0, 0, -1), h)  # right
-	_side(Vector3(-1, 0, 0), Vector3(0, 0, 1), h)  # left
+	_face = "front"
+	_side(Vector3(0, 0, 1), Vector3(1, 0, 0), h)
+	_face = "back"
+	_side(Vector3(0, 0, -1), Vector3(-1, 0, 0), h)
+	_face = "right"
+	_side(Vector3(1, 0, 0), Vector3(0, 0, -1), h)
+	_face = "left"
+	_side(Vector3(-1, 0, 0), Vector3(0, 0, 1), h)
 	_flat(Vector3(0, 1, 0), Vector3(1, 0, 0), Vector3(0, 0, -1), h)  # roof
 	_flat(Vector3(0, -1, 0), Vector3(1, 0, 0), Vector3(0, 0, 1), h)  # underside
 
@@ -76,6 +96,10 @@ func _rnd(i: int, j: int) -> float:
 	return fmod(absf(sin(float(_seed + i * 131 + j * 977)) * 43758.5453), 1.0)
 
 
+func _window_col(i: int, j: int) -> int:
+	return WINDOW_COLS[int(_rnd(i, j) * WINDOW_COLS.size())]
+
+
 # ------------------------------------------------------------------ faces
 
 ## Sets up the frame of one face: its normal, the axis along it (u), the axis up it (v) and the
@@ -90,6 +114,8 @@ func _start(n: Vector3, u_axis: Vector3, v_axis: Vector3, h: Vector3) -> Vector2
 	_origin = n * (h * n.abs()).length() - u_axis * w * 0.5 - v_axis * ht * 0.5
 	var p: Vector3 = _block.position
 	_seed = int(absf(p.x * 3.7 + p.y * 11.3 + p.z * 5.1 + n.x * 17.0 + n.z * 29.0 + n.y * 41.0 + w * 1.3 + ht * 0.7) * 10.0)
+	if _ctx and absf(n.y) < 0.5:
+		_ctx.set_face(_origin, u_axis, n)
 	return Vector2(w, ht)
 
 
@@ -104,10 +130,27 @@ func _side(n: Vector3, u_axis: Vector3, h: Vector3) -> void:
 		return
 	var bays := floori((w - 2.0 * MARGIN_MIN) / BAY)
 	var margin := (w - bays * BAY) * 0.5
+	# Where the ground floor goes: at the bottom (ground_floor), at a street that runs along the
+	# face partway up, or nowhere (no floor in front at all: windows from the bottom).
+	var base := 0.0 if _block.ground_floor else -1.0
+	if _ctx:
+		if base == 0.0 and not _ctx.any_floor(bays, margin, BAY, 0.0):
+			base = -1.0
+		if base < 0.0:
+			var s := _ctx.street(w, ht)
+			if not is_nan(s):
+				base = s
 	var y := 0.0
-	if _block.ground_floor:
-		_base_course(bays, margin, w)
-		y = BASE_H
+	if base > 0.0:
+		# Below a street: storeys on the same grid, going down. Those behind the street's own
+		# floor (or a lower roof) come out plain; the rest still look out.
+		var below := mini(floori(base / STOREY), 5)  # deeper than 15 m: out of sight, plain
+		_blank(0.0, w, 0.0, base - below * STOREY)
+		if below > 0:
+			_storeys(bays, margin, w, base - below * STOREY, below, STOREY)
+	if base >= 0.0:
+		_base_course(bays, margin, w, base, base == 0.0)
+		y = base + BASE_H
 	var room := ht - y - PARAPET_H
 	var storeys := floori(room / STOREY)
 	var storey_h := STOREY
@@ -125,11 +168,13 @@ func _side(n: Vector3, u_axis: Vector3, h: Vector3) -> void:
 
 
 ## Ground floor: a door every third bay, shopfronts and plain plinth between, plain at the
-## corners. Split at grime_height so the vertex grime fades exactly like a plain Block's.
-func _base_course(bays: int, margin: float, w: float) -> void:
+## corners. Doors and shops only with floor to step onto in front (a shop not onto another
+## building's roof, unless this is the block's own ground floor); a bay with nothing in front
+## at all gets a window instead. Split at grime_height so the vertex grime fades like a Block's.
+func _base_course(bays: int, margin: float, w: float, y0: float, own_ground: bool) -> void:
 	var split: float = clampf(_block.grime_height, 0.4, BASE_H - 0.4)
-	_base_tile(COL_BASE_BLANK, 1, 0.0, margin, 0.0, margin / BAY, split)
-	_base_tile(COL_BASE_BLANK, 1, w - margin, w, 0.0, margin / BAY, split)
+	_base_tile(COL_BASE_BLANK, 1, 0.0, margin, y0, 0.0, margin / BAY, split)
+	_base_tile(COL_BASE_BLANK, 1, w - margin, w, y0, 0.0, margin / BAY, split)
 	var offset := int(_rnd(0, 0) * 3.0)
 	for i in bays:
 		var x := margin + i * BAY
@@ -146,17 +191,28 @@ func _base_course(bays: int, margin: float, w: float) -> void:
 			row = 1 if r < 0.3 else 0
 		elif r < 0.75:
 			row = 0  # plinth with a vent box
-		_base_tile(col, row, x, x + BAY, 0.0, 1.0, split)
+		if _ctx:
+			var fl := _ctx.can_enter(x + BAY * 0.5, y0)
+			if fl == Context.NO_FLOOR and _ctx.blocked_run(x, BAY, y0, 1, BASE_H).is_empty():
+				var wc := _window_col(i + 7, 2)  # open air in front: a window, not a door
+				_quad(x, x + BAY, y0, y0 + BASE_H, _u(wc, 0.0), _u(wc, 1.0), _v(0), _v(1))
+				_note("window", x, x + BAY, y0, y0 + BASE_H, wc)
+				continue
+			if fl == Context.NO_FLOOR or fl == Context.BLOCKED or (col == COL_SHOP and fl == Context.ROOF and not own_ground):
+				col = COL_BASE_BLANK
+		_base_tile(col, row, x, x + BAY, y0, 0.0, 1.0, split)
+		_note({COL_DOOR: "door", COL_SHOP: "shop"}.get(col, "plinth"), x, x + BAY, y0, y0 + BASE_H, col)
 
 
-func _base_tile(col: int, row: int, u0: float, u1: float, f0: float, f1: float, split: float) -> void:
+func _base_tile(col: int, row: int, u0: float, u1: float, y0: float, f0: float, f1: float, split: float) -> void:
 	var vb := 1.0 if row == 1 else 0.5
 	var vs := vb - 0.5 * split / BASE_H
-	_quad(u0, u1, 0.0, split, _u(col, f0), _u(col, f1), vb, vs)
-	_quad(u0, u1, split, BASE_H, _u(col, f0), _u(col, f1), vs, vb - 0.5)
+	_quad(u0, u1, y0, y0 + split, _u(col, f0), _u(col, f1), vb, vs)
+	_quad(u0, u1, y0 + split, y0 + BASE_H, _u(col, f0), _u(col, f1), vs, vb - 0.5)
 
 
 ## Window bays in vertical runs of a few storeys each; every run picks its own lit pattern.
+## A run with a blocked window in it is laid storey by storey, with plain wall where blocked.
 func _storeys(bays: int, margin: float, w: float, y0: float, storeys: int, storey_h: float) -> void:
 	var seg := maxi(3, ceili(storeys / 12.0))
 	var s := 0
@@ -170,9 +226,21 @@ func _storeys(bays: int, margin: float, w: float, y0: float, storeys: int, store
 		_quad(0.0, margin, ya, yb, _u(COL_BLANK, 0.0), _u(COL_BLANK, margin / BAY), vb, vt)
 		_quad(w - margin, w, ya, yb, _u(COL_BLANK, 0.0), _u(COL_BLANK, margin / BAY), vb, vt)
 		for i in bays:
-			var col := COL_WINDOW_FIRST + int(_rnd(i + 7, s + 3) * COL_WINDOW_COUNT)
+			var col := _window_col(i + 7, s + 3)
 			var x := margin + i * BAY
-			_quad(x, x + BAY, ya, yb, _u(col, 0.0), _u(col, 1.0), vb, vt)
+			var blocked: Array[int] = []
+			if _ctx:
+				blocked = _ctx.blocked_run(x, BAY, ya, count, storey_h)
+			if blocked.is_empty():
+				_quad(x, x + BAY, ya, yb, _u(col, 0.0), _u(col, 1.0), vb, vt)
+				for k in count:
+					_note("window", x, x + BAY, ya + k * storey_h, ya + (k + 1) * storey_h, col)
+				continue
+			for k in count:
+				var c := COL_BLANK if blocked.has(k) else col
+				var y := ya + k * storey_h
+				_quad(x, x + BAY, y, y + storey_h, _u(c, 0.0), _u(c, 1.0), _v(s + k), _v(s + k + 1))
+				_note("blank" if c == COL_BLANK else "window", x, x + BAY, y, y + storey_h, c)
 		s += count
 
 
@@ -217,6 +285,11 @@ func _flat(n: Vector3, u_axis: Vector3, v_axis: Vector3, h: Vector3) -> void:
 
 
 # ------------------------------------------------------------------ geometry
+
+func _note(kind: String, u0: float, u1: float, y0: float, y1: float, col: int) -> void:
+	if record:
+		cells.append({face = _face, kind = kind, u0 = u0, u1 = u1, y0 = y0, y1 = y1, col = col})
+
 
 func _pos(u: float, y: float) -> Vector3:
 	return _origin + _u_axis * u + _v_axis * y

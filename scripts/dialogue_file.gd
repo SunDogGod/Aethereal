@@ -47,6 +47,8 @@ static func parse(source: String) -> Dictionary:
 					steps.append({"type": "empower", "name": arg})   # a Guard becomes unbeatable
 				"kill":
 					steps.append({"type": "kill", "name": arg})      # a Guard drops (sacrificed), no blood
+				"collapse":
+					steps.append({"type": "collapse", "name": arg})  # a character falls and stays down (plays its death)
 				"heal":
 					steps.append({"type": "heal"})
 				_:

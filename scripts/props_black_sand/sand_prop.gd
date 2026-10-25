@@ -8,14 +8,14 @@ extends Node3D
 
 const PropMesh := preload("res://scripts/props/prop_mesh.gd")
 const M := {
-	metal = preload("res://materials/metal.tres"), hull = preload("res://materials/black_sand_hull.tres"),
-	rust = preload("res://materials/black_sand_hull_rust.tres"), lens = preload("res://materials/precursor_light.tres"),
+	metal = preload("res://materials/metal_worn.tres"), hull = preload("res://materials/black_sand_hull_worn.tres"),
+	rust = preload("res://materials/black_sand_hull_rust_worn.tres"), lens = preload("res://materials/precursor_light.tres"),
 	warm = preload("res://materials/black_sand_lamp_warm.tres"), beacon = preload("res://materials/black_sand_beacon.tres"),
 	reflector = preload("res://materials/black_sand_reflector.tres"), tarp = preload("res://materials/black_sand_tarp.tres"),
 	stone = preload("res://materials/black_sand_stone.tres"), yellow = preload("res://materials/paint_yellow.tres"),
 	rubber = preload("res://materials/rubber.tres"), dead = preload("res://materials/ceiling_panel_off.tres"),
 	brass = preload("res://materials/brass.tres"), wood = preload("res://materials/wood.tres"),
-	red = preload("res://materials/paint_red.tres"), glyph = preload("res://materials/black_sand_arch.tres"),
+	red = preload("res://materials/paint_red.tres"), glyph = preload("res://materials/black_sand_arch_worn.tres"),
 	sand = preload("res://materials/black_sand_dunes.tres"), fire = preload("res://materials/fire.tres"),
 }
 

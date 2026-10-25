@@ -140,6 +140,13 @@ func _run(steps: Array, scene: String) -> void:
 				var guard := _level().find_child(step.name, true, false)
 				if guard is Guard:
 					guard.empower()
+			"collapse":
+				var body := _level().find_child(step.name, true, false)
+				if body:
+					for n in [body] + body.find_children("*", "", true, false):
+						if n.has_method("die") and not n is Guard:
+							n.die()  # its animator plays the death and holds the last pose
+							break
 			"kill":
 				var victim := _level().find_child(step.name, true, false)
 				if victim is Guard:

@@ -28,7 +28,7 @@ Play: F5 opens the **location menu**. Pick a place, or start at 0.1 and walk the
 - Beats: `memory` (courtyard), `the_men` (the Great Estate gate), `the_drain`, `whiteout`.
 
 ## 0.3 Black Sand — `scenes/levels/black_sand.tscn`
-- **Decided:** Isabella vanished; the cairn holds her bell and brush. Kael's "her body is special"
+- **Superseded 2026-10-25 by the author's sacrifice rule:** a sacrifice only counts if the body is burned or given to the cube. Isabella gives her life in the hall, but her body stays (the cube doesn't take it), and Kael and Aeneas carry her back to the family house in Black Sand, hidden in the fog under the Kowloon town ("her giving her life was overkill anyways"). The old cairn-with-her-bell idea (below) is out of date. Kael's "her body is special"
   line is deferred to a later arc.
 - **Decided:** artificial dawn: the ceiling panels switch on far-to-near over ~22 s, the "sun" rises
   with them, the fog lightens. This is the morning the Agency starts hunting them.

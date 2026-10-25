@@ -6,11 +6,11 @@ extends "res://scripts/props_vacuum_station/station_prop_base.gd"
 ## front: a Desk console's screen centre is (0, 1.22, -0.25), a Kiosk's (0, 1.35, 0.2).
 
 const M := {
-	metal = preload("res://materials/metal.tres"), dark = preload("res://materials/rubber.tres"),
-	hull = preload("res://materials/vacuum_station_hull.tres"), wall = preload("res://materials/vacuum_station_wall.tres"),
+	metal = preload("res://materials/metal_worn.tres"), dark = preload("res://materials/rubber.tres"),
+	hull = preload("res://materials/vacuum_station_hull_worn.tres"), wall = preload("res://materials/vacuum_station_wall_worn.tres"),
 	glass = preload("res://materials/vacuum_station_screen_dead.tres"), red = preload("res://materials/vacuum_station_red.tres"),
-	guide = preload("res://materials/vacuum_station_guide.tres"), stripes = preload("res://materials/trim_stripes.tres"),
-	rail = preload("res://materials/trim_rail.tres"), teal = preload("res://materials/paint_teal.tres"),
+	guide = preload("res://materials/vacuum_station_guide.tres"), stripes = preload("res://materials/trim_stripes_worn.tres"),
+	rail = preload("res://materials/trim_rail_worn.tres"), teal = preload("res://materials/paint_teal.tres"),
 	yellow = preload("res://materials/paint_yellow.tres"), wood = preload("res://materials/wood.tres"),
 	off = preload("res://materials/ceiling_panel_off.tres"), vent = preload("res://materials/vacuum_station_vent.tres"),
 }

@@ -8,8 +8,8 @@ extends Node3D
 
 const PropMesh := preload("res://scripts/props/prop_mesh.gd")
 const M := {
-	metal = preload("res://materials/metal.tres"), hull = preload("res://materials/black_sand_hull.tres"),
-	rust = preload("res://materials/black_sand_hull_rust.tres"), mega = preload("res://materials/black_sand_mega.tres"),
+	metal = preload("res://materials/metal_worn.tres"), hull = preload("res://materials/black_sand_hull_worn.tres"),
+	rust = preload("res://materials/black_sand_hull_rust_worn.tres"), mega = preload("res://materials/black_sand_mega_worn.tres"),
 	grating = preload("res://materials/grating.tres"), hole = preload("res://materials/black_sand_void.tres"),
 	beacon = preload("res://materials/black_sand_beacon.tres"), lens = preload("res://materials/precursor_light.tres"),
 	stone = preload("res://materials/black_sand_stone.tres"), rubber = preload("res://materials/rubber.tres"),

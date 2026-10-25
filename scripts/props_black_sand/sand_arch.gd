@@ -29,7 +29,7 @@ const PropMesh := preload("res://scripts/props/prop_mesh.gd")
 	set(value):
 		sink_degrees = value
 		_rebuild()
-@export var stone: Material = preload("res://materials/black_sand_arch.tres"):
+@export var stone: Material = preload("res://materials/black_sand_arch_worn.tres"):
 	set(value):
 		stone = value
 		_rebuild()

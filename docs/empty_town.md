@@ -158,3 +158,55 @@ city textures, doors that don't open").
 - **Open**: the Laundry prompt still yields to the takedown prompt while the west pair stands (by
   design). guard.gd and player_combat.gd are over the 300-line rule from before this pass, and
   player.gd is back at ~330 lines; splitting them is a separate job.
+
+## Round 5 (2026-10-25): the author's list (lit cracked windows, cracked vending machines, cleaner streets, the well)
+- **Windows:** more of the lit windows are cracked now (crisp one-pixel cracks round a small hole,
+  the light still on behind them), and the atlas has three more window columns (13-15), so the
+  fronts repeat less. Boarded and broken-dark windows stay.
+- **Vending machines:** some lit, some dark, some cracked. New fronts: lit and cracked, switched
+  off (one red standby lamp), off and smashed (`materials/empty_town_vending_*.tres`). The gate's
+  second machine and the deck machine are cracked; the deck machine's light is failing and takes
+  its glow with it (on, off, on). New machines: a lit and a dead pair in the courtyard (they
+  replace the two flat neon boxes), a cracked lit and a dark one on the rim, a smashed one in the
+  alley's back corner, and on the start ledge a smashed one and a cracked one that flickers.
+  The inspected machine at the gate (DeadVending) is still the lit, humming one.
+- **Lived-in streets cleaner, the rest dirtier:** the gate alley, rim, deck, alleys and courtyard
+  are swept (loose debris, rubble and grime stains off the floors; the buildings keep their
+  wear), with plants by doors and stalls, a broom, and a doormat at every door. The start
+  ledge is full of trash: two skips heaped with bags, bags along the rails, rubble, debris,
+  crates, dead cables, grime. Trash too in the tunnel mouth, on the bridge, the overlook and the
+  back corners (the alley's north end, the deck's north-east corner).
+- **Where they came from:** the black panel in the megastructure wall is now a real opening, a
+  steel frame with hazard stripes and a lamp over it, and a tunnel behind with ceiling lights
+  that fade into the dark (one failing). It shows in the opening shot behind Isabella and Aeneas.
+  It's walkable for 34 m and ends in the dark.
+- **Windows and doors where real buildings have them** (`scripts/building_faces.gd` with the new
+  `scripts/building_context.gd`, every level): a door or shopfront only with floor right at its
+  foot and room in front (never facing a drop, never over a roof or under a slab; onto a roof
+  or a small ledge a door, not a shop); a face with nothing to step onto gets no ground floor,
+  windows start at the bottom (the towers' outer faces over the drop); a courtyard or deck running
+  along a foundation wall puts the ground floor at that height (the courtyard walls now have
+  doors and shopfronts at the courtyard floor); no window with something solid within 1.5 m in
+  front (a neighbour pressed against it, a slab or walkway across it, a ramp against it).
+  Rails, pipes, signs and panels don't count. Set a Block's metadata `faces_context` to false
+  to turn this off for that block. In the editor a building rebuilds when it moves, not when its
+  neighbour moves: nudge it (or reopen the scene) to refresh its doors and windows.
+- **The concrete extension blocks** on the outer south face (Bay1-7) and Tower3's overhang are
+  gone. In their place 28 AC units (`scripts/props/empty_town_ac.gd`): a unit under a window,
+  its two refrigerant lines out of the side and into the wall through a cover plate, a drain down
+  from its tray; a rust streak under most. **Proposed:** the well's two smaller ledges (Tower7's
+  and the north one) stay as broken balconies with their rebar; Tower3's rebar now sticks out of
+  the wall where its slab broke away.
+- **Short pipes with a reason:** downpipes off the roof edges of the five rooftop blocks (a
+  hopper on the parapet, the pipe down, a shoe over the roof below), and a feed from Tower3Top's
+  wall into the water tank beside it.
+- **The well:** round pipes, properly joined: the riser comes up out of a worn concrete collar,
+  a cross fitting at 2.9 m, the east main runs to the courtyard wall and along it into the hall's
+  frame duct, the west main drops into the ground. Flanges at every joint and end, a valve wheel
+  on top where the overhead cables tie on, a rope wound round it (`empty_town_well.gd`, Wellhead).
+  **The tap** moved here: a tap cut into the west main's standpipe, blue water falling into a
+  round concrete basin (Tap basin), with its look-at prompt, its sound and a drip. The bucket
+  that lay by the old tap lies by the basin. Both are solid, so the navigation mesh was rebaked.
+- **For the author:** the well's and the tap's look-at lines are yours and unchanged, but the well
+  line says there's no water in it, and the tap line has the water hitting the plates; with the
+  tap now at the well, over a basin, you may want to rewrite both.

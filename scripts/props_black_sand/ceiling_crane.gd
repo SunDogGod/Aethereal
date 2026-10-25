@@ -6,8 +6,8 @@ extends Node3D
 ## the haze is always moving. Purely visual (no collision). The origin is the middle of the girder.
 
 const PropMesh := preload("res://scripts/props/prop_mesh.gd")
-const HULL := preload("res://materials/black_sand_hull.tres")
-const METAL := preload("res://materials/metal.tres")
+const HULL := preload("res://materials/black_sand_hull_worn.tres")
+const METAL := preload("res://materials/metal_worn.tres")
 const RUBBER := preload("res://materials/rubber.tres")
 const BEACON := preload("res://materials/black_sand_beacon.tres")
 

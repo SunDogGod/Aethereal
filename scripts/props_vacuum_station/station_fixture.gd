@@ -9,14 +9,14 @@ extends "res://scripts/props_vacuum_station/station_prop_base.gd"
 ## 2-4 tube one/two/three, 5 capsule, 6 hazard, 7 way out). Boards: variant 0 lit row, 1 dead.
 
 const M := {
-	metal = preload("res://materials/metal.tres"), dark = preload("res://materials/rubber.tres"),
-	hull = preload("res://materials/vacuum_station_hull.tres"), wall = preload("res://materials/vacuum_station_wall.tres"),
+	metal = preload("res://materials/metal_worn.tres"), dark = preload("res://materials/rubber.tres"),
+	hull = preload("res://materials/vacuum_station_hull_worn.tres"), wall = preload("res://materials/vacuum_station_wall_worn.tres"),
 	lamp = preload("res://materials/vacuum_station_lamp.tres"), off = preload("res://materials/ceiling_panel_off.tres"),
-	guide = preload("res://materials/vacuum_station_guide.tres"), concrete = preload("res://materials/concrete_dark.tres"),
+	guide = preload("res://materials/vacuum_station_guide.tres"), concrete = preload("res://materials/concrete_dark_worn.tres"),
 	pipe = preload("res://materials/pipe_round.tres"), vent = preload("res://materials/vacuum_station_vent.tres"),
 	grating = preload("res://materials/grating.tres"), board = preload("res://materials/vacuum_station_board.tres"),
 	board_dead = preload("res://materials/vacuum_station_board_dead.tres"), red = preload("res://materials/vacuum_station_red.tres"),
-	rail = preload("res://materials/trim_rail.tres"), glass = preload("res://materials/vacuum_station_screen_dead.tres"),
+	rail = preload("res://materials/trim_rail_worn.tres"), glass = preload("res://materials/vacuum_station_screen_dead.tres"),
 	panel = preload("res://materials/precursor_panel.tres"),
 }
 const SIGNS := ["arrow_right", "ahead", "tube1", "tube2", "tube3", "capsule", "hazard", "exit"]

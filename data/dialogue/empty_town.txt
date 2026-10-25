@@ -12,6 +12,7 @@
 #   [camera]                    cut back to the normal camera behind Aeneas.
 #   [wait 1.5]                  pause for 1.5 seconds.
 #   [hide Kael] / [show Kael]   hide or show something in the level, by its node name.
+#   [collapse IsabellaHall]     a character falls and stays down (her death animation).
 # Lines starting with # are notes to yourself; the game ignores them.
 
 === arrival ===
@@ -76,7 +77,7 @@ She draws. Ink hangs in the air: circles inside circles, symbols Aeneas has neve
 [show InkCircle]
 She rings the bell.
 ISABELLA: I sacrifice.
-[hide IsabellaHall]
+[collapse IsabellaHall]
 [hide InkCircle]
 And she is gone. Perfectly.
 [camera EruptionShot]
