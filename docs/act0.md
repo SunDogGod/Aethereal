@@ -28,6 +28,7 @@ Play: F5 opens the **location menu**. Pick a place, or start at 0.1 and walk the
 - Beats: `memory` (courtyard), `the_men` (the Great Estate gate), `the_drain`, `whiteout`.
 
 ## 0.3 Black Sand — `scenes/levels/black_sand.tscn`
+- **Decided 2026-10-25 (the author):** dark and foggy (Blame! is an inspiration). The family home is a giant steel module repurposed into a shed with two beds ("No one was going to build that house for them"); Isabella's body lies inside. Sand drifts up the steel side walls; the south side is the town as a solid black block with windows starting high up.
 - **Superseded 2026-10-25 by the author's sacrifice rule:** a sacrifice only counts if the body is burned or given to the cube. Isabella gives her life in the hall, but her body stays (the cube doesn't take it), and Kael and Aeneas carry her back to the family house in Black Sand, hidden in the fog under the Kowloon town ("her giving her life was overkill anyways"). The old cairn-with-her-bell idea (below) is out of date. Kael's "her body is special"
   line is deferred to a later arc.
 - **Decided:** artificial dawn: the ceiling panels switch on far-to-near over ~22 s, the "sun" rises
