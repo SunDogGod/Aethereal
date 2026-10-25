@@ -1,0 +1,9 @@
+# Godot's import cache and editor state: rebuilt automatically when the project opens
+.godot/
+# Python bytecode from the Blender character scripts
+__pycache__/
+*.pyc
+# Exported game builds (if any are made later)
+/build/
+/export/
+*.tmp

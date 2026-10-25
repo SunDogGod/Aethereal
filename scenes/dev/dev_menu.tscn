@@ -1,0 +1,115 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/dev/dev_menu.gd" id="1_menu"]
+[ext_resource type="Theme" path="res://scenes/ui/menu_theme.tres" id="2_theme"]
+
+[sub_resource type="Gradient" id="Gradient_side"]
+colors = PackedColorArray(0, 0, 0, 0.55, 0, 0, 0, 0)
+
+[sub_resource type="GradientTexture2D" id="Texture_side"]
+gradient = SubResource("Gradient_side")
+width = 64
+height = 4
+
+[node name="DevMenu" type="CanvasLayer"]
+process_mode = 3
+layer = 45
+script = ExtResource("1_menu")
+
+[node name="Root" type="Control" parent="."]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_theme")
+
+[node name="Dim" type="ColorRect" parent="Root"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.01, 0.015, 0.035, 0.35)
+
+[node name="Side" type="TextureRect" parent="Root"]
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_right = 420.0
+grow_vertical = 2
+mouse_filter = 2
+texture = SubResource("Texture_side")
+expand_mode = 1
+
+[node name="Panel" type="PanelContainer" parent="Root"]
+custom_minimum_size = Vector2(332, 0)
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 36.0
+offset_right = 368.0
+grow_vertical = 2
+
+[node name="Box" type="VBoxContainer" parent="Root/Panel"]
+layout_mode = 2
+theme_override_constants/separation = 3
+
+[node name="Title" type="Label" parent="Root/Panel/Box"]
+layout_mode = 2
+theme_type_variation = &"HeaderLabel"
+text = "DEV MENU"
+
+[node name="Where" type="Label" parent="Root/Panel/Box"]
+layout_mode = 2
+theme_type_variation = &"HintLabel"
+theme_override_colors/font_color = Color(1, 0.76, 0.4, 0.8)
+text = "0.1  The Empty Town      debug builds only"
+
+[node name="Rule" type="ColorRect" parent="Root/Panel/Box"]
+custom_minimum_size = Vector2(0, 1)
+layout_mode = 2
+mouse_filter = 2
+color = Color(0.45, 0.5, 0.66, 0.45)
+
+[node name="Main" type="VBoxContainer" parent="Root/Panel/Box"]
+layout_mode = 2
+theme_override_constants/separation = 1
+
+[node name="Teleport" type="VBoxContainer" parent="Root/Panel/Box"]
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 2
+
+[node name="Scroll" type="ScrollContainer" parent="Root/Panel/Box/Teleport"]
+custom_minimum_size = Vector2(0, 330)
+layout_mode = 2
+follow_focus = true
+horizontal_scroll_mode = 0
+
+[node name="List" type="VBoxContainer" parent="Root/Panel/Box/Teleport/Scroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 1
+
+[node name="Chapters" type="VBoxContainer" parent="Root/Panel/Box"]
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 1
+
+[node name="Hints" type="Label" parent="Root"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -560.0
+offset_top = 16.0
+offset_right = -28.0
+offset_bottom = 32.0
+grow_horizontal = 0
+theme_type_variation = &"HintLabel"
+text = "Enter / A   select"
+horizontal_alignment = 2

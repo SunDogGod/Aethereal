@@ -1,0 +1,6 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/props/roof_prop.gd" id="1_oiqqa"]
+
+[node name="RoofProp" type="Node3D" unique_id=20986297]
+script = ExtResource("1_oiqqa")

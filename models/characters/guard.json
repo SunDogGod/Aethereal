@@ -1,0 +1,23 @@
+{
+ "name": "guard",
+ "root": "GuardModel",
+ "glb": "res://models/characters/guard.glb",
+ "props_glb": "res://models/characters/guard_props.glb",
+ "scene": "res://scenes/characters/guard_model.tscn",
+ "attach": [
+  {
+   "node": "HeadGear",
+   "bone": "Head",
+   "props": [
+    "Visor"
+   ]
+  },
+  {
+   "node": "Blade",
+   "bone": "Weapon_R",
+   "props": [
+    "BladeMesh"
+   ]
+  }
+ ]
+}

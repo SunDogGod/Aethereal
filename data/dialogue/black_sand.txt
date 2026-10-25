@@ -1,0 +1,48 @@
+# 0.3 BLACK SAND: the morning after. DRAFT lines, from the Notion beats:
+# Kael recovered what was left; the cube bargain; the symbol = his family's killers;
+# Kael's wife was taken by the same network; Aeneas joins the hunt.
+# Decided: there is no body. Isabella vanished. The grave holds her bell and brush.
+
+=== waking ===
+[camera WakingShot]
+Black sand. Cold. A ceiling so far up it reads as sky.
+Somewhere above, the lights are coming on.
+[camera TownShot]
+Behind him, on the horizon, the town.
+[camera]
+
+=== the_grave ===
+[camera GraveShot]
+A cairn of black sand. Her bell, and her brush. There was nothing else to bury.
+[camera]
+
+=== the_cube ===
+[camera CampShot]
+KAEL: You're awake. Sit.
+Kael turns a black cube in his hand.
+KAEL: Everyone who has power paid for it with this. Something you love goes in. Something comes out.
+KAEL: Your mother knew the price exactly. That's why it worked.
+Scratched into the pipe above him: the symbol the men in the hall wore.
+AENEAS: I've seen that before.
+KAEL: So have I. They took my wife.
+KAEL: The road north is watched. We go anyway.
+[hide KaelFigure]
+[hide KaelFigureTag]
+[show Kael]
+[camera]
+
+=== the_road ===
+[camera RoadShot]
+The Construct's road, lit and patrolled. The Agency is already hunting them.
+[camera]
+
+=== the_arch ===
+[camera ArchShot]
+An arch older than the town, older than the Agency. Half of it is under the sand.
+KAEL: Precursor work. If anything still runs, it runs down there.
+[camera]
+
+=== down ===
+[fade out]
+[title ACT 0 / THE VACUUM STATION]
+[level res://scenes/levels/vacuum_station.tscn]

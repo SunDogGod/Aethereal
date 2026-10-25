@@ -1,0 +1,123 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/guard.gd" id="1_guard"]
+[ext_resource type="Resource" path="res://data/enemies/agency_agent.tres" id="2_data"]
+[ext_resource type="Shader" path="res://shaders/ps1_surface.gdshader" id="3_ps1"]
+[ext_resource type="Script" path="res://scripts/enemy_fighter.gd" id="4_fighter"]
+[ext_resource type="PackedScene" path="res://scenes/characters/agent_model.tscn" id="5_model"]
+
+[sub_resource type="CapsuleShape3D" id="Shape_body"]
+radius = 0.35
+height = 1.8
+
+[sub_resource type="ShaderMaterial" id="Mat_ink"]
+shader = ExtResource("3_ps1")
+shader_parameter/albedo_color = Color(0.02, 0.02, 0.03, 1)
+shader_parameter/emission_color = Color(0.35, 0.15, 0.5, 1)
+shader_parameter/emission_energy = 1.6
+
+[sub_resource type="TorusMesh" id="Mesh_glyph_ring"]
+material = SubResource("Mat_ink")
+inner_radius = 0.42
+outer_radius = 0.52
+rings = 8
+ring_segments = 4
+
+[sub_resource type="BoxMesh" id="Mesh_glyph_stroke"]
+material = SubResource("Mat_ink")
+size = Vector3(0.95, 0.08, 0.04)
+
+[sub_resource type="Gradient" id="Gradient_blood"]
+interpolation_mode = 1
+offsets = PackedFloat32Array(0, 0.85)
+colors = PackedColorArray(0.28, 0.02, 0.03, 0.9, 0.28, 0.02, 0.03, 0)
+
+[sub_resource type="GradientTexture2D" id="Tex_blood"]
+gradient = SubResource("Gradient_blood")
+width = 32
+height = 32
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(1, 0.5)
+
+[sub_resource type="Gradient" id="Gradient_shadow"]
+interpolation_mode = 1
+offsets = PackedFloat32Array(0, 0.8)
+colors = PackedColorArray(0, 0, 0, 0.55, 0, 0, 0, 0)
+
+[sub_resource type="GradientTexture2D" id="Tex_shadow"]
+gradient = SubResource("Gradient_shadow")
+width = 32
+height = 32
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(1, 0.5)
+
+[node name="Guard" type="CharacterBody3D"]
+collision_layer = 4
+floor_snap_length = 0.3
+script = ExtResource("1_guard")
+data = ExtResource("2_data")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+position = Vector3(0, 0.9, 0)
+shape = SubResource("Shape_body")
+
+[node name="Model" parent="." instance=ExtResource("5_model")]
+
+[node name="Eyes" type="Marker3D" parent="Model"]
+position = Vector3(0, 1.68, -0.12)
+
+[node name="InkGlyph" type="Node3D" parent="Model"]
+visible = false
+position = Vector3(0, 1.25, -0.55)
+
+[node name="Ring" type="MeshInstance3D" parent="Model/InkGlyph"]
+rotation = Vector3(1.5708, 0, 0)
+layers = 2
+mesh = SubResource("Mesh_glyph_ring")
+
+[node name="Stroke1" type="MeshInstance3D" parent="Model/InkGlyph"]
+rotation = Vector3(0, 0, 0.785)
+layers = 2
+mesh = SubResource("Mesh_glyph_stroke")
+
+[node name="Stroke2" type="MeshInstance3D" parent="Model/InkGlyph"]
+rotation = Vector3(0, 0, -0.785)
+layers = 2
+mesh = SubResource("Mesh_glyph_stroke")
+
+[node name="Fighter" type="Node" parent="."]
+script = ExtResource("4_fighter")
+
+[node name="Alert" type="Label3D" parent="."]
+visible = false
+position = Vector3(0, 2.35, 0)
+billboard = 1
+no_depth_test = true
+texture_filter = 0
+modulate = Color(1, 0.9, 0.2, 1)
+outline_modulate = Color(0, 0, 0, 1)
+text = "?"
+font_size = 64
+outline_size = 12
+pixel_size = 0.01
+
+[node name="BloodPool" type="Decal" parent="."]
+visible = false
+position = Vector3(0, -1, -0.8)
+size = Vector3(0.2, 2.4, 0.2)
+texture_albedo = SubResource("Tex_blood")
+upper_fade = 0.0
+lower_fade = 0.3
+normal_fade = 0.5
+cull_mask = 1
+
+[node name="BlobShadow" type="Decal" parent="."]
+position = Vector3(0, -1.9, 0)
+size = Vector3(0.9, 4.4, 0.9)
+texture_albedo = SubResource("Tex_shadow")
+upper_fade = 0.0
+lower_fade = 0.3
+normal_fade = 0.5
+cull_mask = 1

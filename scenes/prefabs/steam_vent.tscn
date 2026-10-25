@@ -1,0 +1,17 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/steam_vent.gd" id="1_axgsy"]
+[ext_resource type="Script" path="res://scripts/block.gd" id="2_0jpld"]
+[ext_resource type="Material" path="res://materials/trim_vent.tres" id="3_c8ieu"]
+
+[node name="SteamVent" type="Node3D" unique_id=1190645698]
+script = ExtResource("1_axgsy")
+direction = Vector3(0.5, 1, 0)
+
+[node name="Grille" type="StaticBody3D" parent="." unique_id=815247424]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.1, 0, 0)
+script = ExtResource("2_0jpld")
+size = Vector3(0.1, 0.5, 0.5)
+material = ExtResource("3_c8ieu")
+grime = 0.0
+trim = true

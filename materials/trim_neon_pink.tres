@@ -1,0 +1,14 @@
+[gd_resource type="ShaderMaterial" format=3]
+
+[ext_resource type="Shader" path="res://shaders/ps1_surface.gdshader" id="1_ps1"]
+[ext_resource type="Texture2D" path="res://textures/trim_sheet.png" id="2_tex"]
+[ext_resource type="Texture2D" path="res://textures/trim_sheet_glow.png" id="3_tex"]
+
+[resource]
+shader = ExtResource("1_ps1")
+shader_parameter/albedo_texture = ExtResource("2_tex")
+shader_parameter/emission_texture = ExtResource("3_tex")
+shader_parameter/uv_scale = Vector2(1, 0.125)
+shader_parameter/uv_offset = Vector2(0, 0.875)
+shader_parameter/emission_tint = Color(1, 0.3, 0.7, 1)
+shader_parameter/emission_energy = 2.2

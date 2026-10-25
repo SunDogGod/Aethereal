@@ -1,0 +1,29 @@
+# 0.2 THE MASSACRE: a memory, played as a four-year-old.
+# DRAFT lines. Per the Notion rule, this is a FRAGMENT: noise, running, a hand on his arm.
+# No tithe, no horse, no faces, no father's death. Those wait for Agartha.
+
+=== memory ===
+[camera CourtyardShot]
+Lanterns. A courtyard full of people. Music somewhere.
+He is four years old, and this is all he will remember for ten years.
+[camera]
+
+=== the_men ===
+[camera CorridorShot]
+Noise, from the only way in.
+Men come through the corridor. They start killing.
+[show Raiders]
+[hide Crowd]
+[camera IsabellaShot]
+A hand closes on his arm.
+ISABELLA: Don't look. Run.
+[camera]
+
+=== the_drain ===
+[camera DrainShot]
+Behind the great house, a drain under the wall. The way out nobody was meant to use.
+[camera]
+
+=== whiteout ===
+[fade white]
+[level res://scenes/levels/black_sand.tscn]

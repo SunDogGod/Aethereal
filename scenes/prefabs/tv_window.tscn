@@ -1,0 +1,10 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/tv_window.gd" id="1_2yl3v"]
+[ext_resource type="Material" path="res://materials/window_glow.tres" id="2_sob7h"]
+
+[node name="TvWindow" type="StaticBody3D" unique_id=1405312912]
+script = ExtResource("1_2yl3v")
+size = Vector3(0.06, 1, 1.4)
+material = ExtResource("2_sob7h")
+grime = 0.0

@@ -1,0 +1,8 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/flicker_light.gd" id="1_y1vhu"]
+
+[node name="FlickerLight" type="OmniLight3D" unique_id=1167831560]
+light_color = Color(1, 0.78, 0.5, 1)
+omni_range = 8.0
+script = ExtResource("1_y1vhu")

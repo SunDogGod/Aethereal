@@ -1,0 +1,16 @@
+# THE EMPTY TOWN: what Aeneas sees when he looks at things (E / D-pad up).
+#
+# DRAFT. Placeholder lines so the prompts work; rewrite them in your voice.
+#
+# One entry per line:  NodeName|first line|second line|third line
+# The name is the Interactable node's name in the level (under Inspect). Lines are shown one
+# after another as narration; keep them short. Lines starting with # are notes.
+
+Well|A well. There's no water in it: three pipes meet at the bottom, and one of them hums.|The rope is worn smooth. People drew from it anyway.
+DoorlessShop|A shopfront: a lintel, two posts, a worn step. No door. Just wall.|The step is worn in the middle, where feet would go.
+DroppedBasket|A basket on its side. What was in it has rolled a little way and stopped.|Whoever dropped it didn't stop to pick it up.
+RunningTap|A tap left running. The water hits the plates and splits, and keeps splitting.|It's the loudest thing in the town.
+AgencyPoster|An Agency poster. The paper is new; the glue is still wet at one corner.|Someone put this up today.
+DeadVending|A vending machine, still lit, still humming to itself. Nobody has come for a drink all day.|Coins in the tray. Nobody's touched them.
+Laundry|Washing on a line across the alley. The shirts are dry, stiff, hung with care.|Somebody meant to take these in before dark.
+HallDoor|The hall. The doors stand open, and no sound comes out.|Everyone was taken this way.

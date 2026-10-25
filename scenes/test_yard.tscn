@@ -1,0 +1,187 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/player.tscn" id="1_player"]
+[ext_resource type="Material" path="res://materials/ground_dirt.tres" id="2_dirt"]
+[ext_resource type="Material" path="res://materials/concrete.tres" id="3_concrete"]
+[ext_resource type="Material" path="res://materials/dev_grid.tres" id="4_grid"]
+[ext_resource type="PackedScene" path="res://scenes/isabella.tscn" id="isabella_scene"]
+
+[sub_resource type="Environment" id="Environment_yard"]
+background_mode = 1
+background_color = Color(0.32, 0.3, 0.36, 1)
+ambient_light_source = 2
+ambient_light_color = Color(0.55, 0.55, 0.65, 1)
+ambient_light_energy = 0.6
+fog_enabled = true
+fog_mode = 1
+fog_light_color = Color(0.32, 0.3, 0.36, 1)
+fog_density = 1.0
+fog_depth_begin = 12.0
+fog_depth_end = 55.0
+
+[sub_resource type="PlaneMesh" id="Mesh_ground"]
+material = ExtResource("2_dirt")
+size = Vector2(60, 60)
+subdivide_width = 29
+subdivide_depth = 29
+
+[sub_resource type="BoxShape3D" id="Shape_ground"]
+size = Vector3(60, 1, 60)
+
+[sub_resource type="BoxMesh" id="Mesh_wall_long_x"]
+material = ExtResource("3_concrete")
+size = Vector3(60, 4, 1)
+subdivide_width = 29
+subdivide_height = 1
+
+[sub_resource type="BoxShape3D" id="Shape_wall_long_x"]
+size = Vector3(60, 4, 1)
+
+[sub_resource type="BoxMesh" id="Mesh_wall_long_z"]
+material = ExtResource("3_concrete")
+size = Vector3(1, 4, 60)
+subdivide_height = 1
+subdivide_depth = 29
+
+[sub_resource type="BoxShape3D" id="Shape_wall_long_z"]
+size = Vector3(1, 4, 60)
+
+[node name="TestYard" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_yard")
+
+[node name="Sun" type="DirectionalLight3D" parent="."]
+rotation = Vector3(-0.9, 0.6, 0)
+light_color = Color(1, 0.92, 0.8, 1)
+
+[node name="Ground" type="StaticBody3D" parent="."]
+
+[node name="Mesh" type="MeshInstance3D" parent="Ground"]
+mesh = SubResource("Mesh_ground")
+
+[node name="Collision" type="CollisionShape3D" parent="Ground"]
+position = Vector3(0, -0.5, 0)
+shape = SubResource("Shape_ground")
+
+[node name="Walls" type="StaticBody3D" parent="."]
+
+[node name="NorthMesh" type="MeshInstance3D" parent="Walls"]
+position = Vector3(0, 2, -30)
+mesh = SubResource("Mesh_wall_long_x")
+
+[node name="NorthCollision" type="CollisionShape3D" parent="Walls"]
+position = Vector3(0, 2, -30)
+shape = SubResource("Shape_wall_long_x")
+
+[node name="SouthMesh" type="MeshInstance3D" parent="Walls"]
+position = Vector3(0, 2, 30)
+mesh = SubResource("Mesh_wall_long_x")
+
+[node name="SouthCollision" type="CollisionShape3D" parent="Walls"]
+position = Vector3(0, 2, 30)
+shape = SubResource("Shape_wall_long_x")
+
+[node name="EastMesh" type="MeshInstance3D" parent="Walls"]
+position = Vector3(30, 2, 0)
+mesh = SubResource("Mesh_wall_long_z")
+
+[node name="EastCollision" type="CollisionShape3D" parent="Walls"]
+position = Vector3(30, 2, 0)
+shape = SubResource("Shape_wall_long_z")
+
+[node name="WestMesh" type="MeshInstance3D" parent="Walls"]
+position = Vector3(-30, 2, 0)
+mesh = SubResource("Mesh_wall_long_z")
+
+[node name="WestCollision" type="CollisionShape3D" parent="Walls"]
+position = Vector3(-30, 2, 0)
+shape = SubResource("Shape_wall_long_z")
+
+[node name="Blocks" type="Node3D" parent="."]
+
+[node name="Step50cm" type="CSGBox3D" parent="Blocks"]
+position = Vector3(4, 0.25, -4)
+use_collision = true
+size = Vector3(2, 0.5, 2)
+material = ExtResource("4_grid")
+
+[node name="Step1m" type="CSGBox3D" parent="Blocks"]
+position = Vector3(7, 0.5, -4)
+use_collision = true
+size = Vector3(2, 1, 2)
+material = ExtResource("4_grid")
+
+[node name="Step1m40" type="CSGBox3D" parent="Blocks"]
+position = Vector3(10, 0.7, -4)
+use_collision = true
+size = Vector3(2, 1.4, 2)
+material = ExtResource("4_grid")
+
+[node name="PlatformA" type="CSGBox3D" parent="Blocks"]
+position = Vector3(10, 1, -8)
+use_collision = true
+size = Vector3(4, 2, 4)
+material = ExtResource("3_concrete")
+
+[node name="PlatformB" type="CSGBox3D" parent="Blocks"]
+position = Vector3(10, 1, -15)
+use_collision = true
+size = Vector3(4, 2, 4)
+material = ExtResource("3_concrete")
+
+[node name="Ramp" type="CSGBox3D" parent="Blocks"]
+position = Vector3(-8, 1.25, -6)
+rotation = Vector3(0.349066, 0, 0)
+use_collision = true
+size = Vector3(3, 0.4, 8)
+material = ExtResource("3_concrete")
+
+[node name="RampTop" type="CSGBox3D" parent="Blocks"]
+position = Vector3(-8, 1.4, -11.2)
+use_collision = true
+size = Vector3(3, 2.8, 3)
+material = ExtResource("3_concrete")
+
+[node name="LowWall" type="CSGBox3D" parent="Blocks"]
+position = Vector3(8, 1.5, 10)
+use_collision = true
+size = Vector3(8, 3, 0.6)
+material = ExtResource("3_concrete")
+
+[node name="Pillar1" type="CSGBox3D" parent="Blocks"]
+position = Vector3(-12, 3, 8)
+use_collision = true
+size = Vector3(1, 6, 1)
+material = ExtResource("3_concrete")
+
+[node name="Pillar2" type="CSGBox3D" parent="Blocks"]
+position = Vector3(-8, 3, 8)
+use_collision = true
+size = Vector3(1, 6, 1)
+material = ExtResource("3_concrete")
+
+[node name="Pillar3" type="CSGBox3D" parent="Blocks"]
+position = Vector3(-4, 3, 8)
+use_collision = true
+size = Vector3(1, 6, 1)
+material = ExtResource("3_concrete")
+
+[node name="Pillar4" type="CSGBox3D" parent="Blocks"]
+position = Vector3(0, 3, 8)
+use_collision = true
+size = Vector3(1, 6, 1)
+material = ExtResource("3_concrete")
+
+[node name="FarTower" type="CSGBox3D" parent="Blocks"]
+position = Vector3(-20, 7, -22)
+use_collision = true
+size = Vector3(4, 14, 4)
+material = ExtResource("3_concrete")
+
+[node name="Player" parent="." instance=ExtResource("1_player")]
+position = Vector3(0, 0, 3)
+
+[node name="Isabella" parent="." node_paths=PackedStringArray("leader") instance=ExtResource("isabella_scene")]
+position = Vector3(1.5, 0, 5)
+leader = NodePath("../Player")

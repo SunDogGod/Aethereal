@@ -1,0 +1,119 @@
+# THE EMPTY TOWN: every spoken scene in the level.
+#
+# DRAFT. These lines only restate the beats we designed together. Rewrite them in your voice;
+# the game picks up changes the next time you press F5.
+#
+# How to write a scene:
+#   === scene_name ===          starts a scene. A trigger in the level plays it by this name.
+#   KAEL: Does anyone live here?
+#                               a spoken line: the NAME in capitals, a colon, then the words.
+#   The wind stops.             a line with no NAME is narration.
+#   [camera KaelShot]           cut to a camera (a Camera3D under the level's Shots node).
+#   [camera]                    cut back to the normal camera behind Aeneas.
+#   [wait 1.5]                  pause for 1.5 seconds.
+#   [hide Kael] / [show Kael]   hide or show something in the level, by its node name.
+# Lines starting with # are notes to yourself; the game ignores them.
+
+=== arrival ===
+[camera OpeningShot]
+ISABELLA: Remember, we're just making a quick stop into town today. No going off to flirt with Valentina.
+AENEAS: Aw, c'mon, Mom. You know I'm going to marry her.
+ISABELLA: Yes. But wait until this last harvest, so you can purchase a home in the city.
+[camera TownShot]
+AENEAS: That's strange. The town is awfully quiet.
+[camera]
+
+=== kael_meeting ===
+[camera KaelShot]
+KAEL: Hello. My name is Kael, and I'm just a visitor passing through.
+AENEAS: A visitor? It's been years since we've seen anyone from outside the village.
+KAEL: Yes. My village was attacked, and I've been wandering, looking for a home.
+KAEL: This town shows signs of life, but I don't see anyone.
+ISABELLA: That's impossible. This city is packed with people. But then again, we usually hear them from far away.
+AENEAS: Let me check it out.
+[camera]
+
+=== round_up ===
+[camera RoundUpShot]
+Agency agents lead the villagers across the catwalk, down toward the hall.
+Kael splits off from them.
+[hide Kael]
+[hide KaelTag]
+[camera]
+
+=== valentina ===
+[camera ValentinaShot]
+An agent drags Valentina toward the hall.
+AENEAS: Valentina!
+Aeneas breaks cover.
+(Fight: Q locks on. F swings, G swings hard. Hold right-click to block; tap it as a blade lands to parry.)
+[camera]
+[fight ValentinaFight]
+
+=== captured ===
+[camera ValentinaShot]
+Valentina is free. For a moment.
+[show Reinforcements]
+Boots on every stair. A dozen agents, calm as clerks.
+There is nothing left to do but be taken.
+[fade out]
+[hide Isabella]
+[hide Valentina]
+[hide ValentinaTag]
+[hide Reinforcements]
+[teleport HallMark]
+[show ValentinaHall]
+[show IsabellaHall]
+[camera HallShot]
+[fade in]
+The hall. The villagers kneel in rows before a black cube. The captain stands over it.
+CAPTAIN: Sacrificio.
+One by one, the villagers go into the cube.
+[hide HallVillagers]
+[camera SacrificeShot]
+Isabella stands. Nobody stops her. This is what they came for.
+She draws. Ink hangs in the air: circles inside circles, symbols Aeneas has never seen.
+[show InkCircle]
+She rings the bell.
+ISABELLA: I sacrifice.
+[hide IsabellaHall]
+[hide InkCircle]
+And she is gone. Perfectly.
+[camera EruptionShot]
+Something opens behind Aeneas's eyes, and the floor forgets which way is down.
+[camera]
+[erupt on]
+(The eruption: press F to slam everything around you. Nothing can hurt you.)
+[fight HallFight]
+
+=== captain_phase ===
+[camera CaptainShot]
+The agents are down. The captain steps off the stage, the lieutenant at his shoulder.
+CAPTAIN: Raw. Untrained. Still worth collecting.
+[erupt off]
+[heal]
+The power drains out of him as fast as it came. Only the sword is left.
+[camera]
+[fight CaptainFight]
+
+=== lieutenant ===
+[camera CaptainShot]
+The captain is losing. He knows it.
+He takes his lieutenant by the collar and walks him to the cube.
+CAPTAIN: Sacrificio.
+[kill Lieutenant]
+A rushed, ugly offering, right after hers. The cube takes it anyway.
+[empower Captain]
+CAPTAIN: Again.
+[camera]
+
+=== valentina_death ===
+[camera ValentinaDeathShot]
+Aeneas is down. The captain drags Valentina between them.
+Aeneas pulls the power back, so it won't crush her.
+The captain kills her anyway, and brings the hilt down on Aeneas's skull.
+[hide ValentinaHall]
+[fade out]
+A sword from nowhere. A stranger's voice. Kael.
+[title BLACKOUT]
+[level res://scenes/levels/massacre.tscn]

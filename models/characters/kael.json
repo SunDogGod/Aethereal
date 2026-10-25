@@ -1,0 +1,16 @@
+{
+ "name": "kael",
+ "root": "KaelModel",
+ "glb": "res://models/characters/kael.glb",
+ "props_glb": "res://models/characters/kael_props.glb",
+ "scene": "res://scenes/characters/kael_model.tscn",
+ "attach": [
+  {
+   "node": "Lamento",
+   "bone": "Back",
+   "props": [
+    "LamentoMesh"
+   ]
+  }
+ ]
+}

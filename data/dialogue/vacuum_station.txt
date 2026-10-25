@@ -1,0 +1,40 @@
+# 0.4 THE VACUUM STATION. DRAFT lines, from the Notion beats:
+# a dead Precursor vacuum-tube station; a house-sized capsule; neither can work the panel;
+# a hologram AI offers takeoff, one destination remaining, ETA one month; Kael begins training.
+
+=== arrival ===
+[camera HallShot]
+A hall built for crowds, and nobody has stood in it for an age.
+KAEL: Precursor transit. The tubes ran under everything, once.
+[camera]
+
+=== the_ai ===
+[camera HoloShot]
+Kael tries the panel. Nothing. Aeneas tries. Nothing.
+The emitter wakes on its own.
+STATION: One destination remains in service.
+STATION: Estimated transit: one month. Board when ready.
+AENEAS: One month. To where?
+STATION: The only place left.
+[camera CapsuleShot]
+KAEL: It's a house. We'll live in it.
+[camera]
+
+=== launch ===
+The door seals. The tube goes dark, then the dark starts to move.
+[fade out]
+[title ONE MONTH LATER]
+[teleport TrainingMark]
+[fade in]
+
+=== training ===
+[camera TrainingShot]
+KAEL: Again.
+Aeneas picks the practice blade up off the mat.
+KAEL: You hold it like it owes you money. Again.
+[camera]
+
+=== end_of_act ===
+[fade out]
+[title END OF ACT 0 / Next: 1-0 Bonding Road, 1-1 Horus (Temek)]
+[level res://scenes/ui/title_screen.tscn]

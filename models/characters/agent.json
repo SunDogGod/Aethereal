@@ -1,0 +1,23 @@
+{
+ "name": "agent",
+ "root": "AgentModel",
+ "glb": "res://models/characters/agent.glb",
+ "props_glb": "res://models/characters/agent_props.glb",
+ "scene": "res://scenes/characters/agent_model.tscn",
+ "attach": [
+  {
+   "node": "HeadGear",
+   "bone": "Head",
+   "props": [
+    "Visor"
+   ]
+  },
+  {
+   "node": "Blade",
+   "bone": "Weapon_R",
+   "props": [
+    "BladeMesh"
+   ]
+  }
+ ]
+}

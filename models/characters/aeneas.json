@@ -1,0 +1,30 @@
+{
+ "name": "aeneas",
+ "root": "AeneasModel",
+ "glb": "res://models/characters/aeneas.glb",
+ "props_glb": "res://models/characters/aeneas_props.glb",
+ "scene": "res://scenes/characters/aeneas_model.tscn",
+ "attach": [
+  {
+   "node": "Sword",
+   "bone": "Weapon_R",
+   "props": [
+    "Rocinante"
+   ]
+  },
+  {
+   "node": "Knife",
+   "bone": "Sheath",
+   "props": [
+    "KnifeMesh"
+   ]
+  },
+  {
+   "node": "Rifle",
+   "bone": "Back",
+   "props": [
+    "RifleMesh"
+   ]
+  }
+ ]
+}

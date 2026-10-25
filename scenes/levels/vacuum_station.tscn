@@ -1,0 +1,2774 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/block.gd" id="1_doaf5"]
+[ext_resource type="Material" path="res://materials/precursor_panel.tres" id="2_2l834"]
+[ext_resource type="Material" path="res://materials/concrete_dark.tres" id="3_bfb26"]
+[ext_resource type="Material" path="res://materials/precursor_light.tres" id="4_nfh4b"]
+[ext_resource type="Material" path="res://materials/metal.tres" id="5_5ggvo"]
+[ext_resource type="Material" path="res://materials/ceiling_panel_off.tres" id="6_u0cvu"]
+[ext_resource type="Shader" path="res://shaders/ps1_surface.gdshader" id="7_gs2u4"]
+[ext_resource type="Material" path="res://materials/window_glow.tres" id="8_tdqgh"]
+[ext_resource type="Material" path="res://materials/hologram.tres" id="9_r2u8g"]
+[ext_resource type="Script" path="res://scripts/hologram.gd" id="10_7m78f"]
+[ext_resource type="Material" path="res://materials/white_plaster.tres" id="11_fawpg"]
+[ext_resource type="Material" path="res://materials/wood.tres" id="12_urg01"]
+[ext_resource type="Material" path="res://materials/dev_grid.tres" id="13_w2g5o"]
+[ext_resource type="Script" path="res://scripts/story_trigger.gd" id="14_1olu5"]
+[ext_resource type="PackedScene" path="res://scenes/player.tscn" id="15_ijtbg"]
+[ext_resource type="PackedScene" path="res://scenes/kael.tscn" id="17_b7fct"]
+[ext_resource type="Script" path="res://scripts/flicker_light.gd" id="vs_flicker_light"]
+[ext_resource type="Material" path="res://materials/vacuum_station_floor.tres" id="vs_vacuum_station_floor"]
+[ext_resource type="Material" path="res://materials/vacuum_station_wall.tres" id="vs_vacuum_station_wall"]
+[ext_resource type="Material" path="res://materials/vacuum_station_hull.tres" id="vs_vacuum_station_hull"]
+[ext_resource type="Material" path="res://materials/vacuum_station_board_dead.tres" id="vs_vacuum_station_board_dead"]
+[ext_resource type="Material" path="res://materials/vacuum_station_board.tres" id="vs_vacuum_station_board"]
+[ext_resource type="Material" path="res://materials/vacuum_station_capsule_floor.tres" id="vs_vacuum_station_capsule_floor"]
+[ext_resource type="Material" path="res://materials/vacuum_station_capsule_wall.tres" id="vs_vacuum_station_capsule_wall"]
+[ext_resource type="Material" path="res://materials/vacuum_station_mat.tres" id="vs_vacuum_station_mat"]
+[ext_resource type="Script" path="res://scripts/props/pipe_run.gd" id="vs_pipe_run"]
+[ext_resource type="Material" path="res://materials/pipe_round.tres" id="vs_pipe_round"]
+[ext_resource type="Material" path="res://materials/pipe_rust.tres" id="vs_pipe_rust"]
+[ext_resource type="Script" path="res://scripts/props_vacuum_station/station_fixture.gd" id="vs_station_fixture"]
+[ext_resource type="Script" path="res://scripts/props_vacuum_station/station_prop.gd" id="vs_station_prop"]
+[ext_resource type="Script" path="res://scripts/props_vacuum_station/console_screen.gd" id="vs_console_screen"]
+[ext_resource type="Material" path="res://materials/vacuum_station_screen.tres" id="vs_vacuum_station_screen"]
+[ext_resource type="Script" path="res://scripts/steam_vent.gd" id="vs_steam_vent"]
+[ext_resource type="Script" path="res://scripts/drip.gd" id="vs_drip"]
+[ext_resource type="Texture2D" path="res://textures/decal_puddle.png" id="vs_decal_puddle"]
+[ext_resource type="Texture2D" path="res://textures/decal_grime.png" id="vs_decal_grime"]
+[ext_resource type="Material" path="res://materials/trim_stripes.tres" id="vs_trim_stripes"]
+[ext_resource type="Material" path="res://materials/vacuum_station_amber.tres" id="vs_vacuum_station_amber"]
+[ext_resource type="Script" path="res://scripts/props_vacuum_station/beacon.gd" id="vs_beacon"]
+[ext_resource type="Material" path="res://materials/vacuum_station_screen_dead.tres" id="vs_vacuum_station_screen_dead"]
+[ext_resource type="Material" path="res://materials/vacuum_station_lamp.tres" id="vs_vacuum_station_lamp"]
+[ext_resource type="AudioStream" path="res://audio/neon_hum.wav" id="vs_neon_hum"]
+[ext_resource type="Material" path="res://materials/black_cube.tres" id="vs_black_cube"]
+[ext_resource type="Material" path="res://materials/vacuum_station_red.tres" id="vs_vacuum_station_red"]
+[ext_resource type="Material" path="res://materials/vacuum_station_glass.tres" id="vs_vacuum_station_glass"]
+[ext_resource type="Script" path="res://scripts/tv_window.gd" id="vs_tv_window"]
+[ext_resource type="Material" path="res://materials/trim_rail.tres" id="vs_trim_rail"]
+[ext_resource type="Script" path="res://scripts/props_vacuum_station/tube_tunnel.gd" id="vs_tube_tunnel"]
+[ext_resource type="Material" path="res://materials/vacuum_station_guide.tres" id="vs_vacuum_station_guide"]
+[ext_resource type="Script" path="res://scripts/props_vacuum_station/capsule_prop.gd" id="vs_capsule_prop"]
+[ext_resource type="Script" path="res://scripts/props_vacuum_station/holo_projection.gd" id="vs_holo_projection"]
+[ext_resource type="AudioStream" path="res://audio/vacuum_station_holo_hum.wav" id="vs_vacuum_station_holo_hum"]
+[ext_resource type="AudioStream" path="res://audio/vacuum_station_tube_breath.wav" id="vs_vacuum_station_tube_breath"]
+[ext_resource type="AudioStream" path="res://audio/vending_hum.wav" id="vs_vending_hum"]
+
+[sub_resource type="Environment" id="Environment_eil6x"]
+background_mode = 1
+background_color = Color(0.032, 0.044, 0.062, 1)
+ambient_light_source = 2
+ambient_light_color = Color(0.3, 0.35, 0.45, 1)
+ambient_light_energy = 0.62
+fog_enabled = true
+fog_mode = 1
+fog_light_color = Color(0.05, 0.066, 0.088, 1)
+fog_density = 1.0
+fog_depth_begin = 4.0
+fog_depth_end = 110.0
+fog_depth_curve = 1.2
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_oflqw"]
+top_radius = 7.0
+bottom_radius = 7.0
+height = 12.0
+radial_segments = 12
+rings = 0
+cap_top = false
+
+[sub_resource type="TorusMesh" id="TorusMesh_2h8te"]
+inner_radius = 6.8
+outer_radius = 7.6
+rings = 12
+ring_segments = 6
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_pkrb5"]
+render_priority = 0
+shader = ExtResource("7_gs2u4")
+shader_parameter/albedo_color = Color(0.01, 0.01, 0.02, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_4f7cq"]
+top_radius = 6.6
+bottom_radius = 6.6
+height = 0.4
+radial_segments = 12
+rings = 0
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_04lyd"]
+top_radius = 7.0
+bottom_radius = 7.0
+height = 12.0
+radial_segments = 12
+rings = 0
+cap_top = false
+
+[sub_resource type="TorusMesh" id="TorusMesh_n3kqv"]
+inner_radius = 6.8
+outer_radius = 7.6
+rings = 12
+ring_segments = 6
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_mck2h"]
+top_radius = 7.0
+bottom_radius = 7.0
+height = 12.0
+radial_segments = 12
+rings = 0
+
+[sub_resource type="TorusMesh" id="TorusMesh_u3kic"]
+inner_radius = 6.8
+outer_radius = 7.6
+rings = 12
+ring_segments = 6
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_gveol"]
+top_radius = 6.6
+bottom_radius = 6.6
+height = 0.4
+radial_segments = 12
+rings = 0
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_6i2lu"]
+radius = 0.25
+height = 1.6
+radial_segments = 6
+rings = 1
+
+[sub_resource type="TorusMesh" id="TorusMesh_hbbmv"]
+inner_radius = 0.45
+outer_radius = 0.5
+rings = 8
+ring_segments = 4
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_u022j"]
+size = Vector3(6, 3, 4)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_nkvkr"]
+size = Vector3(6, 3, 4)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_7j30k"]
+size = Vector3(4, 3, 3)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_5jt01"]
+size = Vector3(6, 3, 3)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_c12o8"]
+size = Vector3(6, 3, 1.5)
+
+[node name="VacuumStation" type="Node3D" unique_id=1620133448]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=242456580]
+environment = SubResource("Environment_eil6x")
+
+[node name="Sun" type="DirectionalLight3D" parent="." unique_id=395987985]
+transform = Transform3D(0.9553365, -0.2633698, 0.13404681, 0, 0.4535961, 0.8912074, -0.29552022, -0.85140294, 0.4333369, 0, 0, 0)
+light_color = Color(0.45, 0.6, 0.85, 1)
+light_energy = 0.16
+
+[node name="Entry" type="Node3D" parent="." unique_id=116612895]
+
+[node name="Floor" type="StaticBody3D" parent="Entry" unique_id=1145387486]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 55)
+script = ExtResource("1_doaf5")
+size = Vector3(6, 1, 30)
+material = ExtResource("vs_vacuum_station_floor")
+
+[node name="WallW" type="StaticBody3D" parent="Entry" unique_id=1688506771]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.2, 2.5, 56)
+script = ExtResource("1_doaf5")
+size = Vector3(0.4, 5, 28)
+material = ExtResource("vs_vacuum_station_wall")
+
+[node name="WallE" type="StaticBody3D" parent="Entry" unique_id=1921719704]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.2, 2.5, 56)
+script = ExtResource("1_doaf5")
+size = Vector3(0.4, 5, 28)
+material = ExtResource("vs_vacuum_station_wall")
+
+[node name="Roof" type="StaticBody3D" parent="Entry" unique_id=48355307]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0, 5.5, 56)
+script = ExtResource("1_doaf5")
+size = Vector3(6.8, 1, 28)
+material = ExtResource("3_bfb26")
+
+[node name="Back" type="StaticBody3D" parent="Entry" unique_id=870404475]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 70.2)
+script = ExtResource("1_doaf5")
+size = Vector3(6, 5, 0.40000153)
+material = ExtResource("4_nfh4b")
+
+[node name="Strip48" type="StaticBody3D" parent="Entry" unique_id=149052442]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.95, 48)
+script = ExtResource("1_doaf5")
+size = Vector3(0.6, 0.099999905, 2)
+material = ExtResource("4_nfh4b")
+
+[node name="StripLight48" type="OmniLight3D" parent="Entry" unique_id=656713793]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.5, 48)
+light_color = Color(0.5, 0.85, 1, 1)
+light_energy = 0.75
+omni_range = 8.0
+
+[node name="Strip58" type="StaticBody3D" parent="Entry" unique_id=616306869]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.95, 58)
+script = ExtResource("1_doaf5")
+size = Vector3(0.6, 0.099999905, 2)
+material = ExtResource("4_nfh4b")
+
+[node name="StripLight58" type="OmniLight3D" parent="Entry" unique_id=133138898]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.5, 58)
+random_seed = 58
+emissive_block = NodePath("../Strip58")
+personality = 1
+script = ExtResource("vs_flicker_light")
+light_color = Color(0.5, 0.85, 1, 1)
+light_energy = 0.6
+omni_range = 8.0
+
+[node name="Hall" type="Node3D" parent="." unique_id=2116481031]
+
+[node name="Floor" type="StaticBody3D" parent="Hall" unique_id=1976792715]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, -15)
+script = ExtResource("1_doaf5")
+size = Vector3(80, 1, 110)
+material = ExtResource("vs_vacuum_station_floor")
+
+[node name="Ceiling" type="StaticBody3D" parent="Hall" unique_id=1521551514]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 31, -15)
+script = ExtResource("1_doaf5")
+size = Vector3(80, 2, 110)
+material = ExtResource("3_bfb26")
+
+[node name="WallW" type="StaticBody3D" parent="Hall" unique_id=206840727]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -41, 15, -15)
+script = ExtResource("1_doaf5")
+size = Vector3(2, 30, 110)
+material = ExtResource("vs_vacuum_station_wall")
+
+[node name="WallE" type="StaticBody3D" parent="Hall" unique_id=321125540]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 41, 15, -15)
+script = ExtResource("1_doaf5")
+size = Vector3(2, 30, 110)
+material = ExtResource("vs_vacuum_station_wall")
+
+[node name="WallSouthW" type="StaticBody3D" parent="Hall" unique_id=837292747]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -21.5, 15, 41)
+script = ExtResource("1_doaf5")
+size = Vector3(37, 30, 2)
+material = ExtResource("vs_vacuum_station_wall")
+
+[node name="WallSouthE" type="StaticBody3D" parent="Hall" unique_id=844194088]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21.5, 15, 41)
+script = ExtResource("1_doaf5")
+size = Vector3(37, 30, 2)
+material = ExtResource("vs_vacuum_station_wall")
+
+[node name="WallSouthTop" type="StaticBody3D" parent="Hall" unique_id=1921161713]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 17.5, 41)
+script = ExtResource("1_doaf5")
+size = Vector3(6, 25, 2)
+material = ExtResource("vs_vacuum_station_wall")
+
+[node name="WallNorth" type="StaticBody3D" parent="Hall" unique_id=1269122910]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 15, -71)
+script = ExtResource("1_doaf5")
+size = Vector3(80, 30, 2)
+material = ExtResource("vs_vacuum_station_wall")
+
+[node name="Deck" type="StaticBody3D" parent="Hall" unique_id=225644607]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, -58)
+script = ExtResource("1_doaf5")
+size = Vector3(80, 1.2, 24)
+material = ExtResource("vs_vacuum_station_floor")
+
+[node name="DeckEdge" type="StaticBody3D" parent="Hall" unique_id=733159312]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.225, -46.1)
+collision_layer = 0
+script = ExtResource("1_doaf5")
+size = Vector3(80, 0.049999952, 0.20000076)
+material = ExtResource("4_nfh4b")
+
+[node name="Ramp" type="StaticBody3D" parent="Hall" unique_id=1668226500]
+transform = Transform3D(1, 0, 0, 0, 0.9805807, -0.19611613, 0, 0.19611613, 0.9805807, 0, 0.35485485, -43.04903)
+script = ExtResource("1_doaf5")
+size = Vector3(8, 0.5, 6.1188235)
+material = ExtResource("vs_vacuum_station_floor")
+
+[node name="Column12_10" type="StaticBody3D" parent="Hall" unique_id=580625252]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -28, 15, -30)
+script = ExtResource("1_doaf5")
+size = Vector3(2, 30, 2)
+material = ExtResource("3_bfb26")
+
+[node name="Column12_40" type="StaticBody3D" parent="Hall" unique_id=1716316407]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -28, 15, 0)
+script = ExtResource("1_doaf5")
+size = Vector3(2, 30, 2)
+material = ExtResource("3_bfb26")
+
+[node name="Column12_64" type="StaticBody3D" parent="Hall" unique_id=947200054]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -28, 15, 24)
+script = ExtResource("1_doaf5")
+size = Vector3(2, 30, 2)
+material = ExtResource("3_bfb26")
+
+[node name="Column26_10" type="StaticBody3D" parent="Hall" unique_id=1723858016]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14, 15, -30)
+script = ExtResource("1_doaf5")
+size = Vector3(2, 30, 2)
+material = ExtResource("3_bfb26")
+
+[node name="Column26_40" type="StaticBody3D" parent="Hall" unique_id=1322706394]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14, 15, 0)
+script = ExtResource("1_doaf5")
+size = Vector3(2, 30, 2)
+material = ExtResource("3_bfb26")
+
+[node name="Column26_64" type="StaticBody3D" parent="Hall" unique_id=1717784045]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14, 15, 24)
+script = ExtResource("1_doaf5")
+size = Vector3(2, 30, 2)
+material = ExtResource("3_bfb26")
+
+[node name="Column54_10" type="StaticBody3D" parent="Hall" unique_id=674144121]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14, 15, -30)
+script = ExtResource("1_doaf5")
+size = Vector3(2, 30, 2)
+material = ExtResource("3_bfb26")
+
+[node name="Column54_40" type="StaticBody3D" parent="Hall" unique_id=1702656550]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14, 15, 0)
+script = ExtResource("1_doaf5")
+size = Vector3(2, 30, 2)
+material = ExtResource("3_bfb26")
+
+[node name="Column54_64" type="StaticBody3D" parent="Hall" unique_id=2046856128]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14, 15, 24)
+script = ExtResource("1_doaf5")
+size = Vector3(2, 30, 2)
+material = ExtResource("3_bfb26")
+
+[node name="Column68_10" type="StaticBody3D" parent="Hall" unique_id=1488882638]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 28, 15, -30)
+script = ExtResource("1_doaf5")
+size = Vector3(2, 30, 2)
+material = ExtResource("3_bfb26")
+
+[node name="Column68_40" type="StaticBody3D" parent="Hall" unique_id=615449217]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 28, 15, 0)
+script = ExtResource("1_doaf5")
+size = Vector3(2, 30, 2)
+material = ExtResource("3_bfb26")
+
+[node name="Column68_64" type="StaticBody3D" parent="Hall" unique_id=248994947]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 28, 15, 24)
+script = ExtResource("1_doaf5")
+size = Vector3(2, 30, 2)
+material = ExtResource("3_bfb26")
+
+[node name="FallenPanel1" type="StaticBody3D" parent="Hall" unique_id=1511291287]
+transform = Transform3D(0.9950042, -0.09983342, 0, 0.09983342, 0.9950042, 0, 0, 0, 1, -17, 0.4, 11)
+script = ExtResource("1_doaf5")
+size = Vector3(10, 0.2, 6)
+material = ExtResource("2_2l834")
+
+[node name="FallenPanel2" type="StaticBody3D" parent="Hall" unique_id=869746824]
+transform = Transform3D(0.99280864, 0, 0.119712204, 0, 1, 0, -0.119712204, 0, 0.99280864, 19, 0.02, -12)
+collision_layer = 0
+script = ExtResource("1_doaf5")
+size = Vector3(6, 0.04, 12)
+material = ExtResource("2_2l834")
+
+[node name="Drone" type="StaticBody3D" parent="Hall" unique_id=143906794]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.5, 0.8, 20.5)
+script = ExtResource("1_doaf5")
+size = Vector3(3, 1.6, 3)
+material = ExtResource("vs_vacuum_station_hull")
+
+[node name="DroneArm" type="StaticBody3D" parent="Hall" unique_id=160788894]
+transform = Transform3D(0.9689124, 0, 0.24740396, 0, 1, 0, -0.24740396, 0, 0.9689124, 14.7, 0.2, 20.9)
+script = ExtResource("1_doaf5")
+size = Vector3(4, 0.40000004, 0.5)
+material = ExtResource("5_5ggvo")
+
+[node name="Dust" type="StaticBody3D" parent="Hall" unique_id=186242749]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -35, 0.01, -3)
+script = ExtResource("1_doaf5")
+size = Vector3(10, 0.02, 86)
+material = ExtResource("3_bfb26")
+
+[node name="Strip0" type="StaticBody3D" parent="Hall" unique_id=871375595]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 29.9, -59.7)
+script = ExtResource("1_doaf5")
+size = Vector3(60, 0.20000076, 0.5999985)
+material = ExtResource("6_u0cvu")
+
+[node name="Strip1" type="StaticBody3D" parent="Hall" unique_id=212293421]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 29.9, -47.7)
+script = ExtResource("1_doaf5")
+size = Vector3(60, 0.20000076, 0.5999985)
+material = ExtResource("4_nfh4b")
+
+[node name="StripLight1" type="OmniLight3D" parent="Hall" unique_id=1342777861]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 24, -48)
+light_color = Color(0.5, 0.85, 1, 1)
+light_energy = 0.8
+omni_range = 42.0
+
+[node name="Strip2" type="StaticBody3D" parent="Hall" unique_id=542625823]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 29.9, -35.7)
+script = ExtResource("1_doaf5")
+size = Vector3(60, 0.20000076, 0.5999985)
+material = ExtResource("6_u0cvu")
+
+[node name="Strip3" type="StaticBody3D" parent="Hall" unique_id=1665009405]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 29.9, -23.7)
+script = ExtResource("1_doaf5")
+size = Vector3(60, 0.20000076, 0.6000004)
+material = ExtResource("4_nfh4b")
+
+[node name="StripLight3" type="OmniLight3D" parent="Hall" unique_id=1528122456]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 24, -24)
+light_color = Color(0.5, 0.85, 1, 1)
+light_energy = 0.8
+omni_range = 42.0
+
+[node name="Strip4" type="StaticBody3D" parent="Hall" unique_id=406238203]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 29.9, -11.7)
+script = ExtResource("1_doaf5")
+size = Vector3(60, 0.20000076, 0.6000004)
+material = ExtResource("6_u0cvu")
+
+[node name="Strip5" type="StaticBody3D" parent="Hall" unique_id=2143534943]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 29.9, 0.3)
+script = ExtResource("1_doaf5")
+size = Vector3(60, 0.20000076, 0.6)
+material = ExtResource("4_nfh4b")
+
+[node name="StripLight5" type="OmniLight3D" parent="Hall" unique_id=806714545]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 24, 0)
+light_color = Color(0.5, 0.85, 1, 1)
+light_energy = 0.8
+omni_range = 42.0
+
+[node name="Strip6" type="StaticBody3D" parent="Hall" unique_id=822557031]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 29.9, 12.3)
+script = ExtResource("1_doaf5")
+size = Vector3(60, 0.20000076, 0.6000004)
+material = ExtResource("6_u0cvu")
+
+[node name="Strip7" type="StaticBody3D" parent="Hall" unique_id=276934148]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 29.9, 24.3)
+script = ExtResource("1_doaf5")
+size = Vector3(60, 0.20000076, 0.6000004)
+material = ExtResource("4_nfh4b")
+
+[node name="StripLight7" type="OmniLight3D" parent="Hall" unique_id=1018275037]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 24, 24)
+random_seed = 77
+emissive_block = NodePath("../Strip7")
+script = ExtResource("vs_flicker_light")
+light_color = Color(0.5, 0.85, 1, 1)
+light_energy = 0.8
+omni_range = 42.0
+
+[node name="Strip8" type="StaticBody3D" parent="Hall" unique_id=1167834486]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 29.9, 36.3)
+script = ExtResource("1_doaf5")
+size = Vector3(60, 0.20000076, 0.5999985)
+material = ExtResource("6_u0cvu")
+
+[node name="Board0" type="StaticBody3D" parent="Hall" unique_id=1879809568]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20, 10, 39.9)
+script = ExtResource("1_doaf5")
+size = Vector3(12, 4, 0.20000076)
+material = ExtResource("vs_vacuum_station_board_dead")
+
+[node name="Board40" type="StaticBody3D" parent="Hall" unique_id=845822624]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 10, 39.9)
+script = ExtResource("1_doaf5")
+size = Vector3(12, 4, 0.20000076)
+material = ExtResource("vs_vacuum_station_board")
+
+[node name="Tubes" type="Node3D" parent="." unique_id=572736777]
+
+[node name="Tube0" type="MeshInstance3D" parent="Tubes" unique_id=509222260]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, -24, 6.7, -66)
+material_override = ExtResource("vs_vacuum_station_wall")
+mesh = SubResource("CylinderMesh_oflqw")
+
+[node name="Rim0" type="MeshInstance3D" parent="Tubes" unique_id=795218503]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, -24, 6.7, -60)
+material_override = ExtResource("5_5ggvo")
+mesh = SubResource("TorusMesh_2h8te")
+
+[node name="Tube24" type="MeshInstance3D" parent="Tubes" unique_id=1994281583]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 6.7, -66)
+material_override = ExtResource("vs_vacuum_station_wall")
+mesh = SubResource("CylinderMesh_04lyd")
+
+[node name="Rim24" type="MeshInstance3D" parent="Tubes" unique_id=271540795]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 6.7, -60)
+material_override = ExtResource("5_5ggvo")
+mesh = SubResource("TorusMesh_n3kqv")
+
+[node name="Tube48" type="MeshInstance3D" parent="Tubes" unique_id=1527331376]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 24, 6.7, -66)
+material_override = ExtResource("vs_vacuum_station_wall")
+mesh = SubResource("CylinderMesh_mck2h")
+
+[node name="Rim48" type="MeshInstance3D" parent="Tubes" unique_id=1556762148]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 24, 6.7, -60)
+material_override = ExtResource("5_5ggvo")
+mesh = SubResource("TorusMesh_u3kic")
+
+[node name="Dark48" type="MeshInstance3D" parent="Tubes" unique_id=1133172185]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 24, 6.7, -60.5)
+material_override = SubResource("ShaderMaterial_pkrb5")
+mesh = SubResource("CylinderMesh_gveol")
+
+[node name="Capsule" type="Node3D" parent="." unique_id=1201955353]
+
+[node name="Floor" type="StaticBody3D" parent="Capsule" unique_id=725654818]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.07, -57)
+script = ExtResource("1_doaf5")
+size = Vector3(9.98, 0.3, 17.98)
+material = ExtResource("vs_vacuum_station_capsule_floor")
+
+[node name="Roof" type="StaticBody3D" parent="Capsule" unique_id=1120087790]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 8.045, -57)
+script = ExtResource("1_doaf5")
+size = Vector3(9.98, 0.29, 17.98)
+material = ExtResource("vs_vacuum_station_hull")
+
+[node name="WallW" type="StaticBody3D" parent="Capsule" unique_id=513749642]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.85, 4.7, -57)
+script = ExtResource("1_doaf5")
+size = Vector3(0.3, 7, 17.4)
+material = ExtResource("vs_vacuum_station_hull")
+
+[node name="WallE" type="StaticBody3D" parent="Capsule" unique_id=1241064336]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.85, 4.7, -57)
+script = ExtResource("1_doaf5")
+size = Vector3(0.3, 7, 17.4)
+material = ExtResource("vs_vacuum_station_hull")
+
+[node name="Back" type="StaticBody3D" parent="Capsule" unique_id=25135366]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.7, -65.85)
+script = ExtResource("1_doaf5")
+size = Vector3(10, 7, 0.30000305)
+material = ExtResource("vs_vacuum_station_hull")
+
+[node name="FrontW" type="StaticBody3D" parent="Capsule" unique_id=218678145]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 4.7, -48.15)
+script = ExtResource("1_doaf5")
+size = Vector3(4, 7, 0.29999924)
+material = ExtResource("vs_vacuum_station_hull")
+
+[node name="FrontE" type="StaticBody3D" parent="Capsule" unique_id=1885197980]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 4.7, -48.15)
+script = ExtResource("1_doaf5")
+size = Vector3(4, 7, 0.29999924)
+material = ExtResource("vs_vacuum_station_hull")
+
+[node name="FrontTop" type="StaticBody3D" parent="Capsule" unique_id=1256886672]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6, -48.15)
+script = ExtResource("1_doaf5")
+size = Vector3(2, 4.3999996, 0.29999924)
+material = ExtResource("vs_vacuum_station_hull")
+
+[node name="DoorLight" type="StaticBody3D" parent="Capsule" unique_id=22931627]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.875, -47.93)
+script = ExtResource("1_doaf5")
+size = Vector3(2.2, 0.1500001, 0.099998474)
+material = ExtResource("4_nfh4b")
+
+[node name="Window" type="StaticBody3D" parent="Capsule" unique_id=871815704]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 4.95, -55)
+script = ExtResource("1_doaf5")
+size = Vector3(0.10000038, 1.5, 6)
+material = ExtResource("8_tdqgh")
+
+[node name="Nose" type="StaticBody3D" parent="Capsule" unique_id=1694099342]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.7, -66.75)
+script = ExtResource("1_doaf5")
+size = Vector3(8, 6, 1.5)
+material = ExtResource("5_5ggvo")
+
+[node name="DoorGlow" type="OmniLight3D" parent="Capsule" unique_id=101023921]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.7, -46)
+light_color = Color(1, 0.8, 0.55, 1)
+light_energy = 0.9
+omni_range = 7.0
+
+[node name="Console" type="Node3D" parent="." unique_id=1731609178]
+
+[node name="Pedestal" type="StaticBody3D" parent="Console" unique_id=413202926]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 1.75, -49)
+script = ExtResource("1_doaf5")
+size = Vector3(2, 1.0999999, 2)
+material = ExtResource("5_5ggvo")
+
+[node name="Panel" type="StaticBody3D" parent="Console" unique_id=1863779848]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 2.4, -48.7)
+script = ExtResource("1_doaf5")
+size = Vector3(2, 0.20000005, 1.4000015)
+material = ExtResource("4_nfh4b")
+
+[node name="Emitter" type="StaticBody3D" parent="Console" unique_id=1811544379]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 2.55, -48.9)
+script = ExtResource("1_doaf5")
+size = Vector3(0.39999962, 0.099999905, 0.3999977)
+material = ExtResource("9_r2u8g")
+
+[node name="Hologram" type="Node3D" parent="Console" unique_id=126369540]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 2.6, -48.9)
+script = ExtResource("10_7m78f")
+
+[node name="Body" type="MeshInstance3D" parent="Console/Hologram" unique_id=435491060]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
+material_override = ExtResource("9_r2u8g")
+mesh = SubResource("CapsuleMesh_6i2lu")
+
+[node name="Ring" type="MeshInstance3D" parent="Console/Hologram" unique_id=38151386]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 0)
+material_override = ExtResource("9_r2u8g")
+mesh = SubResource("TorusMesh_hbbmv")
+
+[node name="HoloLight" type="OmniLight3D" parent="Console" unique_id=373070760]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 3.7, -49)
+light_color = Color(0.3, 0.85, 1, 1)
+light_energy = 1.3
+omni_range = 7.0
+
+[node name="Interior" type="Node3D" parent="." unique_id=1292883982]
+
+[node name="PartitionW" type="StaticBody3D" parent="Interior" unique_id=711524839]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.85, 4.4, -57)
+script = ExtResource("1_doaf5")
+size = Vector3(3.6999998, 6.3999996, 0.40000153)
+material = ExtResource("vs_vacuum_station_capsule_wall")
+
+[node name="PartitionE" type="StaticBody3D" parent="Interior" unique_id=1744276515]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.85, 4.4, -57)
+script = ExtResource("1_doaf5")
+size = Vector3(3.6999998, 6.3999996, 0.40000153)
+material = ExtResource("vs_vacuum_station_capsule_wall")
+
+[node name="PartitionTop" type="StaticBody3D" parent="Interior" unique_id=689257428]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.6, -57)
+script = ExtResource("1_doaf5")
+size = Vector3(2, 4, 0.40000153)
+material = ExtResource("vs_vacuum_station_capsule_wall")
+
+[node name="BunkA" type="StaticBody3D" parent="Interior" unique_id=1649247367]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.6, 1.5, -52.5)
+script = ExtResource("1_doaf5")
+size = Vector3(2, 0.5999999, 5)
+material = ExtResource("12_urg01")
+
+[node name="BunkB" type="StaticBody3D" parent="Interior" unique_id=498097325]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.6, 1.5, -52.5)
+script = ExtResource("1_doaf5")
+size = Vector3(2, 0.5999999, 5)
+material = ExtResource("12_urg01")
+
+[node name="Table" type="StaticBody3D" parent="Interior" unique_id=1880141212]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.5, 1.95, -49.15)
+script = ExtResource("1_doaf5")
+size = Vector3(2, 0.100000024, 1.2999992)
+material = ExtResource("12_urg01")
+
+[node name="Galley" type="StaticBody3D" parent="Interior" unique_id=1618940436]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.9, 1.65, -56.3)
+script = ExtResource("1_doaf5")
+size = Vector3(3.3999999, 0.89999986, 1)
+material = ExtResource("5_5ggvo")
+
+[node name="CipherBook" type="StaticBody3D" parent="Interior" unique_id=1577017644]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.5, 2.05, -49.15)
+script = ExtResource("1_doaf5")
+size = Vector3(0.5999999, 0.099999905, 0.5)
+material = ExtResource("12_urg01")
+
+[node name="LampA" type="StaticBody3D" parent="Interior" unique_id=1495568939]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 7.8, -51.5)
+script = ExtResource("1_doaf5")
+size = Vector3(0.6, 0.19999981, 3)
+material = ExtResource("8_tdqgh")
+
+[node name="LivingLight" type="OmniLight3D" parent="Interior" unique_id=526064267]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6.2, -52)
+light_color = Color(1, 0.85, 0.6, 1)
+light_energy = 0.9
+omni_range = 9.0
+
+[node name="Mat" type="StaticBody3D" parent="Interior" unique_id=990659409]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.23, -61.5)
+collision_layer = 0
+script = ExtResource("1_doaf5")
+size = Vector3(7, 0.03, 7)
+material = ExtResource("vs_vacuum_station_mat")
+
+[node name="Rack" type="StaticBody3D" parent="Interior" unique_id=1964844449]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.51, 2.2, -62)
+script = ExtResource("1_doaf5")
+size = Vector3(0.2999997, 2, 4)
+material = ExtResource("5_5ggvo")
+
+[node name="LampB" type="StaticBody3D" parent="Interior" unique_id=1512288410]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 7.8, -61)
+script = ExtResource("1_doaf5")
+size = Vector3(0.6, 0.19999981, 4)
+material = ExtResource("8_tdqgh")
+
+[node name="TrainingLight" type="OmniLight3D" parent="Interior" unique_id=1633221405]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6.2, -61)
+light_color = Color(1, 0.9, 0.75, 1)
+light_energy = 0.9
+omni_range = 9.0
+
+[node name="TrainingMark" type="Marker3D" parent="Interior" unique_id=1909716432]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.25, -59.5)
+
+[node name="Shots" type="Node3D" parent="." unique_id=1652101632]
+
+[node name="HallShot" type="Camera3D" parent="Shots" unique_id=387409382]
+transform = Transform3D(0.98953295, 0.01332993, -0.14368992, 0, 0.9957245, 0.09237209, 0.1443069, -0.09140523, 0.98530227, -5, 7, 38)
+fov = 60.0
+far = 120.0
+
+[node name="HoloShot" type="Camera3D" parent="Shots" unique_id=884802476]
+transform = Transform3D(0.806405, 0.18699588, 0.5610201, 0, 0.9486888, -0.3162113, -0.59136367, 0.2549944, 0.7650274, 12.5, 2.5, -41.5)
+fov = 52.0
+far = 120.0
+
+[node name="CapsuleShot" type="Camera3D" parent="Shots" unique_id=1690038399]
+transform = Transform3D(0.8, -0.014995316, -0.5998126, 0, 0.99968773, -0.024992192, 0.6, 0.019993754, 0.79975015, -12, 4.2, -40)
+fov = 55.0
+far = 120.0
+
+[node name="TrainingShot" type="Camera3D" parent="Shots" unique_id=1088634797]
+transform = Transform3D(0.75257665, -0.15645026, 0.6396496, 0, 0.9713669, 0.23758414, -0.6585046, -0.17880028, 0.73102814, 3.5, 3.7, -58.5)
+fov = 55.0
+far = 120.0
+
+[node name="StoryTriggers" type="Node3D" parent="." unique_id=1010149984]
+
+[node name="Arrival" type="Area3D" parent="StoryTriggers" unique_id=1658616494]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 36)
+collision_layer = 0
+collision_mask = 2
+monitorable = false
+script = ExtResource("14_1olu5")
+dialogue_file = "res://data/dialogue/vacuum_station.txt"
+scene = "arrival"
+
+[node name="Zone" type="CollisionShape3D" parent="StoryTriggers/Arrival" unique_id=132142764]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+shape = SubResource("BoxShape3D_u022j")
+
+[node name="TheAI" type="Area3D" parent="StoryTriggers" unique_id=368483372]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 1.2, -47)
+collision_layer = 0
+collision_mask = 2
+monitorable = false
+script = ExtResource("14_1olu5")
+dialogue_file = "res://data/dialogue/vacuum_station.txt"
+scene = "the_ai"
+
+[node name="Zone" type="CollisionShape3D" parent="StoryTriggers/TheAI" unique_id=1890020889]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+shape = SubResource("BoxShape3D_nkvkr")
+
+[node name="Board" type="Area3D" parent="StoryTriggers" unique_id=915783126]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, -51)
+collision_layer = 0
+collision_mask = 2
+monitorable = false
+script = ExtResource("14_1olu5")
+dialogue_file = "res://data/dialogue/vacuum_station.txt"
+scene = "launch"
+
+[node name="Zone" type="CollisionShape3D" parent="StoryTriggers/Board" unique_id=1585203458]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+shape = SubResource("BoxShape3D_7j30k")
+
+[node name="Training" type="Area3D" parent="StoryTriggers" unique_id=38580784]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, -62)
+collision_layer = 0
+collision_mask = 2
+monitorable = false
+script = ExtResource("14_1olu5")
+dialogue_file = "res://data/dialogue/vacuum_station.txt"
+scene = "training"
+
+[node name="Zone" type="CollisionShape3D" parent="StoryTriggers/Training" unique_id=1782976063]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+shape = SubResource("BoxShape3D_5jt01")
+
+[node name="EndOfAct" type="Area3D" parent="StoryTriggers" unique_id=2072806645]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, -65)
+collision_layer = 0
+collision_mask = 2
+monitorable = false
+script = ExtResource("14_1olu5")
+dialogue_file = "res://data/dialogue/vacuum_station.txt"
+scene = "end_of_act"
+
+[node name="Zone" type="CollisionShape3D" parent="StoryTriggers/EndOfAct" unique_id=595226886]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+shape = SubResource("BoxShape3D_c12o8")
+
+[node name="Signs" type="Node3D" parent="." unique_id=948342724]
+visible = false
+
+[node name="Legend" type="Label3D" parent="Signs" unique_id=1235435051]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.5, 30)
+billboard = 1
+texture_filter = 0
+modulate = Color(0.75, 0.85, 1, 1)
+text = "0.4 THE VACUUM STATION
+The hologram is by the capsule door (north).
+Board the capsule to launch."
+font_size = 52
+outline_size = 10
+
+[node name="TrainingSign" type="Label3D" parent="Signs" unique_id=1908479657]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.4, -60)
+billboard = 1
+texture_filter = 0
+modulate = Color(0.75, 0.85, 1, 1)
+text = "Kael's training room.
+Sword combat goes here later.
+Walk to the far end to finish Act 0."
+font_size = 44
+outline_size = 10
+
+[node name="Player" parent="." unique_id=1221161931 instance=ExtResource("15_ijtbg")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 62)
+
+[node name="Kael" parent="." unique_id=951893720 node_paths=PackedStringArray("leader") instance=ExtResource("17_b7fct")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0.2, 64)
+leader = NodePath("../Player")
+follow_distance = 2.6
+speed = 7.0
+
+[node name="Dressing" type="Node3D" parent="."]
+
+[node name="Life" type="Node3D" parent="."]
+
+[node name="Decals" type="Node3D" parent="."]
+
+[node name="Sound" type="Node3D" parent="."]
+
+[node name="Corridor" type="Node3D" parent="Dressing"]
+
+[node name="RibW45" type="StaticBody3D" parent="Dressing/Corridor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.925, 2.5, 45)
+script = ExtResource("1_doaf5")
+size = Vector3(0.1500001, 5, 0.30000305)
+material = ExtResource("3_bfb26")
+grime = 0.3
+
+[node name="RibE45" type="StaticBody3D" parent="Dressing/Corridor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.925, 2.5, 45)
+script = ExtResource("1_doaf5")
+size = Vector3(0.1500001, 5, 0.30000305)
+material = ExtResource("3_bfb26")
+grime = 0.3
+
+[node name="RibW55" type="StaticBody3D" parent="Dressing/Corridor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.925, 2.5, 55)
+script = ExtResource("1_doaf5")
+size = Vector3(0.1500001, 5, 0.30000305)
+material = ExtResource("3_bfb26")
+grime = 0.3
+
+[node name="RibE55" type="StaticBody3D" parent="Dressing/Corridor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.925, 2.5, 55)
+script = ExtResource("1_doaf5")
+size = Vector3(0.1500001, 5, 0.30000305)
+material = ExtResource("3_bfb26")
+grime = 0.3
+
+[node name="RibW65" type="StaticBody3D" parent="Dressing/Corridor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.925, 2.5, 65)
+script = ExtResource("1_doaf5")
+size = Vector3(0.1500001, 5, 0.30000305)
+material = ExtResource("3_bfb26")
+grime = 0.3
+
+[node name="RibE65" type="StaticBody3D" parent="Dressing/Corridor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.925, 2.5, 65)
+script = ExtResource("1_doaf5")
+size = Vector3(0.1500001, 5, 0.30000305)
+material = ExtResource("3_bfb26")
+grime = 0.3
+
+[node name="RailW" type="Node3D" parent="Dressing/Corridor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.78, 0.95, 42.3)
+script = ExtResource("vs_pipe_run")
+points = PackedVector3Array(0, 0, 0, 0, 0, 9.450001)
+radius = 0.04
+material = ExtResource("5_5ggvo")
+bracket_every = 3.0
+
+[node name="RailW2" type="Node3D" parent="Dressing/Corridor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.78, 0.95, 53.05)
+script = ExtResource("vs_pipe_run")
+points = PackedVector3Array(0, 0, 0, 0, 0, 16.350002)
+radius = 0.04
+material = ExtResource("5_5ggvo")
+bracket_every = 3.0
+
+[node name="RailE" type="Node3D" parent="Dressing/Corridor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.78, 0.95, 42.3)
+script = ExtResource("vs_pipe_run")
+points = PackedVector3Array(0, 0, 0, 0, 0, 27.100002)
+radius = 0.04
+material = ExtResource("5_5ggvo")
+bracket_every = 3.0
+
+[node name="ConduitW" type="Node3D" parent="Dressing/Corridor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.68, 5, 42.4)
+script = ExtResource("vs_pipe_run")
+points = PackedVector3Array(0, 0, 0, 0, -0.2800002, 0, 0, -0.2800002, 27.400002)
+radius = 0.12
+material = ExtResource("vs_pipe_round")
+bracket_every = 2.5
+
+[node name="ConduitE" type="Node3D" parent="Dressing/Corridor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.7, 5, 42.4)
+script = ExtResource("vs_pipe_run")
+points = PackedVector3Array(0, 0, 0, 0, -0.19999981, 0, 0, -0.19999981, 27.400002)
+radius = 0.07
+material = ExtResource("vs_pipe_rust")
+bracket_every = 2.5
+
+[node name="DotsW" type="StaticBody3D" parent="Dressing/Corridor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.2, 0, 69)
+script = ExtResource("vs_station_fixture")
+kind = 11
+count = 14
+plate_size = 2.0
+
+[node name="DotsE" type="StaticBody3D" parent="Dressing/Corridor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.2, 0, 69)
+script = ExtResource("vs_station_fixture")
+kind = 11
+count = 14
+plate_size = 2.0
+
+[node name="SignAhead" type="StaticBody3D" parent="Dressing/Corridor"]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 3, 2.3, 60)
+script = ExtResource("vs_station_fixture")
+kind = 4
+variant = 1
+plate_size = 0.7
+
+[node name="SignTubes" type="StaticBody3D" parent="Dressing/Corridor"]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -3, 2.3, 50)
+script = ExtResource("vs_station_fixture")
+kind = 4
+variant = 5
+plate_size = 0.7
+
+[node name="Kiosk" type="StaticBody3D" parent="Dressing/Corridor"]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -2.78, 0, 52.4)
+script = ExtResource("vs_station_prop")
+kind = 1
+
+[node name="KioskScreen" type="StaticBody3D" parent="Dressing/Corridor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.58, 1.35, 52.4)
+collision_layer = 0
+script = ExtResource("vs_console_screen")
+size = Vector3(0.01999998, 0.45000005, 0.54999924)
+material = ExtResource("vs_vacuum_station_screen")
+grime = 0.0
+mode = 2
+random_seed = 52
+
+[node name="Vent" type="StaticBody3D" parent="Dressing/Corridor"]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 3, 0.45, 48)
+script = ExtResource("vs_station_fixture")
+kind = 6
+
+[node name="SteamCorridor" type="Node3D" parent="Life"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.85, 0.45, 48)
+script = ExtResource("vs_steam_vent")
+direction = Vector3(-0.6, 1, 0)
+amount = 10
+
+[node name="PortalW" type="StaticBody3D" parent="Dressing/Corridor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.75, 2.5, 69.7)
+script = ExtResource("1_doaf5")
+size = Vector3(0.5, 5, 0.5999985)
+material = ExtResource("3_bfb26")
+grime = 0.3
+
+[node name="PortalE" type="StaticBody3D" parent="Dressing/Corridor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.75, 2.5, 69.7)
+script = ExtResource("1_doaf5")
+size = Vector3(0.5, 5, 0.5999985)
+material = ExtResource("3_bfb26")
+grime = 0.3
+
+[node name="PortalTop" type="StaticBody3D" parent="Dressing/Corridor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.55, 69.7)
+script = ExtResource("1_doaf5")
+size = Vector3(5, 0.9000001, 0.5999985)
+material = ExtResource("3_bfb26")
+grime = 0.0
+
+[node name="DaylightSpill" type="OmniLight3D" parent="Dressing/Corridor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.4, 68.4)
+light_color = Color(0.78, 0.86, 1, 1)
+light_energy = 0.7
+omni_range = 9.0
+
+[node name="DripCorridor" type="Node3D" parent="Life"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.6, 4.55, 57.3)
+script = ExtResource("vs_drip")
+
+[node name="PuddleCorridor" type="Decal" parent="Decals"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.4, 0, 57.3)
+size = Vector3(1.2, 0.4, 1.6)
+texture_albedo = ExtResource("vs_decal_puddle")
+upper_fade = 0.0
+lower_fade = 0.3
+cull_mask = 1
+
+[node name="GrimeCorridor" type="Decal" parent="Decals"]
+transform = Transform3D(0.8253356, 0, 0.5646425, 0, 1, 0, -0.5646425, 0, 0.8253356, 1.2, 0, 66)
+size = Vector3(2.2, 0.4, 3)
+texture_albedo = ExtResource("vs_decal_grime")
+upper_fade = 0.0
+lower_fade = 0.3
+cull_mask = 1
+
+[node name="DoorJambW" type="StaticBody3D" parent="Dressing/Corridor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.4, 2.9, 39.7)
+script = ExtResource("1_doaf5")
+size = Vector3(0.79999995, 5.8, 0.5999985)
+material = ExtResource("3_bfb26")
+grime = 0.3
+
+[node name="DoorJambE" type="StaticBody3D" parent="Dressing/Corridor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.4, 2.9, 39.7)
+script = ExtResource("1_doaf5")
+size = Vector3(0.79999995, 5.8, 0.5999985)
+material = ExtResource("3_bfb26")
+grime = 0.3
+
+[node name="DoorLintel" type="StaticBody3D" parent="Dressing/Corridor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.4, 39.7)
+script = ExtResource("1_doaf5")
+size = Vector3(6, 0.8000002, 0.5999985)
+material = ExtResource("3_bfb26")
+grime = 0.0
+
+[node name="DoorThreshold" type="StaticBody3D" parent="Dressing/Corridor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.006, 40.5)
+collision_layer = 0
+script = ExtResource("1_doaf5")
+size = Vector3(6, 0.012, 1)
+material = ExtResource("vs_trim_stripes")
+grime = 0.0
+trim = true
+
+[node name="SignWayOut" type="StaticBody3D" parent="Dressing/Corridor"]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 6.6, 40)
+script = ExtResource("vs_station_fixture")
+kind = 4
+variant = 7
+plate_size = 0.9
+
+[node name="DoorLamp" type="StaticBody3D" parent="Dressing/Corridor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.875, 39.325)
+collision_layer = 0
+script = ExtResource("1_doaf5")
+size = Vector3(0.7, 0.14999962, 0.15000153)
+material = ExtResource("vs_vacuum_station_amber")
+grime = 0.0
+
+[node name="DoorBeacon" type="OmniLight3D" parent="Dressing/Corridor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.5, 38.9)
+script = ExtResource("vs_beacon")
+light_color = Color(1, 0.62, 0.25, 1)
+light_energy = 0.8
+omni_range = 7.0
+pattern = 0
+period = 3.5
+floor_level = 0.25
+emissive_block = NodePath("../DoorLamp")
+
+[node name="Concourse" type="Node3D" parent="Dressing"]
+
+[node name="Gate0W" type="StaticBody3D" parent="Dressing/Concourse"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.2, 0, 31)
+script = ExtResource("vs_station_prop")
+kind = 2
+
+[node name="Gate0E" type="StaticBody3D" parent="Dressing/Concourse"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.2, 0, 31)
+script = ExtResource("vs_station_prop")
+kind = 2
+
+[node name="Gate1W" type="StaticBody3D" parent="Dressing/Concourse"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.6, 0, 31)
+script = ExtResource("vs_station_prop")
+kind = 2
+
+[node name="Gate1E" type="StaticBody3D" parent="Dressing/Concourse"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.6, 0, 31)
+script = ExtResource("vs_station_prop")
+kind = 2
+variant = 1
+
+[node name="Gate2W" type="StaticBody3D" parent="Dressing/Concourse"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7, 0, 31)
+script = ExtResource("vs_station_prop")
+kind = 2
+
+[node name="Gate2E" type="StaticBody3D" parent="Dressing/Concourse"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 0, 31)
+script = ExtResource("vs_station_prop")
+kind = 2
+
+[node name="Gate3W" type="StaticBody3D" parent="Dressing/Concourse"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.4, 0, 31)
+script = ExtResource("vs_station_prop")
+kind = 2
+
+[node name="Gate3E" type="StaticBody3D" parent="Dressing/Concourse"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.4, 0, 31)
+script = ExtResource("vs_station_prop")
+kind = 2
+
+[node name="GateBarrierW" type="StaticBody3D" parent="Dressing/Concourse"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.4, 0, 31)
+script = ExtResource("vs_station_prop")
+kind = 4
+
+[node name="KioskW" type="StaticBody3D" parent="Dressing/Concourse"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.6, 0, 34.6)
+script = ExtResource("vs_station_prop")
+kind = 1
+
+[node name="GateBarrierE" type="StaticBody3D" parent="Dressing/Concourse"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.4, 0, 31)
+script = ExtResource("vs_station_prop")
+kind = 4
+
+[node name="KioskE" type="StaticBody3D" parent="Dressing/Concourse"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.6, 0, 34.6)
+script = ExtResource("vs_station_prop")
+kind = 1
+
+[node name="KioskScreenE" type="StaticBody3D" parent="Dressing/Concourse"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.6, 1.35, 34.800003)
+collision_layer = 0
+script = ExtResource("vs_console_screen")
+size = Vector3(0.54999995, 0.45000005, 0.020000458)
+material = ExtResource("vs_vacuum_station_screen")
+grime = 0.0
+random_seed = 34
+
+[node name="KioskScreenW" type="StaticBody3D" parent="Dressing/Concourse"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.6, 1.35, 34.800003)
+collision_layer = 0
+script = ExtResource("1_doaf5")
+size = Vector3(0.54999995, 0.45000005, 0.020000458)
+material = ExtResource("vs_vacuum_station_screen_dead")
+grime = 0.0
+
+[node name="Post0W" type="StaticBody3D" parent="Dressing/Concourse"]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -6.5, 0, 26)
+script = ExtResource("vs_station_fixture")
+kind = 0
+
+[node name="Post0WLight" type="OmniLight3D" parent="Dressing/Concourse"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.45, 5.6, 26)
+light_color = Color(0.72, 0.88, 1, 1)
+light_energy = 1.6
+omni_range = 12.0
+
+[node name="Post0E" type="StaticBody3D" parent="Dressing/Concourse"]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 6.5, 0, 26)
+script = ExtResource("vs_station_fixture")
+kind = 0
+
+[node name="Post0ELight" type="OmniLight3D" parent="Dressing/Concourse"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.45, 5.6, 26)
+light_color = Color(0.72, 0.88, 1, 1)
+light_energy = 1.6
+omni_range = 12.0
+
+[node name="Post1W" type="StaticBody3D" parent="Dressing/Concourse"]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -6.5, 0, 12)
+script = ExtResource("vs_station_fixture")
+kind = 0
+variant = 1
+
+[node name="Post1WGlow" type="StaticBody3D" parent="Dressing/Concourse"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.45, 5.7, 12)
+collision_layer = 0
+script = ExtResource("1_doaf5")
+size = Vector3(0.47999954, 0.01999998, 0.47999954)
+material = ExtResource("vs_vacuum_station_lamp")
+grime = 0.0
+
+[node name="Post1WLight" type="OmniLight3D" parent="Dressing/Concourse"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.45, 5.6, 12)
+light_color = Color(0.72, 0.88, 1, 1)
+light_energy = 1.6
+omni_range = 12.0
+script = ExtResource("vs_flicker_light")
+personality = 1
+random_seed = 12
+emissive_block = NodePath("../Post1WGlow")
+
+[node name="BuzzPost" type="AudioStreamPlayer3D" parent="Sound"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.45, 5.6, 12)
+stream = ExtResource("vs_neon_hum")
+pitch_scale = 0.92
+volume_db = -10.0
+unit_size = 2.5
+autoplay = true
+max_distance = 12.0
+
+[node name="Post1E" type="StaticBody3D" parent="Dressing/Concourse"]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 6.5, 0, 12)
+script = ExtResource("vs_station_fixture")
+kind = 0
+
+[node name="Post1ELight" type="OmniLight3D" parent="Dressing/Concourse"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.45, 5.6, 12)
+light_color = Color(0.72, 0.88, 1, 1)
+light_energy = 1.6
+omni_range = 12.0
+
+[node name="Post2W" type="StaticBody3D" parent="Dressing/Concourse"]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -6.5, 0, -2)
+script = ExtResource("vs_station_fixture")
+kind = 0
+
+[node name="Post2WLight" type="OmniLight3D" parent="Dressing/Concourse"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.45, 5.6, -2)
+light_color = Color(0.72, 0.88, 1, 1)
+light_energy = 1.6
+omni_range = 12.0
+
+[node name="Post2E" type="StaticBody3D" parent="Dressing/Concourse"]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 6.5, 0, -2)
+script = ExtResource("vs_station_fixture")
+kind = 0
+variant = 1
+
+[node name="Post3W" type="StaticBody3D" parent="Dressing/Concourse"]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -6.5, 0, -16)
+script = ExtResource("vs_station_fixture")
+kind = 0
+
+[node name="Post3WLight" type="OmniLight3D" parent="Dressing/Concourse"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.45, 5.6, -16)
+light_color = Color(0.72, 0.88, 1, 1)
+light_energy = 1.6
+omni_range = 12.0
+
+[node name="Post3E" type="StaticBody3D" parent="Dressing/Concourse"]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 6.5, 0, -16)
+script = ExtResource("vs_station_fixture")
+kind = 0
+
+[node name="Post3ELight" type="OmniLight3D" parent="Dressing/Concourse"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.45, 5.6, -16)
+light_color = Color(0.72, 0.88, 1, 1)
+light_energy = 1.6
+omni_range = 12.0
+
+[node name="Post4W" type="StaticBody3D" parent="Dressing/Concourse"]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -6.5, 0, -30)
+script = ExtResource("vs_station_fixture")
+kind = 0
+variant = 1
+
+[node name="Post4E" type="StaticBody3D" parent="Dressing/Concourse"]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 6.5, 0, -30)
+script = ExtResource("vs_station_fixture")
+kind = 0
+
+[node name="Post4ELight" type="OmniLight3D" parent="Dressing/Concourse"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.45, 5.6, -30)
+light_color = Color(0.72, 0.88, 1, 1)
+light_energy = 1.6
+omni_range = 12.0
+
+[node name="DotsW39" type="StaticBody3D" parent="Dressing/Concourse"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.2, 0, 39)
+script = ExtResource("vs_station_fixture")
+kind = 11
+count = 9
+plate_size = 2.0
+
+[node name="DotsW10" type="StaticBody3D" parent="Dressing/Concourse"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.2, 0, 10)
+script = ExtResource("vs_station_fixture")
+kind = 11
+variant = 1
+count = 16
+plate_size = 2.0
+
+[node name="DotsW26" type="StaticBody3D" parent="Dressing/Concourse"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.2, 0, -26)
+script = ExtResource("vs_station_fixture")
+kind = 11
+count = 7
+plate_size = 2.0
+
+[node name="DotsE39" type="StaticBody3D" parent="Dressing/Concourse"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.2, 0, 39)
+script = ExtResource("vs_station_fixture")
+kind = 11
+count = 9
+plate_size = 2.0
+
+[node name="DotsE10" type="StaticBody3D" parent="Dressing/Concourse"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.2, 0, 10)
+script = ExtResource("vs_station_fixture")
+kind = 11
+count = 16
+plate_size = 2.0
+
+[node name="DotsE26" type="StaticBody3D" parent="Dressing/Concourse"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.2, 0, -26)
+script = ExtResource("vs_station_fixture")
+kind = 11
+count = 7
+plate_size = 2.0
+
+[node name="BenchWA" type="StaticBody3D" parent="Dressing/Concourse"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 0, 6.75)
+script = ExtResource("vs_station_prop")
+kind = 3
+
+[node name="BenchWB" type="StaticBody3D" parent="Dressing/Concourse"]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -10, 0, 6.15)
+script = ExtResource("vs_station_prop")
+kind = 3
+
+[node name="BenchEA" type="StaticBody3D" parent="Dressing/Concourse"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 0, 6.75)
+script = ExtResource("vs_station_prop")
+kind = 3
+
+[node name="BenchEB" type="StaticBody3D" parent="Dressing/Concourse"]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 10, 0, 6.15)
+script = ExtResource("vs_station_prop")
+kind = 3
+
+[node name="Column-28_-30" type="StaticBody3D" parent="Dressing/Concourse"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -28, 0, -30)
+script = ExtResource("vs_station_fixture")
+kind = 2
+variant = 1
+
+[node name="Column-28_0" type="StaticBody3D" parent="Dressing/Concourse"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -28, 0, 0)
+script = ExtResource("vs_station_fixture")
+kind = 2
+variant = 1
+
+[node name="Column-28_24" type="StaticBody3D" parent="Dressing/Concourse"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -28, 0, 24)
+script = ExtResource("vs_station_fixture")
+kind = 2
+variant = 1
+
+[node name="Column-14_-30" type="StaticBody3D" parent="Dressing/Concourse"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14, 0, -30)
+script = ExtResource("vs_station_fixture")
+kind = 2
+
+[node name="Column-14_0" type="StaticBody3D" parent="Dressing/Concourse"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14, 0, 0)
+script = ExtResource("vs_station_fixture")
+kind = 2
+
+[node name="Column-14_24" type="StaticBody3D" parent="Dressing/Concourse"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14, 0, 24)
+script = ExtResource("vs_station_fixture")
+kind = 2
+
+[node name="Column14_-30" type="StaticBody3D" parent="Dressing/Concourse"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14, 0, -30)
+script = ExtResource("vs_station_fixture")
+kind = 2
+
+[node name="Column14_0" type="StaticBody3D" parent="Dressing/Concourse"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14, 0, 0)
+script = ExtResource("vs_station_fixture")
+kind = 2
+variant = 1
+
+[node name="Column14_24" type="StaticBody3D" parent="Dressing/Concourse"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14, 0, 24)
+script = ExtResource("vs_station_fixture")
+kind = 2
+
+[node name="Column28_-30" type="StaticBody3D" parent="Dressing/Concourse"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 28, 0, -30)
+script = ExtResource("vs_station_fixture")
+kind = 2
+variant = 1
+
+[node name="Column28_0" type="StaticBody3D" parent="Dressing/Concourse"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 28, 0, 0)
+script = ExtResource("vs_station_fixture")
+kind = 2
+variant = 1
+
+[node name="Column28_24" type="StaticBody3D" parent="Dressing/Concourse"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 28, 0, 24)
+script = ExtResource("vs_station_fixture")
+kind = 2
+variant = 1
+
+[node name="BoardW" type="StaticBody3D" parent="Dressing/Concourse"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14, 5, 25)
+script = ExtResource("vs_station_fixture")
+kind = 5
+plate_size = 3.0
+
+[node name="BoardE" type="StaticBody3D" parent="Dressing/Concourse"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14, 5, 25)
+script = ExtResource("vs_station_fixture")
+kind = 5
+variant = 1
+plate_size = 3.0
+
+[node name="KioskMidW" type="StaticBody3D" parent="Dressing/Concourse"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.4, 0, -10)
+script = ExtResource("vs_station_prop")
+kind = 1
+
+[node name="KioskMidE" type="StaticBody3D" parent="Dressing/Concourse"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.4, 0, -10)
+script = ExtResource("vs_station_prop")
+kind = 1
+
+[node name="KioskMidScreenE" type="StaticBody3D" parent="Dressing/Concourse"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.4, 1.35, -9.780001)
+collision_layer = 0
+script = ExtResource("vs_console_screen")
+size = Vector3(0.54999995, 0.45000005, 0.019999504)
+material = ExtResource("vs_vacuum_station_screen")
+grime = 0.0
+mode = 2
+random_seed = 10
+
+[node name="KioskMidScreenW" type="StaticBody3D" parent="Dressing/Concourse"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.4, 1.35, -9.780001)
+collision_layer = 0
+script = ExtResource("1_doaf5")
+size = Vector3(0.54999995, 0.45000005, 0.019999504)
+material = ExtResource("vs_vacuum_station_screen_dead")
+grime = 0.0
+
+[node name="SignRampFoot" type="StaticBody3D" parent="Dressing/Concourse"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, -38.5)
+script = ExtResource("vs_station_fixture")
+kind = 3
+variant = 5
+
+[node name="CeilingHole" type="StaticBody3D" parent="Dressing/Concourse"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -17, 29.96, 11)
+collision_layer = 0
+script = ExtResource("1_doaf5")
+size = Vector3(10, 0.03999901, 6)
+material = ExtResource("vs_black_cube")
+grime = 0.0
+
+[node name="DebrisPanel1" type="StaticBody3D" parent="Dressing/Concourse"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.2, 0, 12.4)
+script = ExtResource("vs_station_fixture")
+kind = 8
+
+[node name="DebrisPanel1b" type="StaticBody3D" parent="Dressing/Concourse"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -24.5, 0, 9.5)
+script = ExtResource("vs_station_fixture")
+kind = 8
+variant = 2
+
+[node name="DebrisPanel2" type="StaticBody3D" parent="Dressing/Concourse"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 19.5, 0.04, -4.8)
+script = ExtResource("vs_station_fixture")
+kind = 8
+variant = 1
+
+[node name="PanelStrut" type="StaticBody3D" parent="Dressing/Concourse"]
+transform = Transform3D(0.9800666, 0, 0.19866933, 0, 1, 0, -0.19866933, 0, 0.9800666, -12.7, 0.33, 11)
+script = ExtResource("1_doaf5")
+size = Vector3(0.3, 0.66, 4.5)
+material = ExtResource("5_5ggvo")
+grime = 0.0
+
+[node name="DroneParts" type="StaticBody3D" parent="Dressing/Concourse"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.5, 0, 20.5)
+script = ExtResource("vs_station_fixture")
+kind = 9
+
+[node name="DroneEye" type="StaticBody3D" parent="Dressing/Concourse"]
+transform = Transform3D(1, 0, 0, 0, 0.9393727, -0.3428978, 0, 0.3428978, 0.9393727, 10.5, 1.784, 21.649)
+collision_layer = 0
+script = ExtResource("1_doaf5")
+size = Vector3(0.22, 0.08, 0.04)
+material = ExtResource("vs_vacuum_station_red")
+grime = 0.0
+
+[node name="DroneEyeBlink" type="OmniLight3D" parent="Life"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.5, 1.8, 22.1)
+script = ExtResource("vs_beacon")
+light_color = Color(1, 0.2, 0.15, 1)
+light_energy = 1.2
+omni_range = 3.5
+pattern = 2
+period = 7.0
+phase = 0.3
+floor_level = 0.08
+emissive_block = NodePath("../../Dressing/Concourse/DroneEye")
+
+[node name="DroneScorch" type="Decal" parent="Decals"]
+transform = Transform3D(0.921061, 0, 0.38941833, 0, 1, 0, -0.38941833, 0, 0.921061, 10.5, 0, 20.5)
+size = Vector3(5.5, 0.4, 5.5)
+texture_albedo = ExtResource("vs_decal_grime")
+upper_fade = 0.0
+lower_fade = 0.3
+cull_mask = 1
+
+[node name="GrimeWest" type="Decal" parent="Decals"]
+transform = Transform3D(0.5403023, 0, 0.84147096, 0, 1, 0, -0.84147096, 0, 0.5403023, -30, 0, 12)
+size = Vector3(4.5, 0.4, 4)
+texture_albedo = ExtResource("vs_decal_grime")
+upper_fade = 0.0
+lower_fade = 0.3
+cull_mask = 1
+
+[node name="GrimeEast" type="Decal" parent="Decals"]
+transform = Transform3D(-0.41614684, 0, 0.9092974, 0, 1, 0, -0.9092974, 0, -0.41614684, 26, 0, -9)
+size = Vector3(4, 0.4, 5)
+texture_albedo = ExtResource("vs_decal_grime")
+upper_fade = 0.0
+lower_fade = 0.3
+cull_mask = 1
+
+[node name="GrimeRamp" type="Decal" parent="Decals"]
+transform = Transform3D(0.9800666, 0, 0.19866933, 0, 1, 0, -0.19866933, 0, 0.9800666, -7, 0, -37)
+size = Vector3(3, 0.4, 3)
+texture_albedo = ExtResource("vs_decal_grime")
+upper_fade = 0.0
+lower_fade = 0.3
+cull_mask = 1
+
+[node name="Structure" type="Node3D" parent="Dressing"]
+
+[node name="RibW36" type="StaticBody3D" parent="Dressing/Structure"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -39.6, 15, 36)
+script = ExtResource("1_doaf5")
+size = Vector3(0.79999924, 30, 1.199997)
+material = ExtResource("3_bfb26")
+grime = 0.3
+
+[node name="RibE36" type="StaticBody3D" parent="Dressing/Structure"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 39.6, 15, 36)
+script = ExtResource("1_doaf5")
+size = Vector3(0.79999924, 30, 1.199997)
+material = ExtResource("3_bfb26")
+grime = 0.3
+
+[node name="RibW24" type="StaticBody3D" parent="Dressing/Structure"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -39.6, 15, 24)
+script = ExtResource("1_doaf5")
+size = Vector3(0.79999924, 30, 1.2000008)
+material = ExtResource("3_bfb26")
+grime = 0.3
+
+[node name="RibE24" type="StaticBody3D" parent="Dressing/Structure"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 39.6, 15, 24)
+script = ExtResource("1_doaf5")
+size = Vector3(0.79999924, 30, 1.2000008)
+material = ExtResource("3_bfb26")
+grime = 0.3
+
+[node name="RibW12" type="StaticBody3D" parent="Dressing/Structure"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -39.6, 15, 12)
+script = ExtResource("1_doaf5")
+size = Vector3(0.79999924, 30, 1.2000008)
+material = ExtResource("3_bfb26")
+grime = 0.3
+
+[node name="RibE12" type="StaticBody3D" parent="Dressing/Structure"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 39.6, 15, 12)
+script = ExtResource("1_doaf5")
+size = Vector3(0.79999924, 30, 1.2000008)
+material = ExtResource("3_bfb26")
+grime = 0.3
+
+[node name="RibW0" type="StaticBody3D" parent="Dressing/Structure"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -39.6, 15, 0)
+script = ExtResource("1_doaf5")
+size = Vector3(0.79999924, 30, 1.2)
+material = ExtResource("3_bfb26")
+grime = 0.3
+
+[node name="RibE0" type="StaticBody3D" parent="Dressing/Structure"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 39.6, 15, 0)
+script = ExtResource("1_doaf5")
+size = Vector3(0.79999924, 30, 1.2)
+material = ExtResource("3_bfb26")
+grime = 0.3
+
+[node name="RibW-12" type="StaticBody3D" parent="Dressing/Structure"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -39.6, 15, -12)
+script = ExtResource("1_doaf5")
+size = Vector3(0.79999924, 30, 1.2000008)
+material = ExtResource("3_bfb26")
+grime = 0.3
+
+[node name="RibE-12" type="StaticBody3D" parent="Dressing/Structure"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 39.6, 15, -12)
+script = ExtResource("1_doaf5")
+size = Vector3(0.79999924, 30, 1.2000008)
+material = ExtResource("3_bfb26")
+grime = 0.3
+
+[node name="RibW-24" type="StaticBody3D" parent="Dressing/Structure"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -39.6, 15, -24)
+script = ExtResource("1_doaf5")
+size = Vector3(0.79999924, 30, 1.2000008)
+material = ExtResource("3_bfb26")
+grime = 0.3
+
+[node name="RibE-24" type="StaticBody3D" parent="Dressing/Structure"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 39.6, 15, -24)
+script = ExtResource("1_doaf5")
+size = Vector3(0.79999924, 30, 1.2000008)
+material = ExtResource("3_bfb26")
+grime = 0.3
+
+[node name="RibW-36" type="StaticBody3D" parent="Dressing/Structure"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -39.6, 15, -36)
+script = ExtResource("1_doaf5")
+size = Vector3(0.79999924, 30, 1.199997)
+material = ExtResource("3_bfb26")
+grime = 0.3
+
+[node name="RibE-36" type="StaticBody3D" parent="Dressing/Structure"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 39.6, 15, -36)
+script = ExtResource("1_doaf5")
+size = Vector3(0.79999924, 30, 1.199997)
+material = ExtResource("3_bfb26")
+grime = 0.3
+
+[node name="RibN-36" type="StaticBody3D" parent="Dressing/Structure"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -36, 15.6, -69.6)
+script = ExtResource("1_doaf5")
+size = Vector3(1.199997, 28.8, 0.80000305)
+material = ExtResource("3_bfb26")
+grime = 0.3
+
+[node name="RibN-12" type="StaticBody3D" parent="Dressing/Structure"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12, 15.6, -69.6)
+script = ExtResource("1_doaf5")
+size = Vector3(1.2000008, 28.8, 0.80000305)
+material = ExtResource("3_bfb26")
+grime = 0.3
+
+[node name="RibN12" type="StaticBody3D" parent="Dressing/Structure"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 15.6, -69.6)
+script = ExtResource("1_doaf5")
+size = Vector3(1.2000008, 28.8, 0.80000305)
+material = ExtResource("3_bfb26")
+grime = 0.3
+
+[node name="RibN36" type="StaticBody3D" parent="Dressing/Structure"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 36, 15.6, -69.6)
+script = ExtResource("1_doaf5")
+size = Vector3(1.199997, 28.8, 0.80000305)
+material = ExtResource("3_bfb26")
+grime = 0.3
+
+[node name="RibS-10" type="StaticBody3D" parent="Dressing/Structure"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 15, 39.6)
+script = ExtResource("1_doaf5")
+size = Vector3(1.2000008, 30, 0.79999924)
+material = ExtResource("3_bfb26")
+grime = 0.3
+
+[node name="RibS10" type="StaticBody3D" parent="Dressing/Structure"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 15, 39.6)
+script = ExtResource("1_doaf5")
+size = Vector3(1.2000008, 30, 0.79999924)
+material = ExtResource("3_bfb26")
+grime = 0.3
+
+[node name="RibS-32" type="StaticBody3D" parent="Dressing/Structure"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -32, 15, 39.6)
+script = ExtResource("1_doaf5")
+size = Vector3(1.1999989, 30, 0.79999924)
+material = ExtResource("3_bfb26")
+grime = 0.3
+
+[node name="RibS32" type="StaticBody3D" parent="Dressing/Structure"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32, 15, 39.6)
+script = ExtResource("1_doaf5")
+size = Vector3(1.1999989, 30, 0.79999924)
+material = ExtResource("3_bfb26")
+grime = 0.3
+
+[node name="GalleryW" type="StaticBody3D" parent="Dressing/Structure"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -38, 7.8, -3)
+collision_layer = 0
+script = ExtResource("1_doaf5")
+size = Vector3(4, 0.4000001, 82)
+material = ExtResource("3_bfb26")
+grime = 0.0
+
+[node name="GalleryEdgeW" type="StaticBody3D" parent="Dressing/Structure"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -36, 7.8, -3)
+collision_layer = 0
+script = ExtResource("1_doaf5")
+size = Vector3(0.30000305, 1.6000004, 82.1)
+material = ExtResource("vs_vacuum_station_wall")
+grime = 0.0
+
+[node name="GalleryGlassW" type="StaticBody3D" parent="Dressing/Structure"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -36, 9.1, -3)
+collision_layer = 0
+script = ExtResource("1_doaf5")
+size = Vector3(0.08000183, 1, 82)
+material = ExtResource("vs_vacuum_station_glass")
+grime = 0.0
+
+[node name="OfficeGlassW" type="StaticBody3D" parent="Dressing/Structure"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -39.95, 11.2, -2.5)
+collision_layer = 0
+script = ExtResource("1_doaf5")
+size = Vector3(0.040000916, 2.3999996, 79)
+material = ExtResource("vs_vacuum_station_glass")
+grime = 0.0
+
+[node name="UnderW0" type="StaticBody3D" parent="Dressing/Structure"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -38, 7.58, 30)
+collision_layer = 0
+script = ExtResource("1_doaf5")
+size = Vector3(2, 0.03999996, 1)
+material = ExtResource("vs_vacuum_station_lamp")
+grime = 0.0
+
+[node name="UnderW0Light" type="OmniLight3D" parent="Dressing/Structure"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -38, 6.9, 30)
+light_color = Color(0.72, 0.95, 0.88, 1)
+light_energy = 1.3
+omni_range = 12.0
+
+[node name="UnderW1" type="StaticBody3D" parent="Dressing/Structure"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -38, 7.58, 10)
+collision_layer = 0
+script = ExtResource("1_doaf5")
+size = Vector3(2, 0.03999996, 1)
+material = ExtResource("vs_vacuum_station_lamp")
+grime = 0.0
+
+[node name="UnderW1Light" type="OmniLight3D" parent="Dressing/Structure"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -38, 6.9, 10)
+light_color = Color(0.72, 0.95, 0.88, 1)
+light_energy = 1.3
+omni_range = 12.0
+
+[node name="UnderW2" type="StaticBody3D" parent="Dressing/Structure"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -38, 7.58, -10)
+collision_layer = 0
+script = ExtResource("1_doaf5")
+size = Vector3(2, 0.03999996, 1)
+material = ExtResource("vs_vacuum_station_lamp")
+grime = 0.0
+
+[node name="UnderW2Light" type="OmniLight3D" parent="Dressing/Structure"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -38, 6.9, -10)
+light_color = Color(0.72, 0.95, 0.88, 1)
+light_energy = 1.3
+omni_range = 12.0
+script = ExtResource("vs_flicker_light")
+personality = 1
+random_seed = 42
+emissive_block = NodePath("../UnderW2")
+
+[node name="UnderW3" type="StaticBody3D" parent="Dressing/Structure"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -38, 7.58, -30)
+collision_layer = 0
+script = ExtResource("1_doaf5")
+size = Vector3(2, 0.03999996, 1)
+material = ExtResource("vs_vacuum_station_lamp")
+grime = 0.0
+
+[node name="UnderW3Light" type="OmniLight3D" parent="Dressing/Structure"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -38, 6.9, -30)
+light_color = Color(0.72, 0.95, 0.88, 1)
+light_energy = 1.3
+omni_range = 12.0
+
+[node name="GalleryE" type="StaticBody3D" parent="Dressing/Structure"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 38, 7.8, -3)
+collision_layer = 0
+script = ExtResource("1_doaf5")
+size = Vector3(4, 0.4000001, 82)
+material = ExtResource("3_bfb26")
+grime = 0.0
+
+[node name="GalleryEdgeE" type="StaticBody3D" parent="Dressing/Structure"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 36, 7.8, -3)
+collision_layer = 0
+script = ExtResource("1_doaf5")
+size = Vector3(0.30000305, 1.6000004, 82.1)
+material = ExtResource("vs_vacuum_station_wall")
+grime = 0.0
+
+[node name="GalleryGlassE" type="StaticBody3D" parent="Dressing/Structure"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 36, 9.1, -3)
+collision_layer = 0
+script = ExtResource("1_doaf5")
+size = Vector3(0.08000183, 1, 82)
+material = ExtResource("vs_vacuum_station_glass")
+grime = 0.0
+
+[node name="OfficeGlassE" type="StaticBody3D" parent="Dressing/Structure"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 39.95, 11.2, -2.5)
+collision_layer = 0
+script = ExtResource("1_doaf5")
+size = Vector3(0.040000916, 2.3999996, 79)
+material = ExtResource("vs_vacuum_station_glass")
+grime = 0.0
+
+[node name="UnderE0" type="StaticBody3D" parent="Dressing/Structure"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 38, 7.58, 30)
+collision_layer = 0
+script = ExtResource("1_doaf5")
+size = Vector3(2, 0.03999996, 1)
+material = ExtResource("vs_vacuum_station_lamp")
+grime = 0.0
+
+[node name="UnderE0Light" type="OmniLight3D" parent="Dressing/Structure"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 38, 6.9, 30)
+light_color = Color(0.72, 0.95, 0.88, 1)
+light_energy = 1.3
+omni_range = 12.0
+
+[node name="UnderE1" type="StaticBody3D" parent="Dressing/Structure"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 38, 7.58, 10)
+collision_layer = 0
+script = ExtResource("1_doaf5")
+size = Vector3(2, 0.03999996, 1)
+material = ExtResource("6_u0cvu")
+grime = 0.0
+
+[node name="UnderE2" type="StaticBody3D" parent="Dressing/Structure"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 38, 7.58, -10)
+collision_layer = 0
+script = ExtResource("1_doaf5")
+size = Vector3(2, 0.03999996, 1)
+material = ExtResource("vs_vacuum_station_lamp")
+grime = 0.0
+
+[node name="UnderE2Light" type="OmniLight3D" parent="Dressing/Structure"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 38, 6.9, -10)
+light_color = Color(0.72, 0.95, 0.88, 1)
+light_energy = 1.3
+omni_range = 12.0
+
+[node name="UnderE3" type="StaticBody3D" parent="Dressing/Structure"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 38, 7.58, -30)
+collision_layer = 0
+script = ExtResource("1_doaf5")
+size = Vector3(2, 0.03999996, 1)
+material = ExtResource("vs_vacuum_station_lamp")
+grime = 0.0
+
+[node name="UnderE3Light" type="OmniLight3D" parent="Dressing/Structure"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 38, 6.9, -30)
+light_color = Color(0.72, 0.95, 0.88, 1)
+light_energy = 1.3
+omni_range = 12.0
+script = ExtResource("vs_flicker_light")
+personality = 2
+random_seed = 43
+emissive_block = NodePath("../UnderE3")
+
+[node name="OfficeScreenW" type="StaticBody3D" parent="Dressing/Structure"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -39.88, 11, 14.4)
+collision_layer = 0
+script = ExtResource("vs_tv_window")
+size = Vector3(0.040000916, 1.2000008, 2.4000006)
+material = ExtResource("8_tdqgh")
+grime = 0.0
+random_seed = 71
+brightness = 0.9
+
+[node name="OfficeScreenE" type="StaticBody3D" parent="Dressing/Structure"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 39.88, 11, -20.5)
+collision_layer = 0
+script = ExtResource("vs_tv_window")
+size = Vector3(0.040000916, 1.2000008, 2)
+material = ExtResource("8_tdqgh")
+grime = 0.0
+random_seed = 72
+brightness = 0.8
+
+[node name="BoothGlass" type="StaticBody3D" parent="Dressing/Structure"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 9.6, 39.96)
+collision_layer = 0
+script = ExtResource("1_doaf5")
+size = Vector3(12, 2, 0.040000916)
+material = ExtResource("vs_vacuum_station_glass")
+grime = 0.0
+
+[node name="Clock" type="StaticBody3D" parent="Dressing/Structure"]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 14, 40)
+script = ExtResource("vs_station_fixture")
+kind = 12
+plate_size = 3.2
+
+[node name="OfficeLitE" type="StaticBody3D" parent="Dressing/Structure"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 39.88, 11.2, 9.5)
+collision_layer = 0
+script = ExtResource("1_doaf5")
+size = Vector3(0.040000916, 2, 3)
+material = ExtResource("8_tdqgh")
+grime = 0.0
+
+[node name="WallPipeW" type="Node3D" parent="Dressing/Structure"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -38.95, 0, 33)
+script = ExtResource("vs_pipe_run")
+points = PackedVector3Array(0, 0, 0, 0, 4.6, 0, 0, 4.6, -73, 0, 0, -73)
+radius = 0.22
+material = ExtResource("vs_pipe_rust")
+bracket_every = 4.0
+
+[node name="WallPipeE" type="Node3D" parent="Dressing/Structure"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 38.95, 0, 33)
+script = ExtResource("vs_pipe_run")
+points = PackedVector3Array(0, 0, 0, 0, 4.6, 0, 0, 4.6, -73, 0, 0, -73)
+radius = 0.22
+material = ExtResource("vs_pipe_round")
+bracket_every = 4.0
+
+[node name="Beam30" type="StaticBody3D" parent="Dressing/Structure"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 28.75, 30)
+collision_layer = 0
+script = ExtResource("1_doaf5")
+size = Vector3(80, 2.5, 1.5)
+material = ExtResource("3_bfb26")
+grime = 0.0
+
+[node name="Beam18" type="StaticBody3D" parent="Dressing/Structure"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 28.75, 18)
+collision_layer = 0
+script = ExtResource("1_doaf5")
+size = Vector3(80, 2.5, 1.5)
+material = ExtResource("3_bfb26")
+grime = 0.0
+
+[node name="Beam6" type="StaticBody3D" parent="Dressing/Structure"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 28.75, 6)
+collision_layer = 0
+script = ExtResource("1_doaf5")
+size = Vector3(80, 2.5, 1.5)
+material = ExtResource("3_bfb26")
+grime = 0.0
+
+[node name="Beam-6" type="StaticBody3D" parent="Dressing/Structure"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 28.75, -6)
+collision_layer = 0
+script = ExtResource("1_doaf5")
+size = Vector3(80, 2.5, 1.5)
+material = ExtResource("3_bfb26")
+grime = 0.0
+
+[node name="Beam-18" type="StaticBody3D" parent="Dressing/Structure"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 28.75, -18)
+collision_layer = 0
+script = ExtResource("1_doaf5")
+size = Vector3(80, 2.5, 1.5)
+material = ExtResource("3_bfb26")
+grime = 0.0
+
+[node name="Beam-30" type="StaticBody3D" parent="Dressing/Structure"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 28.75, -30)
+collision_layer = 0
+script = ExtResource("1_doaf5")
+size = Vector3(80, 2.5, 1.5)
+material = ExtResource("3_bfb26")
+grime = 0.0
+
+[node name="Beam-42" type="StaticBody3D" parent="Dressing/Structure"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 28.75, -42)
+collision_layer = 0
+script = ExtResource("1_doaf5")
+size = Vector3(80, 2.5, 1.5)
+material = ExtResource("3_bfb26")
+grime = 0.0
+
+[node name="Catwalk" type="StaticBody3D" parent="Dressing/Structure"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 17.875, -16)
+collision_layer = 0
+script = ExtResource("1_doaf5")
+size = Vector3(80, 0.25, 2)
+material = ExtResource("5_5ggvo")
+grime = 0.0
+
+[node name="CatwalkRailN" type="StaticBody3D" parent="Dressing/Structure"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 18.990002, -16.990002)
+collision_layer = 0
+script = ExtResource("1_doaf5")
+size = Vector3(80, 0.07999992, 0.07999992)
+material = ExtResource("vs_trim_rail")
+grime = 0.0
+
+[node name="CatwalkRailS" type="StaticBody3D" parent="Dressing/Structure"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 18.990002, -15.01)
+collision_layer = 0
+script = ExtResource("1_doaf5")
+size = Vector3(80, 0.07999992, 0.07999992)
+material = ExtResource("vs_trim_rail")
+grime = 0.0
+
+[node name="CatwalkDoorW" type="StaticBody3D" parent="Dressing/Structure"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -39.98, 19.3, -16)
+collision_layer = 0
+script = ExtResource("1_doaf5")
+size = Vector3(0.040000916, 2.6000004, 2)
+material = ExtResource("vs_black_cube")
+grime = 0.0
+
+[node name="CatwalkDoorE" type="StaticBody3D" parent="Dressing/Structure"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 39.98, 19.3, -16)
+collision_layer = 0
+script = ExtResource("1_doaf5")
+size = Vector3(0.040000916, 2.6000004, 2)
+material = ExtResource("vs_black_cube")
+grime = 0.0
+
+[node name="CatwalkLight" type="OmniLight3D" parent="Dressing/Structure"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 17.4, -16)
+light_color = Color(0.6, 0.8, 1, 1)
+light_energy = 0.6
+omni_range = 9.0
+
+[node name="CatwalkLamp" type="StaticBody3D" parent="Dressing/Structure"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 17.725, -16)
+collision_layer = 0
+script = ExtResource("1_doaf5")
+size = Vector3(0.8, 0.049999237, 0.5999994)
+material = ExtResource("vs_vacuum_station_lamp")
+grime = 0.0
+
+[node name="VentW" type="StaticBody3D" parent="Dressing/Structure"]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -40, 0.7, 18)
+script = ExtResource("vs_station_fixture")
+kind = 6
+
+[node name="SteamWest" type="Node3D" parent="Life"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -39.85, 0.7, 18)
+script = ExtResource("vs_steam_vent")
+direction = Vector3(1, 0.7, 0)
+
+[node name="VentE" type="StaticBody3D" parent="Dressing/Structure"]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 40, 0.7, -28)
+script = ExtResource("vs_station_fixture")
+kind = 6
+
+[node name="SteamEast" type="Node3D" parent="Life"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 39.85, 0.7, -28)
+script = ExtResource("vs_steam_vent")
+direction = Vector3(-1, 0.7, 0)
+
+[node name="DripGallery" type="Node3D" parent="Life"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -35.75, 6.95, 21)
+script = ExtResource("vs_drip")
+
+[node name="PuddleGallery" type="Decal" parent="Decals"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -35.75, 0, 21)
+size = Vector3(1.8, 0.4, 1.4)
+texture_albedo = ExtResource("vs_decal_puddle")
+upper_fade = 0.0
+lower_fade = 0.3
+cull_mask = 1
+
+[node name="Deck" type="Node3D" parent="Dressing"]
+
+[node name="EdgeStripesW" type="StaticBody3D" parent="Dressing/Deck"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -22.1, 1.206, -46.43)
+collision_layer = 0
+script = ExtResource("1_doaf5")
+size = Vector3(35.8, 0.012, 0.35)
+material = ExtResource("vs_trim_stripes")
+grime = 0.0
+trim = true
+
+[node name="RampRailW" type="Node3D" parent="Dressing/Deck"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.25, 1.2, -46.1)
+script = ExtResource("vs_pipe_run")
+points = PackedVector3Array(0, 0, 0, 0, 0.95000005, 0, 0, -0.25000006, 5.8999977, 0, -1.2, 5.8999977)
+radius = 0.05
+material = ExtResource("5_5ggvo")
+bracket_every = 0.0
+
+[node name="EdgeStripesE" type="StaticBody3D" parent="Dressing/Deck"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22.1, 1.206, -46.43)
+collision_layer = 0
+script = ExtResource("1_doaf5")
+size = Vector3(35.8, 0.012, 0.35)
+material = ExtResource("vs_trim_stripes")
+grime = 0.0
+trim = true
+
+[node name="RampRailE" type="Node3D" parent="Dressing/Deck"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.25, 1.2, -46.1)
+script = ExtResource("vs_pipe_run")
+points = PackedVector3Array(0, 0, 0, 0, 0.95000005, 0, 0, -0.25000006, 5.8999977, 0, -1.2, 5.8999977)
+radius = 0.05
+material = ExtResource("5_5ggvo")
+bracket_every = 0.0
+
+[node name="Bollard-30" type="StaticBody3D" parent="Dressing/Deck"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -30, 1.2, -46.9)
+script = ExtResource("vs_station_prop")
+kind = 5
+variant = 1
+
+[node name="Bollard-14" type="StaticBody3D" parent="Dressing/Deck"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14, 1.2, -46.9)
+script = ExtResource("vs_station_prop")
+kind = 5
+
+[node name="Bollard-7" type="StaticBody3D" parent="Dressing/Deck"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.5, 1.2, -46.9)
+script = ExtResource("vs_station_prop")
+kind = 5
+
+[node name="Bollard7" type="StaticBody3D" parent="Dressing/Deck"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.5, 1.2, -46.9)
+script = ExtResource("vs_station_prop")
+kind = 5
+
+[node name="Bollard14" type="StaticBody3D" parent="Dressing/Deck"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14, 1.2, -46.9)
+script = ExtResource("vs_station_prop")
+kind = 5
+variant = 1
+
+[node name="Bollard30" type="StaticBody3D" parent="Dressing/Deck"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30, 1.2, -46.9)
+script = ExtResource("vs_station_prop")
+kind = 5
+
+[node name="KeepOutTubeW" type="StaticBody3D" parent="Dressing/Deck"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -24, 1.2, -64.75)
+script = ExtResource("vs_station_fixture")
+kind = 10
+box_size = Vector3(14.4, 13, 10.5)
+
+[node name="KeepOutTubeE" type="StaticBody3D" parent="Dressing/Deck"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24, 1.2, -64.75)
+script = ExtResource("vs_station_fixture")
+kind = 10
+box_size = Vector3(14.4, 13, 10.5)
+
+[node name="KeepOutDockW" type="StaticBody3D" parent="Dressing/Deck"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.25, 1.2, -64.9)
+script = ExtResource("vs_station_fixture")
+kind = 10
+box_size = Vector3(2.5, 8, 10.2)
+
+[node name="KeepOutDockE" type="StaticBody3D" parent="Dressing/Deck"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.25, 1.2, -64.9)
+script = ExtResource("vs_station_fixture")
+kind = 10
+box_size = Vector3(2.5, 8, 10.2)
+
+[node name="DeskW" type="StaticBody3D" parent="Dressing/Deck"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16, 1.2, -55)
+script = ExtResource("vs_station_prop")
+kind = 0
+
+[node name="DeskScreenW" type="StaticBody3D" parent="Dressing/Deck"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16, 2.45, -55.260002)
+collision_layer = 0
+script = ExtResource("vs_console_screen")
+size = Vector3(1.4000006, 0.5999999, 0.020000458)
+material = ExtResource("vs_vacuum_station_screen")
+grime = 0.0
+mode = 0
+step_every = 0.8
+random_seed = 55
+
+[node name="DeskE" type="StaticBody3D" parent="Dressing/Deck"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16, 1.2, -55)
+script = ExtResource("vs_station_prop")
+kind = 0
+variant = 1
+
+[node name="DeskScreenE" type="StaticBody3D" parent="Dressing/Deck"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16, 2.45, -55.260002)
+collision_layer = 0
+script = ExtResource("vs_console_screen")
+size = Vector3(1.4000006, 0.5999999, 0.020000458)
+material = ExtResource("vs_vacuum_station_screen")
+grime = 0.0
+mode = 1
+step_every = 0.8
+random_seed = 56
+
+[node name="Cart" type="StaticBody3D" parent="Dressing/Deck"]
+transform = Transform3D(0.9553365, 0, 0.29552022, 0, 1, 0, -0.29552022, 0, 0.9553365, 19.5, 1.2, -51)
+script = ExtResource("vs_station_prop")
+kind = 7
+
+[node name="CratesA" type="StaticBody3D" parent="Dressing/Deck"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 29, 1.2, -53)
+script = ExtResource("vs_station_prop")
+kind = 6
+variant = 2
+
+[node name="CratesB" type="StaticBody3D" parent="Dressing/Deck"]
+transform = Transform3D(0.9800666, 0, -0.19866933, 0, 1, 0, 0.19866933, 0, 0.9800666, 30.7, 1.2, -51.5)
+script = ExtResource("vs_station_prop")
+kind = 6
+variant = 1
+
+[node name="Spool" type="StaticBody3D" parent="Dressing/Deck"]
+transform = Transform3D(0.87758255, 0, 0.47942555, 0, 1, 0, -0.47942555, 0, 0.87758255, 12.5, 1.2, -52)
+script = ExtResource("vs_station_prop")
+kind = 8
+
+[node name="SignCapsule" type="StaticBody3D" parent="Dressing/Deck"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.6, 3, -48)
+script = ExtResource("vs_station_fixture")
+kind = 4
+variant = 5
+plate_size = 0.7
+
+[node name="SignHazardW" type="StaticBody3D" parent="Dressing/Deck"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18.8, 1.2, -58.4)
+script = ExtResource("vs_station_fixture")
+kind = 3
+variant = 6
+
+[node name="SignHazardE" type="StaticBody3D" parent="Dressing/Deck"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18.8, 1.2, -58.4)
+script = ExtResource("vs_station_fixture")
+kind = 3
+variant = 6
+
+[node name="WallPipeW" type="Node3D" parent="Dressing/Deck"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -39.6, 18.2, -68.8)
+script = ExtResource("vs_pipe_run")
+points = PackedVector3Array(0, 0, 0, 26.199999, 0, 0, 26.199999, -17, 0)
+radius = 0.3
+material = ExtResource("vs_pipe_round")
+bracket_every = 4.0
+
+[node name="WallPipeE" type="Node3D" parent="Dressing/Deck"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 39.6, 19.2, -68.8)
+script = ExtResource("vs_pipe_run")
+points = PackedVector3Array(0, 0, 0, -26.199999, 0, 0, -26.199999, -18, 0)
+radius = 0.3
+material = ExtResource("vs_pipe_rust")
+bracket_every = 4.0
+
+[node name="WallConduit" type="Node3D" parent="Dressing/Deck"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -39.6, 20.4, -69)
+script = ExtResource("vs_pipe_run")
+points = PackedVector3Array(0, 0, 0, 79.2, 0, 0)
+radius = 0.15
+material = ExtResource("5_5ggvo")
+bracket_every = 4.0
+
+[node name="DripWallPipe" type="Node3D" parent="Life"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.95, 8, -68.6)
+script = ExtResource("vs_drip")
+
+[node name="PuddleDeck" type="Decal" parent="Decals"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.95, 1.2, -68.3)
+size = Vector3(1.6, 0.4, 1.2)
+texture_albedo = ExtResource("vs_decal_puddle")
+upper_fade = 0.0
+lower_fade = 0.3
+cull_mask = 1
+
+[node name="GrimeDeck" type="Decal" parent="Decals"]
+transform = Transform3D(0.6967067, 0, 0.7173561, 0, 1, 0, -0.7173561, 0, 0.6967067, 10, 1.2, -62)
+size = Vector3(4, 0.4, 4)
+texture_albedo = ExtResource("vs_decal_grime")
+upper_fade = 0.0
+lower_fade = 0.3
+cull_mask = 1
+
+[node name="GrimeDeckW" type="Decal" parent="Decals"]
+transform = Transform3D(-0.50484604, 0, 0.8632094, 0, 1, 0, -0.8632094, 0, -0.50484604, -17, 1.2, -50)
+size = Vector3(3, 0.4, 4)
+texture_albedo = ExtResource("vs_decal_grime")
+upper_fade = 0.0
+lower_fade = 0.3
+cull_mask = 1
+
+[node name="GrateCapsule" type="StaticBody3D" parent="Dressing/Deck"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.2, 1.2, -51)
+script = ExtResource("vs_station_fixture")
+kind = 7
+
+[node name="SteamCapsule" type="Node3D" parent="Life"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.2, 1.25, -51)
+script = ExtResource("vs_steam_vent")
+direction = Vector3(0.1, 1, 0)
+amount = 12
+
+[node name="TubeMouths" type="Node3D" parent="Dressing"]
+
+[node name="TunnelW" type="Node3D" parent="Dressing/TubeMouths"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -24, 6.7, -60)
+script = ExtResource("vs_tube_tunnel")
+end_radius = 4.2
+length = 9.9
+
+[node name="TunnelWLight" type="OmniLight3D" parent="Dressing/TubeMouths"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -24, 4.5, -64.5)
+light_color = Color(0.3, 0.7, 0.85, 1)
+light_energy = 0.7
+omni_range = 7.0
+
+[node name="BarrierW1" type="StaticBody3D" parent="Dressing/TubeMouths"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -26.1, 1.2, -59.1)
+script = ExtResource("vs_station_prop")
+kind = 4
+
+[node name="BarrierW2" type="StaticBody3D" parent="Dressing/TubeMouths"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -21.9, 1.2, -59.1)
+script = ExtResource("vs_station_prop")
+kind = 4
+
+[node name="BarrierLamp" type="StaticBody3D" parent="Dressing/TubeMouths"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -24, 2.38, -59.1)
+collision_layer = 0
+script = ExtResource("1_doaf5")
+size = Vector3(0.5, 0.120000124, 0.13999939)
+material = ExtResource("vs_vacuum_station_red")
+grime = 0.0
+
+[node name="BarrierBeacon" type="OmniLight3D" parent="Dressing/TubeMouths"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -24, 2.8, -58.7)
+script = ExtResource("vs_beacon")
+light_color = Color(1, 0.22, 0.15, 1)
+light_energy = 0.9
+omni_range = 6.0
+pattern = 1
+period = 1.6
+emissive_block = NodePath("../BarrierLamp")
+
+[node name="TunnelDock" type="Node3D" parent="Dressing/TubeMouths"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6.7, -60)
+script = ExtResource("vs_tube_tunnel")
+length = 9.9
+sides = 14
+arc_from = -36.0
+arc_to = 216.0
+lights_on = false
+
+[node name="CollarTop" type="StaticBody3D" parent="Dressing/TubeMouths"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 8.6, -60)
+script = ExtResource("1_doaf5")
+size = Vector3(12, 0.8000002, 1.199997)
+material = ExtResource("5_5ggvo")
+grime = 0.0
+
+[node name="CollarW" type="StaticBody3D" parent="Dressing/TubeMouths"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.5, 4.7, -60)
+script = ExtResource("1_doaf5")
+size = Vector3(1, 7, 1.199997)
+material = ExtResource("5_5ggvo")
+grime = 0.0
+
+[node name="CollarE" type="StaticBody3D" parent="Dressing/TubeMouths"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.5, 4.7, -60)
+script = ExtResource("1_doaf5")
+size = Vector3(1, 7, 1.199997)
+material = ExtResource("5_5ggvo")
+grime = 0.0
+
+[node name="BlastDoorE" type="Node3D" parent="Dressing/TubeMouths"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24, 6.7, -59.6)
+script = ExtResource("vs_tube_tunnel")
+sealed = true
+
+[node name="DoorEye" type="StaticBody3D" parent="Dressing/TubeMouths"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24, 6.7, -59.13)
+collision_layer = 0
+script = ExtResource("1_doaf5")
+size = Vector3(0.5, 0.5, 0.040000916)
+material = ExtResource("vs_vacuum_station_red")
+grime = 0.0
+
+[node name="DoorEyeBeacon" type="OmniLight3D" parent="Dressing/TubeMouths"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24, 6.7, -58.4)
+script = ExtResource("vs_beacon")
+light_color = Color(1, 0.2, 0.12, 1)
+light_energy = 1.0
+omni_range = 7.0
+pattern = 0
+period = 4.0
+floor_level = 0.15
+emissive_block = NodePath("../DoorEye")
+
+[node name="TubeNumber1" type="StaticBody3D" parent="Dressing/TubeMouths"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -24, 15.2, -70)
+script = ExtResource("vs_station_fixture")
+kind = 4
+variant = 2
+plate_size = 3.0
+
+[node name="TubeNumber2" type="StaticBody3D" parent="Dressing/TubeMouths"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 15.2, -70)
+script = ExtResource("vs_station_fixture")
+kind = 4
+variant = 3
+plate_size = 3.0
+
+[node name="TubeNumber3" type="StaticBody3D" parent="Dressing/TubeMouths"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24, 15.2, -70)
+script = ExtResource("vs_station_fixture")
+kind = 4
+variant = 4
+plate_size = 3.0
+
+[node name="TubeSignGlow" type="OmniLight3D" parent="Dressing/TubeMouths"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 15.2, -68.4)
+light_color = Color(0.3, 0.85, 1, 1)
+light_energy = 0.8
+omni_range = 12.0
+
+[node name="CapsuleHull" type="Node3D" parent="Dressing"]
+
+[node name="WindowW" type="StaticBody3D" parent="Dressing/CapsuleHull"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 4.95, -55)
+collision_layer = 0
+script = ExtResource("1_doaf5")
+size = Vector3(0.10000038, 1.5, 6)
+material = ExtResource("8_tdqgh")
+grime = 0.0
+
+[node name="StripW" type="StaticBody3D" parent="Dressing/CapsuleHull"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.02, 1.5, -53.85)
+collision_layer = 0
+script = ExtResource("1_doaf5")
+size = Vector3(0.03999996, 0.099999905, 10.899998)
+material = ExtResource("vs_vacuum_station_guide")
+grime = 0.0
+
+[node name="StripPulseW" type="OmniLight3D" parent="Dressing/CapsuleHull"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.8, 1.7, -54)
+script = ExtResource("vs_beacon")
+light_color = Color(0.3, 0.85, 1, 1)
+light_energy = 0.6
+omni_range = 4.5
+pattern = 0
+period = 5.0
+phase = 0.0
+floor_level = 0.3
+emissive_block = NodePath("../StripW")
+
+[node name="RoofEdgeW" type="StaticBody3D" parent="Dressing/CapsuleHull"]
+transform = Transform3D(0.70710677, -0.70710677, 0, 0.70710677, 0.70710677, 0, 0, 0, 1, -5, 8.2, -53.9)
+collision_layer = 0
+script = ExtResource("1_doaf5")
+size = Vector3(0.6, 0.6, 11)
+material = ExtResource("vs_vacuum_station_hull")
+grime = 0.0
+
+[node name="DoorJambW" type="StaticBody3D" parent="Dressing/CapsuleHull"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.1, 2.51, -47.93)
+script = ExtResource("1_doaf5")
+size = Vector3(0.20000005, 2.58, 0.13999939)
+material = ExtResource("5_5ggvo")
+grime = 0.0
+
+[node name="WindowSpillW" type="OmniLight3D" parent="Dressing/CapsuleHull"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.6, 4.9, -55)
+light_color = Color(1, 0.75, 0.45, 1)
+light_energy = 0.55
+omni_range = 6.0
+
+[node name="StripE" type="StaticBody3D" parent="Dressing/CapsuleHull"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.02, 1.5, -53.85)
+collision_layer = 0
+script = ExtResource("1_doaf5")
+size = Vector3(0.03999996, 0.099999905, 10.899998)
+material = ExtResource("vs_vacuum_station_guide")
+grime = 0.0
+
+[node name="StripPulseE" type="OmniLight3D" parent="Dressing/CapsuleHull"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.8, 1.7, -54)
+script = ExtResource("vs_beacon")
+light_color = Color(0.3, 0.85, 1, 1)
+light_energy = 0.6
+omni_range = 4.5
+pattern = 0
+period = 5.0
+phase = 0.5
+floor_level = 0.3
+emissive_block = NodePath("../StripE")
+
+[node name="RoofEdgeE" type="StaticBody3D" parent="Dressing/CapsuleHull"]
+transform = Transform3D(0.70710677, -0.70710677, 0, 0.70710677, 0.70710677, 0, 0, 0, 1, 5, 8.2, -53.9)
+collision_layer = 0
+script = ExtResource("1_doaf5")
+size = Vector3(0.6, 0.6, 11)
+material = ExtResource("vs_vacuum_station_hull")
+grime = 0.0
+
+[node name="DoorJambE" type="StaticBody3D" parent="Dressing/CapsuleHull"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.1, 2.51, -47.93)
+script = ExtResource("1_doaf5")
+size = Vector3(0.20000005, 2.58, 0.13999939)
+material = ExtResource("5_5ggvo")
+grime = 0.0
+
+[node name="WindowSpillE" type="OmniLight3D" parent="Dressing/CapsuleHull"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.6, 4.9, -55)
+light_color = Color(1, 0.75, 0.45, 1)
+light_energy = 0.55
+omni_range = 6.0
+
+[node name="DoorHead" type="StaticBody3D" parent="Dressing/CapsuleHull"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.05, -47.93)
+script = ExtResource("1_doaf5")
+size = Vector3(2.4, 0.20000005, 0.13999939)
+material = ExtResource("5_5ggvo")
+grime = 0.0
+
+[node name="DoorThreshold" type="StaticBody3D" parent="Dressing/CapsuleHull"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.206, -47.58)
+collision_layer = 0
+script = ExtResource("1_doaf5")
+size = Vector3(2, 0.012, 0.56)
+material = ExtResource("vs_trim_stripes")
+grime = 0.0
+trim = true
+
+[node name="House" type="Node3D" parent="Dressing"]
+
+[node name="LiningW" type="StaticBody3D" parent="Dressing/House"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.68, 4.56, -52.55)
+collision_layer = 0
+script = ExtResource("1_doaf5")
+size = Vector3(0.03999996, 6.6800003, 8.5)
+material = ExtResource("vs_vacuum_station_capsule_wall")
+grime = 0.0
+
+[node name="LiningTrainingW" type="StaticBody3D" parent="Dressing/House"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.68, 4.56, -61.449997)
+collision_layer = 0
+script = ExtResource("1_doaf5")
+size = Vector3(0.03999996, 6.6800003, 8.499996)
+material = ExtResource("vs_vacuum_station_capsule_wall")
+grime = 0.0
+
+[node name="WindowInsideW" type="StaticBody3D" parent="Dressing/House"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.645, 4.95, -54.35)
+collision_layer = 0
+script = ExtResource("1_doaf5")
+size = Vector3(0.029999733, 1.5, 4.700001)
+material = ExtResource("vs_vacuum_station_glass")
+grime = 0.0
+
+[node name="LiningE" type="StaticBody3D" parent="Dressing/House"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.68, 4.56, -52.55)
+collision_layer = 0
+script = ExtResource("1_doaf5")
+size = Vector3(0.03999996, 6.6800003, 8.5)
+material = ExtResource("vs_vacuum_station_capsule_wall")
+grime = 0.0
+
+[node name="LiningTrainingE" type="StaticBody3D" parent="Dressing/House"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.68, 4.56, -61.449997)
+collision_layer = 0
+script = ExtResource("1_doaf5")
+size = Vector3(0.03999996, 6.6800003, 8.499996)
+material = ExtResource("vs_vacuum_station_capsule_wall")
+grime = 0.0
+
+[node name="WindowInsideE" type="StaticBody3D" parent="Dressing/House"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.645, 4.95, -54.35)
+collision_layer = 0
+script = ExtResource("1_doaf5")
+size = Vector3(0.029999733, 1.5, 4.700001)
+material = ExtResource("vs_vacuum_station_glass")
+grime = 0.0
+
+[node name="LiningBack" type="StaticBody3D" parent="Dressing/House"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.56, -65.68)
+collision_layer = 0
+script = ExtResource("1_doaf5")
+size = Vector3(9.32, 6.6800003, 0.039993286)
+material = ExtResource("vs_vacuum_station_capsule_wall")
+grime = 0.0
+
+[node name="BeddingA" type="StaticBody3D" parent="Dressing/House"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.6, 1.8, -52.5)
+script = ExtResource("vs_capsule_prop")
+kind = 0
+
+[node name="BeddingB" type="StaticBody3D" parent="Dressing/House"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.6, 1.8, -52.5)
+script = ExtResource("vs_capsule_prop")
+kind = 0
+variant = 1
+
+[node name="TableSet" type="StaticBody3D" parent="Dressing/House"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.5, 1.22, -49.15)
+script = ExtResource("vs_capsule_prop")
+kind = 1
+
+[node name="TableLamp" type="StaticBody3D" parent="Dressing/House"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.2, 2, -49.55)
+script = ExtResource("vs_capsule_prop")
+kind = 13
+
+[node name="Rug" type="StaticBody3D" parent="Dressing/House"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.22, -52.8)
+script = ExtResource("vs_capsule_prop")
+kind = 6
+
+[node name="GalleyThings" type="StaticBody3D" parent="Dressing/House"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.9, 2.1, -56.8)
+script = ExtResource("vs_capsule_prop")
+kind = 2
+
+[node name="ShelfW" type="StaticBody3D" parent="Dressing/House"]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -4.66, 3.5, -52.5)
+script = ExtResource("vs_capsule_prop")
+kind = 3
+
+[node name="ShelfE" type="StaticBody3D" parent="Dressing/House"]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 4.66, 3.5, -52.5)
+script = ExtResource("vs_capsule_prop")
+kind = 3
+variant = 1
+
+[node name="Pack" type="StaticBody3D" parent="Dressing/House"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.6, 1.22, -56.8)
+script = ExtResource("vs_capsule_prop")
+kind = 4
+
+[node name="Boots" type="StaticBody3D" parent="Dressing/House"]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 2.4, 1.22, -48.3)
+script = ExtResource("vs_capsule_prop")
+kind = 5
+
+[node name="Pegs" type="StaticBody3D" parent="Dressing/House"]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 3.2, 3.3, -48.3)
+script = ExtResource("vs_capsule_prop")
+kind = 12
+
+[node name="Supplies" type="StaticBody3D" parent="Dressing/House"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.9, 1.22, -49.4)
+script = ExtResource("vs_station_prop")
+kind = 6
+variant = 1
+
+[node name="Dummy" type="StaticBody3D" parent="Dressing/House"]
+transform = Transform3D(0.921061, 0, -0.38941833, 0, 1, 0, 0.38941833, 0, 0.921061, 2.2, 1.22, -63)
+script = ExtResource("vs_capsule_prop")
+kind = 7
+
+[node name="Blades" type="StaticBody3D" parent="Dressing/House"]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 4.36, 2.2, -62)
+script = ExtResource("vs_capsule_prop")
+kind = 8
+
+[node name="BenchTraining" type="StaticBody3D" parent="Dressing/House"]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -4.43, 1.22, -61.5)
+script = ExtResource("vs_capsule_prop")
+kind = 9
+
+[node name="Bag" type="StaticBody3D" parent="Dressing/House"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.3, 1.22, -64)
+script = ExtResource("vs_capsule_prop")
+kind = 10
+
+[node name="Weights" type="StaticBody3D" parent="Dressing/House"]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -3.9, 1.22, -58.3)
+script = ExtResource("vs_capsule_prop")
+kind = 11
+
+[node name="PegsTraining" type="StaticBody3D" parent="Dressing/House"]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -4.66, 3.2, -59.2)
+script = ExtResource("vs_capsule_prop")
+kind = 12
+variant = 1
+
+[node name="HoloProjection" type="Node3D" parent="Life"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 10.6, -49)
+script = ExtResource("vs_holo_projection")
+radius = 2.3
+beam_length = 7.95
+
+[node name="ProjectionLight" type="OmniLight3D" parent="Console"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 9.6, -49)
+light_color = Color(0.3, 0.85, 1, 1)
+light_energy = 1.5
+omni_range = 15.0
+
+[node name="HoloHum" type="AudioStreamPlayer3D" parent="Sound"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 3, -49)
+stream = ExtResource("vs_vacuum_station_holo_hum")
+volume_db = -9.0
+unit_size = 3.0
+autoplay = true
+max_distance = 22.0
+
+[node name="TubeBreath" type="AudioStreamPlayer3D" parent="Sound"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -24, 3.5, -61)
+stream = ExtResource("vs_vacuum_station_tube_breath")
+volume_db = -6.0
+unit_size = 6.0
+autoplay = true
+max_distance = 40.0
+
+[node name="TubeBreathMiddle" type="AudioStreamPlayer3D" parent="Sound"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 9.5, -61)
+stream = ExtResource("vs_vacuum_station_tube_breath")
+pitch_scale = 0.83
+volume_db = -14.0
+unit_size = 4.0
+autoplay = true
+max_distance = 26.0
+
+[node name="CapsuleHum" type="AudioStreamPlayer3D" parent="Sound"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.9, 2.8, -56.4)
+stream = ExtResource("vs_vending_hum")
+pitch_scale = 0.6
+volume_db = -15.0
+unit_size = 2.0
+autoplay = true
+max_distance = 9.0
+
+[node name="CorridorBuzz" type="AudioStreamPlayer3D" parent="Sound"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.6, 58)
+stream = ExtResource("vs_neon_hum")
+pitch_scale = 0.86
+volume_db = -12.0
+unit_size = 2.0
+autoplay = true
+max_distance = 10.0

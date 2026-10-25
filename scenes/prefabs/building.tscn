@@ -1,0 +1,10 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/block.gd" id="1_81hfh"]
+[ext_resource type="Material" path="res://materials/building.tres" id="2_2agb2"]
+
+[node name="Building" type="StaticBody3D" unique_id=948220115]
+script = ExtResource("1_81hfh")
+size = Vector3(11, 12.8, 9)
+material = ExtResource("2_2agb2")
+style = 1

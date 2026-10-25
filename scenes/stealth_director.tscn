@@ -1,0 +1,37 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/stealth_director.gd" id="1_director"]
+[ext_resource type="Script" path="res://scripts/ui/restart_card.gd" id="2_card"]
+
+[node name="StealthDirector" type="Node"]
+script = ExtResource("1_director")
+
+[node name="Screen" type="CanvasLayer" parent="."]
+layer = 20
+
+[node name="Fade" type="ColorRect" parent="Screen"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.01, 0.01, 0.02, 0)
+
+[node name="Message" type="Label" parent="Screen"]
+visible = false
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_top = -36.0
+offset_bottom = 36.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(1, 0.62, 0.3, 1)
+theme_override_font_sizes/font_size = 30
+text = "SPOTTED"
+horizontal_alignment = 1
+vertical_alignment = 1
+script = ExtResource("2_card")

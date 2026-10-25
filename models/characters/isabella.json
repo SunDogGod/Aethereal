@@ -1,0 +1,23 @@
+{
+ "name": "isabella",
+ "root": "IsabellaModel",
+ "glb": "res://models/characters/isabella.glb",
+ "props_glb": "res://models/characters/isabella_props.glb",
+ "scene": "res://scenes/characters/isabella_model.tscn",
+ "attach": [
+  {
+   "node": "Brush",
+   "bone": "Weapon_R",
+   "props": [
+    "BrushMesh"
+   ]
+  },
+  {
+   "node": "Bell",
+   "bone": "Sheath",
+   "props": [
+    "BellMesh"
+   ]
+  }
+ ]
+}

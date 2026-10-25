@@ -1,0 +1,7 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/props/pipe_run.gd" id="1_wbdmw"]
+
+[node name="PipeRun" type="Node3D" unique_id=1567822464]
+script = ExtResource("1_wbdmw")
+points = PackedVector3Array(0, 0, 0, 0, 3, 0)

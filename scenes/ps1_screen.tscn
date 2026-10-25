@@ -1,0 +1,18 @@
+[gd_scene format=3]
+
+[ext_resource type="Shader" path="res://shaders/ps1_screen.gdshader" id="1_screen"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_screen"]
+shader = ExtResource("1_screen")
+
+[node name="PS1Screen" type="CanvasLayer"]
+layer = 50
+
+[node name="Filter" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_screen")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2

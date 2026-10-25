@@ -1,0 +1,154 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/title_screen.gd" id="1_title"]
+[ext_resource type="Theme" path="res://scenes/ui/menu_theme.tres" id="2_theme"]
+[ext_resource type="Texture2D" path="res://scenes/ui/title_town.png" id="3_town"]
+[ext_resource type="Shader" path="res://scenes/ui/title_background.gdshader" id="4_bg"]
+[ext_resource type="PackedScene" path="res://scenes/ui/settings_panel.tscn" id="5_settings"]
+
+[sub_resource type="ShaderMaterial" id="Mat_background"]
+shader = ExtResource("4_bg")
+shader_parameter/zoom = 1.12
+shader_parameter/drift = 0.022
+shader_parameter/cycle_seconds = 46.0
+shader_parameter/brightness = 0.5
+shader_parameter/desaturate = 0.35
+shader_parameter/tint = Color(0.62, 0.7, 1, 1)
+shader_parameter/vignette = 1.1
+shader_parameter/left_shade = 0.55
+
+[sub_resource type="Gradient" id="Gradient_dust"]
+offsets = PackedFloat32Array(0, 0.25, 1)
+colors = PackedColorArray(0.72, 0.78, 0.95, 0, 0.72, 0.78, 0.95, 0.45, 0.72, 0.78, 0.95, 0)
+
+[node name="TitleScreen" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme = ExtResource("2_theme")
+script = ExtResource("1_title")
+
+[node name="Background" type="TextureRect" parent="."]
+texture_filter = 4
+material = SubResource("Mat_background")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("3_town")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Dust" type="CPUParticles2D" parent="."]
+position = Vector2(480, 290)
+amount = 46
+lifetime = 16.0
+preprocess = 16.0
+emission_shape = 3
+emission_rect_extents = Vector2(520, 300)
+direction = Vector2(0.35, -1)
+spread = 35.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 3.0
+initial_velocity_max = 8.0
+scale_amount_min = 1.0
+scale_amount_max = 2.0
+color_ramp = SubResource("Gradient_dust")
+
+[node name="Logo" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 62.0
+offset_bottom = 132.0
+grow_horizontal = 2
+mouse_filter = 2
+theme_override_constants/separation = 6
+
+[node name="Title" type="Label" parent="Logo"]
+layout_mode = 2
+theme_type_variation = &"TitleLabel"
+text = "AETHEREAL"
+horizontal_alignment = 1
+
+[node name="Rule" type="ColorRect" parent="Logo"]
+custom_minimum_size = Vector2(200, 1)
+layout_mode = 2
+size_flags_horizontal = 4
+mouse_filter = 2
+color = Color(1, 0.76, 0.4, 0.55)
+
+[node name="Main" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 46.0
+offset_top = -70.0
+offset_right = 286.0
+offset_bottom = -70.0
+grow_vertical = 0
+mouse_filter = 2
+theme_override_constants/separation = 2
+
+[node name="Chapters" type="PanelContainer" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 36.0
+offset_top = -60.0
+offset_right = 36.0
+offset_bottom = -60.0
+grow_vertical = 0
+
+[node name="List" type="VBoxContainer" parent="Chapters"]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="Settings" parent="." instance=ExtResource("5_settings")]
+visible = false
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 36.0
+offset_top = -60.0
+offset_right = 456.0
+offset_bottom = -60.0
+grow_vertical = 0
+
+[node name="Hints" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -460.0
+offset_top = -32.0
+offset_right = -28.0
+offset_bottom = -16.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_type_variation = &"HintLabel"
+text = "Enter / A   select"
+horizontal_alignment = 2
+
+[node name="Fade" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 1)

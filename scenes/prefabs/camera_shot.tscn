@@ -1,0 +1,5 @@
+[gd_scene format=3]
+
+[node name="Shot" type="Camera3D" unique_id=156048923]
+fov = 55.0
+far = 320.0

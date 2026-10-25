@@ -1,0 +1,172 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/pause_menu.gd" id="1_pause"]
+[ext_resource type="Theme" path="res://scenes/ui/menu_theme.tres" id="2_theme"]
+[ext_resource type="PackedScene" path="res://scenes/ui/settings_panel.tscn" id="3_settings"]
+[ext_resource type="AudioStream" path="res://audio/ui_blip.wav" id="4_blip"]
+
+[sub_resource type="Gradient" id="Gradient_side"]
+colors = PackedColorArray(0, 0, 0, 0.6, 0, 0, 0, 0)
+
+[sub_resource type="GradientTexture2D" id="Texture_side"]
+gradient = SubResource("Gradient_side")
+width = 64
+height = 4
+
+[node name="PauseMenu" type="CanvasLayer"]
+process_mode = 3
+layer = 40
+script = ExtResource("1_pause")
+
+[node name="Root" type="Control" parent="."]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_theme")
+
+[node name="Dim" type="ColorRect" parent="Root"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.01, 0.015, 0.035, 0.6)
+
+[node name="Side" type="TextureRect" parent="Root"]
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_right = 420.0
+grow_vertical = 2
+mouse_filter = 2
+texture = SubResource("Texture_side")
+expand_mode = 1
+
+[node name="Main" type="VBoxContainer" parent="Root"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 46.0
+offset_top = -96.0
+offset_right = 286.0
+offset_bottom = 96.0
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/separation = 2
+
+[node name="Header" type="Label" parent="Root/Main"]
+layout_mode = 2
+theme_type_variation = &"HeaderLabel"
+theme_override_colors/font_color = Color(0.98, 0.96, 0.91, 1)
+theme_override_font_sizes/font_size = 22
+text = "PAUSED"
+
+[node name="Where" type="Label" parent="Root/Main"]
+layout_mode = 2
+theme_type_variation = &"HintLabel"
+theme_override_colors/font_color = Color(1, 0.76, 0.4, 0.8)
+theme_override_font_sizes/font_size = 10
+text = "0.1  The Empty Town"
+
+[node name="Gap" type="Control" parent="Root/Main"]
+custom_minimum_size = Vector2(0, 6)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Rule" type="ColorRect" parent="Root/Main"]
+custom_minimum_size = Vector2(0, 1)
+layout_mode = 2
+mouse_filter = 2
+color = Color(0.45, 0.5, 0.66, 0.45)
+
+[node name="Gap2" type="Control" parent="Root/Main"]
+custom_minimum_size = Vector2(0, 4)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Items" type="VBoxContainer" parent="Root/Main"]
+layout_mode = 2
+theme_override_constants/separation = 2
+
+[node name="Settings" parent="Root" instance=ExtResource("3_settings")]
+visible = false
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 36.0
+offset_top = -96.0
+offset_right = 456.0
+offset_bottom = -96.0
+grow_vertical = 1
+
+[node name="Confirm" type="PanelContainer" parent="Root"]
+visible = false
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -150.0
+offset_top = -50.0
+offset_right = 150.0
+offset_bottom = 50.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Box" type="VBoxContainer" parent="Root/Confirm"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="Question" type="Label" parent="Root/Confirm/Box"]
+layout_mode = 2
+theme_type_variation = &"BodyLabel"
+theme_override_font_sizes/font_size = 14
+text = "Return to the title screen?"
+horizontal_alignment = 1
+
+[node name="Note" type="Label" parent="Root/Confirm/Box"]
+layout_mode = 2
+theme_type_variation = &"HintLabel"
+theme_override_font_sizes/font_size = 10
+text = "Continue starts this level from the beginning."
+horizontal_alignment = 1
+
+[node name="Answers" type="HBoxContainer" parent="Root/Confirm/Box"]
+layout_mode = 2
+theme_override_constants/separation = 12
+alignment = 1
+
+[node name="Hints" type="Label" parent="Root"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -460.0
+offset_top = 16.0
+offset_right = -28.0
+offset_bottom = 32.0
+grow_horizontal = 0
+theme_type_variation = &"HintLabel"
+text = "Enter / A   select"
+horizontal_alignment = 2
+
+[node name="Black" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 0)
+
+[node name="Blip" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_blip")
+volume_db = -9.0

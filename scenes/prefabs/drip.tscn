@@ -1,0 +1,6 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/drip.gd" id="1_4bg5m"]
+
+[node name="Drip" type="Node3D" unique_id=679295341]
+script = ExtResource("1_4bg5m")

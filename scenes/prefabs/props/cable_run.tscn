@@ -1,0 +1,7 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/props/cable_run.gd" id="1_25tsg"]
+
+[node name="CableRun" type="Node3D" unique_id=947348287]
+script = ExtResource("1_25tsg")
+points = PackedVector3Array(0, 0, 0, 6, 0, 0)

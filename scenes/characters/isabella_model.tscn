@@ -1,0 +1,68 @@
+[gd_scene format=4]
+
+[ext_resource type="PackedScene" path="res://models/characters/isabella.glb" id="1_a7e3v"]
+[ext_resource type="Material" path="res://models/characters/isabella_mat.tres" id="2_arbua"]
+[ext_resource type="Script" path="res://scripts/character_animator.gd" id="3_lfftr"]
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_7nuvy"]
+resource_name = "isabella_props_BrushMesh"
+_surfaces = [{
+"aabb": AABB(-0.0125, -0.010825317, -0.285, 0.025, 0.021650635, 0.39),
+"attribute_data": PackedByteArray("f9d/vqncf7ep3H++f9d/txTaf77U4X+31OF/vj/ff77/5n+3/+Z/vmnkf74p7H+3Kex/vpTpf75U8X+3VPF/vr/uf75/9n+3f/Z/vunzf75/AX/gqgJ/2aoCf+B/AX/Z1QN/2dUDf+D/BH/Z/wR/4CoGf9kqBn/gVQd/2VUHf+B/CH/Zfwh/4H8Lf+T/Dbnf/w1/5H8Lud9/ELnffxB/5P8Nf9l/C3/Zvwx/2X8Qf9k/D3/Z/xK53/8Sf+T/En/ZvxF/2X8Vud9/FX/kfxV/2T8Uf9n/F7nf/xd/5P8Xf9m/Fn/Zfxq5338af+R/Gn/ZPxl/2Q=="),
+"format": 34896613399,
+"index_count": 180,
+"index_data": PackedByteArray("AAABAAIAAAADAAEAAgAEAAAAAgABAAUAAgAFAAYABgAHAAIABgAFAAgABgAIAAkACQAKAAYACQAIAAsACQALAAwADAANAAkADAALAA4ADAAOAA8ADwAQAAwADwAOABEADwARABIAEgATAA8AFAAVABYAFAAXABUAFgAVABgAFgAYABkAGQAYABoAGQAaABsAGwAaABwAGwAcAB0AHQAcAB4AHQAeAB8AHwAeACAAHwAgACEAIgAjACQAIgAlACMAJAAjACYAJAAmACcAJQAoACMAJQApACgAKQAqACgAIwAoACsAIwArACYAKAAsACsAJwAmAC0AJwAtAC4AJgArAC8AJgAvAC0AKwAwAC8ALgAtADEALgAxADIALQAvADMALQAzADEALwA0ADMAMgAxADUAMgA1ADYAMQAzADcAMQA3ADUAMwA4ADcANgA1ADkANgA5ADoANQA7ADkANQA3ADsANwA8ADsA"),
+"material": ExtResource("2_arbua"),
+"name": "isabella",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 61,
+"vertex_data": PackedByteArray("9Sj/f7b8Sa6ZWczMxE5K6XpUCde2/GnUMzP/f8ROJsD/f/9/////v2WmzMzETvH4hKsJ17b8QPv/f/9/////v8vM/3/ETv//Cdf/f7b8yPj/f/9/////v2WmMzPETiX5hKv1KLb8nOj/f/9/////v5lZMzPEThnpelT1KLb8nfn/f/9/////vzMz/3/ETibA9Sj/f7b8Sa7/f/9/////v7ge/38MUtS+PUqE6xM79OdbT0bhDFL053oU/38TO9S+wbWE6xM7kfmjsEbhDFKR+YTr/38TO/j/RuH/fwxS+P/BtXoUEzsK+KOwuB4MUgr4PUp6FBM7celbT7geDFJx6XoU/38TO9S+uB7/fwxS1L6lG/9/Cz08u/8////yLXfo0k1Z5As9JeQAAP9/8i1Vv/+////yLVT5LLJZ5As9WvvMTGXmQRo975kZ/39BGoXG/3//fwAA//8ys2XmQRrx9f9//38AAP//////f/It//9Z5P9/Cz2U/2Xm/39BGlH//3//fwAA////vwAA8i12+CyypRsLPfb0MrOZGUEaJ/7/f/9/AAD///8/AADyLU7p0k2lGws9serMTJkZQRoD6P9//38AAP//AAD/f/ItVb+lG/9/Cz08u5kZ/39BGoXG/3//fwAA//9ydZjkQXh8vn6GKLX/f/7//3//fz8ztxX3l52j/3//f/y/u39erwd7/3//f9+V4Ey5iOBQ/3//f1jBdPgh2Kft/3//f/9//v9ydZjk/3//f/J/4/9beVy+W3lcvvJ/4/8VMvkVFTL5FRK/+X8Sv/l/zpT6TM6U+kzZwtX32cLV9/J/4//yf+P/In8p/vB4aL5ffPu9+3/2/4Uy4RUAL40WA3MCv2R+Bf3/P/+/ZTnTE/8//793v/t/D7yWf6bEHX//P/+/NZXvTAKSZk1Fm7VM/z//v0fCEfjqxiz2xbnM+/8//7/7f/b/In8p/mR+Bf3/P/+/")
+}]
+blend_shape_mode = 0
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_dewqt"]
+resource_name = "isabella_props_BellMesh"
+_surfaces = [{
+"aabb": AABB(-0.067999996, -0.03211927, -0.0453052, 0.076, 0.07680167, 0.12694699),
+"attribute_data": PackedByteArray("fx1/4OYef9nmHn/gfx1/2Uwgf9lMIH/gsyF/2bMhf+AZI3/ZGSN/4H8kf9l/JH/gfx1/4Koef9mqHn/gFR5/4H8df9kVHn/Z1R9/2T8ff9nVH3/gPx9/4P8gf9lqIH/Z/yB/4Gogf+AqIn/ZlSF/2Soif+CVIX/gVSN/2b8if9lVI3/gvyJ/4H8kf9nqI3/ZfyR/4Oojf+B/J3/ozCnI5swpf+imKH/ofyfI5swpEeV/JxHlGSzI5swp7OJ/J+ziGSwR5Rks7OLMKTXefyc13hksNd7MKTbbfyc22xksNtvMKSPafycj2hksI9rMKX/Zfyd/2aYof9kZLH/Z8yp/2WYuf9k/LX/ZZi4j2rMwf9mML3/ZZi4227MwI9r/Mn/Z2TF/2bMwNttmLjXe/zIj2mYu7OKzMDXe/zI220w1f9kmNH/ZTDUj2pk3f9lyNn/ZTDU22/8yNd6ZNyPa5jl/2b84f9mZNzbbszDs4kw1Nd7/MuziZi4R5bMwEeVmLsjmGSx/6PMqf+hmLn/oPy1/6LMwyOb/MhHlszB/6Iwvf+j/MsjmTDXs4kw1EeX/Mn/o2TF/6Ew1yOaZNzXemTfs4pk3EeVMNX/oJjR/6Jk3yObmOezimTd/6HI2f+jmORHl5jnI5uY5f+i/OH/o5jk13jI87OIyPBHlMjzI5jI8f+gMO3/ofz4R5X8+7OJ/Psjmfz5/6Fk9f+h/PjXeMjw13n8+NtsyPDbbfz4j2uY5NtsyPCPafz5/2eY5I9oyPH/ZWT1/2Qw7f9k="),
+"format": 34896613399,
+"index_count": 582,
+"index_data": PackedByteArray("AAABAAIAAAADAAEAAgABAAQAAgAEAAUABQAEAAYABQAGAAcABwAGAAgABwAIAAkACQAIAAoACQAKAAsADAANAA4ADgAPAAwADAAQAA0AEAARAA0ADgANABIADQATABIADgASABQAFAAVAA4AFAASABYAEgAXABYAFAAWABgAGAAZABQAGAAWABoAFgAbABoAGAAaABwAHAAdABgAHAAaAB4AGgAfAB4AHAAeACAAIAAhABwAIAAeACIAHgAjACIAIAAiACQAJAAlACAAJgAnACgAKAApACYAJgAqACcAKgArACcAKgAsACsAKAAnAC0ALAAuACsALAAvAC4AJwArADAAJwAwAC0AKwAuADEAKwAxADAALwAyAC4ALwAzADIALgA0ADEALgAyADQAMwA1ADIAMwA2ADUAMgA3ADQAMgA1ADcANgA4ADUANgA5ADgANQA6ADcANQA4ADoAOQA7ADgAOQA8ADsAPAA9ADsAOAA7AD4AOAA+ADoAOwA/AD4AOgA+AEAAPgBBAEAAOgBAAEIANwA6AEIAQgBAAEMAQABEAEMANwBCAEUANAA3AEUAQgBDAEYARQBCAEYARgBDAEcAQwBIAEcARQBGAEkANABFAEoASgBFAEkAMQA0AEoASQBGAEsARgBHAEsAMQBKAEwAMAAxAEwASgBJAE0ATABKAE0ASQBLAE4ATQBJAE4ASwBHAE8ARwBQAE8ATgBLAFEASwBPAFEAUQBPAFIATwBTAFIATgBRAFQATQBOAFUAVQBOAFQAUQBSAFYAVABRAFYAVgBSAFcAUgBYAFcAVABWAFkAWgBNAFUATABNAFoAVQBUAFsAWwBUAFkAWgBVAFwAXABVAFsAXQBMAFoAMABMAF0ALQAwAF0AXQBaAF4AXgBaAFwALQBdAF8AXwBdAF4AYAAtAF8AKAAtAGAAYABhACgAYABfAGIAYgBjAGAAXwBeAGQAYgBfAGQAZABeAGUAXgBcAGUAYgBkAGYAZgBnAGIAZABlAGgAZgBkAGgAZQBcAGkAXABbAGkAaABlAGoAZQBpAGoAZgBoAGsAawBsAGYAaABqAG0AawBoAG0AaQBbAG4AWwBZAG4AagBpAG8AaQBuAG8AbQBqAHAAagBvAHAAawBtAHEAcQByAGsAbQBwAHMAcQBtAHMAcABvAHQAcQBzAHUAdQB2AHEAcwBwAHcAcAB0AHcAdQBzAHgAcwB3AHgAdQB4AHkAeQB6AHUAbwB7AHQAbwBuAHsAdwB0AHwAeAB3AH0AdwB8AH0AeQB4AH4AeAB9AH4AeQB+AH8AfwCAAHkAfgB9AIEAfQCCAIEAfQB8AIIAfgCBAIMAfwB+AIMAfwCDAIQAhACFAH8AfACGAIIAfACHAIYAdACHAHwAhwCIAIYAdAB7AIcAhwCJAIgAewCJAIcAiQCKAIgAewCLAIkAbgCLAHsAbgBZAIsAiQCMAIoAiwCMAIkAjACNAIoAWQCOAIsAiwCOAIwAWQBWAI4AVgBXAI4AjgCPAIwAjACPAI0AjgBXAI8AjwCQAI0AVwCRAI8A"),
+"material": ExtResource("2_arbua"),
+"name": "isabella",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 146,
+"vertex_data": PackedByteArray("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")
+}]
+blend_shape_mode = 0
+
+[node name="IsabellaModel" type="Node3D" unique_id=2017966115]
+
+[node name="isabella" type="Node3D" parent="." unique_id=988229635 instance=ExtResource("1_a7e3v")]
+
+[node name="Brush" type="BoneAttachment3D" parent="." unique_id=1456940385]
+bone_name = "Weapon_R"
+bone_idx = 16
+use_external_skeleton = true
+external_skeleton = NodePath("../isabella/Armature/Skeleton3D")
+
+[node name="BrushMesh" type="MeshInstance3D" parent="Brush" unique_id=852956460]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0)
+layers = 2
+mesh = SubResource("ArrayMesh_7nuvy")
+
+[node name="Bell" type="BoneAttachment3D" parent="." unique_id=85432444]
+bone_name = "Sheath"
+bone_idx = 1
+use_external_skeleton = true
+external_skeleton = NodePath("../isabella/Armature/Skeleton3D")
+
+[node name="BellMesh" type="MeshInstance3D" parent="Bell" unique_id=737387094]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0)
+layers = 2
+mesh = SubResource("ArrayMesh_dewqt")
+
+[node name="Animator" type="Node" parent="." unique_id=41996778]
+script = ExtResource("3_lfftr")

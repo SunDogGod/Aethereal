@@ -1,0 +1,11 @@
+[gd_resource type="ShaderMaterial" format=3]
+
+[ext_resource type="Shader" path="res://shaders/ps1_surface.gdshader" id="1_ps1"]
+[ext_resource type="Texture2D" path="res://textures/trim_sheet.png" id="2_tex"]
+
+[resource]
+shader = ExtResource("1_ps1")
+shader_parameter/albedo_texture = ExtResource("2_tex")
+shader_parameter/uv_scale = Vector2(1, 0.125)
+shader_parameter/uv_offset = Vector2(0, 0.625)
+shader_parameter/use_vertex_color = true

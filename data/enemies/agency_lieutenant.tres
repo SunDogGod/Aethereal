@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="GuardData" format=3]
+
+[ext_resource type="Script" path="res://scripts/guard_data.gd" id="1_data"]
+
+[resource]
+script = ExtResource("1_data")
+display_name = "Agency lieutenant"
+coat_color = Color(0.3, 0.3, 0.33, 1)
+visor_color = Color(1, 0.3, 0.1, 1)
+walk_speed = 1.6
+turn_speed = 5.0
+wait_time = 1.5
+sight_range = 14.0
+sight_angle = 100.0
+crouch_sight_multiplier = 0.55
+notice_time = 1.0
+forget_rate = 0.4
+health = 120.0
+attack_damage = 22.0
+attack_windup = 0.55
+attack_range = 1.8
+attack_cooldown = 1.0
+fight_speed = 3.5
+unblockable = false
