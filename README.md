@@ -4,9 +4,9 @@ A third-person action game with a PS1 look, set in the Construct.
 
 ## Run it
 1. Open Godot 4.7 and pick **Aethereal 3D** in the project list.
-2. Press **F5** (or the ▶ button at the top right). The **location menu** opens: pick a level
-   (stick or WASD to move, **A** / Enter / click to choose), or start at 0.1 and the story runs on
-   from level to level.
+2. Press **F5** (or the ▶ button at the top right). The **title screen** opens: Continue, New Game, Chapters (any
+   level), Settings, Quit. Arrows, WASD or the stick move; Enter, A or click choose; Esc or B goes back.
+   The story runs on from level to level.
    To run one scene directly, open it and press **F6**.
 
 Levels so far (rough cuts): 0.1 The Empty Town, 0.2 The Massacre, 0.3 Black Sand, 0.4 The Vacuum
@@ -27,7 +27,8 @@ Station. Their designs are in `docs/`.
 | Block (hold) / parry (tap as the blade lands) | Right click | LB |
 | Dodge roll (while locked on) | Space | B |
 | Look at something (when a prompt like "E / Up: The well" shows) | E | D-pad up |
-| Free the mouse | Esc (click the window to grab it again) | — |
+| Pause menu (resume, settings, title, quit) | Esc | Start (menu button) |
+| Developer menu (teleport, skip scene, fly, god mode; only while working on the game) | F1 | hold View/Back 1 s |
 
 ## What's here
 | Folder | What it holds |
@@ -156,4 +157,4 @@ Every wall, floor and ramp in the Empty Town is a **Block**. Click one in the 3D
   windows, `facade_dark` = the same, darker; `dev_grid` = the route; the `neon_*` ones glow.
 - To add one, select a Block and press Ctrl+D to duplicate it.
 
-Aeneas is a stand-in built from boxes until there's a real model.
+Characters are built by the Blender scripts in `tools/blender/` (see its README; rebuild with `tools/blender/rebuild.ps1`). In the editor, the **Aethereal** dock adds guards, checkpoints, triggers, look-at spots, lights and props in one click; `docs/customizing.md` is the guide.
