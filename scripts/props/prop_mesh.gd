@@ -5,26 +5,35 @@ extends RefCounted
 ## Not a node: a prop script makes one, adds shapes, then calls commit().
 ## Godot's own primitive meshes are wound correctly (clockwise front faces), and the transforms
 ## used here never mirror, so the result is never inside out.
-## Each kind of shape is read from Godot's primitive meshes only once and remembered (boxes once
-## at 1 m, then stretched): reading a primitive mesh is a round trip to the graphics card, about
-## 0.7 ms each on a laptop, and the world's props are made of thousands of pieces.
+## Each kind of shape is read from Godot's primitive meshes only once and remembered (boxes and
+## straight pipes once at 1 m, then stretched): reading a primitive mesh is a round trip to the
+## graphics card, about 0.7 ms each on a laptop, and the world's props have thousands of pieces.
 
 static var _shapes := {}  # shape key -> [positions, normals, uvs, indices], read once per game
 var _surfaces := {}  # Material -> [positions, normals, uvs, indices] gathered so far
 
 
 func box(mat: Material, size: Vector3, xf: Transform3D) -> void:
-	var unit: Array = _shapes.get(&"box", [])
-	if unit.is_empty():
-		var m := BoxMesh.new()
-		m.size = Vector3.ONE
-		unit = _read(&"box", m)
-	# A box is the 1 m box stretched: its corners are linear in its size, its UVs don't change.
-	_put(mat, unit, Transform3D(xf.basis * Basis.from_scale(size), xf.origin), xf.basis)
+	_put(mat, _unit_box(0, 0, 0), Transform3D(xf.basis * Basis.from_scale(size), xf.origin), xf.basis)
 
 
 ## A cylinder (or a cone, if the radii differ) standing along its local Y axis.
 func cyl(mat: Material, r_top: float, r_bottom: float, height: float, xf: Transform3D, sides := 8, rings := 0) -> void:
+	if r_top == r_bottom and r_top > 0.0 and height > 0.0:
+		# A straight pipe is the 1 m one stretched (radius across, height along): its normals and
+		# UVs don't depend on its size, so one read serves every pipe with these sides and rings.
+		var unit_key := [&"pipe", sides, rings]
+		var unit: Array = _shapes.get(unit_key, [])
+		if unit.is_empty():
+			var p := CylinderMesh.new()
+			p.top_radius = 1.0
+			p.bottom_radius = 1.0
+			p.height = 1.0
+			p.radial_segments = sides
+			p.rings = rings
+			unit = _read(unit_key, p)
+		_put(mat, unit, Transform3D(xf.basis * Basis.from_scale(Vector3(r_top, height, r_top)), xf.origin), xf.basis)
+		return
 	var key := [&"cyl", r_top, r_bottom, height, sides, rings]
 	var shape: Array = _shapes.get(key, [])
 	if shape.is_empty():
@@ -100,6 +109,11 @@ static func along(a: Vector3, b: Vector3) -> Transform3D:
 
 ## Any primitive mesh (a subdivided BoxMesh, a PrismMesh, a QuadMesh...), placed at xf.
 func _add(mat: Material, m: PrimitiveMesh, xf: Transform3D) -> void:
+	if m is BoxMesh and not m.flip_faces and not m.add_uv2:
+		var b := m as BoxMesh
+		var unit := _unit_box(b.subdivide_width, b.subdivide_height, b.subdivide_depth)
+		_put(mat, unit, Transform3D(xf.basis * Basis.from_scale(b.size), xf.origin), xf.basis)
+		return
 	var key := [m.get_class()]
 	for p: Dictionary in m.get_property_list():
 		if int(p.usage) & PROPERTY_USAGE_STORAGE:
@@ -108,6 +122,21 @@ func _add(mat: Material, m: PrimitiveMesh, xf: Transform3D) -> void:
 	if shape.is_empty():
 		shape = _read(key, m)
 	_put(mat, shape, xf, xf.basis)
+
+
+## The 1 m box with these subdivisions, read once. Any box is the 1 m box stretched: its corners
+## are linear in its size, and its UVs and normals don't change.
+static func _unit_box(w: int, h: int, d: int) -> Array:
+	var key := [&"box", w, h, d]
+	var shape: Array = _shapes.get(key, [])
+	if shape.is_empty():
+		var m := BoxMesh.new()
+		m.size = Vector3.ONE
+		m.subdivide_width = w
+		m.subdivide_height = h
+		m.subdivide_depth = d
+		shape = _read(key, m)
+	return shape
 
 
 ## Reads a primitive's vertices once (the slow part) and remembers them under `key`.
