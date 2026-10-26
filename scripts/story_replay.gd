@@ -1,13 +1,15 @@
 class_name StoryReplay
 extends RefCounted
 ## Continue's fast-forward: replays a finished story scene without playing it. Only the commands
-## that change the level for good run: [hide] [show] [collapse] [kill] [empower] [erupt]. Lines,
-## cameras, waits, fades, titles, teleports, [heal] and [level] are skipped, and a [fight] is
-## handed back (unless already won) so Continue can start it once the screen is up.
+## that change the level for good run: [hide] [show] [collapse] [kill] [empower] [erupt], and the
+## stage directions' end states ([place] [stand] [move] [face] [pose] [ink], story_stage.gd).
+## Lines, cameras, waits, fades, titles, teleports, [heal], [call] and [level] are skipped, and a
+## [fight] is handed back (unless already won) so Continue can start it once the screen is up.
 ## If you add a dialogue command that changes the level, handle it here too, or Continue
 ## will forget it.
 
-const SKIPPED := ["line", "camera", "wait", "fade", "title", "frame", "teleport", "heal", "level"]
+const SKIPPED := ["line", "camera", "wait", "fade", "title", "frame", "teleport", "heal", "level", "call"]
+const STAGE := ["place", "stand", "move", "face", "pose", "ink"]
 
 
 ## Replays one scene of a dialogue file. Returns the fights its [fight] lines start that are not in
@@ -18,6 +20,9 @@ static func run(root: Node, path: String, scene: String, won: Array) -> Array:
 	var player := root.get_tree().get_first_node_in_group("player") as Player
 	for step: Dictionary in steps:
 		if step.type in SKIPPED:
+			continue
+		if step.type in STAGE:
+			StoryStage.replay(step, func(n: String) -> Node: return _find(root, path, n), player)
 			continue
 		var node := _find(root, path, str(step.get("name", ""))) if step.has("name") else null
 		match step.type:

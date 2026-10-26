@@ -47,6 +47,8 @@ put together: `docs/customizing.md`, "The big world".
 | `scenes/world/` | `world.tscn` (the town, Black Sand and the station as one world), `descent.tscn` and `road_tunnel.tscn` (the walkways between them). Scripts in `scripts/world/`: `world.gd` (puts it together, shows only the zone you are in, fades fog and light between zones), `world_zone.gd`, `world_link.gd`, `world_gate.gd` (the service door that stays shut until Black Sand), `world_blend.gd` |
 | `scenes/ui/` | `title_screen.tscn` (the main scene: Continue, New Game, Chapters, Settings), `pause_menu.tscn`, `settings_panel.tscn`. The chapter list is `scripts/ui/chapters.gd`; saving is `scripts/ui/save_game.gd` (automatic, one slot, see docs/customizing.md) |
 | `scenes/kael.tscn` | Kael as a follower (same code as Isabella) |
+| `scenes/valentina.tscn` | Valentina as a figure for story scenes (no AI: she stands, walks when a scene moves her, and plays story poses) |
+| Characters | `tools/blender/` builds every model and its animations (see the README there); `scripts/character_animator.gd` plays them, and `character_story.gd` holds the story poses a scene calls by name (`story_pose("hostage")`, `story_clear()`) and their props (the agents' knife, Kael's Lamento, the captain's arm) |
 | `scenes/` | `test_yard.tscn` (movement test level), `player.tscn` (Aeneas + camera), `isabella.tscn` (his mother, follows him), `ps1_screen.tscn` (the full-screen color filter) |
 | `scenes/` (sneaking) | `guard.tscn` (an Agency agent), `stealth_director.tscn` (spotted → fade → back to checkpoint) |
 | `scripts/` | `player.gd` (running, jumping, crouching, fall respawn), `player_footsteps.gd` (step sounds by floor), `player_takedown.gd` (knife takedowns + prompt), `swing_assist.gd` (swings aim at the enemy ahead without lock-on), `choreography.gd` + `choreography_file.gd` (the captain's authored fight, from `data/fights/`), `player_camera.gd` (the camera), `companion.gd` (following, hiding, ink binds) + `ink_stroke.gd` (her brush stroke in the air), `guard.gd` + `guard_data.gd` (agents), `stealth_director.gd`, `checkpoint.gd`, `hud.gd`, `block.gd` (gray-box blocks) + `building_faces.gd` (building fronts) + `mesh_build.gd` (code-built meshes are built once, in the scene), `flicker_light.gd` / `tv_window.gd` / `steam_vent.gd` / `drip.gd` (life signs), `interactable.gd` (look-at prompts), `sfx.gd` (the "Sfx" autoload) + `sfx_bus.gd` (how scripts reach it) |
@@ -54,7 +56,7 @@ put together: `docs/customizing.md`, "The big world".
 | `data/dialogue/` | Every level's spoken scenes, as plain text |
 | `data/inspect/` | What Aeneas says when he looks at things (`NodeName|line|line`), one file per level |
 | `audio/` | The sound effects: short WAVs synthesized by the scratch script `make_sfx.gd` (footsteps, swing, hit, parry, takedown, hums, the cube's drone) |
-| Story system | `scripts/story.gd` (the "Story" autoload that plays scenes), `scene_loader.gd` (loads the next scene on a thread behind the fade, with a small LOADING line), `dialogue_file.gd` (reads the text files), `dialogue_box.gd` + `scenes/dialogue_box.tscn` (the text box), `story_trigger.gd` |
+| Story system | `scripts/story.gd` (the "Story" autoload that plays scenes), `scene_loader.gd` (loads the next scene on a thread behind the fade, with a small LOADING line), `dialogue_file.gd` (reads the text files), `dialogue_box.gd` + `scenes/dialogue_box.tscn` (the text box), `story_trigger.gd`, `story_cue_takedown.gd` (a trigger that plays on the first paired takedown), `story_stage.gd` (the stage directions: place, move, stand, face, pose, ink, call), `ink_circle.gd` (Isabella's circle on the hall floor) |
 | Saving | `scripts/autosave.gd` (saves by itself at checkpoints, scene ends, won fights, new zones), `save_state.gd` (what a save holds), `ui/save_game.gd` (the file: `savegame.json`, written safely, with a spare), `save_restore.gd` + `story_replay.gd` (Continue puts it all back), `ui/hud_saved.gd` (the small "saved" mark) |
 | `docs/` | Level designs |
 | `shaders/` | `ps1_surface.gdshader` (the PS1 look on every 3D surface), `ps1_screen.gdshader` (color depth + dither) |
@@ -106,7 +108,8 @@ For a different kind of guard, make a new GuardData file instead of a new script
   of one fight; a dialogue scene starts it with `[fight NodeName]`, and it plays a scene when won
   or when Aeneas dies.
 - Story commands for fights: `[fight X]`, `[erupt on|off]` (the gravity eruption), `[empower X]`,
-  `[kill X]` (a sacrifice, no blood), `[heal]`.
+  `[kill X]` (an agent drops, no blood), `[heal]`. Stage directions for scenes: `[place]`, `[move]`,
+  `[stand]`, `[face]`, `[pose]`, `[ink]`, `[call]` (docs/customizing.md lists them).
 - Fighters **walk around things** to reach you (the stage, columns, the ramp rails), using the
   town's `Navigation` node, a navigation mesh over the courtyard and hall. If you move walls, ramps,
   columns or the stage there, select `Navigation` and click **Bake NavigationMesh** at the top of the

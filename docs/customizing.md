@@ -189,7 +189,8 @@ him, shown or hidden as the scenes left them.
 **How Continue puts it back**: the level loads with Aeneas already at the saved spot, so no trigger
 sees him at the start. The triggers of finished scenes are marked done, and those scenes are run
 again without playing: only the commands that change the level for good (`[hide]`, `[show]`,
-`[collapse]`, `[kill]`, `[empower]`, `[erupt]`). A fight the save was in starts again a moment after
+`[collapse]`, `[kill]`, `[empower]`, `[erupt]`, and where `[place]`, `[stand]`, `[move]`, `[pose]`
+and `[ink]` leave people). A fight the save was in starts again a moment after
 the screen fades in. Then the agents lie down where they fell, won fights stay won (the capture door
 stays open), the checkpoints already reached count as passed, and the flashlight is as it was.
 
@@ -246,6 +247,7 @@ Commands, one per line, in square brackets:
 | `[wait 1.5]` | Pause for 1.5 seconds |
 | `[hide Name]` / `[show Name]` | Hide or show something in the level, by its node name |
 | `[fade out]` / `[fade white]` / `[fade in]` | Fade to black, fade to white, fade back |
+| `[fade dim]` | Darken the screen part way (his sight going); `[fade in]` brings it back |
 | `[title ACT 0 / BLACK SAND]` | A title card (` / ` starts a new line) |
 | `[teleport MarkName]` | Move Aeneas to a Marker3D; restarts happen there from now on |
 | `[fight FightName]` | Start a Fight: its agents attack once the scene ends |
@@ -253,6 +255,13 @@ Commands, one per line, in square brackets:
 | `[empower GuardName]` | That agent can't be beaten (hits land but don't count) |
 | `[kill GuardName]` | That agent drops (sacrificed), no blood |
 | `[heal]` | Aeneas back to full health |
+| `[place Name MarkName]` | That character stands on a Marker3D (the town's are under `StoryMarks`), facing its way |
+| `[move Name MarkName 2.5]` | That character walks to the marker in 2.5 seconds; the scene carries on meanwhile |
+| `[stand Name Other 0.62]` | Stands 0.62 m in front of Other, face to face. A minus number: that far *behind* Other, facing the same way (a hostage taker). `Player` is Aeneas |
+| `[face Name Other]` | Turns to look at Other |
+| `[pose Name anim]` / `[pose Name]` | Plays a story pose (`hostage`, `kneel_draw`, `hold_throat`...; the list is in `scripts/character_story.gd`) / back to standing |
+| `[ink Name Agent 0.33]` | Name's brush (Isabella) binds that agent: the stroke lands 0.33 s from now and he drops for good |
+| `[call Name action values]` | Runs a node's own action, e.g. `[call Bonfire throw_in ValentinaHall]`, `[call Kael set_lamento true true]`. Continue doesn't replay it: add a `[hide]` or `[place]` after it if the result has to last |
 | `[level res://scenes/levels/name.tscn]` | Fade out and go to that level (in the big world: walk on to it, see "The big world") |
 
 Names are looked up anywhere in the level (in the big world, the scene's own level first), so give things unique names. The full, current list of
@@ -270,7 +279,9 @@ commands is in `scripts/dialogue_file.gd` (if a new one appears there, it works 
 4. **Once** on = plays the first time only. Off = every time he walks in.
 
 A trigger can wait switched off: untick **Monitoring**, and a Fight's **Unlock On Win** can switch
-it on when that fight is won.
+it on when that fight is won. A trigger whose scene has already played some other way (a fight's
+Won Scene) stays quiet. The town's `StoryTriggers/FirstPair` has no zone: it plays its scene the
+first time Aeneas is offered a takedown with Isabella binding the other agent.
 
 **Camera shot**
 
@@ -331,17 +342,18 @@ text editor; the list of beats and what each one does is at the top. In short:
 === phase 1 ===
 approach 2.6         walk up to 2.6 m from Aeneas
 guard 0.8            stand on guard for 0.8 s (a pause)
-feint 0.5            raise the blade, don't cut
-swing 0.75           a cut with a 0.75 s wind-up (block, parry or dodge it)
+feint 0.5            draw the fist back, don't hit
+swing 0.75           a hook with a 0.75 s wind-up (block, parry or dodge it)
 scene captain_measure   play that scene from the level's dialogue file (camera cuts, lines)
 loop                 after the last beat, start again from here
-combo 0.75 0.4 0.4   three cuts in a row
-heavy 1.1            a cut that can't be blocked (his coat flashes red): dodge it
+combo 0.75 0.4 0.4   three blows in a row (jabs and hooks)
+heavy 1.1            an overhand blow that can't be blocked (his coat flashes red): dodge it
 ```
 
 - `=== phase 1 ===` is the Fight's **Boss** until the Boss Half Scene; `=== phase 2 ===` is the
-  boss afterwards (once that scene has empowered him). `=== Lieutenant phase 1 ===` gives another
-  guard in the same fight his own beats, by node name. Guards with no section fight freely.
+  boss afterwards (once that scene has empowered him). `=== Name phase 1 ===` gives another
+  guard in the same fight his own beats, by node name. The lieutenant has his own short fight,
+  `data/fights/lieutenant.txt` (LieutenantFight), slow and easy on purpose. Guards with no section fight freely.
 - The fight is still real: Aeneas's hits land, and a parry staggers the captain (his next beat
   starts when he recovers). Hitting him doesn't interrupt his beat.
 - `scene` beats play once each (even after a restart). Write them in the dialogue file like any
@@ -457,9 +469,14 @@ node is selected).
 
 ## Characters (Blender)
 
-Aeneas, Kael, Isabella and the agents are built by Python scripts that Blender runs, in
-`tools/blender/`. To change a character you change a number in its script and rebuild it.
-`tools/blender/README.md` explains how (colours, shapes, animation timing, making a new character).
+Aeneas, Kael, Isabella, Valentina, the agents and the captain (and the wrapped villagers' bodies)
+are built by Python scripts that Blender runs, in `tools/blender/`. To change a character you change a
+number in its script and rebuild it. `tools/blender/README.md` explains how (colours, shapes,
+animation timing, making a new character).
+
+Story poses (the knife at the throat, Isabella's circle, the captain lifting Aeneas, Kael's cuts...)
+are animations too, played by name from a scene. The list of names, and what each one does with
+props (the knife, Lamento, the captain's arm), is at the top of `scripts/character_story.gd`.
 
 ## The dock's own files
 

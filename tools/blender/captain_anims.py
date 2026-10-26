@@ -1,16 +1,18 @@
 """The captain's animations: he has only his LEFT arm, so he fights left-handed.
 
 Every animation of the shared set (and the agent's own idle and patrol walk) is played through a
-mirror, left for right: the blade arm becomes his left, the stance flips, the twists turn the other
-way. His right arm is gone, so nothing keys it: the right arm's bones are left out of every
-animation. His blade rides Weapon_L, which captain.py turns into a forward grip (the exact mirror
-of Weapon_R), so a mirrored 'blade' direction lands the blade in his left hand the right way round.
+mirror, left for right: the striking arm becomes his left, the stance flips, the twists turn the
+other way. His right arm is gone, so nothing keys it: the right arm's bones are left out of every
+animation. He has no sword: his telegraph and strike are fists (captain_fists.py), and his story
+poses are in captain_story.py, all written right-handed and mirrored here too.
 """
 import bpy
 import anims_loco
 import anims_combat
 import pose
 import agent
+import captain_fists
+import captain_story
 
 RIGHT_ARM = ("UpperArm_R", "LowerArm_R", "Hand_R", "Weapon_R")
 
@@ -82,7 +84,9 @@ def heavy_run(s):
 
 
 def animations(rig):
-    """The shared set and the agent's idle and walk, mirrored, with no right arm."""
+    """The shared set and the agent's idle and walk, mirrored, with no right arm; then his fists
+    (captain_fists.py, in place of the shared sword telegraph and strike) and his story poses
+    (captain_story.py)."""
     real = pose.make_action
 
     def make(rig_, name, pose_at, length, loop=False):
@@ -101,6 +105,10 @@ def animations(rig):
             if old:
                 bpy.data.actions.remove(old)
             make(rig, name, fn, length, loop=True)
+        for name in ("telegraph", "strike"):
+            bpy.data.actions.remove(bpy.data.actions[name])   # the sword's: his are fists
+        captain_fists.add_all(rig, make)
+        captain_story.add_all(rig, make)
     finally:
         anims_loco.make_action = anims_combat.make_action = real
         rig.order = full_order

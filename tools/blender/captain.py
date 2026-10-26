@@ -2,7 +2,9 @@
 LEFT arm (the right is gone at the shoulder: the uniform's sleeve is folded and pinned over the
 stump). He wears his white Agency coat draped around his shoulders like a cape, sleeves hanging
 empty, over a dark uniform and breastplate. The helmet is the Agency's, with a tall crimson crest.
-He fights left-handed with a longer blade (captain_anims.py).
+He fights with his one fist (captain_fists.py, mirrored onto his left by captain_anims.py); in
+the hall Kael cuts that arm off above the elbow: the arm below the cut is its own mesh,
+"Severable", over a hidden "Stump" cap (captain_story.py).
 
 Rebuild:  .\\tools\\blender\\rebuild.ps1 captain   (or blender -b --factory-startup -P tools/blender/captain.py)
 
@@ -27,12 +29,12 @@ import agency_parts as ap     # noqa: E402
 import agent                  # noqa: E402
 import captain_gear as gear   # noqa: E402
 import captain_anims          # noqa: E402
+import captain_story          # noqa: E402
 from agency_parts import C, at_z, shell, limb_shell  # noqa: E402
 from paint import rgb, shade  # noqa: E402
 
 HEIGHT, SHOULDERS = 1.95, 1.16
 HELM_SCALE = 1.12
-BLADE_LENGTH = 0.92                    # the agents' blades are 0.78
 K = {k: rgb(v) for k, v in {           # the coat: near-white (tinted in game) with crimson painted in
     "cloth": "#f2f2ef", "fold": "#d2d2ce", "seam": "#a0a09b", "lining": "#6e1414", "lining_dk": "#4a0d0d",
     "band": "#7a1616", "dust": "#ab9f8a", "grime": "#80766a", "gold": "#e8e4dc"}.items()}
@@ -47,8 +49,9 @@ SLEEVE = [(0.0, 0.066, 0.068), (0.25, 0.064, 0.066), (0.7, 0.058, 0.060), (1.0, 
 
 
 def forward_grip_left(ch):
-    """His blade rides Weapon_L, turned into the exact mirror of Weapon_R (a forward grip, blade out
-    of the thumb side) instead of the shared rig's reverse grip; the rest pose is read again."""
+    """His fist's grip point Weapon_L (where a body he carries hangs: character_story.gd attach)
+    turned into the exact mirror of Weapon_R (a forward grip) instead of the shared rig's reverse
+    grip, so his mirrored poses land the right way round; the rest pose is read again."""
     arm = ch.arm
     bpy.context.view_layer.objects.active = arm
     bpy.ops.object.mode_set(mode='EDIT')
@@ -72,7 +75,7 @@ def build():
         ("gauntlet", 32, 24), ("collar", 48, 16), ("lame", 32, 12), ("hand", 24, 16), ("belt", 64, 8),
         ("stump", 24, 16), ("knee", 16, 16), ("pouch", 16, 12), ("neck", 16, 12), ("lining", 8, 8),
         ("tlining", 8, 8), ("plate_in", 8, 8), ("buckle", 8, 8), ("visor", 16, 8), ("crest", 16, 8),
-        ("disc", 8, 8), ("trim", 16, 8), ("board", 16, 8), ("fringe", 16, 8))}
+        ("disc", 8, 8), ("trim", 16, 8), ("board", 16, 8), ("fringe", 16, 8), ("cut", 8, 8))}
     arm = (body.arm_joints(J), ("UpperArm_R", "LowerArm_R"))
 
     # --- The dark uniform: tunic, its skirt, the left sleeve, the pinned stump on the right.
@@ -115,8 +118,8 @@ def build():
     gear.epaulettes(M, J, R["board"], R["fringe"])
     paint(R, head)
     ap.visor(ch, head, R["visor"])
-    ap.blade(ch.prop("BladeMesh", "Weapon_L", "Blade"), A, length=BLADE_LENGTH, grip=U["wrap"],
-             wrap=shade(U["wrap"], 0.6))
+    captain_story.split_arm(ch, R["cut"])   # the arm below the cut: its own mesh, and the stump cap
+    captain_story.paint_stump(R["cut"], U["cloth"], K["lining_dk"])
     return ch
 
 

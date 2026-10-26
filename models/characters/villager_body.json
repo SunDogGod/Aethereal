@@ -1,0 +1,9 @@
+{
+ "name": "villager_body",
+ "root": "Villager_bodyModel",
+ "glb": "res://models/characters/villager_body.glb",
+ "props_glb": "",
+ "scene": "res://scenes/characters/villager_body_model.tscn",
+ "attach": [],
+ "root_script": ""
+}

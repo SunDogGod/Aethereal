@@ -86,9 +86,9 @@ func go_to_level(path: String, fresh := true) -> void:
 	await fade("in")
 
 
-## "out" = to black, "white" = to white, "in" = back to the game.
+## "out" = to black, "white" = to white, "dim" = darker (his sight going), "in" = back to the game.
 func fade(how: String) -> void:
-	var color := Color(1, 1, 1, 1) if how == "white" else Color(0, 0, 0, 1)
+	var color := Color(1, 1, 1, 1) if how == "white" else Color(0, 0, 0, 0.6 if how == "dim" else 1.0)
 	if how == "in":
 		color = Color(_fade.color.r, _fade.color.g, _fade.color.b, 0.0)
 	else:
@@ -107,6 +107,7 @@ func stop() -> void:
 	if _fade_tween and _fade_tween.is_valid():
 		_fade_tween.kill()
 	_loader.cancel()
+	StoryStage.scene_ended()  # agents held close for a pose block Aeneas again
 	_fade.color.a = 0.0
 	_title.visible = false
 	_box.close()
@@ -163,27 +164,6 @@ func _run(steps: Array, scene: String, path := "") -> void:
 				if fight and fight.has_method("start"):
 					fight.call_deferred("start")  # after this scene gives control back
 					last_started_fights.append(fight)
-			"erupt":
-				if player:
-					player.get_node("Combat").set_erupting(step.on)
-			"empower":
-				var guard := _find(step.name)
-				if guard is Guard:
-					guard.empower()
-			"collapse":
-				var body := _find(step.name)
-				if body:
-					for n in [body] + body.find_children("*", "", true, false):
-						if n.has_method("die") and not n is Guard:
-							n.die()  # its animator plays the death and holds the last pose
-							break
-			"kill":
-				var victim := _find(step.name)
-				if victim is Guard:
-					victim.sacrifice()
-			"heal":
-				if player:
-					player.get_node("Combat").heal_full()
 			"level":
 				_box.close()
 				if World.has_level(step.path) and _root() is World:
@@ -207,8 +187,11 @@ func _run(steps: Array, scene: String, path := "") -> void:
 					_loader.finish(get_tree().current_scene.scene_file_path if get_tree().current_scene else "")
 					await fade("in")
 					return
+			_:  # stage directions and the fight commands: [pose] [place] [stand] [kill] [erupt]...
+				StoryStage.play(step, _find, player)
 	if run_id != _run_id:
 		return
+	StoryStage.scene_ended()
 	_box.close()
 	_cut_to("", gameplay_camera)
 	# Two physics ticks before handing control back, so the press that closed the box is

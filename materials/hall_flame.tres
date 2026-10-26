@@ -1,0 +1,15 @@
+[gd_resource type="ShaderMaterial" format=3]
+
+[ext_resource type="Shader" path="res://shaders/hall_flame.gdshader" id="1_flame"]
+
+[resource]
+render_priority = 1
+shader = ExtResource("1_flame")
+shader_parameter/core_color = Color(1, 0.9, 0.55, 1)
+shader_parameter/mid_color = Color(1, 0.46, 0.1, 1)
+shader_parameter/edge_color = Color(0.62, 0.1, 0.03, 1)
+shader_parameter/intensity = 1.0
+shader_parameter/brightness = 1.0
+shader_parameter/speed = 1.5
+shader_parameter/pixels = Vector2(12, 26)
+shader_parameter/shape = 0

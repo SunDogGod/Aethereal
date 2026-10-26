@@ -1,7 +1,8 @@
 """The Agency agent: the rank and file (the lieutenant too, in other colours from his GuardData
 file; the captain has his own model, captain.py). A faceless enforcer in a white long coat: a black
 helmet with a glowing visor slit, a dark breastplate and shoulder domes, black gauntlets, tall boots
-with knee plates, and a heavy single-edged blade in his right hand. The coat is old and dusty at
+with knee plates, a heavy single-edged blade in his right hand and a knife across the small of
+his back (drawn for the hostage poses, anims_agency.py). The coat is old and dusty at
 the hem, the armour chipped: this world is thousands of years old.
 
 Rebuild:  .\\tools\\blender\\rebuild.ps1 agent   (or blender -b --factory-startup -P tools/blender/agent.py)
@@ -26,6 +27,8 @@ import pose                   # noqa: E402
 import anims_loco             # noqa: E402
 import anims_combat           # noqa: E402
 import agency_parts as ap     # noqa: E402
+import anims_agency           # noqa: E402
+import props                  # noqa: E402
 from agency_parts import C, at_z, shell, limb_shell, box  # noqa: E402
 from paint import rgb, shade  # noqa: E402
 
@@ -118,6 +121,7 @@ def build():
     paint(R, head)
     ap.visor(ch, head, R["visor"])
     ap.blade(ch.prop("BladeMesh", "Weapon_R", "Blade"), A)
+    props.knife(ch.prop("KnifeMesh", "Knife", "Knife"), A)
     return ch
 
 
@@ -286,7 +290,7 @@ def animations(rig):
         if old:
             bpy.data.actions.remove(old)
         pose.make_action(rig, name, fn, length, loop=True)
-
+    anims_agency.add_all(rig, pose.make_action)   # captor_knife, drag_by_arm, heave_body
 
 if __name__ == "__main__":
     ch = build()

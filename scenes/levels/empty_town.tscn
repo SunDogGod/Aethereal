@@ -90,6 +90,14 @@
 [ext_resource type="Material" path="res://materials/empty_town_vending_dark.tres" id="r3_empty_town_vending_dark"]
 [ext_resource type="Material" path="res://materials/metal.tres" id="r3_metal"]
 [ext_resource type="Script" path="res://scripts/props/empty_town_ac.gd" id="r3_empty_town_ac"]
+[ext_resource type="Script" path="res://scripts/vfx/hall_bonfire.gd" id="hall_bonfire"]
+[ext_resource type="Script" path="res://scripts/vfx/hall_aura.gd" id="hall_aura"]
+[ext_resource type="Script" path="res://scripts/vfx/hall_body.gd" id="hall_body"]
+[ext_resource type="Script" path="res://scripts/vfx/hall_cue.gd" id="hall_cue"]
+[ext_resource type="AudioStream" path="res://audio/hall_fire.wav" id="hall_fire_wav"]
+[ext_resource type="PackedScene" path="res://scenes/valentina.tscn" id="s26_valentina"]
+[ext_resource type="Script" path="res://scripts/story_cue_takedown.gd" id="s26_cue"]
+[ext_resource type="Script" path="res://scripts/ink_circle.gd" id="s26_ink_circle"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_r8sky"]
 shader = ExtResource("r8_sky_shader")
@@ -1484,6 +1492,102 @@ size = Vector3(1, 0.099999905, 1)
 material = ExtResource("6_1m23x")
 grime = 0.0
 
+[node name="Story" type="Node3D" parent="Hall"]
+
+[node name="Bonfire" type="StaticBody3D" parent="Hall/Story"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -16.6)
+script = ExtResource("hall_bonfire")
+radius = 1.45
+light = NodePath("FireLight")
+aura = NodePath("../CubeAura")
+bodies = NodePath("../Bodies")
+
+[node name="FireLight" type="OmniLight3D" parent="Hall/Story/Bonfire"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8, 0)
+light_color = Color(1, 0.56, 0.24, 1)
+light_energy = 2.6
+omni_range = 17.0
+omni_attenuation = 0.8
+
+[node name="Crackle" type="AudioStreamPlayer3D" parent="Hall/Story/Bonfire"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
+stream = ExtResource("hall_fire_wav")
+volume_db = -3.0
+unit_size = 6.0
+max_distance = 28.0
+autoplay = true
+bus = &"SFX"
+
+[node name="CubeAura" type="Node3D" parent="Hall/Story"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.55, -25.5)
+script = ExtResource("hall_aura")
+source = NodePath("../Bonfire")
+light = NodePath("../../../Lights/BlackCube")
+
+[node name="Bodies" type="Node3D" parent="Hall/Story"]
+
+[node name="Body1" type="StaticBody3D" parent="Hall/Story/Bodies"]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -4.3, 0, -22.4)
+script = ExtResource("hall_body")
+
+[node name="Body2" type="StaticBody3D" parent="Hall/Story/Bodies"]
+transform = Transform3D(0.0697565, 0, 0.9975641, 0, 1, 0, -0.9975641, 0, 0.0697565, -4.1, 0, -21.8)
+script = ExtResource("hall_body")
+length = 1.6
+soiled = true
+variant = 1
+
+[node name="Body3" type="StaticBody3D" parent="Hall/Story/Bodies"]
+transform = Transform3D(-0.0523360, 0, 0.9986295, 0, 1, 0, -0.9986295, 0, -0.0523360, -4.5, 0, -21.2)
+script = ExtResource("hall_body")
+length = 1.75
+variant = 2
+
+[node name="Body4" type="StaticBody3D" parent="Hall/Story/Bodies"]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 4.4, 0, -22.4)
+script = ExtResource("hall_body")
+length = 1.5
+soiled = true
+variant = 3
+
+[node name="NavGuards" type="Node3D" parent="Hall/Story"]
+
+[node name="RailFootEast" type="NavigationObstacle3D" parent="Hall/Story/NavGuards"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.95, 0, -20.2)
+height = 1.0
+vertices = PackedVector3Array(-0.5, 0, -0.4, 0.5, 0, -0.4, 0.5, 0, 0.4, -0.5, 0, 0.4)
+affect_navigation_mesh = true
+carve_navigation_mesh = true
+avoidance_enabled = false
+
+[node name="RailFootWest" type="NavigationObstacle3D" parent="Hall/Story/NavGuards"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.95, 0, -20.2)
+height = 1.0
+vertices = PackedVector3Array(-0.5, 0, -0.4, 0.5, 0, -0.4, 0.5, 0, 0.4, -0.5, 0, 0.4)
+affect_navigation_mesh = true
+carve_navigation_mesh = true
+avoidance_enabled = false
+
+[node name="Cues" type="Node3D" parent="Hall/Story"]
+
+[node name="CubePulse" type="Node3D" parent="Hall/Story/Cues"]
+visible = false
+script = ExtResource("hall_cue")
+target = NodePath("../../CubeAura")
+method = "pulse"
+
+[node name="CubeSurge" type="Node3D" parent="Hall/Story/Cues"]
+visible = false
+script = ExtResource("hall_cue")
+target = NodePath("../../CubeAura")
+method = "surge"
+
+[node name="FireFlare" type="Node3D" parent="Hall/Story/Cues"]
+visible = false
+script = ExtResource("hall_cue")
+target = NodePath("../../Bonfire")
+method = "flare"
+
 [node name="Figures" type="Node3D" parent="." unique_id=1920153823]
 
 [node name="RoundUp" type="Node3D" parent="Figures" unique_id=474202921]
@@ -1548,122 +1652,51 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.5, 2.6100001, -3)
 layers = 2
 mesh = SubResource("CapsuleMesh_c2k0a")
 
-[node name="Valentina" type="MeshInstance3D" parent="Figures" unique_id=354276887]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.5, 0.825, -6)
-layers = 2
-mesh = SubResource("CapsuleMesh_h30vo")
-
-[node name="HallVillagers" type="Node3D" parent="Figures" unique_id=1186935421]
-
-[node name="HallVillager1" type="MeshInstance3D" parent="Figures/HallVillagers" unique_id=1601908709]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0.55, -16)
-layers = 2
-mesh = SubResource("CapsuleMesh_bhe7q")
-
-[node name="HallVillager2" type="MeshInstance3D" parent="Figures/HallVillagers" unique_id=1470209766]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0.55, -18)
-layers = 2
-mesh = SubResource("CapsuleMesh_rjpm0")
-
-[node name="HallVillager3" type="MeshInstance3D" parent="Figures/HallVillagers" unique_id=997275871]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0.55, -16)
-layers = 2
-mesh = SubResource("CapsuleMesh_i258a")
-
-[node name="HallVillager4" type="MeshInstance3D" parent="Figures/HallVillagers" unique_id=1630007754]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0.55, -18)
-layers = 2
-mesh = SubResource("CapsuleMesh_bi0ad")
-
-[node name="HallVillager5" type="MeshInstance3D" parent="Figures/HallVillagers" unique_id=2013562119]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.55, -16)
-layers = 2
-mesh = SubResource("CapsuleMesh_xvw6m")
-
-[node name="HallVillager6" type="MeshInstance3D" parent="Figures/HallVillagers" unique_id=483598136]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.55, -18)
-layers = 2
-mesh = SubResource("CapsuleMesh_f7ila")
-
-[node name="HallVillager7" type="MeshInstance3D" parent="Figures/HallVillagers" unique_id=1297151539]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0.55, -16)
-layers = 2
-mesh = SubResource("CapsuleMesh_6m8jh")
-
-[node name="HallVillager8" type="MeshInstance3D" parent="Figures/HallVillagers" unique_id=25171338]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0.55, -18)
-layers = 2
-mesh = SubResource("CapsuleMesh_0jtdj")
-
-[node name="HallVillager9" type="MeshInstance3D" parent="Figures/HallVillagers" unique_id=1522009307]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0.55, -16)
-layers = 2
-mesh = SubResource("CapsuleMesh_i05aa")
-
-[node name="HallVillager10" type="MeshInstance3D" parent="Figures/HallVillagers" unique_id=1300163442]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0.55, -18)
-layers = 2
-mesh = SubResource("CapsuleMesh_5iox7")
-
-[node name="Reinforcements" type="Node3D" parent="Figures" unique_id=63996459]
+[node name="Valentina" parent="Figures" unique_id=354276887 instance=ExtResource("s26_valentina")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.2, 0, 1)
 visible = false
-
-[node name="Reinforcement0" type="MeshInstance3D" parent="Figures/Reinforcements" unique_id=1211535240]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0.9, -8.5)
-layers = 2
-mesh = SubResource("CapsuleMesh_dhrga")
-
-[node name="Reinforcement1" type="MeshInstance3D" parent="Figures/Reinforcements" unique_id=1577387285]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0.9, -8.5)
-layers = 2
-mesh = SubResource("CapsuleMesh_jywo1")
-
-[node name="Reinforcement2" type="MeshInstance3D" parent="Figures/Reinforcements" unique_id=330881945]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0.9, -8.5)
-layers = 2
-mesh = SubResource("CapsuleMesh_uq12w")
-
-[node name="Reinforcement3" type="MeshInstance3D" parent="Figures/Reinforcements" unique_id=1806342405]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0.9, -8.5)
-layers = 2
-mesh = SubResource("CapsuleMesh_xwkxk")
-
-[node name="Reinforcement4" type="MeshInstance3D" parent="Figures/Reinforcements" unique_id=811151145]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0.9, -6.5)
-layers = 2
-mesh = SubResource("CapsuleMesh_md2gy")
-
-[node name="Reinforcement5" type="MeshInstance3D" parent="Figures/Reinforcements" unique_id=1894632935]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0.9, -6.5)
-layers = 2
-mesh = SubResource("CapsuleMesh_6byoc")
-
-[node name="Reinforcement6" type="MeshInstance3D" parent="Figures/Reinforcements" unique_id=1312661929]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0.9, -6.5)
-layers = 2
-mesh = SubResource("CapsuleMesh_18xfd")
-
-[node name="Reinforcement7" type="MeshInstance3D" parent="Figures/Reinforcements" unique_id=1773905284]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0.9, -6.5)
-layers = 2
-mesh = SubResource("CapsuleMesh_k0bv6")
 
 [node name="IsabellaHall" type="Node3D" parent="Figures" unique_id=898402769 instance=ExtResource("isabella_scene")]
 transform = Transform3D(0.6305924, 0, -0.77611417, 0, 1, 0, 0.77611417, 0, 0.6305924, -1.6, 1.2000002, -24.2)
 visible = false
 script = ExtResource("24_giwwf")
 
-[node name="ValentinaHall" type="MeshInstance3D" parent="Figures" unique_id=1646192927]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 0.825, -17)
+[node name="ValentinaHall" parent="Figures" unique_id=1646192927 instance=ExtResource("s26_valentina")]
+transform = Transform3D(-0.507433, 0, 0.861691, 0, 1, 0, -0.861691, 0, -0.507433, 3.9, 0, -18.9)
 visible = false
-layers = 2
-mesh = SubResource("CapsuleMesh_i0dls")
 
 [node name="Kael" type="Node3D" parent="Figures" unique_id=1270510182 instance=ExtResource("21_1un0n")]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0.6, 24, 38)
 script = ExtResource("24_giwwf")
 follow_distance = 2.6
 speed = 7.0
+
+[node name="IsabellaCaptor" type="CharacterBody3D" parent="Figures" instance=ExtResource("guard_scene")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -7.2, 0, -16.5)
+collision_layer = 4
+floor_snap_length = 0.3
+script = ExtResource("30_r8ac1")
+data = ExtResource("20_6hhm0")
+fights = false
+dormant = true
+
+[node name="HallGuard1" type="CharacterBody3D" parent="Figures" instance=ExtResource("guard_scene")]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 0.4, 0, -14)
+collision_layer = 4
+floor_snap_length = 0.3
+script = ExtResource("30_r8ac1")
+data = ExtResource("20_6hhm0")
+fights = false
+dormant = true
+
+[node name="HallGuard2" type="CharacterBody3D" parent="Figures" instance=ExtResource("guard_scene")]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 1.5, 0, -13)
+collision_layer = 4
+floor_snap_length = 0.3
+script = ExtResource("30_r8ac1")
+data = ExtResource("20_6hhm0")
+fights = false
+dormant = true
 
 [node name="StoryBeats" type="Node3D" parent="." unique_id=1631833013]
 
@@ -1729,7 +1762,7 @@ random_seed = 18
 [node name="HallFront" type="OmniLight3D" parent="Lights" unique_id=1489218676]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 7, -13)
 light_color = Color(1, 0.8, 0.6, 1)
-light_energy = 0.6
+light_energy = 0.35
 omni_range = 10.0
 script = ExtResource("22_h30vo")
 personality = 2
@@ -1737,8 +1770,8 @@ random_seed = 19
 
 [node name="BlackCube" type="OmniLight3D" parent="Lights" unique_id=526616066]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.6, -25)
-light_color = Color(1, 0.15, 0.1, 1)
-light_energy = 1.3
+light_color = Color(0.85, 0.1, 0.22, 1)
+light_energy = 1.1
 omni_range = 12.0
 
 [node name="LedgeLamp" type="OmniLight3D" parent="Lights" unique_id=599362068]
@@ -1894,12 +1927,12 @@ fov = 55.0
 far = 320.0
 
 [node name="ValentinaShot" type="Camera3D" parent="Shots" unique_id=1591333955]
-transform = Transform3D(0.32481, 0.12538, -0.93743, 0, 0.99117, 0.13257, 0.94578, -0.04306, 0.32195, -4, 2.4, -3)
-fov = 55.0
+transform = Transform3D(-0.88148, -0.044401, 0.470129, 0, 0.99557, 0.094026, -0.472221, 0.082882, -0.877575, 7, 1.7, -7.6)
+fov = 45.0
 far = 320.0
 
 [node name="HallShot" type="Camera3D" parent="Shots" unique_id=153737767]
-transform = Transform3D(0.967997, 0.052777, -0.24535, 0, 0.977637, 0.2103, 0.250962, -0.20357, 0.94635, -3, 4.5, -10.5)
+transform = Transform3D(0.761243, -0.134156, 0.634437, 0, 0.978366, 0.206882, -0.648466, -0.157487, 0.744774, 3.4, 2.5, -10.6)
 fov = 55.0
 far = 320.0
 
@@ -1909,17 +1942,17 @@ fov = 45.0
 far = 320.0
 
 [node name="EruptionShot" type="Camera3D" parent="Shots" unique_id=420447179]
-transform = Transform3D(0.5144958, -0.058685604, 0.8554824, 0, 0.9976554, 0.06843859, -0.8574929, -0.035211366, 0.51328945, 5, 1.6, -11)
-fov = 50.0
+transform = Transform3D(0.724999, 0.146381, 0.673015, 0, 0.977154, -0.212531, -0.688749, 0.154085, 0.708436, -1.5, 0.7, -10.8)
+fov = 55.0
 far = 320.0
 
 [node name="CaptainShot" type="Camera3D" parent="Shots" unique_id=1385209664]
-transform = Transform3D(0.792624, -0.088279195, 0.603286, 0, 0.9894627, 0.14478865, -0.60971075, -0.11476296, 0.78427184, 5, 3, -17)
+transform = Transform3D(0.938343, 0.02554, -0.344761, 0, 0.997267, 0.073877, 0.345705, -0.069322, 0.935779, -4.6, 1.8, -11.2)
 fov = 50.0
 far = 320.0
 
 [node name="ValentinaDeathShot" type="Camera3D" parent="Shots" unique_id=1923625282]
-transform = Transform3D(0.47409984, 0.09485751, -0.8753465, 0, 0.99417967, 0.10773495, 0.8804711, -0.051077124, 0.47134042, -5, 1.8, -14)
+transform = Transform3D(0.492057, -0.065715, 0.868079, 0, 0.997147, 0.075485, -0.870563, -0.037143, 0.490653, 7.2, 1.6, -16.2)
 fov = 50.0
 far = 320.0
 
@@ -1937,6 +1970,86 @@ far = 120.0
 transform = Transform3D(-0.9778024, -0.019428143, 0.20862657, 0, 0.9956919, 0.092722826, -0.20952924, 0.0906646, -0.9735899, 1.6, 25.4, 100.4)
 fov = 48.0
 far = 120.0
+
+[node name="HoldShot" type="Camera3D" parent="Shots"]
+transform = Transform3D(0.94299, 0.023022, -0.332023, 0, 0.997605, 0.069171, 0.33282, -0.065228, 0.940732, 3, 1.5, -3.6)
+fov = 50.0
+far = 320.0
+
+[node name="CorneredShot" type="Camera3D" parent="Shots"]
+transform = Transform3D(0.82137, -0.051841, 0.568035, 0, 0.995861, 0.090886, -0.570396, -0.074651, 0.817971, 6.4, 1.7, -3)
+fov = 50.0
+far = 320.0
+
+[node name="KnifeShot" type="Camera3D" parent="Shots"]
+transform = Transform3D(-0.182089, -0.035785, 0.982631, 0, 0.999338, 0.036394, -0.983282, 0.006627, -0.181969, 6.9, 1.55, -5.3)
+fov = 45.0
+far = 320.0
+
+[node name="IsabellaHeldShot" type="Camera3D" parent="Shots"]
+transform = Transform3D(0.731055, -0.066195, 0.6791, 0, 0.995283, 0.097014, -0.682318, -0.070923, 0.727607, 4.6, 1.6, -1.6)
+fov = 48.0
+far = 320.0
+
+[node name="FireShot" type="Camera3D" parent="Shots"]
+transform = Transform3D(0.933675, 0.013731, 0.357859, 0, 0.999265, -0.038342, -0.358122, 0.035799, 0.932988, 2.8, 1.3, -12.2)
+fov = 55.0
+far = 320.0
+
+[node name="CaptivesShot" type="Camera3D" parent="Shots"]
+transform = Transform3D(0.533993, 0.074951, -0.84216, 0, 0.996063, 0.088648, 0.845489, -0.047338, 0.531891, -6.8, 1.7, -11.6)
+fov = 50.0
+far = 320.0
+
+[node name="BreakFreeShot" type="Camera3D" parent="Shots"]
+transform = Transform3D(0.5547, -0.130243, 0.821794, 0, 0.987673, 0.156532, -0.83205, -0.086828, 0.547862, 3.6, 1.8, -10.6)
+fov = 55.0
+far = 320.0
+
+[node name="StabShot" type="Camera3D" parent="Shots"]
+transform = Transform3D(-0.578017, -0.02773, 0.815553, 0, 0.999422, 0.033981, -0.816024, 0.019642, -0.577684, -0.6, 1.4, -15.6)
+fov = 45.0
+far = 320.0
+
+[node name="AeneasShot" type="Camera3D" parent="Shots"]
+transform = Transform3D(-0.707107, 0.020824, -0.7068, 0, 0.999566, 0.02945, 0.707107, 0.020824, -0.7068, -4.6, 1.55, -13.8)
+fov = 50.0
+far = 320.0
+
+[node name="IsabellaFaceShot" type="Camera3D" parent="Shots"]
+transform = Transform3D(0.371391, 0.114072, -0.921443, 0, 0.992424, 0.122859, 0.928477, -0.045629, 0.368577, -2.5, 1.35, -11.8)
+fov = 50.0
+far = 320.0
+
+[node name="CircleShot" type="Camera3D" parent="Shots"]
+transform = Transform3D(0.725953, -0.544978, 0.419513, 0, 0.609984, 0.792414, -0.687745, -0.575255, 0.442819, 0.8, 3.6, -10.7)
+fov = 55.0
+far = 320.0
+
+[node name="SoulShot" type="Camera3D" parent="Shots"]
+transform = Transform3D(0.984511, -0.014141, -0.174753, 0, 0.996742, -0.080655, 0.175324, 0.079406, 0.981303, -2.6, 1.4, -10.9)
+fov = 60.0
+far = 320.0
+
+[node name="ThroatShot" type="Camera3D" parent="Shots"]
+transform = Transform3D(0.999261, -0.001476, 0.038405, 0, 0.999262, 0.038405, -0.038433, -0.038376, 0.998524, -2.6, 1.55, -10.4)
+fov = 50.0
+far = 320.0
+
+[node name="KaelRevealShot" type="Camera3D" parent="Shots"]
+transform = Transform3D(-0.95448, -0.035337, -0.296174, 0, 0.992958, -0.11847, 0.298275, -0.113077, -0.947758, -3, 0.8, -15.6)
+fov = 50.0
+far = 320.0
+
+[node name="BeheadShot" type="Camera3D" parent="Shots"]
+transform = Transform3D(0.852601, 0.007185, -0.522513, 0, 0.999905, 0.01375, 0.522562, -0.011724, 0.852521, -4.3, 1.1, -10.4)
+fov = 50.0
+far = 320.0
+
+[node name="CubeShot" type="Camera3D" parent="Shots"]
+transform = Transform3D(0.992586, 0.026434, 0.118632, 0, 0.976062, -0.217492, -0.121541, 0.215879, 0.968826, 0.6, 1.5, -20.6)
+fov = 55.0
+far = 320.0
 
 [node name="StoryTriggers" type="Node3D" parent="." unique_id=575879315]
 
@@ -2010,65 +2123,83 @@ scene = "captured"
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
 shape = SubResource("Shape_trigger_captured")
 
+[node name="FirstPair" type="Area3D" parent="StoryTriggers"]
+collision_layer = 0
+collision_mask = 2
+monitoring = false
+monitorable = false
+script = ExtResource("s26_cue")
+dialogue_file = "res://data/dialogue/empty_town.txt"
+scene = "first_pair"
+
 [node name="InkCircle" type="Node3D" parent="." unique_id=1611929581]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.6, 2.8, -23)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0.02, -12.4)
 visible = false
-
-[node name="Ring0" type="MeshInstance3D" parent="InkCircle" unique_id=1496166044]
-transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 0, 0, 0)
-material_override = SubResource("ShaderMaterial_xql2b")
-mesh = SubResource("TorusMesh_vpkrg")
-
-[node name="Ring1" type="MeshInstance3D" parent="InkCircle" unique_id=1137816842]
-transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 0, 0, 0)
-material_override = SubResource("ShaderMaterial_xql2b")
-mesh = SubResource("TorusMesh_giwwf")
-
-[node name="Ring2" type="MeshInstance3D" parent="InkCircle" unique_id=951988786]
-transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 0, 0, 0)
-material_override = SubResource("ShaderMaterial_xql2b")
-mesh = SubResource("TorusMesh_vtmm7")
-
-[node name="Stroke0" type="MeshInstance3D" parent="InkCircle" unique_id=401129060]
-material_override = SubResource("ShaderMaterial_xql2b")
-mesh = SubResource("BoxMesh_r8ac1")
-
-[node name="Stroke1" type="MeshInstance3D" parent="InkCircle" unique_id=153260606]
-transform = Transform3D(0.30901697, -0.95105654, 0, 0.95105654, 0.30901697, 0, 0, 0, 1, 0, 0, 0)
-material_override = SubResource("ShaderMaterial_xql2b")
-mesh = SubResource("BoxMesh_0mygx")
-
-[node name="Stroke2" type="MeshInstance3D" parent="InkCircle" unique_id=1635206038]
-transform = Transform3D(-0.80901706, -0.5877852, 0, 0.5877852, -0.80901706, 0, 0, 0, 1, 0, 0, 0)
-material_override = SubResource("ShaderMaterial_xql2b")
-mesh = SubResource("BoxMesh_hq4j7")
-
-[node name="Stroke3" type="MeshInstance3D" parent="InkCircle" unique_id=221825291]
-transform = Transform3D(-0.80901694, 0.58778536, 0, -0.58778536, -0.80901694, 0, 0, 0, 1, 0, 0, 0)
-material_override = SubResource("ShaderMaterial_xql2b")
-mesh = SubResource("BoxMesh_al4dd")
-
-[node name="Stroke4" type="MeshInstance3D" parent="InkCircle" unique_id=1968882186]
-transform = Transform3D(0.30901712, 0.9510565, 0, -0.9510565, 0.30901712, 0, 0, 0, 1, 0, 0, 0)
-material_override = SubResource("ShaderMaterial_xql2b")
-mesh = SubResource("BoxMesh_l2pnn")
+script = ExtResource("s26_ink_circle")
+drawer = NodePath("../Figures/IsabellaHall")
+soul_target = NodePath("../Hall/Story/CubeAura")
 
 [node name="HallMark" type="Marker3D" parent="." unique_id=1886532330]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -14)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.4, 0, -12.6)
+
+[node name="StoryMarks" type="Node3D" parent="."]
+
+[node name="DragStartV" type="Marker3D" parent="StoryMarks"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.2, 0, 1)
+
+[node name="DragStartAgent" type="Marker3D" parent="StoryMarks"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.46, 0, 0.22)
+
+[node name="DragEndV" type="Marker3D" parent="StoryMarks"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.2, 0, -6.6)
+
+[node name="DragEndAgent" type="Marker3D" parent="StoryMarks"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.46, 0, -7.38)
+
+[node name="ValentinaHoldMark" type="Marker3D" parent="StoryMarks"]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 4.2, 0, -6.9)
+
+[node name="CornerMark" type="Marker3D" parent="StoryMarks"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.2, 0, -4.8)
+
+[node name="IsabellaCourtMark" type="Marker3D" parent="StoryMarks"]
+transform = Transform3D(0.721387, 0, -0.692532, 0, 1, 0, 0.692532, 0, 0.721387, 1.8, 0, -4.4)
+
+[node name="IsabellaHallMark" type="Marker3D" parent="StoryMarks"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0, -12.4)
+
+[node name="CaptainRampMark" type="Marker3D" parent="StoryMarks"]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, -1.4, 0, -20)
+
+[node name="CaptainFrontMark" type="Marker3D" parent="StoryMarks"]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, -3.4, 0, -14.6)
+
+[node name="ValentinaHallMark" type="Marker3D" parent="StoryMarks"]
+transform = Transform3D(-0.507433, 0, 0.861691, 0, 1, 0, -0.861691, 0, -0.507433, 3.9, 0, -18.9)
+
+[node name="DraggerHallMark" type="Marker3D" parent="StoryMarks"]
+transform = Transform3D(0.747409, 0, 0.664364, 0, 1, 0, -0.664364, 0, 0.747409, 4.7, 0, -18)
+
+[node name="LieutenantThrownMark" type="Marker3D" parent="StoryMarks"]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -5.6, 0, -12.2)
+
+[node name="CaptainGrabMark" type="Marker3D" parent="StoryMarks"]
+transform = Transform3D(-0.507433, 0, 0.861691, 0, 1, 0, -0.861691, 0, -0.507433, 4.43, 0, -19.21)
+
+[node name="ThroatMark" type="Marker3D" parent="StoryMarks"]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -2.4, 0, -13)
+
+[node name="KaelMark" type="Marker3D" parent="StoryMarks"]
+transform = Transform3D(0.588172, 0, 0.808736, 0, 1, 0, -0.808736, 0, 0.588172, -1.6, 0, -12.2)
+
+[node name="CaptorBodyMark" type="Marker3D" parent="StoryMarks"]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 0.5, 0, -11)
 
 [node name="ValentinaFight" type="Node3D" parent="." unique_id=108673783 node_paths=PackedStringArray("unlock_on_win")]
 script = ExtResource("25_pw4ii")
+won_scene = "captured"
 dialogue_file = "res://data/dialogue/empty_town.txt"
 unlock_on_win = NodePath("../StoryTriggers/Captured")
-
-[node name="Dragger" type="CharacterBody3D" parent="ValentinaFight" unique_id=3615598 instance=ExtResource("guard_scene")]
-transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 6.3, 0, -6.8)
-collision_layer = 4
-floor_snap_length = 0.3
-script = ExtResource("30_r8ac1")
-data = ExtResource("20_6hhm0")
-fights = true
-dormant = true
 
 [node name="CourtyardAgent" type="CharacterBody3D" parent="ValentinaFight" unique_id=1368598953 instance=ExtResource("guard_scene")]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -2.8, 0, -8)
@@ -2088,10 +2219,19 @@ data = ExtResource("20_6hhm0")
 fights = true
 dormant = true
 
+[node name="CourtyardAgent2" type="CharacterBody3D" parent="ValentinaFight" instance=ExtResource("guard_scene")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 1.2, 0, -5.4)
+collision_layer = 4
+floor_snap_length = 0.3
+script = ExtResource("30_r8ac1")
+data = ExtResource("20_6hhm0")
+fights = true
+dormant = true
+
 [node name="HallFight" type="Node3D" parent="." unique_id=646903381]
 script = ExtResource("25_pw4ii")
 dialogue_file = "res://data/dialogue/empty_town.txt"
-won_scene = "captain_phase"
+won_scene = "eruption_end"
 
 [node name="HallAgent1" type="CharacterBody3D" parent="HallFight" unique_id=163372007 instance=ExtResource("guard_scene")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.5, 0, -12)
@@ -2129,12 +2269,38 @@ data = ExtResource("20_6hhm0")
 fights = true
 dormant = true
 
+[node name="Dragger" type="CharacterBody3D" parent="HallFight" unique_id=3615598 instance=ExtResource("guard_scene")]
+visible = false
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.46, 0, 0.22)
+collision_layer = 4
+floor_snap_length = 0.3
+script = ExtResource("30_r8ac1")
+data = ExtResource("20_6hhm0")
+fights = true
+dormant = true
+
+[node name="LieutenantFight" type="Node3D" parent="." node_paths=PackedStringArray("boss")]
+script = ExtResource("25_pw4ii")
+dialogue_file = "res://data/dialogue/empty_town.txt"
+won_scene = "valentina_fire"
+boss = NodePath("Lieutenant")
+choreography_file = "res://data/fights/lieutenant.txt"
+
+[node name="Lieutenant" type="CharacterBody3D" parent="LieutenantFight" unique_id=1256835580 instance=ExtResource("guard_scene")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 2.6, 1.25, -24)
+collision_layer = 4
+floor_snap_length = 0.3
+script = ExtResource("30_r8ac1")
+data = ExtResource("27_tte5t")
+fights = true
+dormant = true
+
 [node name="CaptainFight" type="Node3D" parent="." unique_id=786638041 node_paths=PackedStringArray("boss")]
 script = ExtResource("25_pw4ii")
 dialogue_file = "res://data/dialogue/empty_town.txt"
-death_scene = "valentina_death"
+death_scene = "captain_throat"
 boss = NodePath("Captain")
-boss_half_scene = "lieutenant"
+boss_half_scene = "captain_turn"
 choreography_file = "res://data/fights/captain.txt"
 
 [node name="Captain" type="CharacterBody3D" parent="CaptainFight" unique_id=1223360607 instance=ExtResource("guard_scene")]
@@ -2143,15 +2309,6 @@ collision_layer = 4
 floor_snap_length = 0.3
 script = ExtResource("30_r8ac1")
 data = ExtResource("26_7dv8h")
-fights = true
-dormant = true
-
-[node name="Lieutenant" type="CharacterBody3D" parent="CaptainFight" unique_id=1256835580 instance=ExtResource("guard_scene")]
-transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 2.6, 1.25, -24)
-collision_layer = 4
-floor_snap_length = 0.3
-script = ExtResource("30_r8ac1")
-data = ExtResource("27_tte5t")
 fights = true
 dormant = true
 

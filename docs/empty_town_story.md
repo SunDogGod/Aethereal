@@ -45,6 +45,8 @@ lightly cleaned up ("Sera" in the first line read as Isabella; see the note at t
   beheads him; "Sacrificio" as Aeneas blacks out; then the Massacre memory.
 
 ## Beat order (for scenes and fights)
+All eleven are built (2026-10-26); the table at the end of `docs/empty_town.md` says which scene or
+fight plays each one.
 1. Arrival with Isabella (supplies), meet Kael (stranger), the ransacked town (round-up).
 2. Sneaking. At the first paired takedown Isabella says "You get the first one, I'll get the
    second." and her ink takes the second agent: the player's first sight of Aether.

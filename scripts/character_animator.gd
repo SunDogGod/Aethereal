@@ -1,13 +1,13 @@
 class_name CharacterAnimator
-extends CharacterAnimLayers
+extends CharacterStory
 ## Plays a character's animations (made by tools/blender) from what its body is doing.
 ## It lives in every character model scene (scenes/characters/*_model.tscn) as "Animator".
 ## Standing, walking, running, sprinting, crouching and falling follow the body by themselves
 ## (from how fast it moves, is_crouched, and whether it's on the floor). Scripts call the
 ## one-shots: swing_windup / swing_release / swing_cancel, set_block, roll, hit, stab, die,
 ## revive, telegraph, strike, stagger, cast; and for Aeneas's sheathed sword iai_stance,
-## draw_release, draw_instant and sheathe. The layers, the tree and the props that change hands
-## are in character_anim_layers.gd.
+## draw_release, draw_instant and sheathe. The story poses (story_pose, story_clear...) are in
+## character_story.gd; the layers, the tree and the props that change hands in character_anim_layers.gd.
 
 ## Metres one walk / run / sprint / crouch-walk cycle carries him (tools/blender/anims_loco.py).
 const STRIDE := {"walk": 1.5, "run": 3.4, "sprint": 4.8, "crouch_walk": 1.9}
@@ -31,6 +31,7 @@ var _crouch := 0.0
 var _vel := Vector3.ZERO      # smoothed ground velocity
 var _twist: Node             # character_twist.gd under the skeleton
 var _backwards := false
+var _blow := ""               # the variant wound up by telegraph() ("_hook"...), for strike()
 
 
 func _ready() -> void:
@@ -249,22 +250,26 @@ func revive() -> void:
 
 
 ## A guard's raised blade, timed to reach the top as the wind-up ends; held until strike().
-func telegraph(seconds: float) -> void:
+## `kind` picks a variant the model may have (the captain's fists: "hook", "heavy"; "" or "jab" the
+## plain one): telegraph_<kind> now, strike_<kind> on the strike.
+func telegraph(seconds: float, kind := "") -> void:
 	if dead:
 		return
-	_play("upper", "telegraph", 0.6 / maxf(seconds, 0.1), true, 0.08)
+	_blow = "_" + kind if kind != "" and _player and _player.has_animation("telegraph_" + kind) else ""
+	_play("upper", "telegraph" + _blow, 0.6 / maxf(seconds, 0.1), true, 0.08)
 
 
 ## A feint: the raised blade comes back down without striking (the captain's choreography).
 func lower_blade() -> void:
-	if playing("upper") == "telegraph":
+	if playing("upper").begins_with("telegraph"):
 		_stop("upper", 0.15)
 
 
 func strike() -> void:
 	if dead:
 		return
-	_play("full", "strike", 1.0, false, 0.04)
+	_play("full", "strike" + _blow, 1.0, false, 0.04)
+	_blow = ""
 	_stop("upper", 0.06)
 
 

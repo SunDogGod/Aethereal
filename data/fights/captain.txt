@@ -2,11 +2,14 @@
 # starts (its Choreography File field), so a change shows up the next time you press F5.
 #
 # DRAFT. A first pass at the moves; reorder them, cut them, add your own.
+# Where it sits in the story: after Valentina goes into the fire. He fights with his fists, his
+# left arm only (he gave the right to the cube). Aeneas gives him a run for his money: once the
+# captain is under half health he stops playing (the captain_turn scene) and Aeneas loses.
 #
 # Sections:
-#   === phase 1 ===             the captain (the fight's Boss), the fair fight, until the lieutenant scene
-#   === phase 2 ===             the captain after he is empowered: the fight meant to be lost
-#   === Lieutenant phase 1 ===  another guard in the same fight, by his node name. A guard with no
+#   === phase 1 ===             the captain (the fight's Boss), until he is under half health
+#   === phase 2 ===             after captain_turn: nothing gets through, the fight meant to be lost
+#   === Name phase 1 ===        another guard in the same fight, by his node name. A guard with no
 #                               section fights the usual way (close in, circle, swing).
 # The beats play top to bottom. After the last one they start again from the line that says
 # `loop` (or from the top if there is none). Anything after a # is a note; the game skips it.
@@ -17,20 +20,21 @@
 #   step_in             a quick lunge into striking range
 #   back 1.5            step back 1.5 metres, still facing Aeneas
 #   circle 2 left       sidestep round Aeneas for 2 seconds (left or right)
-#   feint 0.5           raise the blade as if to cut, for 0.5 seconds, then lower it: no hit (baits a parry)
-#   swing 0.75          one cut: his visor flashes for 0.75 seconds, then the blade lands.
+#   feint 0.5           draws his fist back as if to hit, for 0.5 seconds, then drops it: no hit (baits a parry)
+#   swing 0.75          one blow, a hook: his visor flashes for 0.75 seconds, then the fist lands.
 #                       Block it, parry it (tap block just as it lands), or dodge.
-#   combo 0.7 0.4 0.4   cuts one after another; each number is that cut's wind-up
-#   heavy 1.1           a slow, hard cut that can't be blocked or parried (his coat flashes red): dodge it
+#   combo 0.7 0.4 0.4   jabs and hooks one after another, ending on a hook; each number is a wind-up
+#   heavy 1.1           an overhand blow, a step in and down, that can't be blocked or parried
+#                       (his coat flashes red): dodge it
 #   finish 1.0          the blow that ends the fight if it lands (phase 2)
 #   scene captain_taunt play that scene from data/dialogue/empty_town.txt; the fight pauses
 #                       meanwhile. Each scene plays only the first time it is reached.
 # Attack beats (feint, swing, combo, heavy, finish) walk into reach first if Aeneas is too far.
 # Damage comes from data/enemies/agency_captain.tres (attack_damage, attack_range):
-# a combo cut does 0.8 of it, a heavy 1.5. Hitting him never breaks his beat; a parry does.
+# a combo blow does 0.8 of it, a heavy 1.5. Hitting him never breaks his beat; a parry does.
 
 === phase 1 ===
-approach 2.6
+approach 2.4
 guard 0.8                # they size each other up
 feint 0.5
 swing 0.75
@@ -39,7 +43,7 @@ guard 0.6
 scene captain_measure    # a side-on shot of the two of them
 loop
 circle 1.4 left
-approach 2.2
+approach 1.8
 combo 0.75 0.4 0.4
 guard 1.0                # a gap: hit him now
 step_in
@@ -49,31 +53,19 @@ heavy 1.1
 back 2.0
 guard 1.2
 scene captain_taunt      # the pause with a taunt (the line slot is in the dialogue file)
-approach 2.0
+approach 1.8
 feint 0.4
 combo 0.5 0.35
 guard 0.8
 
-=== Lieutenant phase 1 ===
-# He keeps to the captain's shoulder and cuts in now and then.
-guard 2.5
-loop
-circle 2.0 right
-approach 2.2
-swing 0.6
-back 2.5
-guard 3.0
-circle 1.5 left
-guard 2.0
-
 === phase 2 ===
-# Empowered: nothing gets through, and nothing can be blocked. Aeneas is meant to lose.
+# He has stopped playing: nothing gets through, and nothing can be blocked. Aeneas is meant to lose.
 guard 0.5
 step_in
 combo 0.45 0.3 0.3
 heavy 0.8
 loop
-approach 1.8
+approach 1.4
 combo 0.4 0.3 0.3 0.3
 step_in
 heavy 0.8

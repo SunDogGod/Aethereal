@@ -34,7 +34,7 @@ static func parse(source: String) -> Dictionary:
 				"hide", "show":
 					steps.append({"type": word, "name": arg})
 				"fade":
-					steps.append({"type": "fade", "how": arg.to_lower()})  # out, in, white
+					steps.append({"type": "fade", "how": arg.to_lower()})  # out, in, white, dim
 				"level":
 					steps.append({"type": "level", "path": arg})
 				"title":
@@ -53,6 +53,13 @@ static func parse(source: String) -> Dictionary:
 					steps.append({"type": "collapse", "name": arg})  # a character falls and stays down (plays its death)
 				"heal":
 					steps.append({"type": "heal"})
+				"pose", "place", "stand", "move", "face", "ink", "call":
+					# stage directions (story_stage.gd): [pose Name anim], [place Name Mark] ...
+					var words := arg.split(" ", false)
+					if words.is_empty():
+						push_warning("Dialogue: [%s] needs a name" % word)
+					else:
+						steps.append({"type": word, "name": words[0], "args": words.slice(1)})
 				_:
 					push_warning("Dialogue: unknown command [%s]" % word)
 			continue

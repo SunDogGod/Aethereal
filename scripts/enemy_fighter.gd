@@ -137,3 +137,23 @@ func _separate() -> void:
 			push += away / d * (1.0 - d)
 	guard.velocity.x += push.x * 7.0
 	guard.velocity.z += push.z * 7.0
+
+
+## Which blow a fist fighter (the captain) throws next; the animator plays telegraph_<kind> and
+## strike_<kind> if his model has them (a swordsman's has not, so his cut stays the same).
+## The choreography's move decides: heavy and finish are the overhand, a single swing is a hook,
+## a combo ends on a hook with jabs and hooks alternating before it; the usual fight mixes them.
+func next_blow() -> String:
+	if choreography == null:
+		return "hook" if randf() < 0.4 else "jab"
+	var beat: Variant = choreography.get("_beat")
+	var left: Variant = choreography.get("_windups")  # blows still to come after this one
+	var move: String = str(beat.get("move", "")) if beat is Dictionary else ""
+	match move:
+		"heavy", "finish":
+			return "heavy"
+		"swing":
+			return "hook"
+		"combo":
+			return "hook" if left is Array and (left as Array).size() % 2 == 0 else "jab"
+	return "jab"

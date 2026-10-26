@@ -11,13 +11,6 @@
    "props": [
     "Visor"
    ]
-  },
-  {
-   "node": "Blade",
-   "bone": "Weapon_L",
-   "props": [
-    "BladeMesh"
-   ]
   }
  ],
  "root_script": ""

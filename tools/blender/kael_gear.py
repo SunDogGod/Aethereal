@@ -10,11 +10,17 @@ import props
 from paint import rgb, shade
 
 
-def lamento(part, atlas, C):
+def lamento(part, atlas, C, bloody=False):
     """Lamento: a long, single-edged bone-white blade with a clipped point, a short square iron
-    guard, a long red-wrapped grip, a ring pommel and a red tassel. Grip at the origin, blade +Y."""
-    rb, rg, rm, rt = (atlas.rect("lamento_blade", 48, 12), atlas.rect("lamento_grip", 24, 16),
-                      atlas.rect("lamento_iron", 16, 8), atlas.rect("lamento_tassel", 8, 16))
+    guard, a long red-wrapped grip, a ring pommel and a red tassel. Grip at the origin, blade +Y.
+    The first call paints its texture; later calls reuse it (bloody: its own blade texture, with
+    dark blood run down from the point and smeared along the edge)."""
+    if "lamento_grip" in atlas.rects:
+        rg, rm, rt = atlas.rects["lamento_grip"], atlas.rects["lamento_iron"], atlas.rects["lamento_tassel"]
+        rb = atlas.rect("lamento_blood", 48, 12) if bloody else atlas.rects["lamento_blade"]
+    else:
+        rb, rg, rm, rt = (atlas.rect("lamento_blade", 48, 12), atlas.rect("lamento_grip", 24, 16),
+                          atlas.rect("lamento_iron", 16, 8), atlas.rect("lamento_tassel", 8, 16))
     L, w, t = 0.86, 0.027, 0.0065
 
     def back(p):
@@ -47,6 +53,13 @@ def lamento(part, atlas, C):
         rb.vline(u, C["bone_dark"], 1, 0.06, 0.8)           # the fuller
     for v in (0.08, 0.12, 0.16):
         rb.box(0.18, v, 0.30, v + 0.01, C["bone_dark"])     # three engraved marks by the guard
+    if bloody:
+        blood, dried = rgb("#6a0f14"), rgb("#3e080b")
+        rb.box(0, 0.55, 1, 1.0, blood)                      # the point half of the blade, wet
+        for u in (0.12, 0.3, 0.55, 0.8):
+            rb.vline(u, blood, 1, 0.28, 0.6)                # runs back toward the guard
+        rb.vline(0.0, dried, 2, 0.2, 1.0)                   # smeared along the edge
+        rb.vline(0.97, dried, 1, 0.4, 1.0)
     rg.fill(C["wrap"])
     for k in range(4):                                      # the wrap: dark bands crossing the red
         v = k / 4

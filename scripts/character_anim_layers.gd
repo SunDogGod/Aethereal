@@ -9,9 +9,9 @@ extends Node
 
 const UPPER_BONES := ["Spine", "Chest", "Neck", "Head", "Shoulder_L", "Shoulder_R", "UpperArm_L",
 		"UpperArm_R", "LowerArm_L", "LowerArm_R", "Hand_L", "Hand_R", "Weapon_L", "Weapon_R", "Back", "Scabbard"]
-const UPPER := ["windup_L", "windup_R", "block", "telegraph", "cast", "sheathe"]
-const FULL := ["sweep_LR", "sweep_RL", "dodge_roll", "dodge_back", "hit", "stab", "death", "strike", "stagger",
-		"iai", "draw_cut"]
+const UPPER := ["windup_L", "windup_R", "block", "telegraph", "telegraph_hook", "telegraph_heavy", "cast", "sheathe"]
+const FULL := ["sweep_LR", "sweep_RL", "dodge_roll", "dodge_back", "hit", "stab", "death", "strike", "strike_hook",
+		"strike_heavy", "stagger", "iai", "draw_cut"]
 const LOOPS := ["idle", "walk", "run", "sprint", "crouch_idle", "crouch_walk", "fall"]
 const STAB_DRAW := 0.13     ## in the stab, the knife leaves its sheath for the left hand...
 const STAB_SHEATHE := 0.64  ## ...and goes back
@@ -46,6 +46,7 @@ func _setup_layers(model: Node, speeds: Dictionary) -> void:
 		return
 	has_carry = _player.has_animation("walk_sheathed") and _sword != null and scabbard != null and scabbard.visible
 	_build_tree(speeds)
+	_setup_story(model)
 	if has_carry:
 		put_sword(false)
 		_carry = 1.0
@@ -69,11 +70,30 @@ func _step_props(delta: float) -> void:
 		_carry = move_toward(_carry, 0.0 if sword_in_hand else 1.0, delta / CARRY_FADE)
 		_tree.set("parameters/carry_mix/blend_amount", _carry)
 	if _knife:
-		var l: Dictionary = _layers.full
-		var t: float = l.time * _tree.get("parameters/full_rate/scale")
-		var bone := "Weapon_L" if l.anim == "stab" and t >= STAB_DRAW and t < STAB_SHEATHE else _knife_home
+		var bone := "Weapon_L" if _knife_in_hand() else _knife_home
 		if _knife.bone_name != bone:
 			_knife.bone_name = bone
+	_step_story_props()
+
+
+## The knife is in his left hand: in a stab, between drawing and sheathing it (story poses add more).
+func _knife_in_hand() -> bool:
+	var l: Dictionary = _layers.full
+	var t: float = l.time * _tree.get("parameters/full_rate/scale")
+	return l.anim == "stab" and t >= STAB_DRAW and t < STAB_SHEATHE
+
+
+# Hooks for character_story.gd (the story poses and their props).
+func _setup_story(_model: Node) -> void:
+	pass
+
+
+func _extra(_layer: String) -> Array:
+	return []
+
+
+func _step_story_props() -> void:
+	pass
 
 
 func _step_layer(key: String, delta: float) -> void:
@@ -126,7 +146,8 @@ func _build_tree(speeds: Dictionary) -> void:
 	add_child(_tree)
 	_tree.anim_player = _tree.get_path_to(_player)
 	_tree.root_node = _tree.get_path_to(_player.get_node(_player.root_node))
-	_tree.tree_root = CharacterAnimTree.build(_player, speeds, UPPER, FULL, UPPER_BONES, has_carry)
+	_tree.tree_root = CharacterAnimTree.build(_player, speeds, UPPER + _extra("upper"), FULL + _extra("full"),
+			UPPER_BONES, has_carry)
 	_tree.active = true
 	for n in ["rate", "upper_rate", "full_rate"]:
 		_tree.set("parameters/%s/scale" % n, 1.0)

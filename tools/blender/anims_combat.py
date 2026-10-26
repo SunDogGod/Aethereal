@@ -5,6 +5,7 @@ them too. SWEEP_HIT is when a sweep's blade crosses his front.
 Here: block (held), dodge_roll, dodge_back, hit, stab (knife takedown), death (held), and for
 guards telegraph (blade raised, held), strike and stagger; cast is Isabella's brush slash.
 Upper-body ones (windup_*, block, telegraph, cast) play over the legs' walking in Godot.
+add_all() also makes the story poses every character has (anims_story.py).
 """
 from pose import make_action, keyed
 from natural_arm import natural, tracked
@@ -231,3 +232,5 @@ def add_all(rig):
     make_action(rig, "strike", strike(s), 0.5)
     make_action(rig, "stagger", stagger(s), 1.0)
     make_action(rig, "cast", cast(s), 0.5)
+    import anims_story
+    anims_story.add_all(rig, make_action)   # (the captain's mirrored make_action, when he is built)

@@ -20,9 +20,7 @@ import character_base as cb   # noqa: E402
 import base_body as bb        # noqa: E402
 import body                   # noqa: E402
 import mesh                   # noqa: E402
-import pose                   # noqa: E402
-import anims_loco             # noqa: E402
-import anims_combat           # noqa: E402
+import kael_anims             # noqa: E402
 import kael_gear as gear      # noqa: E402
 from paint import rgb         # noqa: E402
 
@@ -136,6 +134,12 @@ def build():
     rot = Matrix((d.cross(e), d, e)).transposed().to_4x4()
     rot.translation = Vector(LAMENTO_GRIP) * s
     mesh.transform_part(lam, ch.arm.data.bones["Back"].matrix_local.inverted() @ rot)
+    # In his hand (drawn in the hall): the same sword on Weapon_R, turned so its width lies along the
+    # grip's edge axis, clean and bloody (the game shows one; character_story.gd set_lamento).
+    for name, bloody in (("LamentoHand", False), ("LamentoBlood", True)):
+        held = ch.prop(name, "Weapon_R", "LamentoDrawn")
+        gear.lamento(held, A, C, bloody=bloody)
+        mesh.transform_part(held, Matrix.Rotation(math.radians(-90), 4, "Y"))
     return ch
 
 
@@ -244,41 +248,9 @@ def _strap(P, J, r):
     body.strand(P, pts, [0.021] * (len(pts) - 1) + [0.019], 0.28, r.uv, w, up=Vector((0, 1, 0.2)), sides=4)
 
 
-def _mirror_arm(a):
-    """The right arm doing what the left does (mirrored): his hands swing free."""
-    x, y, z = a["ikr"]
-    px, py, pz = a.get("pole", (-0.3, -1.0, -0.2))
-    hx, hy, hz = a.get("hand", (0, 0, 0))
-    return {"ikr": (-x, y, z), "pole": (-px, py, pz), "hand": (hx, -hy, -hz)}
-
-
 def animations(rig):
-    """The shared set, except that Kael's right hand is empty (Lamento rides on his back): in the
-    standing, walking and crouching loops it swings like his left. The idle stands taller."""
-    s = rig.head("Hips").z / 0.93
-    L = anims_loco
-
-    def free(f, half):
-        def at(t):
-            p = f(t)
-            p["arm_R"] = _mirror_arm(f((t + 0.5) % 1.0 if half else t)["arm_L"])
-            return p
-        return at
-
-    for name, f in (("walk", L.walk), ("run", L.run), ("sprint", L.sprint), ("crouch_walk", L.crouch_walk)):
-        pose.make_action(rig, name, free(f(rig, s), True), 1.0, loop=True)
-    stand = free(L.idle(rig, s), False)
-
-    def idle(t):
-        p = stand(t)
-        p["Head"] = (p["Head"][0] + 2.5, p["Head"][1], p["Head"][2])     # chin up
-        p["Chest"] = (p["Chest"][0] + 1.5, p["Chest"][1], p["Chest"][2])
-        return p
-    pose.make_action(rig, "idle", idle, 2.4, loop=True)
-    pose.make_action(rig, "crouch_idle", free(L.crouch_idle(rig, s), False), 2.0, loop=True)
-    pose.make_action(rig, "jump", L.jump(rig, s), 0.5)
-    pose.make_action(rig, "fall", L.fall(rig, s), 0.8, loop=True)
-    anims_combat.add_all(rig)
+    """The shared set with his right hand swinging free, and his story cuts (kael_anims.py)."""
+    kael_anims.add_all(rig, LAMENTO_GRIP, LAMENTO_DIR)
 
 
 if __name__ == "__main__":

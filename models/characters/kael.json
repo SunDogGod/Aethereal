@@ -11,6 +11,14 @@
    "props": [
     "LamentoMesh"
    ]
+  },
+  {
+   "node": "LamentoDrawn",
+   "bone": "Weapon_R",
+   "props": [
+    "LamentoHand",
+    "LamentoBlood"
+   ]
   }
  ],
  "root_script": ""

@@ -1,6 +1,6 @@
 # Level 1 — The Empty Town (arc 0.1)
 
-> **The story was retold by the author on 2026-10-26: see `docs/empty_town_story.md`, which supersedes the beats below where they disagree.**
+> **The story was retold by the author on 2026-10-26: see `docs/empty_town_story.md`, which supersedes the beats below where they disagree. It is built: see "The retold story, built (2026-10-26)" at the end. Beats 5-12 below, the "I sacrifice" line, the lieutenant fed to the cube and Valentina killed as a shield are the OLD version.**
 
 Designed with the author, 2026-10-22. **Decided** = the author's call. **Proposed** = Claude's suggestion,
 waiting for the author's OK.
@@ -44,7 +44,7 @@ waiting for the author's OK.
    and frees her from one agent, then more arrive and they're all caught.
 6. **The hall.** Villagers are being sacrificed through a Black Cube to the captain.
 7. **The perfect sacrifice** (cutscene). Isabella draws ink circles and symbols to strengthen it, rings
-   her bell, says "I sacrifice," and is gone. This is the first sacrifice anyone sees, and it's flawless.
+   her bell, says "I sacrifice," and is gone. (Old version: now "Sacrificio", see the end.) This is the first sacrifice anyone sees, and it's flawless.
 8. **The eruption** (playable). Aeneas's raw gravity tears the hall apart. He can barely steer it.
    The Agency starts losing.
 9. **The captain cheats** (Proposed). He feeds his own lieutenant to the Cube for power. It's a rushed,
@@ -100,7 +100,7 @@ the last ground you stood on.
    - **The capture:** reinforcements arrive (set dressing), fade to the hall. **Decided:** Isabella's
      follower ends here; she is a stand-in on the stage for the sacrifice.
    - **The sacrifice:** villagers vanish into the cube; Isabella draws the ink circle, rings the
-     bell, "I sacrifice", gone.
+     bell, "Sacrificio" (was "I sacrifice"), gone. Replaced 2026-10-26, see the end.
    - **The eruption (playable):** Aeneas can't be hurt; each press slams everything within 7 m.
      Four agents attack; when they're down the captain steps in.
    - **Captain phase 1:** a fair fight (260 hp, hard hits, parryable). **Decided 2026-10-25 (the
@@ -244,3 +244,37 @@ city textures, doors that don't open").
   own copy with the doorway cut in (`scenes/world/descent.tscn`).
 - **Proposed:** once the story has passed the hall, the town you walk back into is empty: no agents,
   no figures, no story scenes.
+
+## The retold story, built (2026-10-26)
+Built from the author's telling in `docs/empty_town_story.md`. Scenes in `data/dialogue/empty_town.txt`
+(new lines marked DRAFT), fights in `data/fights/captain.txt` and `data/fights/lieutenant.txt`.
+| Beat | Scene / fight | What plays |
+| --- | --- | --- |
+| 1 | `arrival`, `kael_meeting`, `round_up` | The author's lines; the round-up adds a DRAFT line for the ransacked town. |
+| 2 | `first_pair` (trigger `StoryTriggers/FirstPair`) | The first time the paired-takedown prompt shows (the catwalk pair): a side-on shot of Aeneas and Isabella, "You get the first one, I'll get the second." Her ink takes the second agent when you press. |
+| 3 | `valentina` -> **ValentinaFight** | Valentina (her real model) is dragged across the courtyard by an agent (`HallFight/Dragger`), who then holds her at knife point by the hall wall. Three agents attack; he stays out of it. |
+| 4 | `captured` (ValentinaFight's Won Scene) | Aeneas corners him; the lieutenant's knife at his throat; another agent (`Figures/IsabellaCaptor`) has Isabella. Fade to the hall, all three captive. No walk to the door any more. |
+| 5 | `captured`, continued | The bonfire, a body thrown on, the cube's aura. The lieutenant reports; the captain walks over. Isabella's ink: her captor and two guards (`Figures/HallGuard1`, `HallGuard2`) drop. She goes for the captain, his hand goes into her chest (cut away to Aeneas). Her last words, the circle painted round her (`InkCircle`, `scripts/ink_circle.gd`), "Sacrificio", her soul rises into the cube (surge); her body stays in the circle. |
+| 6 | `captured` end -> **HallFight** | The seal breaks: a burst and a white flash, then the playable eruption kills the hall agents and Valentina's holder. The captain and lieutenant are spared. |
+| 7 | `eruption_end` -> **LieutenantFight** | The power drains; the lieutenant comes at him: a slow, easy choreographed fight. |
+| 8 | `valentina_fire` (LieutenantFight's Won Scene) | The captain lifts Valentina by the throat, "Sacrificio", throws her on the fire; the cube surges. |
+| 9 | **CaptainFight** (fists) | Phase 1 is fair; past half health `captain_turn` empowers him and phase 2 can't be won. Dying before half restarts in the hall. |
+| 10-11 | `captain_throat` (Death Scene) | He holds Aeneas up by the throat; the arm speech (DRAFT); the screen dims; a blade takes his arm; both drop to their knees; Kael with a bloody sword; the beheading is a cut to the fire; "Sacrificio" over black; the Massacre memory. |
+
+**Proposed (taste calls made while building; the author decides):**
+- The paired-takedown line plays as a short cutscene the first time the prompt appears, in a side-on shot.
+- Valentina's holder holds her at knife point during the fight, against the hall's front wall.
+- The eruption's start: a ring along the floor, the fire leaping and a white flash.
+- After the eruption Aeneas fights the lieutenant with his sword (the power has drained); the fight is slow and easy.
+- The captain turns at half health with "Good. Now I stop playing." (DRAFT) and becomes unbeatable;
+  Valentina's sacrifice is his boost before the fight.
+- The bodies of the agents Isabella kills are moved clear of her circle during the cut-away.
+- Who says the last "Sacrificio" is left open: narration, "Far away, someone says...".
+- The captain's arm is not shown falling; the cut is a flash in the dim, then he kneels with the stump.
+
+**Saves:** scene names kept: arrival, kael_meeting, round_up, valentina, captured. New scenes:
+first_pair, eruption_end, valentina_fire, captain_turn, captain_throat (old captain_phase, lieutenant
+and valentina_death are gone). Moved nodes: ValentinaFight/Dragger is now HallFight/Dragger, and
+CaptainFight/Lieutenant is now LieutenantFight/Lieutenant. A save made in the hall before today
+(old story) can come back odd (those two agents standing where they started); a save before the
+courtyard is fine. Figures/HallVillagers, Figures/Reinforcements and the old upright InkCircle are gone.

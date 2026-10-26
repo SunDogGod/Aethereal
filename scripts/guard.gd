@@ -219,7 +219,7 @@ func telegraph(seconds: float) -> void:
 		tween.tween_property(eye, "shader_parameter/emission_energy", 6.0, seconds * 0.8)
 		tween.tween_property(eye, "shader_parameter/emission_energy", 2.0, seconds * 0.2)
 	if animator:
-		animator.telegraph(seconds)  # the blade rises over his shoulder
+		animator.telegraph(seconds, fighter.next_blow())  # the blade rises (the captain: a fist draws back)
 
 
 ## The swing itself.

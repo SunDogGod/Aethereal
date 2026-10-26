@@ -18,6 +18,13 @@
    "props": [
     "BladeMesh"
    ]
+  },
+  {
+   "node": "Knife",
+   "bone": "Knife",
+   "props": [
+    "KnifeMesh"
+   ]
   }
  ],
  "root_script": ""

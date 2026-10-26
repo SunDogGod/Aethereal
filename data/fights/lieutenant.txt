@@ -1,0 +1,21 @@
+# THE LIEUTENANT'S FIGHT, beat by beat (the LieutenantFight node's Choreography File).
+# The format is explained at the top of data/fights/captain.txt.
+#
+# DRAFT. Your telling: Aeneas kills the lieutenant easily. So he is slow and readable: long
+# wind-ups, long gaps after each attack, nothing that can't be blocked. His health and damage are
+# in data/enemies/agency_lieutenant.tres.
+
+=== phase 1 ===
+approach 2.4
+guard 1.0
+loop
+swing 1.0                # a slow, wide cut: block it, parry it or step away
+back 1.2
+guard 1.6                # a gap: hit him now
+approach 2.0
+feint 0.8
+swing 0.9
+guard 1.8                # another gap
+circle 1.5 left
+combo 0.9 0.7
+guard 1.6

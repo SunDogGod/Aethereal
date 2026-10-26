@@ -79,7 +79,8 @@
   capsule can't step onto it, so agents pin themselves there.
 - Guards don't collide with each other (a crowd jams ramps); `_separate()` pushes them apart softly.
   `dormant` guards ignore hits, staggers, lock-on and takedowns. A Fight can switch on an Area3D when
-  won (`unlock_on_win`), used to hold the capture until Aeneas walks to the hall door.
+  won (`unlock_on_win`); the town's capture now plays as ValentinaFight's won scene, the door
+  trigger is only a fallback for older saves.
 
 ## Sound and life signs
 - `scripts/sfx.gd` is the "Sfx" autoload (a pool of 3D players, `play(name, at, volume_db)`,

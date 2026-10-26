@@ -1,0 +1,9 @@
+{
+ "name": "valentina",
+ "root": "ValentinaModel",
+ "glb": "res://models/characters/valentina.glb",
+ "props_glb": "",
+ "scene": "res://scenes/characters/valentina_model.tscn",
+ "attach": [],
+ "root_script": ""
+}

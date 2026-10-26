@@ -1,7 +1,8 @@
 # THE EMPTY TOWN: every spoken scene in the level.
 #
-# DRAFT. These lines only restate the beats we designed together. Rewrite them in your voice;
-# the game picks up changes the next time you press F5.
+# The order follows your telling of 2026-10-26 (docs/empty_town_story.md). A line with
+# "# DRAFT" just above it is mine, written from the beats you gave (your own phrases where you
+# gave them); rewrite them in your voice. The game picks up changes the next time you press F5.
 #
 # How to write a scene:
 #   === scene_name ===          starts a scene. A trigger in the level plays it by this name.
@@ -13,7 +14,20 @@
 #   [frame Captain]             cut to a side-on shot of Aeneas and the Captain, wherever they stand.
 #   [wait 1.5]                  pause for 1.5 seconds.
 #   [hide Kael] / [show Kael]   hide or show something in the level, by its node name.
+#   [fade out] / [fade in]      to black and back; [fade dim] darkens the screen part way.
 #   [collapse IsabellaHall]     a character falls and stays down (her death animation).
+# Stage directions (who stands where and what they do; the markers are under StoryMarks):
+#   [place Valentina DragStartV]     stand on a marker, facing the way it faces
+#   [move Valentina DragEndV 4]      walk to a marker in 4 seconds (the scene carries on)
+#   [stand Lieutenant Player -0.3]   0.3 m behind Aeneas, facing the same way (a plus number:
+#                                    in front of him, face to face). "Player" is Aeneas.
+#   [face IsabellaHall Player]       turn to look at someone
+#   [pose IsabellaHall kneel_draw]   play a story pose (the list is in scripts/character_story.gd);
+#   [pose IsabellaHall]              ...and with no pose, back to standing
+#   [ink IsabellaHall HallGuard1 0.85]  her brush's ink takes that agent 0.85 s from now
+#   [kill Captain]                   an agent drops where he stands, no blood
+#   [call Bonfire throw_in ValentinaHall]  run a node's own action (here: the fire takes her)
+#   [show CubeSurge] / [show CubePulse] / [show FireFlare]  the cube's aura surges or pulses; the fire leaps
 # Lines starting with # are notes to yourself; the game ignores them.
 
 === arrival ===
@@ -37,60 +51,211 @@ AENEAS: Let me check it out.
 
 === round_up ===
 [camera RoundUpShot]
+# DRAFT (the ransacked town)
+Doors kicked in. Stalls turned over. Someone has been through every house.
 Agency agents lead the villagers across the catwalk, down toward the hall.
 Kael splits off from them.
 [hide Kael]
 [camera]
 
+# Plays the first time Aeneas can take an agent down while Isabella takes the other
+# (the catwalk pair): the first sight of her ink, her Aether.
+=== first_pair ===
+[frame Isabella]
+ISABELLA: You get the first one, I'll get the second.
+[camera]
+
 === valentina ===
+[place Valentina DragStartV]
+[place Dragger DragStartAgent]
+[show Valentina]
+[show Dragger]
+[pose Valentina dragged]
+[pose Dragger drag_by_arm]
 [camera ValentinaShot]
-An agent drags Valentina toward the hall.
+[move Valentina DragEndV 4]
+[move Dragger DragEndAgent 4]
+# DRAFT
+An agent drags Valentina across the courtyard by the arm.
 AENEAS: Valentina!
+[wait 0.5]
+[place Valentina ValentinaHoldMark]
+[stand Dragger Valentina -0.3]
+[pose Valentina hostage]
+[pose Dragger captor_knife_low]
+[camera HoldShot]
+# DRAFT
+He pulls her in front of him and puts a knife to her throat. The others turn.
 Aeneas breaks cover.
 [camera]
 [fight ValentinaFight]
 
+# Plays when the courtyard agents are dead (ValentinaFight's Won Scene).
 === captured ===
-[camera ValentinaShot]
-Valentina is free. For a moment.
-[show Reinforcements]
-Boots on every stair. A dozen agents, calm as clerks.
-There is nothing left to do but be taken.
-[fade out]
+[place Player CornerMark]
 [hide Isabella]
-[hide Valentina]
-[hide Reinforcements]
-[teleport HallMark]
-[show ValentinaHall]
+[place IsabellaHall IsabellaCourtMark]
 [show IsabellaHall]
+[camera CorneredShot]
+# DRAFT
+Only the one holding Valentina is left. He backs into the wall.
+# DRAFT
+AENEAS: Let her go.
+[stand Lieutenant Player -0.3]
+[pose Lieutenant captor_knife]
+[pose Player hostage]
+[call Player put_sword false]
+[camera KnifeShot]
+# DRAFT
+A blade at his throat, from behind.
+# DRAFT
+LIEUTENANT: Easy, boy.
+[stand IsabellaCaptor IsabellaHall -0.3]
+[pose IsabellaHall hostage]
+[pose IsabellaCaptor captor_knife_low]
+[camera IsabellaHeldShot]
+# DRAFT
+Another agent has Isabella the same way.
+[fade out]
+[hide Valentina]
+[place ValentinaHall ValentinaHallMark]
+[show ValentinaHall]
+[pose ValentinaHall captive]
+[place Dragger DraggerHallMark]
+[pose Dragger]
+[teleport HallMark]
+[pose Player hostage]
+[stand Lieutenant Player -0.3]
+[pose Lieutenant captor_knife]
+[place IsabellaHall IsabellaHallMark]
+[pose IsabellaHall hostage]
+[stand IsabellaCaptor IsabellaHall -0.3]
+[pose IsabellaCaptor captor_knife_low]
+[place Captain CaptainRampMark]
 [camera HallShot]
 [fade in]
-The hall. The villagers kneel in rows before a black cube. The captain stands over it.
-CAPTAIN: Sacrificio.
-One by one, the villagers go into the cube.
-[hide HallVillagers]
-[camera SacrificeShot]
-Isabella stands. Nobody stops her. This is what they came for.
-She draws. Ink hangs in the air: circles inside circles, symbols Aeneas has never seen.
+# DRAFT
+The hall. A fire burns in the middle of the floor. They are burning the villagers.
+[camera FireShot]
+[hide Body2]
+# DRAFT
+Another body goes on the fire. On the stage, the cube drinks it in.
+[camera CaptainShot]
+[move Captain CaptainFrontMark 2.6]
+# DRAFT
+LIEUTENANT: Captain. We missed a few.
+# DRAFT
+LIEUTENANT: Found this kid in the courtyard, after he'd killed some of our men.
+[camera CaptivesShot]
+# DRAFT
+CAPTAIN: Did he.
+# DRAFT
+CAPTAIN: I'm going to enjoy killing this one.
+[camera BreakFreeShot]
+[pose IsabellaHall break_free]
+[ink IsabellaHall IsabellaCaptor 0.33]
+[ink IsabellaHall HallGuard1 0.85]
+[ink IsabellaHall HallGuard2 0.9]
+[wait 1.6]
+# DRAFT
+Isabella's ink cuts her loose. The man behind her drops, then the two in front.
+[camera StabShot]
+[face Captain IsabellaHall]
+[stand IsabellaHall Captain 1.2]
+[pose IsabellaHall lunge]
+[pose Captain spear_hand]
+[wait 0.42]
+[pose IsabellaHall stabbed]
+[camera AeneasShot]
+[place IsabellaCaptor CaptorBodyMark]
+# DRAFT
+AENEAS: Mom!
+# DRAFT
+He's faster. His hand goes into her chest.
+[pose Captain]
+[place IsabellaHall IsabellaHallMark]
+[face IsabellaHall Player]
+[pose IsabellaHall stagger_back]
+[camera IsabellaFaceShot]
+[wait 1.2]
+# DRAFT
+She staggers back to him. She is crying.
+# DRAFT
+ISABELLA: Don't give up, Aeneas. Whatever happens.
+# DRAFT
+ISABELLA: I love you.
+[pose IsabellaHall kneel_draw]
 [show InkCircle]
-She rings the bell.
-ISABELLA: I sacrifice.
-[collapse IsabellaHall]
-[hide InkCircle]
-And she is gone. Perfectly.
+[camera CircleShot]
+# DRAFT
+She kneels, and her brush draws a circle on the floor around her.
+[wait 2.4]
+ISABELLA: Sacrificio.
+[call InkCircle release]
+[pose IsabellaHall collapse]
+[camera SoulShot]
+[wait 1.4]
+[show CubeSurge]
+[wait 1.6]
+# DRAFT
+Not her body. Her soul. The cube takes it.
+# DRAFT
+And the seal she put on Aeneas's aether, long ago, goes with it.
+[pose Lieutenant]
+[pose IsabellaCaptor]
+[pose Player]
 [camera EruptionShot]
-Something opens behind Aeneas's eyes, and the floor forgets which way is down.
+[call Player shockwave_ring 9]
+[show FireFlare]
+[fade white]
+[fade in]
+[place Lieutenant LieutenantThrownMark]
+[place Captain CaptainRampMark]
+[place Dragger DraggerHallMark]
+# DRAFT
+Something opens behind his eyes. Raw aether tears out of him, and the floor forgets which way is down.
 [camera]
 [erupt on]
 [fight HallFight]
 
-=== captain_phase ===
-[camera CaptainShot]
-The agents are down. The captain steps off the stage, the lieutenant at his shoulder.
-CAPTAIN: Raw. Untrained. Still worth collecting.
+# Plays when the eruption has killed the hall's agents (HallFight's Won Scene).
+=== eruption_end ===
+[camera CaptivesShot]
 [erupt off]
 [heal]
 The power drains out of him as fast as it came. Only the sword is left.
+# DRAFT
+Only the captain and the lieutenant are still standing. The lieutenant comes for him.
+[camera]
+[fight LieutenantFight]
+
+# Plays when the lieutenant is dead (LieutenantFight's Won Scene).
+=== valentina_fire ===
+[camera ValentinaDeathShot]
+[move Captain CaptainGrabMark 2.6]
+# DRAFT
+The captain doesn't help him. He walks to Valentina instead.
+[stand ValentinaHall Captain 0.62]
+[pose Captain lift_throat]
+[pose ValentinaHall lifted_by_throat]
+[wait 0.9]
+[pose Captain hold_throat]
+[pose ValentinaHall held_by_throat]
+# DRAFT
+AENEAS: Valentina!
+CAPTAIN: Sacrificio.
+[pose Captain throw_one_arm]
+[pose ValentinaHall limp]
+[wait 0.8]
+[call Bonfire throw_in ValentinaHall]
+[camera CubeShot]
+[wait 1.0]
+[hide ValentinaHall]
+[show CubeSurge]
+[wait 0.6]
+# DRAFT
+The fire takes her. The cube flares, and the captain stands a little taller.
+[pose Captain]
 [camera]
 [fight CaptainFight]
 
@@ -112,23 +277,65 @@ The power drains out of him as fast as it came. Only the sword is left.
 [wait 0.9]
 [camera]
 
-=== lieutenant ===
-[camera CaptainShot]
-The captain is losing. He knows it.
-He takes his lieutenant by the collar and walks him to the cube.
-CAPTAIN: Sacrificio.
-[kill Lieutenant]
-A rushed, ugly offering, right after hers. The cube takes it anyway.
+# Aeneas has hurt him past half (the fight's Boss Half Scene): the captain stops holding back.
+=== captain_turn ===
+[frame Captain]
+# DRAFT
+CAPTAIN: Good. Now I stop playing.
 [empower Captain]
-CAPTAIN: Again.
+[show FireFlare]
 [camera]
 
-=== valentina_death ===
-[camera ValentinaDeathShot]
-Aeneas is down. The captain drags Valentina between them.
-Aeneas pulls the power back, so it won't crush her.
-The captain kills her anyway, and brings the hilt down on Aeneas's skull.
-[hide ValentinaHall]
+# Aeneas is beaten (CaptainFight's Death Scene). Then the Massacre memory.
+=== captain_throat ===
 [fade out]
-A sword from nowhere. A stranger's voice. Kael.
+[place Captain ThroatMark]
+[stand Player Captain 0.62]
+[pose Captain lift_throat]
+[pose Player lifted_by_throat]
+[camera ThroatShot]
+[fade in]
+[pose Captain hold_throat]
+[pose Player held_by_throat]
+# DRAFT
+CAPTAIN: You gave me a fight, boy. I'll give you that.
+# DRAFT
+CAPTAIN: I gave the cube my right arm, to make this one stronger.
+# DRAFT
+CAPTAIN: Every one of them on that fire made it stronger still.
+# DRAFT
+CAPTAIN: And it was never my good hand. The cube pays more for that.
+# DRAFT
+CAPTAIN: Now you go in the fire with the rest.
+[fade dim]
+# DRAFT
+The fire goes far away. His sight closes in from the edges.
+[place Kael KaelMark]
+[show Kael]
+[call Kael set_lamento true false]
+[pose Kael sever_cut]
+[wait 0.3]
+[call Captain set_arm_severed true]
+[pose Captain arm_severed]
+[pose Player drop_to_knees]
+[camera KaelRevealShot]
+[fade in]
+[wait 1.0]
+[pose Captain drop_to_knees]
+[call Kael set_lamento true true]
+[face Kael Captain]
+[pose Kael bloody_stand]
+[wait 0.6]
+# DRAFT
+They both fall to their knees. Kael stands over them, his sword full of blood.
+[camera BeheadShot]
+[pose Kael behead_cut]
+[wait 0.32]
+[camera FireShot]
+[kill Captain]
+[show FireFlare]
+[wait 1.2]
+[fade out]
+# DRAFT (who says it is left open)
+Far away, someone says: "Sacrificio."
 [level res://scenes/levels/massacre.tscn]

@@ -22,6 +22,7 @@ import body                   # noqa: E402
 import mesh                   # noqa: E402
 import props                  # noqa: E402
 import isabella_parts as ip   # noqa: E402
+import isabella_anims         # noqa: E402
 from paint import rgb, shade  # noqa: E402
 
 # Her colours: change a hex code and rebuild.
@@ -333,4 +334,4 @@ def _bell(p, A):
 
 if __name__ == "__main__":
     ch = build()
-    ch.finish(preview=None)
+    ch.finish(animations=isabella_anims.animations, preview=None)   # the shared sets, then her story poses

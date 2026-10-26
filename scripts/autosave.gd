@@ -72,6 +72,11 @@ func _on_fight_won() -> void:
 		_ask("fight", Transform3D.IDENTITY, level)
 
 
+## Scenes that end mid-sneak: they count (no replay) but don't save on the spot, or Continue would
+## stand Aeneas up right behind the agents. The next checkpoint or scene saves them.
+const NO_SAVE_SCENES := ["first_pair"]
+
+
 ## A story scene ended normally. It counts (and saves) unless a fight it didn't start is going on
 ## (the captain's taunts mid-fight are not milestones).
 func _on_scene_done(path: String, scene: String) -> void:
@@ -82,7 +87,7 @@ func _on_scene_done(path: String, scene: String) -> void:
 		story_log[path] = []
 	story_log[path].append(scene)
 	var level := _level_here()
-	if level and _quiet(started):
+	if level and _quiet(started) and not scene in NO_SAVE_SCENES:
 		_write("story", Transform3D(_facing(), _player.global_position), level)
 
 
