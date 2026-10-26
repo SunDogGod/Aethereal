@@ -2972,14 +2972,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 1.45, -40)
 layers = 2
 mesh = SubResource("CapsuleMesh_2ht4c")
 
-[node name="AnchisesTag" type="Label3D" parent="Figures" unique_id=904600297]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 2.85, -40)
-billboard = 1
-texture_filter = 0
-text = "Father"
-font_size = 44
-outline_size = 10
-
 [node name="Raiders" type="Node3D" parent="Figures" unique_id=1942685353]
 visible = false
 
@@ -3175,17 +3167,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 shape = SubResource("BoxShape3D_62u7i")
 
 [node name="Signs" type="Node3D" parent="." unique_id=453340103]
-
-[node name="Legend" type="Label3D" parent="Signs" unique_id=1469964345]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 4, -30)
-billboard = 1
-texture_filter = 0
-modulate = Color(0.75, 0.85, 1, 1)
-text = "0.2 THE MASSACRE (a memory)
-You are four. Walk around the festival,
-then go to the gate (south)."
-font_size = 52
-outline_size = 10
 
 [node name="Player" parent="." unique_id=1604444551 instance=ExtResource("15_dk2au")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, -36)

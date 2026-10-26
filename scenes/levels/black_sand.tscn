@@ -1428,42 +1428,12 @@ shape = SubResource("BoxShape3D_nqvqg")
 
 [node name="Signs" type="Node3D" parent="." unique_id=1346972662]
 
-[node name="Legend" type="Label3D" parent="Signs" unique_id=1386277576]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 4.6522117, 42)
-billboard = 1
-texture_filter = 0
-modulate = Color(0.75, 0.85, 1, 1)
-text = "0.3 BLACK SAND
-Wait for the dawn. Home is south-west (behind you, left), under
-the town, in the fog: follow the lamps. Kael's camp is east, the road north."
-font_size = 52
-outline_size = 10
-
-[node name="RoadSign" type="Label3D" parent="Signs" unique_id=481464587]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 7.4523335, -26)
-billboard = 1
-texture_filter = 0
-modulate = Color(0.75, 0.85, 1, 1)
-text = "THE WATCHED ROAD
-Agents patrol it. Cross between them,
-or take one down."
-font_size = 52
-outline_size = 10
-
 [node name="Figures" type="Node3D" parent="." unique_id=1504666270]
 
 [node name="KaelFigure" type="MeshInstance3D" parent="Figures" unique_id=585194946]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 23.5, 4.3116384, 2.5)
 layers = 2
 mesh = SubResource("CapsuleMesh_6q4oo")
-
-[node name="KaelFigureTag" type="Label3D" parent="Figures" unique_id=1183236813]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 23.5, 5.7116385, 2.5)
-billboard = 1
-texture_filter = 0
-text = "Kael"
-font_size = 44
-outline_size = 10
 
 [node name="KaelAtHouse" type="MeshInstance3D" parent="Figures" unique_id=684817138]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -26.1, 3.95, 85.2)

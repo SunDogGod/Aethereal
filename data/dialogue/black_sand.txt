@@ -1,21 +1,20 @@
 # 0.3 BLACK SAND: the morning after. DRAFT lines, from the Notion beats:
 # Kael recovered what was left; the cube bargain; the symbol = his family's killers;
 # Kael's wife was taken by the same network; Aeneas joins the hunt.
-# OUT OF DATE (2026-10-25): the author ruled a sacrifice only counts if the body is burned or given to
-# the cube, so Isabella's body stays; Kael and Aeneas bring it to the family house in Black Sand.
-# The cairn line below still says there was no body: it needs the author's rewrite.
+# 2026-10-25: a sacrifice only counts if the body is burned or given to the cube, so Isabella's body
+# stays; it lies in the family shed. The waking and grave lines were updated to match (draft).
 
 === waking ===
 [camera WakingShot]
 Black sand. Cold. A ceiling so far up it reads as sky.
 Somewhere above, the lights are coming on.
 [camera TownShot]
-Behind him, on the horizon, the town.
+Behind him the town rises, a black wall with its lights far overhead.
 [camera]
 
 === the_grave ===
 [camera GraveShot]
-A cairn of black sand. Her bell, and her brush. There was nothing else to bury.
+The shed they made a home of. Two beds. On a bier against the back wall, wrapped in white, Isabella. Her bell and her brush beside her.
 [camera]
 
 === the_cube ===

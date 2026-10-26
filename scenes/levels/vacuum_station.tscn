@@ -837,28 +837,6 @@ shape = SubResource("BoxShape3D_c12o8")
 [node name="Signs" type="Node3D" parent="." unique_id=948342724]
 visible = false
 
-[node name="Legend" type="Label3D" parent="Signs" unique_id=1235435051]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.5, 30)
-billboard = 1
-texture_filter = 0
-modulate = Color(0.75, 0.85, 1, 1)
-text = "0.4 THE VACUUM STATION
-The hologram is by the capsule door (north).
-Board the capsule to launch."
-font_size = 52
-outline_size = 10
-
-[node name="TrainingSign" type="Label3D" parent="Signs" unique_id=1908479657]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.4, -60)
-billboard = 1
-texture_filter = 0
-modulate = Color(0.75, 0.85, 1, 1)
-text = "Kael's training room.
-Sword combat goes here later.
-Walk to the far end to finish Act 0."
-font_size = 44
-outline_size = 10
-
 [node name="Player" parent="." unique_id=1221161931 instance=ExtResource("15_ijtbg")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 62)
 
