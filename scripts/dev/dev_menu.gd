@@ -91,7 +91,9 @@ func _input(event: InputEvent) -> void:
 
 func _process(_delta: float) -> void:
 	# Holding Back for a second toggles the menu (once per hold; real time, not game time).
-	if _back_down_at >= 0 and not _back_used and Time.get_ticks_msec() - _back_down_at >= HOLD * 1000.0:
+	# Back is also the hold-to-skip button in a story scene, so the menu waits for gameplay.
+	if _back_down_at >= 0 and not _back_used and not cheats.story_playing() \
+			and Time.get_ticks_msec() - _back_down_at >= HOLD * 1000.0:
 		_back_used = true
 		toggle()
 

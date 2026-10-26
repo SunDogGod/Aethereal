@@ -18,23 +18,25 @@ model scene. Open Godot again and press F5.
 ## What's where
 | File | What it does |
 | --- | --- |
-| `aeneas.py` | Aeneas: colours (top of the file), jacket / collar / sleeve / boot shapes, face paint, his sword Rocinante and its scabbard, knife and rifle; `PONCHO = True` builds the first arc's poncho |
+| `aeneas.py` | Aeneas: colours (top of the file), his face (`FACE`), jacket / collar / sleeve / boot shapes, his sword Rocinante and its scabbard, knife and rifle; `PONCHO = True` builds the first arc's poncho |
 | `aeneas_gear.py` | Aeneas's poncho (shape, hem, hood, sling, how it follows his arms), its painting, and the knife's sheath at the small of his back |
-| `aeneas_hair.py` | Aeneas's haircut: the shell (cropped sides, the long top standing proud above `LEDGE`), the locks (`FRINGE`, `TOP`, `CROWN`: paths of angle, height, lift), the tied tail |
+| `aeneas_hair.py` | Aeneas's haircut (after Jim Hawkins): the shell (buzzed sides, the long top standing proud above `LEDGE`), the clumps (`FRINGE` swept across his forehead, `SIDES`, `BACK`, `CROWN`: paths of angle, height, lift), the tied tail |
 | `aeneas_anims.py` | Aeneas's own animations: the walks with the sword sheathed (`*_sheathed`, left hand on the scabbard), `iai` (the stance), `draw_cut` (the quick draw), `sheathe` |
-| `agent.py` | The Agency agent (and the lieutenant, in his GuardData colours): white long coat, black helmet with the visor slit, dark armour, dust at the hem, a knife across the small of his back; his own idle and patrol walk |
+| `agent.py` | The Agency agent: white long coat, black helmet with the visor slit, dark armour, dust at the hem, a knife across the small of his back; his own idle and patrol walk |
+| `lieutenant.py` | The lieutenant: the agent's body bare-headed (his face `FACE`, cropped hair, the eyepiece); his GuardData file names `lieutenant_model.tscn` as his Model Scene |
 | `anims_agency.py` | The agents' story poses: `captor_knife` / `captor_knife_low` (the knife at Aeneas's / Isabella's throat from behind), `drag_by_arm`, `heave_body` |
-| `captain.py` | The Agency captain: taller, one arm (his left), dark uniform and breastplate, crimson-crested helmet; no sword: he fights with his fist. His arm below the cut is its own mesh (`Severable`) over a hidden `Stump` |
+| `captain.py` | The Agency captain: taller, one arm (his left), dark uniform and breastplate, bare-headed (his face `FACE`: older, hard; grey hair slicked back; the eyepiece); no sword: he fights with his fist. His arm below the cut is its own mesh (`Severable`) over a hidden `Stump` |
 | `captain_gear.py` | The captain's white coat draped round his shoulders (shape `CAPE`, folds, how it follows his chest, arm and thighs), its collar, the empty sleeves, epaulettes, and the pinned stump of his right arm |
 | `captain_anims.py` | The captain fights left-handed: every animation mirrored, nothing keyed on the right arm, a run without the heel kick so his back foot stays under the coat |
 | `captain_fists.py` | His blows: the jab (`telegraph` / `strike`), the hook (`telegraph_hook` / `strike_hook`), the overhand (`telegraph_heavy` / `strike_heavy`) |
 | `captain_story.py` | His hall poses (`spear_hand`, `lift_throat`, `hold_throat`, `arm_severed`, `throw_one_arm`) and `split_arm()`: where the arm is cut (`CUT_T`) |
-| `isabella.py`, `isabella_parts.py` | Isabella: robe, shawl, obi, hair and bun, face, the brush and the bell |
+| `isabella.py`, `isabella_parts.py` | Isabella: robe, shawl, obi, hair and bun, her face (`FACE`), the brush and the bell |
 | `isabella_anims.py` | Her hall poses: `break_free`, `lunge`, `stabbed`, `stagger_back`, `kneel_draw` (the circle on the floor), `collapse` |
-| `kael.py`, `kael_gear.py` | Kael and Lamento (on his back, and a drawn copy in his hand, clean and bloody) |
+| `kael.py`, `kael_gear.py` | Kael (long black coat, white hair, his face `FACE`) and Lamento (on his back, and a drawn copy in his hand, clean and bloody) |
 | `kael_anims.py` | His walks with the right hand free, and `draw_lamento`, `sever_cut`, `behead_cut`, `bloody_stand` |
-| `valentina.py` | Valentina: blouse with a crossed collar, indigo corselet, marigold sash and kerchief, ochre skirt with a sashiko hem, braid |
+| `valentina.py` | Valentina: her face (`FACE`), blouse with a crossed collar, indigo corselet, marigold sash and kerchief, ochre skirt with a sashiko hem, braid |
 | `villager_body.py` | A villager's body wrapped in a shroud and bound with rope (a prop: no animations) |
+| `agency_heads.py` | The Agency's heads: the agents' helmet, and the officers' bare head (face, short hair `SLICKED` / `CROPPED`, the eyepiece over the left eye whose lens is their glowing `Visor`) |
 | `agency_parts.py` | What the Agency share: shells and plates, the helmet and visor, the blade, and the weathering paint (`weather()`: dust at a hem; `chips()`: knocks in armour) |
 | `grey_bodies.py` | Plain grey stand-ins for Kael, Isabella and the guards, until their own scripts exist |
 | `rig.py` | The shared skeleton and its bone names |
@@ -43,13 +45,14 @@ model scene. Open Godot again and press F5.
 | `anims_story.py` | the story poses everyone has: `hostage`, `drop_to_knees`, `captive`, `dragged`, `limp`, `lifted_by_throat`, `held_by_throat` (and where a partner stands: `HOSTAGE_GAP`, `THROAT_GAP`, `DRAG_OFFSET`) |
 | `anims_swings.py` | the sword swings (`windup_L/R`, `sweep_LR/RL`) as tables of keys: where the hand goes and where the blade points |
 | `natural_arm.py` | keeps a sword arm human: for every frame of a swing it picks the elbow and the turn of the blade in the hand with the least strain (no bent-back wrists or wrung forearms) and the smoothest path |
+| `face.py`, `face_paint.py` | Faces: the head mesh with its features (eye sockets, brow, nose, cheekbones, lips, chin, jaw; `relief()`), the ears, and the paint (eyes, brows, lips, shading, age lines, stubble). Each character passes a look (`face.look(face.MAN, ...)`) |
 | `base_body.py`, `body.py`, `props.py` | shapes every character is made of (torso, limbs, head, hair locks, hands, boots, swords) |
 | `mesh.py`, `paint.py`, `pose.py` | the machinery: tubes of polygons, the painted texture, posing and keying |
 | `preview.py` | contact sheets of animations rendered in Blender (handy before going into Godot) |
 | `make_wrapper.gd` | (Godot) builds `scenes/characters/<name>_model.tscn` from the export |
 
 Outputs land in `models/characters/` (`<name>.glb` with every animation, `<name>_props.glb`,
-`<name>.png` the 256 px texture, `<name>_mat.tres` the PS1 material) and
+`<name>.png` the texture, 512 px for those with a face, 256 for the rest, `<name>_mat.tres` the PS1 material) and
 `scenes/characters/<name>_model.tscn`, which `player.tscn`, `kael.tscn`, `isabella.tscn`,
 `valentina.tscn` and `guard.tscn` use as their **Model**. A scene plays a story pose by name through
 the model's Animator (`story_pose("kneel_draw")`, `story_clear()`; `scripts/character_story.gd`).
@@ -67,7 +70,12 @@ the model's Animator (`story_pose("kneel_draw")`, `story_clear()`; `scripts/char
   height is how high the follow-through rises. You only say where the hand goes and where the
   blade points: `natural_arm.py` works out the elbow and wrist. How much strain it allows:
   `WRIST_FREE`, `FOREARM_FREE`... at its top.
-- **The haircut**: `aeneas_hair.py`. `LEDGE` / `LEDGE_BACK` is where the cropped sides stop,
+- **Faces**: each character's `FACE = face.look(face.MAN / WOMAN / YOUNG_MAN, ...)` (the starting
+  numbers are `BASE` in `face.py`). Shape: `nose` (how far it stands out), `nose_tip_z`, `socket` (how deep
+  the eyes sit), `brow_ridge`, `cheek`, `hollow`, `lip_up` / `lip_lo`, `chin`, `jaw`; paint: `eye_w` /
+  `eye_h` (eye size), `iris_r`, `eye_tilt`, `lash`, `wing`, the brows (`brow_z0` inner end, `brow_z1`
+  outer, `brow_arch`, `brow_thick`), `smile` / `smirk`, `blush`, `age`, `stubble`. Rebuild to see it.
+- **The haircut**: `aeneas_hair.py`. `LEDGE` / `LEDGE_BACK` is where the buzzed sides stop,
   `volume()` how proud the long top stands, and each lock is a path you can push about.
 - **The quick draw**: `DRAW_HIT` in `aeneas_anims.py` is when the drawn blade crosses his front
   (`DRAW_HIT` in `character_animator.gd` too); `SHEATHE_HOME` is when the sheathed blade is home

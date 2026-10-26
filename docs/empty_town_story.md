@@ -42,7 +42,9 @@ lightly cleaned up ("Sera" in the first line read as Isabella; see the note at t
 - The **lieutenant** carries a knife (he takes Aeneas hostage with it). Aeneas kills him.
 - **Valentina** is sacrificed to the fire by the captain for a power boost, before the boss fight.
 - The fight with the captain is lost: he holds Aeneas up by the throat; Kael cuts off his arm and
-  beheads him; "Sacrificio" as Aeneas blacks out; then the Massacre memory.
+  beheads him. Updated 2026-10-26 (the author): Aeneas falls to the floor, the captain sinks to his
+  knees, Kael says "Sacrificio" and beheads him on camera; a held second, a slow blackout and a slow
+  fade into the Massacre memory.
 
 ## Beat order (for scenes and fights)
 All eleven are built (2026-10-26); the table at the end of `docs/empty_town.md` says which scene or
@@ -64,8 +66,9 @@ fight plays each one.
 8. The captain throws Valentina into the fire: "Sacrificio", power boost.
 9. The captain fight (fists), choreographed; Aeneas gives him a run for his money and loses.
 10. The captain holds him up by the throat; the arm speech; he begins to sacrifice Aeneas.
-11. A blade takes the captain's arm; both drop to their knees; Kael with a bloody sword; he beheads
-    the captain; "Sacrificio" as Aeneas passes out. The Massacre memory.
+11. A blade takes the captain's arm; Aeneas falls to the floor, the captain to his knees; Kael with a
+    bloody sword says "Sacrificio" and beheads him (held a second on screen); slow blackout, slow fade
+    into the Massacre memory.
 
 Note: the author's message said "Aeneas and Sera start the story"; everything after names Isabella,
 and Sera belongs to a later arc, so this reads it as Isabella. Correct it here if that's wrong.

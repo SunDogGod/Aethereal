@@ -16,6 +16,7 @@
 [ext_resource type="Script" path="res://scripts/story_trigger.gd" id="14_ghdpx"]
 [ext_resource type="PackedScene" path="res://scenes/player.tscn" id="15_dk2au"]
 [ext_resource type="Script" path="res://scripts/player_camera.gd" id="17_7jtty"]
+[ext_resource type="Script" path="res://scripts/vfx/memory_fade.gd" id="b9_memory_fade"]
 
 [sub_resource type="Environment" id="Environment_trdl6"]
 background_mode = 1
@@ -3089,6 +3090,11 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 36, 5.65, 44)
 script = ExtResource("1_2ox2m")
 size = Vector3(8, 3.7, 4)
 material = ExtResource("12_sh5s1")
+
+[node name="MemoryFade" type="CanvasLayer" parent="."]
+layer = 14
+script = ExtResource("b9_memory_fade")
+open_on_start = true
 
 [node name="Shots" type="Node3D" parent="." unique_id=1466723926]
 

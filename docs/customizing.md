@@ -414,6 +414,34 @@ bicycles, pipes, cables, rooftop tanks...) and each level's own `scripts/props_<
 Pick what it is with **Kind** and **Variant** in the Inspector. Most props have no collision, so
 they never block the way. **Refresh list** picks up new prop scripts.
 
+**Balconies and big pipes** dress the outside of a building. In the town they are under
+`Facades` (`Balconies` and `BigPipes`); copy one (Ctrl+D) and move it, or drag
+`scenes/prefabs/props/balcony.tscn` / `big_pipe.tscn` in, or use the dock's **Balcony** and
+**Pipe Run** props.
+
+- **Balcony** (`scripts/props/balcony.gd`): its origin goes on the wall at the balcony's floor,
+  the red arrow (X) along the wall, the blue one (Z) pointing out of it. One window bay is 3 m wide,
+  so put it on a slab line under a window. **Railing**: steel bars or a solid concrete lip.
+  **Clutter**: nothing, laundry, crates, plants, an AC unit, or a bit of everything. **Variant**
+  changes colours. **Width** and **Depth** in metres. **Solid** turns on collision: leave it off
+  for balconies out of reach (keep those at least 6 m above any floor, so neither Aeneas nor the
+  camera gets near), turn it on for one he can walk onto or under.
+- **Pipe Run** (`scripts/props/pipe_run.gd`), the big ones: **Radius** 0.25-0.45, **Square** for
+  a box duct. **Points** are corners in the pipe's own space: start and end a run a few
+  centimetres inside the wall (Z -0.05) and it reads as coming out of the wall and going back in.
+  **Wall Side** = where the wall is (0, 0, -1 when the pipe's blue arrow points out of the wall):
+  every bracket then gets an arm and a plate back to it, **Wall Gap** metres behind the pipe.
+  **Solid** turns on collision for a pipe Aeneas can walk into; keep pipes without it at least
+  3.6 m above the floor. Put them on the plain corner piers so they don't cross windows.
+- Windows don't notice balconies or pipes (they aren't Blocks), so a balcony can sit in front of
+  a window, which is what you want.
+
+**The camera** pulls in when a wall gets between it and Aeneas, then waits a moment and eases back
+out. It ignores small things (anything under about 2.6 m every way, and thin rails, pipes and
+signs), so it no longer jumps in front of him at vending machines and crates. To make one body
+block the camera anyway, or to let the camera through a big one, give it the metadata
+`camera_blocks` (true or false). The timings are on the Player's `CameraPivot` (Walls group).
+
 **Signs of life** go under `Life`:
 
 - **Flicker light**: **Personality** (steady, failing tube, dying bulb), light **Color**,

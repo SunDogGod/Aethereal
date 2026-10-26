@@ -21,6 +21,8 @@ import body                   # noqa: E402
 import mesh                   # noqa: E402
 import isabella_parts as ip   # noqa: E402
 import isabella as isa        # noqa: E402  (her head shape, hair locks and collar lines)
+import face                   # noqa: E402
+import face_paint             # noqa: E402
 from paint import rgb, shade  # noqa: E402
 
 C = {k: rgb(v) for k, v in {
@@ -31,6 +33,11 @@ C = {k: rgb(v) for k, v in {
     "boot": "#4a301f", "sole": "#1e140e"}.items()}
 
 # Rings (height, half width, front, back, squareness) for a 1.72 m body (she is scaled to 1.62).
+# Her face (face.py): open, bright eyes, a small nose, a ready smile; a slightly larger head reads younger.
+FACE = face.look(face.WOMAN, rows=isa.HEAD_F, scale=1.1, eye_h=0.0082, eye_lo=0.0054, iris_r=0.0072, eye_tilt=0.0009,
+                 wing=0.12, nose=0.0125, nose_w=4.1, nose_tip_z=0.072, brow_thick=0.0030, brow_arch=0.0030, smile=0.0010,
+                 blush=0.4, lip_sat=0.6, skin=C["skin"], hair=C["hair"], brow=C["brow"], lash_col=shade(C["eye"], 0.5),
+                 iris=C["iris"], lip=C["lip"])
 BLOUSE = [(r[0], r[1] * 0.95, r[2] * 0.96, r[3] * 0.97, r[4]) for r in isa.BODICE]
 VEST = [(0.985, 0.146, 0.098, 0.101, 2.6), (1.06, 0.140, 0.094, 0.096, 2.6), (1.15, 0.142, 0.103, 0.093, 2.6),
         (1.235, 0.150, 0.112, 0.096, 2.6), (1.25, 0.146, 0.108, 0.094, 2.6)]
@@ -53,22 +60,21 @@ FRINGE = [((78, 0.214, 0.012), (82, 0.18, 0.018), (86, 0.150, 0.014), (88, 0.132
 
 
 def build():
-    ch = cb.Character("valentina", height=1.62, shoulders=0.88, hips=1.04)
+    ch = cb.Character("valentina", height=1.62, shoulders=0.88, hips=1.04, atlas_size=512)
     J, A, P = ch.J, ch.atlas, ch.part("Body")
     s = J["height"] / 1.72
     R = {n: A.rect(n, w, h) for n, w, h in (
-        ("head", 128, 72), ("skirt", 120, 48), ("blouse", 128, 56), ("sleeve", 64, 32), ("hair", 32, 32),
+        ("head", face.HEAD_RECT[0], face.HEAD_RECT[1]), ("skirt", 120, 48), ("blouse", 128, 56), ("sleeve", 64, 32),
+        ("hair", 32, 32),
         ("skin", 16, 16), ("hair_cap", 64, 32), ("vest", 96, 24), ("boot", 40, 32), ("stocking", 32, 24),
         ("hand", 24, 16), ("foot", 32, 16), ("braid", 16, 32), ("sash", 64, 8), ("kerchief", 32, 8),
         ("band", 16, 8), ("inner_band", 8, 8), ("ribbon", 8, 8), ("cuff", 16, 8), ("lining", 8, 8))}
     R["skin"].fill(C["skin"])
     R["lining"].fill(C["skirt_dk"])
     # Head and face: open, bright eyes; a slightly larger head reads younger.
-    head = body.Head(J, rows=isa.HEAD_F, brow=0.003, scale=1.1)
+    head = face.Head(J, FACE)
     head.build(P, R["head"])
-    body.nose(P, head, R["head"], length=0.013)
-    bb.paint_head(head, R["head"], C["skin"], C["hair"], C["eye"], C["lip"], brow=C["brow"],
-                  hairline=isa.hair_line, iris=C["iris"])
+    face_paint.paint(head, FACE, isa.hair_line)
     body.neck(P, J, R["skin"], r=0.041)
     _hair(P, J, head, R)
     # Blouse, collar bands, corselet, sash, kerchief.

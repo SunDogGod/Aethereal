@@ -23,6 +23,12 @@ var last_started_fights: Array = []  ## the fights the playing (or last) scene s
 
 var _run_id := 0  # stop() bumps this; a scene or level change still waiting then gives up
 var _fade_tween: Tween
+var _fade_goal := Color(0, 0, 0, 0)  # where the last fade() was going
+var _title_tween: Tween
+var _wait_timer: SceneTreeTimer
+var _waiting_on := ""   # the kind of step the playing scene waits on ("line", "wait", "level"...)
+var _scene_path := ""   # the dialogue file of the playing scene ("" for a look-at)
+var _skipper: StorySkip  # holding the skip button skips a scene (story_skip.gd)
 
 var _box: DialogueBox
 var _fade: ColorRect
@@ -39,6 +45,7 @@ func _ready() -> void:
 	_title = _box.get_node("Title")
 	add_child(_loader)
 	_loader.attach(_box)
+	_skipper = StorySkip.attach(self)
 
 
 ## Starts a scene. Returns false if it can't (another scene is playing, or no such scene).
@@ -95,6 +102,7 @@ func fade(how: String) -> void:
 		_fade.color = Color(color.r, color.g, color.b, _fade.color.a)
 	var tween := create_tween()
 	_fade_tween = tween
+	_fade_goal = color
 	tween.tween_property(_fade, "color", color, 0.6)
 	await tween.finished
 
@@ -103,6 +111,7 @@ func fade(how: String) -> void:
 func stop() -> void:
 	_run_id += 1
 	playing = false
+	_skipper.reset()
 	SaveGame.pending = {}  # a Continue still loading is called off too
 	if _fade_tween and _fade_tween.is_valid():
 		_fade_tween.kill()
@@ -117,6 +126,8 @@ func stop() -> void:
 func _run(steps: Array, scene: String, path := "") -> void:
 	playing = true
 	last_started_fights = []
+	_skipper.reset()
+	_scene_path = path
 	var player: Player = get_tree().get_first_node_in_group("player")
 	if player:
 		player.controls_enabled = false
@@ -127,13 +138,20 @@ func _run(steps: Array, scene: String, path := "") -> void:
 	for step: Dictionary in steps:
 		if run_id != _run_id:
 			return  # stop() ended this scene (Return to Title)
+		if _skipper.active:
+			if await _skipper.fast(step, _find, player):
+				continue  # a skip did it at once (or dropped it: a line, a wait)
+			if run_id != _run_id:
+				return
+		_waiting_on = step.type
 		match step.type:
 			"line":
 				await _box.say(step.speaker, step.text)
 			"camera":
 				_cut_to(step.name, gameplay_camera)
 			"wait":
-				await get_tree().create_timer(step.seconds, false).timeout  # false: stops while paused
+				_wait_timer = get_tree().create_timer(step.seconds, false)  # false: stops while paused
+				await _wait_timer.timeout
 			"hide", "show":
 				var node := _find(step.name)
 				if node is Node3D:
@@ -164,6 +182,8 @@ func _run(steps: Array, scene: String, path := "") -> void:
 				if fight and fight.has_method("start"):
 					fight.call_deferred("start")  # after this scene gives control back
 					last_started_fights.append(fight)
+				if _skipper.active and not is_same(step, steps.back()):
+					await _skipper.finish()  # a skip stops at a fight: the rest plays as written
 			"level":
 				_box.close()
 				if World.has_level(step.path) and _root() is World:
@@ -189,6 +209,10 @@ func _run(steps: Array, scene: String, path := "") -> void:
 					return
 			_:  # stage directions and the fight commands: [pose] [place] [stand] [kill] [erupt]...
 				StoryStage.play(step, _find, player)
+				_skipper.note(step, _find)
+	_waiting_on = "end"
+	if _skipper.active:
+		await _skipper.land()  # the picture comes back as he gets his controls back
 	if run_id != _run_id:
 		return
 	StoryStage.scene_ended()
@@ -215,6 +239,7 @@ func _show_title(text: String) -> void:
 	_title.modulate.a = 0.0
 	_title.visible = true
 	var tween := create_tween()
+	_title_tween = tween
 	tween.tween_property(_title, "modulate:a", 1.0, 0.6)
 	tween.tween_interval(2.0)
 	tween.tween_property(_title, "modulate:a", 0.0, 0.6)

@@ -17,23 +17,7 @@ static func flash(player: Player, color: Color) -> void:
 			tween.tween_callback(func() -> void: part.material_override = null)
 
 
-## The eruption's visual: a dark ring that races out along the floor.
-static func shockwave_ring(player: Player, reach: float) -> void:
-	var ring := MeshInstance3D.new()
-	var mesh := TorusMesh.new()
-	mesh.inner_radius = 0.8
-	mesh.outer_radius = 1.0
-	mesh.rings = 16
-	mesh.ring_segments = 4
-	var mat := ShaderMaterial.new()
-	mat.shader = load("res://shaders/ps1_surface.gdshader")
-	mat.set_shader_parameter("albedo_color", Color(0.1, 0.05, 0.2))
-	mat.set_shader_parameter("emission_color", Color(0.5, 0.3, 1.0))
-	mat.set_shader_parameter("emission_energy", 2.0)
-	mesh.material = mat
-	ring.mesh = mesh
-	player.get_parent().add_child(ring)
-	ring.global_position = player.global_position + Vector3.UP * 0.15
-	var tween := player.create_tween()
-	tween.tween_property(ring, "scale", Vector3(reach, 1.0, reach), 0.35).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
-	tween.tween_callback(ring.queue_free)
+## The eruption's visual on each slam: a smaller burst of raw aether round him (the same burst the
+## hall's eruption opens with, scripts/vfx/hall_burst.gd). `reach` is kept for the callers.
+static func shockwave_ring(player: Player, _reach: float) -> void:
+	load("res://scripts/vfx/hall_burst.gd").burst(player, 0.4)

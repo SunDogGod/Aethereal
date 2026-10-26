@@ -1,6 +1,6 @@
 class_name MenuFx
 extends RefCounted
-## Shared bits for every menu: the colours, the blip sound, and WASD navigation.
+## Shared bits for every menu: the colours, the menu sounds, and WASD navigation.
 ## Change a colour here and the title, pause and settings screens all follow.
 
 const DIM := Color(0.62, 0.66, 0.76)        ## menu text without focus
@@ -22,17 +22,22 @@ static func focus_quietly(control: Control) -> void:
 	control.grab_focus()
 
 
-## The menu blip: soft when the highlight moves, louder when something is chosen.
+## The menu sounds: a soft wooden tok when the highlight moves (ui_blip), two warm notes when
+## something is chosen (ui_choose). Both are quiet on purpose (the author, 2026-10-26: no pings).
 static func blip(from: Node, chosen := false) -> void:
 	if Engine.get_process_frames() == _quiet_frame or not from.is_inside_tree():
 		return
-	var volume := -3.0 if chosen else -9.0
+	var sound := "ui_choose" if chosen else "ui_blip"
+	var volume := -5.0 if chosen else -10.0
 	if from.get_tree().paused and is_instance_valid(paused_player):
+		var path := "res://audio/%s.wav" % sound
+		if ResourceLoader.exists(path):
+			paused_player.stream = load(path)
 		paused_player.volume_db = volume
-		paused_player.pitch_scale = 1.2 if chosen else 1.0
+		paused_player.pitch_scale = 1.0
 		paused_player.play()
 	else:
-		SfxBus.play("ui_blip", Vector3.INF, volume, 0.02)
+		SfxBus.play(sound, Vector3.INF, volume, 0.02)
 
 
 ## WASD moves the highlight and changes sliders too (the arrows, the D-pad and the left stick

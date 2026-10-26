@@ -3,6 +3,7 @@ extends CanvasLayer
 ## The text box at the bottom of the screen: who's speaking, and what they say.
 ## Lines type out; press Space / Enter / F (A or X on a gamepad) to finish the
 ## typing, then again to go on. Black bars slide in during camera shots.
+## Holding Tab (Back / Select on a gamepad) skips the whole scene: story_skip.gd.
 
 signal advanced
 
@@ -39,7 +40,7 @@ func _process(delta: float) -> void:
 		if _typing:
 			_finish_typing()
 		else:
-			SfxBus.play("ui_blip", Vector3.INF, -8.0)
+			SfxBus.play("ui_advance", Vector3.INF, -10.0, 0.03)  # the softest UI sound: a muted tap
 			advanced.emit()
 
 

@@ -28,6 +28,12 @@
 #   [kill Captain]                   an agent drops where he stands, no blood
 #   [call Bonfire throw_in ValentinaHall]  run a node's own action (here: the fire takes her)
 #   [show CubeSurge] / [show CubePulse] / [show FireFlare]  the cube's aura surges or pulses; the fire leaps
+#   [call CubeAura give Player 3]    the cube sends what it holds into Aeneas (3 = Isabella's soul;
+#                                    a body thrown on the fire is 1, and goes to the captain by itself)
+#   [call HallFx burst Player]       Aeneas's aether bursts out of him
+#   [call HallFx clear_text]         takes the last line off the screen for a wordless moment
+#   [call MemoryFade out 2.8]        a slow fade to black, the sound going with it (into the memory)
+# A [wait] with nothing said is a held moment: give a silent beat a second or two so it reads.
 # Lines starting with # are notes to yourself; the game ignores them.
 
 === arrival ===
@@ -134,12 +140,24 @@ Another agent has Isabella the same way.
 [place Captain CaptainRampMark]
 [camera HallShot]
 [fade in]
+[wait 1.2]
 # DRAFT
 The hall. A fire burns in the middle of the floor. They are burning the villagers.
+# An agent heaves a body onto the fire; the cube takes the soul out of the flames and gives it
+# to the captain (it glows red on him for a moment). Held in silence so it can be watched.
+[call HallFx clear_text]
 [camera FireShot]
+[place HallGuard2 HeaveMark]
+[pose HallGuard2 heave_body]
+[wait 1.05]
+[call Bonfire throw_in Body2 0.7]
+[wait 0.75]
 [hide Body2]
+[pose HallGuard2]
+[camera OfferingShot]
+[wait 3.0]
 # DRAFT
-Another body goes on the fire. On the stage, the cube drinks it in.
+Another body goes on the fire. The cube drinks it in, and gives its strength to the captain.
 [camera CaptainShot]
 [move Captain CaptainFrontMark 2.6]
 # DRAFT
@@ -159,13 +177,17 @@ CAPTAIN: I'm going to enjoy killing this one.
 [wait 1.6]
 # DRAFT
 Isabella's ink cuts her loose. The man behind her drops, then the two in front.
+[call HallFx clear_text]
 [camera StabShot]
 [face Captain IsabellaHall]
 [stand IsabellaHall Captain 1.2]
+[wait 0.6]
 [pose IsabellaHall lunge]
 [pose Captain spear_hand]
 [wait 0.42]
 [pose IsabellaHall stabbed]
+# Held: his hand in her chest, long enough to see it.
+[wait 1.9]
 [camera AeneasShot]
 [place IsabellaCaptor CaptorBodyMark]
 # DRAFT
@@ -184,29 +206,41 @@ She staggers back to him. She is crying.
 ISABELLA: Don't give up, Aeneas. Whatever happens.
 # DRAFT
 ISABELLA: I love you.
+[call HallFx clear_text]
 [pose IsabellaHall kneel_draw]
 [show InkCircle]
 [camera CircleShot]
+# Her sigil burns itself into the floor (a placeholder symbol until you choose hers).
+[wait 2.6]
 # DRAFT
-She kneels, and her brush draws a circle on the floor around her.
-[wait 2.4]
+She kneels, and her brush burns a sigil into the floor around her.
 ISABELLA: Sacrificio.
+# Her soul rises out of her into the cube; the cube blazes, the hall lights up, the fire bends.
+[call HallFx clear_text]
 [call InkCircle release]
 [pose IsabellaHall collapse]
 [camera SoulShot]
-[wait 1.4]
-[show CubeSurge]
-[wait 1.6]
+[wait 2.6]
+[camera BlazeShot]
+[wait 2.0]
 # DRAFT
 Not her body. Her soul. The cube takes it.
+# The cube gives it to Aeneas: a long beam into him.
+[call HallFx clear_text]
+[camera BeamShot]
+[call CubeAura give Player 3]
+[wait 2.2]
 # DRAFT
-And the seal she put on Aeneas's aether, long ago, goes with it.
+And gives it to him. The seal she put on Aeneas's aether, long ago, breaks with it.
+[call HallFx clear_text]
 [pose Lieutenant]
 [pose IsabellaCaptor]
 [pose Player]
 [camera EruptionShot]
-[call Player shockwave_ring 9]
+[wait 0.5]
+[call HallFx burst Player]
 [show FireFlare]
+[wait 1.6]
 [fade white]
 [fade in]
 [place Lieutenant LieutenantThrownMark]
@@ -244,17 +278,18 @@ The captain doesn't help him. He walks to Valentina instead.
 # DRAFT
 AENEAS: Valentina!
 CAPTAIN: Sacrificio.
+[call HallFx clear_text]
 [pose Captain throw_one_arm]
 [pose ValentinaHall limp]
 [wait 0.8]
 [call Bonfire throw_in ValentinaHall]
-[camera CubeShot]
-[wait 1.0]
+[wait 1.2]
 [hide ValentinaHall]
-[show CubeSurge]
-[wait 0.6]
+# The cube takes her from the fire and gives her to him: he glows red with it.
+[camera TakenShot]
+[wait 3.0]
 # DRAFT
-The fire takes her. The cube flares, and the captain stands a little taller.
+The fire takes her. The cube drinks her in, and the captain stands a little taller.
 [pose Captain]
 [camera]
 [fight CaptainFight]
@@ -320,22 +355,31 @@ The fire goes far away. His sight closes in from the edges.
 [pose Player drop_to_knees]
 [camera KaelRevealShot]
 [fade in]
-[wait 1.0]
+# Aeneas goes down to the floor; the captain sinks to his knees, his head bowed for the blade.
+[wait 0.6]
+[pose Player collapse]
+[wait 0.9]
 [pose Captain drop_to_knees]
+[wait 1.1]
 [call Kael set_lamento true true]
 [face Kael Captain]
 [pose Kael bloody_stand]
-[wait 0.6]
+[wait 0.8]
 # DRAFT
-They both fall to their knees. Kael stands over them, his sword full of blood.
+Aeneas falls to the floor. The captain sinks to his knees. Kael stands over them, his sword full of blood.
+KAEL: Sacrificio.
+# The cut, seen against the fire; held a moment; then a slow fall into black, and the memory.
+[call HallFx clear_text]
 [camera BeheadShot]
+[wait 0.5]
 [pose Kael behead_cut]
-[wait 0.32]
-[camera FireShot]
-[kill Captain]
+[wait 0.28]
+[call HallFx spray Captain]
+[call HallFx topple Captain]
 [show FireFlare]
-[wait 1.2]
-[fade out]
-# DRAFT (who says it is left open)
-Far away, someone says: "Sacrificio."
+[wait 1.4]
+[call MemoryFade out 2.8]
+[wait 3.6]
+# Under the black: he is down for good.
+[kill Captain]
 [level res://scenes/levels/massacre.tscn]

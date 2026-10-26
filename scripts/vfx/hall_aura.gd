@@ -1,52 +1,58 @@
 @tool
 extends Node3D
-## The Black Cube's aura while it accepts the sacrifices: a dark shimmering halo round the cube
-## (materials/hall_aura.tres), motes of fire drawn up out of the bonfire and spiralling into it,
-## and the cube's red light breathing with it. Put this node at the cube's centre.
-##   pulse(strength)   one body taken: the halo swells, the light flares, a burst of motes.
-##   surge(seconds)    a story beat (Isabella's sacrifice, Valentina's): the halo opens wide,
-##                     the light floods the hall, motes stream in fast; then it settles.
-##   set_active(on)    off: no halo, no motes, the light back to its own level.
-## While the fire burns it also pulses by itself now and then (`auto_pulse_every`), weaker.
+## The Black Cube's aura: a dark shimmering halo round the cube (materials/hall_aura.tres) and
+## the cube's red light breathing with it. Put this node at the cube's centre.
+## The cube takes sacrifices and gives their power on (hall_stream.gd draws the streams):
+##   take(from, strength, give_to)  soul light rises from `from` (the fire, Isabella) into the cube
+##                     and the cube flares; with `give_to`, a moment later it sends the power on
+##                     into him (give), then settles back to neutral, waiting for the next one.
+##   give(to, strength) the cube sends what it holds into someone, who glows with it (hall_glow.gd).
+## A body on the fire is worth 1: a modest stream, a short flare, the captain glows briefly.
+## Isabella's soul is GREAT: the cube blazes, the whole hall lights up, the fire bends toward the
+## cube, the drone swells, and it waits to give it to Aeneas ([call CubeAura give Player 3]) as a
+## long beam.
+##   pulse(strength) / surge(seconds)  the halo swells / opens wide ([show CubePulse] / CubeSurge).
+##   set_active(on)    off: no halo, the light back to its own level.
+## At rest it only breathes: a small swell now and then (`auto_pulse_every`).
 
 const HALO := preload("res://materials/hall_aura.tres")
-const MOTE := preload("res://materials/hall_mote.tres")
+const HallGlow := preload("res://scripts/vfx/hall_glow.gd")
+const GREAT := 3.0        ## Isabella's sacrifice
+const FIRE_GLOW := Color(1.0, 0.55, 0.2)
+const CRIMSON := Color(0.95, 0.12, 0.22)
+const SOUL := Color(0.85, 0.75, 1.0)
+const AETHER := Color(0.55, 0.9, 1.0)
 
-## The bonfire the motes rise out of (any Node3D: its position is used).
+## The bonfire (hall_bonfire.gd): a body's soul rises from it, and it bends toward a great one.
 @export var source: NodePath
 ## The cube's light (an OmniLight3D): it swells with each pulse.
 @export var light: NodePath
+## Who the cube gives the burnt bodies' power to (the captain).
+@export var receiver: NodePath
+## The cube's hum (an AudioStreamPlayer3D): it swells with a great sacrifice.
+@export var drone: NodePath
 ## Width of the halo in metres, at rest.
 @export var halo_size := 3.0
-## Seconds between the aura's own small pulses while the fire burns (0 = never).
+## Seconds between the aura's own small swells while it waits (0 = never).
 @export var auto_pulse_every := 7.0
-## Motes drifting in per second at rest.
-@export var mote_rate := 5.0
 @export var active := true:
 	set(value):
 		active = value
 		if is_node_ready():
 			_apply_active()
 
-const MOTES := 48
-
 var _halos: Array[MeshInstance3D] = []
 var _halo_mat: ShaderMaterial
-var _multi := MultiMesh.new()
 var _light: OmniLight3D
 var _light_base := 0.0
+var _hall_light: OmniLight3D   # the whole hall lit by a great sacrifice
 var _pulse := 0.0
 var _surge := 0.0
 var _surge_hold := 0.0
-var _spawn := 0.0
+var _blaze := 0.0              # 0..1: a great sacrifice held in the cube
+var _blaze_hold := 0.0
 var _next_auto := 4.0
 var _rng := RandomNumberGenerator.new()
-# Per mote: progress (-1 = idle), speed, start point, bend (sideways), size.
-var _t := PackedFloat32Array()
-var _speed := PackedFloat32Array()
-var _from: Array[Vector3] = []
-var _bend: Array[Vector3] = []
-var _size := PackedFloat32Array()
 
 
 func _ready() -> void:
@@ -65,24 +71,6 @@ func _ready() -> void:
 		q.set_instance_shader_parameter("fade", 1.0 if i == 0 else 0.4)
 		add_child(q, false, INTERNAL_MODE_FRONT)
 		_halos.append(q)
-	_multi.transform_format = MultiMesh.TRANSFORM_3D
-	_multi.use_colors = true
-	_multi.mesh = quad
-	_multi.instance_count = MOTES
-	_multi.custom_aabb = AABB(Vector3(-6, -4, -6), Vector3(12, 10, 20))
-	var mm := MultiMeshInstance3D.new()
-	mm.multimesh = _multi
-	mm.material_override = MOTE
-	mm.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-	add_child(mm, false, INTERNAL_MODE_FRONT)
-	_t.resize(MOTES)
-	_speed.resize(MOTES)
-	_size.resize(MOTES)
-	_from.resize(MOTES)
-	_bend.resize(MOTES)
-	for i in MOTES:
-		_t[i] = -1.0
-		_multi.set_instance_transform(i, Transform3D(Basis.from_scale(Vector3.ZERO), Vector3.ZERO))
 	_apply_halo()
 	if Engine.is_editor_hint():
 		return
@@ -90,19 +78,70 @@ func _ready() -> void:
 	_light = get_node_or_null(light) as OmniLight3D
 	if _light:
 		_light_base = _light.light_energy
+	_hall_light = OmniLight3D.new()
+	_hall_light.light_color = SOUL
+	_hall_light.omni_range = 30.0
+	_hall_light.omni_attenuation = 0.6
+	_hall_light.light_energy = 0.0
+	_hall_light.position = Vector3(0, 2.0, 4.0)
+	add_child(_hall_light, false, INTERNAL_MODE_FRONT)
 	_apply_active()
 
 
-## One body taken. 1 = a full pulse; the aura's own rhythm uses about half.
+## A sacrifice: its soul rises from `from` into the cube. 1 = a body; GREAT = Isabella.
+func take(from: Node3D, strength := 1.0, give_to: Node3D = null) -> void:
+	if not active or from == null:
+		return
+	var great := strength >= GREAT
+	var lift := Vector3(0, 1.4, 0) if from.has_method("throw_in") else Vector3(0, 0.9, 0)
+	var stream := HallStream.make(get_parent(), from, self, lift, Vector3.ZERO, {
+		travel = 2.2 if great else 1.4, emit_time = 2.2 if great else 1.1, rate = 100.0 if great else 90.0,
+		size = 0.2 if great else 0.15, spin = 0.6 if great else 0.32, arc = 2.0 if great else 1.6,
+		color_from = SOUL if great else FIRE_GLOW, color_to = Color.WHITE if great else CRIMSON})
+	if great:
+		var fire := get_node_or_null(source)
+		if fire and fire.has_method("bend"):
+			fire.bend(global_position, 6.0)
+		_swell_drone(7.0)
+	stream.arrived.connect(func() -> void:
+		pulse(minf(strength, 1.5))
+		if great:
+			_blaze_hold = 12.0  # until give() sends it on (or it gives up waiting)
+			surge(3.0)
+		elif give_to:
+			get_tree().create_timer(0.45, false).timeout.connect(give.bind(give_to, strength)))
+
+
+## The cube sends what it holds into `to`, who glows with it.
+func give(to: Node3D, strength := 1.0) -> void:
+	if not active or to == null or not is_instance_valid(to) or not to.is_visible_in_tree():
+		return
+	var great := strength >= GREAT
+	var stream := HallStream.make(get_parent(), self, to, Vector3.ZERO, Vector3(0, 1.1, 0), {
+		travel = 1.3 if great else 1.0, emit_time = 2.6 if great else 0.9, rate = 100.0 if great else 50.0,
+		size = 0.18 if great else 0.14, spin = 0.4 if great else 0.25, arc = 0.5 if great else 0.9,
+		beam = 0.16 if great else 0.0,
+		color_from = Color.WHITE if great else CRIMSON, color_to = AETHER if great else CRIMSON})
+	pulse(0.6)
+	stream.arrived.connect(func() -> void:
+		HallGlow.on(to, AETHER if great else CRIMSON, strength, 7.0 if great else 1.6)
+		if great:
+			_blaze_hold = 2.4)  # the cube lets go as the beam does
+
+
+## The receiver of the burnt bodies' power (the captain), if he's still there to take it.
+func receiver_node() -> Node3D:
+	return get_node_or_null(receiver) as Node3D
+
+
+## One body taken. 1 = a full pulse; the aura's own rhythm uses less.
 func pulse(strength := 1.0) -> void:
 	_pulse = maxf(_pulse, clampf(strength, 0.0, 1.5))
-	_spawn += 8.0 * strength
 
 
-## The big beat: wide open for `seconds`, then settling over about two seconds.
+## The halo opens wide for `seconds`, then settles over about two seconds.
 func surge(seconds := 3.0) -> void:
 	_surge_hold = maxf(_surge_hold, seconds)
-	_spawn += 20.0
 
 
 func set_active(on: bool) -> void:
@@ -110,18 +149,18 @@ func set_active(on: bool) -> void:
 
 
 func _apply_active() -> void:
-	var on := active
 	for q in _halos:
-		q.visible = on
-	if not on:
+		q.visible = active
+	if not active:
 		_pulse = 0.0
 		_surge = 0.0
 		_surge_hold = 0.0
-		for i in MOTES:
-			_t[i] = -1.0
-			_multi.set_instance_transform(i, Transform3D(Basis.from_scale(Vector3.ZERO), Vector3.ZERO))
+		_blaze = 0.0
+		_blaze_hold = 0.0
 	if _light:
 		_light.light_energy = _light_base
+	if _hall_light:
+		_hall_light.light_energy = 0.0
 
 
 func _process(delta: float) -> void:
@@ -133,59 +172,45 @@ func _process(delta: float) -> void:
 		_surge = minf(_surge + delta * 2.5, 1.0)
 	else:
 		_surge = maxf(_surge - delta * 0.5, 0.0)
+	if _blaze_hold > 0.0:
+		_blaze_hold -= delta
+		_blaze = minf(_blaze + delta * 1.5, 1.0)
+		_surge_hold = maxf(_surge_hold, 0.2)
+	else:
+		_blaze = maxf(_blaze - delta * 0.6, 0.0)
 	if auto_pulse_every > 0.0:
 		_next_auto -= delta
 		if _next_auto <= 0.0:
 			_next_auto = auto_pulse_every * _rng.randf_range(0.7, 1.3)
-			pulse(0.5)
+			pulse(0.4)
 	_apply_halo()
 	if _light:
 		var breathe := 0.9 + 0.1 * sin(Time.get_ticks_msec() * 0.0021)
-		_light.light_energy = _light_base * (breathe + 1.2 * _pulse + 2.2 * _surge)
-	_motes(delta)
+		_light.light_energy = _light_base * (breathe + 1.2 * _pulse + 2.2 * _surge + 3.0 * _blaze)
+	if _hall_light:
+		var flicker := 0.9 + 0.1 * sin(Time.get_ticks_msec() * 0.013)
+		_hall_light.light_energy = 4.5 * _blaze * flicker
 
 
 func _apply_halo() -> void:
 	_halo_mat.set_shader_parameter("pulse", _pulse)
-	_halo_mat.set_shader_parameter("surge", _surge)
+	_halo_mat.set_shader_parameter("surge", minf(_surge + _blaze * 0.5, 1.5))
 	for i in _halos.size():
-		var s := halo_size * (1.0 if i == 0 else 1.9) * (1.0 + 0.2 * _pulse + 1.0 * _surge)
+		var s := halo_size * (1.0 if i == 0 else 1.9) * (1.0 + 0.2 * _pulse + 1.0 * _surge + 0.8 * _blaze)
 		_halos[i].scale = Vector3(s, s, 1.0)
 
 
-## Motes leave from just above the fire, rise in an arc and spiral into the cube.
-func _motes(delta: float) -> void:
-	var src := get_node_or_null(source) as Node3D
-	if src == null:
+## A great sacrifice: the cube's hum rises and climbs in pitch, then sinks back.
+func _swell_drone(seconds: float) -> void:
+	var hum := get_node_or_null(drone)
+	if not (hum is AudioStreamPlayer3D):
 		return
-	_spawn += delta * (mote_rate + 10.0 * _pulse + 40.0 * _surge)
-	var fire := to_local(src.global_position)
-	for i in MOTES:
-		if _t[i] < 0.0:
-			if _spawn < 1.0:
-				_multi.set_instance_transform(i, Transform3D(Basis.from_scale(Vector3.ZERO), Vector3.ZERO))
-				continue
-			_spawn -= 1.0
-			var a := _rng.randf_range(0.0, TAU)
-			_from[i] = fire + Vector3(cos(a) * _rng.randf_range(0.2, 0.9), _rng.randf_range(1.0, 2.6), sin(a) * _rng.randf_range(0.2, 0.9))
-			_bend[i] = Vector3(_rng.randf_range(-2.5, 2.5), _rng.randf_range(1.5, 3.5), _rng.randf_range(-1.0, 1.0))
-			_speed[i] = _rng.randf_range(0.22, 0.4)
-			_size[i] = _rng.randf_range(0.05, 0.08)
-			_t[i] = 0.0
-		_t[i] += delta * _speed[i] * (1.0 + 1.5 * _surge + 0.5 * _pulse)
-		var t: float = _t[i]
-		if t >= 1.0:
-			_t[i] = -1.0
-			_multi.set_instance_transform(i, Transform3D(Basis.from_scale(Vector3.ZERO), Vector3.ZERO))
-			continue
-		var p0: Vector3 = _from[i]
-		var p1: Vector3 = (p0 * 0.5) + _bend[i]
-		var p := p0.lerp(p1, t).lerp(p1.lerp(Vector3.ZERO, t), t)  # a curve that ends at the cube
-		# The last stretch spirals in.
-		var spin := t * 9.0 + i
-		p += Vector3(cos(spin), 0.4 * sin(spin * 0.7), sin(spin)) * 0.35 * (1.0 - t) * t
-		var s: float = _size[i] * (1.0 + 0.3 * _surge) * minf(1.0, (1.0 - t) * 4.0)
-		_multi.set_instance_transform(i, Transform3D(Basis.from_scale(Vector3(s, s, s)), p))
-		var c := Color(1.0, 0.55, 0.2).lerp(Color(0.85, 0.1, 0.3), smoothstep(0.3, 0.95, t))
-		c.a = minf(1.0, t * 8.0)
-		_multi.set_instance_color(i, c)
+	var vol: float = hum.volume_db
+	var tw := create_tween()
+	tw.set_parallel(true)
+	tw.tween_property(hum, "volume_db", vol + 9.0, 2.0)
+	tw.tween_property(hum, "pitch_scale", 1.35, 2.5)
+	tw.chain().tween_interval(seconds - 4.0)
+	tw.chain().set_parallel(true)
+	tw.tween_property(hum, "volume_db", vol, 2.0)
+	tw.tween_property(hum, "pitch_scale", 1.0, 2.0)

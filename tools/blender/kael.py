@@ -1,12 +1,13 @@
-"""Kael, a wandering swordsman in his twenties: taller and leaner than Aeneas. A long white coat
-(tall collar, red lining and trim, a skirt split front and back down to the knee) cinched with a
-red sash, a red scarf, a black undershirt, dark trousers, tall black boots, black gloves, and
-silver-white hair to the jaw. Lamento, a long bone-white blade with a ring pommel and a red
-tassel, rides on his back with the grip over his right shoulder, on a black strap.
+"""Kael, a wandering swordsman in his twenties: taller and leaner than Aeneas, all in black but for
+his silver-white hair (to the jaw). A long black coat (tall collar, charcoal piping, a crimson lining
+that only shows inside, a skirt split front and back to below the knee) cinched with a black
+leather sash, a charcoal scarf, a black undershirt, dark trousers, tall black boots, black gloves.
+Lamento, a long bone-white blade with a ring pommel and a red tassel, rides on his back with the
+grip over his right shoulder, on a black strap.
 
 Knobs: colours are the C table below; shapes are the profile tables (one row per ring, height
 first, then radii); hair is HAIR; where Lamento hangs is LAMENTO_GRIP / LAMENTO_DIR. The sword's
-own shape and the face / clothes paint are in kael_gear.py.
+own shape and the clothes paint are in kael_gear.py; his face is FACE (face.py).
 Rebuild:  .\\tools\\blender\\rebuild.ps1 kael     (see tools/blender/README.md)
 """
 import math
@@ -22,12 +23,15 @@ import body                   # noqa: E402
 import mesh                   # noqa: E402
 import kael_anims             # noqa: E402
 import kael_gear as gear      # noqa: E402
-from paint import rgb         # noqa: E402
+import face                   # noqa: E402
+import face_paint             # noqa: E402
+from paint import rgb, shade  # noqa: E402
 
 C = {k: rgb(v) for k, v in {
     "skin": "#dfae8c", "hair": "#d9dbe2", "hair_dark": "#a3a7b6", "hair_light": "#f3f4f8",
     "eye": "#25232b", "iris": "#7a8a9c", "lash": "#3a2f35", "lip": "#a8705f", "brow": "#8b8e9c",
-    "coat": "#e4e1d9", "coat_line": "#bdb8ae", "red": "#a9212e", "lining": "#741520",
+    "coat": "#1d1d23", "coat_line": "#3a3a44", "coat_edge": "#33333c", "lining": "#5a1520", "red": "#a9212e",
+    "sash": "#141317", "scarf": "#2c2c34",
     "shirt": "#1d1c22", "trousers": "#2a2a31", "boot": "#1b1a1f", "boot_top": "#302f36", "sole": "#0e0e11",
     "glove": "#232228", "strap": "#26201f", "silver": "#b8bcc6",
     "bone": "#e6dcc3", "bone_edge": "#f7f2e6", "bone_dark": "#bfb291", "iron": "#5c5e68",
@@ -49,7 +53,7 @@ COAT = [(0.94, 0.152, 0.098, 0.102, 2.5, 0.0, 0), (0.99, 0.150, 0.098, 0.100, 2.
 COLLAR = [(1.40, 0.114, 0.084, 0.088, 2.2, -0.004, 46), (1.45, 0.092, 0.074, 0.079, 2.0, -0.006, 48),
           (1.495, 0.092, 0.078, 0.083, 2.0, -0.009, 52), (1.525, 0.097, 0.085, 0.089, 2.0, -0.011, 56)]
 # The skirt, hem first: (height, half width, front, back, squareness, front split, back slit) in degrees.
-SKIRT = [(0.47, 0.236, 0.156, 0.172, 2.2, 9, 4), (0.58, 0.230, 0.150, 0.165, 2.2, 7, 3),
+SKIRT = [(0.41, 0.244, 0.162, 0.178, 2.2, 10, 5), (0.52, 0.233, 0.153, 0.168, 2.2, 8, 3),
          (0.70, 0.222, 0.142, 0.155, 2.25, 5, 2), (0.82, 0.212, 0.132, 0.142, 2.3, 3, 1),
          (0.92, 0.196, 0.118, 0.126, 2.4, 1, 1), (1.00, 0.160, 0.102, 0.106, 2.5, 1, 1)]
 SASH = [(0.928, 0.204, 0.125, 0.132, 2.5), (0.975, 0.186, 0.116, 0.121, 2.5), (1.025, 0.165, 0.107, 0.109, 2.5)]
@@ -69,6 +73,13 @@ HEAD = [(0.000, 0.046, 0.033, 0.030, 0.028, 2.4), (0.016, 0.030, 0.055, 0.062, 0
         (0.103, 0.004, 0.076, 0.089, 0.097, 2.4), (0.135, 0.0, 0.077, 0.090, 0.101, 2.4),
         (0.170, -0.005, 0.074, 0.084, 0.100, 2.3), (0.203, -0.010, 0.063, 0.067, 0.084, 2.2),
         (0.229, -0.015, 0.039, 0.041, 0.050, 2.0)]
+# His face (face.py): lean and sharp, level grey eyes a little narrowed, straight low brows, a
+# long nose, a defined jaw, a half smile (one corner up).
+FACE = face.look(face.MAN, rows=HEAD, scale=1.06, eye_h=0.0062, eye_lo=0.0040, eye_tilt=0.0011, iris_r=0.0062,
+                 brow_z0=0.1185, brow_z1=0.1205, brow_arch=0.0010, brow_thick=0.0034, nose=0.020, nose_w=5.0,
+                 cheek=0.0042, hollow=0.0025, jaw=0.004, chin_w=12.5, smirk=0.0007, lip_sat=0.3,
+                 skin=C["skin"], hair=shade(C["hair"], 0.86), brow=C["brow"], lash_col=C["lash"], iris=C["iris"],
+                 lip=C["lip"])
 W5 = [0.042, 0.048, 0.042, 0.028, 0.0]
 W4 = [0.042, 0.046, 0.034, 0.0]
 # Hair locks: (angle round the head, height, lift) from root to tip; 90 = the face, 0 = his right.
@@ -96,20 +107,21 @@ LAMENTO_DIR = (-0.20, -0.09, -1.0)
 
 
 def build():
-    ch = cb.Character("kael", height=1.82, shoulders=1.06, hips=0.95)
+    ch = cb.Character("kael", height=1.82, shoulders=1.06, hips=0.95, atlas_size=512)
     J, A, P = ch.J, ch.atlas, ch.part("Body")
     s = J["height"] / 1.72
     r = {n: A.rect(n, w, h) for n, w, h in (
-        ("head", 128, 72), ("coat", 96, 56), ("skirt", 64, 48), ("sleeve", 64, 40), ("shirt", 48, 32),
+        ("head", face.HEAD_RECT[0], face.HEAD_RECT[1]), ("coat", 96, 56), ("skirt", 64, 48), ("sleeve", 64, 40),
+        ("shirt", 48, 32), ("ear", 16, 16),
         ("trousers", 48, 40), ("boot", 48, 32), ("foot", 40, 24), ("hair", 32, 32), ("collar", 48, 16),
         ("scarf", 48, 16), ("sash", 48, 8), ("sash_tail", 16, 24), ("hand", 24, 16), ("neck", 16, 12),
         ("lining", 8, 8), ("collar_in", 8, 8), ("strap", 8, 32))}
     body.trunk(P, J, r["shirt"], TORSO, cap0="pole")
     body.neck(P, J, r["neck"])
-    head = body.Head(J, rows=HEAD, brow=0.005, scale=1.06)
+    head = face.Head(J, FACE)
     head.build(P, r["head"])
-    body.nose(P, head, r["head"], length=0.024)
-    gear.paint_face(head, r["head"], C)
+    face.ears(P, head, r["ear"], FACE, C["skin"], shade(C["skin"], 0.8))
+    face_paint.paint(head, FACE, gear.hairline)
     for path, widths in HAIR:
         _lock(P, head, r["hair"], path, widths)
     body.trunk(P, J, r["coat"], COAT, segs=18, arc=(90, 450), thickness=0.008, lining=r["lining"])

@@ -98,7 +98,9 @@
 [ext_resource type="PackedScene" path="res://scenes/valentina.tscn" id="s26_valentina"]
 [ext_resource type="Script" path="res://scripts/story_cue_takedown.gd" id="s26_cue"]
 [ext_resource type="Script" path="res://scripts/ink_circle.gd" id="s26_ink_circle"]
-
+[ext_resource type="Script" path="res://scripts/vfx/hall_fx.gd" id="b9_hall_fx"]
+[ext_resource type="Script" path="res://scripts/vfx/memory_fade.gd" id="b9_memory_fade"]
+[ext_resource type="Script" path="res://scripts/props/balcony.gd" id="b9t_balcony"]
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_r8sky"]
 shader = ExtResource("r8_sky_shader")
 shader_parameter/faces = ExtResource("r8_backdrop_tex")
@@ -1195,7 +1197,7 @@ size = Vector3(1.1999998, 1.1999998, 1.2)
 material = ExtResource("9_02bqp")
 
 [node name="AlleyCrate2" type="StaticBody3D" parent="WestDistrict" unique_id=1293632777]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -19.5, 8.8, 5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -19.5, 8.8, -5.6)
 script = ExtResource("1_jb07p")
 size = Vector3(0.79999924, 1.6000004, 1)
 material = ExtResource("9_02bqp")
@@ -1523,6 +1525,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.55, -25.5)
 script = ExtResource("hall_aura")
 source = NodePath("../Bonfire")
 light = NodePath("../../../Lights/BlackCube")
+receiver = NodePath("../../../CaptainFight/Captain")
+drone = NodePath("../../BlackCube/Drone")
 
 [node name="Bodies" type="Node3D" parent="Hall/Story"]
 
@@ -1531,7 +1535,7 @@ transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -4.3, 0, -22.4)
 script = ExtResource("hall_body")
 
 [node name="Body2" type="StaticBody3D" parent="Hall/Story/Bodies"]
-transform = Transform3D(0.0697565, 0, 0.9975641, 0, 1, 0, -0.9975641, 0, 0.0697565, -4.1, 0, -21.8)
+transform = Transform3D(-0.61977893, 0, 0.78477645, 0, 1, 0, -0.78477645, 0, -0.61977893, 1.43, 0, -14.79)
 script = ExtResource("hall_body")
 length = 1.6
 soiled = true
@@ -1549,6 +1553,33 @@ script = ExtResource("hall_body")
 length = 1.5
 soiled = true
 variant = 3
+
+[node name="Body5" type="StaticBody3D" parent="Hall/Story/Bodies"]
+transform = Transform3D(0.17364822, 0, 0.9848077, 0, 1, 0, -0.9848077, 0, 0.17364822, 2.7, 0, -16.75)
+script = ExtResource("hall_body")
+clothed = true
+pose = 1
+
+[node name="Body6" type="StaticBody3D" parent="Hall/Story/Bodies"]
+transform = Transform3D(-0.1736482, 0, 0.9848077, 0, 1, 0, -0.9848077, 0, -0.1736482, 3.4, 0, -15)
+script = ExtResource("hall_body")
+length = 1.65
+soiled = true
+variant = 4
+
+[node name="Body7" type="StaticBody3D" parent="Hall/Story/Bodies"]
+transform = Transform3D(0.49999997, 0, -0.86602545, 0, 1, 0, 0.86602545, 0, 0.49999997, -3.4, 0, -18.8)
+script = ExtResource("hall_body")
+length = 1.6
+clothed = true
+pose = 2
+variant = 2
+
+[node name="Body8" type="StaticBody3D" parent="Hall/Story/Bodies"]
+transform = Transform3D(0.9659258, 0, 0.25881904, 0, 1, 0, -0.25881904, 0, 0.9659258, -5.0, 0, -16.6)
+script = ExtResource("hall_body")
+length = 1.75
+variant = 5
 
 [node name="NavGuards" type="Node3D" parent="Hall/Story"]
 
@@ -1587,6 +1618,14 @@ visible = false
 script = ExtResource("hall_cue")
 target = NodePath("../../Bonfire")
 method = "flare"
+
+[node name="HallFx" type="Node3D" parent="Hall/Story"]
+script = ExtResource("b9_hall_fx")
+
+[node name="MemoryFade" type="CanvasLayer" parent="Hall/Story"]
+layer = 16
+script = ExtResource("b9_memory_fade")
+sounds = Array[NodePath]([NodePath("../Bonfire/Crackle"), NodePath("../../BlackCube/Drone")])
 
 [node name="Figures" type="Node3D" parent="." unique_id=1920153823]
 
@@ -1992,7 +2031,7 @@ fov = 48.0
 far = 320.0
 
 [node name="FireShot" type="Camera3D" parent="Shots"]
-transform = Transform3D(0.933675, 0.013731, 0.357859, 0, 0.999265, -0.038342, -0.358122, 0.035799, 0.932988, 2.8, 1.3, -12.2)
+transform = Transform3D(0.50620073, -0.0804907, 0.85865134, 0, 0.9956351, 0.09333167, -0.86241573, -0.04724456, 0.5039912, 5.2, 1.5, -12.9)
 fov = 55.0
 far = 320.0
 
@@ -2049,6 +2088,26 @@ far = 320.0
 [node name="CubeShot" type="Camera3D" parent="Shots"]
 transform = Transform3D(0.992586, 0.026434, 0.118632, 0, 0.976062, -0.217492, -0.121541, 0.215879, 0.968826, 0.6, 1.5, -20.6)
 fov = 55.0
+far = 320.0
+
+[node name="OfferingShot" type="Camera3D" parent="Shots"]
+transform = Transform3D(0.6823183, -0.008906693, 0.731001, 0, 0.99992573, 0.012183338, -0.7310552, -0.0083129145, 0.68226767, 5, 2.1, -15)
+fov = 55.0
+far = 320.0
+
+[node name="TakenShot" type="Camera3D" parent="Shots"]
+transform = Transform3D(0.98528546, 0.0068679955, 0.17077883, 0, 0.99919236, -0.04018325, -0.17091687, 0.03959197, 0.9844897, 3.2, 1.6, -11.2)
+fov = 55.0
+far = 320.0
+
+[node name="BlazeShot" type="Camera3D" parent="Shots"]
+transform = Transform3D(0.9834532, 0.014023433, 0.18061885, 0, 0.99699956, -0.07740807, -0.18116243, 0.076127216, 0.98050237, 1.6, 1.7, -10.6)
+fov = 60.0
+far = 320.0
+
+[node name="BeamShot" type="Camera3D" parent="Shots"]
+transform = Transform3D(0.89442724, 0.03150051, 0.4461028, 0, 0.9975163, -0.07043728, -0.4472136, 0.06300102, 0.89220566, 1.2, 1.4, -10.4)
+fov = 62.0
 far = 320.0
 
 [node name="StoryTriggers" type="Node3D" parent="." unique_id=575879315]
@@ -2194,6 +2253,9 @@ transform = Transform3D(0.588172, 0, 0.808736, 0, 1, 0, -0.808736, 0, 0.588172, 
 
 [node name="CaptorBodyMark" type="Marker3D" parent="StoryMarks"]
 transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 0.5, 0, -11)
+
+[node name="HeaveMark" type="Marker3D" parent="StoryMarks"]
+transform = Transform3D(0.78369343, 0, 0.62114775, 0, 1, 0, -0.62114775, 0, 0.78369343, 1.9, 0, -14.2)
 
 [node name="ValentinaFight" type="Node3D" parent="." unique_id=108673783 node_paths=PackedStringArray("unlock_on_win")]
 script = ExtResource("25_pw4ii")
@@ -2912,48 +2974,6 @@ volume_db = -20.0
 unit_size = 2.0
 autoplay = true
 max_distance = 9.0
-
-[node name="AlleyVending" type="Node3D" parent="Dressing" unique_id=1152925494]
-transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -17.4, 8, 5.2)
-
-[node name="Body" type="StaticBody3D" parent="Dressing/AlleyVending" unique_id=965514439]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0.00999999)
-script = ExtResource("1_jb07p")
-size = Vector3(1, 2, 0.82)
-material = ExtResource("2_i3j7n")
-grime = 0.3
-
-[node name="Front" type="StaticBody3D" parent="Dressing/AlleyVending" unique_id=809301256]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0.445)
-script = ExtResource("1_jb07p")
-size = Vector3(1, 2, 0.050000012)
-material = ExtResource("41_md2gy")
-grime = 0.0
-
-[node name="Top" type="StaticBody3D" parent="Dressing/AlleyVending" unique_id=1206354952]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.04, 0.025000006)
-script = ExtResource("1_jb07p")
-size = Vector3(1.04, 0.07999992, 0.89)
-material = ExtResource("5_1un0n")
-grime = 0.0
-trim = true
-
-[node name="Glow" type="OmniLight3D" parent="Dressing/AlleyVending" unique_id=2131346606]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 1.2)
-light_color = Color(1, 0.85, 0.7, 1)
-light_energy = 0.8
-script = ExtResource("22_h30vo")
-emissive_block = NodePath("../Front")
-random_seed = 17
-
-[node name="Hum" type="AudioStreamPlayer3D" parent="Dressing/AlleyVending" unique_id=611123936]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
-stream = ExtResource("44_f7ila")
-volume_db = -10.0
-unit_size = 1.5
-pitch_scale = 0.96
-autoplay = true
-max_distance = 7.0
 
 [node name="AlleyBarrel" type="StaticBody3D" parent="Dressing" unique_id=72753032]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11, 8.475, -8.2)
@@ -10044,3 +10064,635 @@ script = ExtResource("1_jb07p")
 size = Vector3(0.55, 0.02, 0.95)
 material = ExtResource("r3_paint_red")
 grime = 0.0
+
+[node name="Facades" type="Node3D" parent="."]
+
+[node name="Balconies" type="Node3D" parent="Facades"]
+
+[node name="Tower1_Right1" type="Node3D" parent="Facades/Balconies"]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -14, 36.275, 12)
+script = ExtResource("b9t_balcony")
+clutter = 2
+variant = 1
+
+[node name="Tower1_Right2" type="Node3D" parent="Facades/Balconies"]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -14, 39.3, 12)
+script = ExtResource("b9t_balcony")
+clutter = 5
+variant = 2
+
+[node name="Tower4_Back1" type="Node3D" parent="Facades/Balconies"]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 18.5, 35.4, 14)
+script = ExtResource("b9t_balcony")
+clutter = 1
+variant = 3
+
+[node name="Tower4_Back2" type="Node3D" parent="Facades/Balconies"]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 18.5, 38.4, 14)
+script = ExtResource("b9t_balcony")
+clutter = 1
+variant = 0
+
+[node name="Tower5_Left1" type="Node3D" parent="Facades/Balconies"]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 23, 37.32, 0)
+script = ExtResource("b9t_balcony")
+clutter = 1
+variant = 1
+
+[node name="Tower5_Left2" type="Node3D" parent="Facades/Balconies"]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 23, 37.32, -6)
+script = ExtResource("b9t_balcony")
+clutter = 1
+variant = 3
+
+[node name="Tower5_Left3" type="Node3D" parent="Facades/Balconies"]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 23, 40.34, -6)
+script = ExtResource("b9t_balcony")
+clutter = 3
+variant = 6
+
+[node name="Tower2_Back1" type="Node3D" parent="Facades/Balconies"]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, -9, 40.4, 14)
+script = ExtResource("b9t_balcony")
+clutter = 3
+variant = 6
+
+[node name="Tower3_Back1" type="Node3D" parent="Facades/Balconies"]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 5.5, 41.4, 13)
+script = ExtResource("b9t_balcony")
+clutter = 1
+variant = 1
+
+[node name="Tower4_Back3" type="Node3D" parent="Facades/Balconies"]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 24.5, 35.4, 14)
+script = ExtResource("b9t_balcony")
+clutter = 5
+variant = 1
+
+[node name="Tower4_Back4" type="Node3D" parent="Facades/Balconies"]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 24.5, 38.4, 14)
+script = ExtResource("b9t_balcony")
+clutter = 1
+variant = 1
+
+[node name="Tower4_Back5" type="Node3D" parent="Facades/Balconies"]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 24.5, 41.4, 14)
+script = ExtResource("b9t_balcony")
+clutter = 3
+variant = 1
+
+[node name="Tower1_Front1" type="Node3D" parent="Facades/Balconies"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -23.5, 24, 30)
+script = ExtResource("b9t_balcony")
+clutter = 3
+variant = 2
+
+[node name="Tower1_Front2" type="Node3D" parent="Facades/Balconies"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -23.5, 27.044445, 30)
+script = ExtResource("b9t_balcony")
+clutter = 3
+variant = 5
+
+[node name="Tower1_Front3" type="Node3D" parent="Facades/Balconies"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -23.5, 30.08889, 30)
+script = ExtResource("b9t_balcony")
+clutter = 4
+variant = 1
+
+[node name="Tower1_Front4" type="Node3D" parent="Facades/Balconies"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -17.5, 24, 30)
+script = ExtResource("b9t_balcony")
+clutter = 1
+variant = 2
+
+[node name="Tower1_Front5" type="Node3D" parent="Facades/Balconies"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -17.5, 36.17778, 30)
+script = ExtResource("b9t_balcony")
+clutter = 4
+variant = 2
+
+[node name="Tower1_Front6" type="Node3D" parent="Facades/Balconies"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -17.5, 39.22222, 30)
+script = ExtResource("b9t_balcony")
+clutter = 5
+variant = 1
+
+[node name="Tower3_Front1" type="Node3D" parent="Facades/Balconies"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.5, 26.4, 30)
+script = ExtResource("b9t_balcony")
+clutter = 3
+variant = 2
+
+[node name="Tower3_Front2" type="Node3D" parent="Facades/Balconies"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.5, 29.4, 30)
+script = ExtResource("b9t_balcony")
+clutter = 1
+variant = 4
+
+[node name="Tower4_Front1" type="Node3D" parent="Facades/Balconies"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24.5, 26.4, 30)
+script = ExtResource("b9t_balcony")
+railing = 1
+clutter = 2
+variant = 0
+
+[node name="Tower4_Front2" type="Node3D" parent="Facades/Balconies"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24.5, 35.4, 30)
+script = ExtResource("b9t_balcony")
+railing = 1
+clutter = 5
+variant = 3
+
+[node name="Tower4_Front3" type="Node3D" parent="Facades/Balconies"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24.5, 38.4, 30)
+script = ExtResource("b9t_balcony")
+railing = 1
+clutter = 1
+variant = 4
+
+[node name="Tower11_Front1" type="Node3D" parent="Facades/Balconies"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15, 39.4, -12)
+script = ExtResource("b9t_balcony")
+railing = 1
+clutter = 1
+variant = 2
+
+[node name="Tower8_Front1" type="Node3D" parent="Facades/Balconies"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -26.5, 36.4, -1)
+script = ExtResource("b9t_balcony")
+clutter = 3
+variant = 5
+
+[node name="Tower11_Front2" type="Node3D" parent="Facades/Balconies"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -21, 39.4, -12)
+script = ExtResource("b9t_balcony")
+railing = 1
+clutter = 3
+variant = 3
+
+[node name="Tower5_Front1" type="Node3D" parent="Facades/Balconies"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 26.5, 40.4, 9)
+script = ExtResource("b9t_balcony")
+clutter = 2
+variant = 3
+
+[node name="Tower12_Front1" type="Node3D" parent="Facades/Balconies"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 39.4, -16)
+script = ExtResource("b9t_balcony")
+variant = 1
+
+[node name="Tower4_Front4" type="Node3D" parent="Facades/Balconies"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18.5, 35.4, 30)
+script = ExtResource("b9t_balcony")
+railing = 1
+clutter = 1
+variant = 5
+
+[node name="Tower4_Front5" type="Node3D" parent="Facades/Balconies"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18.5, 38.4, 30)
+script = ExtResource("b9t_balcony")
+railing = 1
+clutter = 5
+variant = 5
+
+[node name="Tower4_Front6" type="Node3D" parent="Facades/Balconies"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18.5, 41.4, 30)
+script = ExtResource("b9t_balcony")
+railing = 1
+variant = 1
+
+[node name="Tower3_Left1" type="Node3D" parent="Facades/Balconies"]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 3, 41.4, 18.5)
+script = ExtResource("b9t_balcony")
+variant = 6
+
+[node name="Tower13_Left1" type="Node3D" parent="Facades/Balconies"]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 12, 39.4, -17.5)
+script = ExtResource("b9t_balcony")
+railing = 1
+clutter = 3
+variant = 0
+
+[node name="Foundation_Front1" type="Node3D" parent="Facades/Balconies"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -21, 20.395065, 30)
+script = ExtResource("b9t_balcony")
+variant = 1
+
+[node name="Tower13_Left2" type="Node3D" parent="Facades/Balconies"]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 12, 39.4, -23.5)
+script = ExtResource("b9t_balcony")
+clutter = 3
+variant = 5
+
+[node name="Tower2_Front1" type="Node3D" parent="Facades/Balconies"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 40.4, 30)
+script = ExtResource("b9t_balcony")
+clutter = 3
+variant = 3
+
+[node name="Tower13_Front1" type="Node3D" parent="Facades/Balconies"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21, 39.4, -14)
+script = ExtResource("b9t_balcony")
+clutter = 1
+variant = 0
+
+[node name="Tower11_Right1" type="Node3D" parent="Facades/Balconies"]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -12, 39.4, -18)
+script = ExtResource("b9t_balcony")
+railing = 1
+clutter = 3
+variant = 6
+
+[node name="Tower13_Front2" type="Node3D" parent="Facades/Balconies"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 39.4, -14)
+script = ExtResource("b9t_balcony")
+clutter = 3
+variant = 1
+
+[node name="Foundation_Front2" type="Node3D" parent="Facades/Balconies"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 27, 20.395065, 30)
+script = ExtResource("b9t_balcony")
+clutter = 3
+variant = 6
+
+[node name="Tower12_Right1" type="Node3D" parent="Facades/Balconies"]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 8, 39.4, -21.5)
+script = ExtResource("b9t_balcony")
+clutter = 1
+variant = 4
+
+[node name="Tower11_Right2" type="Node3D" parent="Facades/Balconies"]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -12, 39.4, -24)
+script = ExtResource("b9t_balcony")
+clutter = 5
+variant = 3
+
+[node name="Tower4_Left1" type="Node3D" parent="Facades/Balconies"]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 16, 32.4, 26.5)
+script = ExtResource("b9t_balcony")
+clutter = 2
+variant = 6
+
+[node name="Tower4_Left2" type="Node3D" parent="Facades/Balconies"]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 16, 35.4, 26.5)
+script = ExtResource("b9t_balcony")
+clutter = 4
+variant = 1
+
+[node name="Tower4_Left3" type="Node3D" parent="Facades/Balconies"]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 16, 38.4, 26.5)
+script = ExtResource("b9t_balcony")
+clutter = 5
+variant = 4
+
+[node name="Tower4_Left4" type="Node3D" parent="Facades/Balconies"]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 16, 41.4, 26.5)
+script = ExtResource("b9t_balcony")
+clutter = 2
+variant = 0
+
+[node name="BigPipes" type="Node3D" parent="Facades"]
+
+[node name="Tower1_Right3" type="Node3D" parent="Facades/BigPipes"]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -14, 29.5, 9.75)
+script = ExtResource("r3_pipe_run")
+points = PackedVector3Array(0, 0, -0.05, 0, 0, 0.44, 0, 22.9, 0.44, 0, 22.9, -0.7, 0, 22.4, -0.7)
+radius = 0.34
+fitting_material = ExtResource("5_1un0n")
+bracket_every = 2.5
+wall_side = Vector3(0, 0, -1)
+wall_gap = 0.1
+draw_distance = 160.0
+
+[node name="Tower3_Back2" type="Node3D" parent="Facades/BigPipes"]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 13.5, 34.3, 13)
+script = ExtResource("r3_pipe_run")
+points = PackedVector3Array(0, 0, -0.05, 0, 0, 0.45, 0, 14.1, 0.45, 0, 14.1, -0.7, 0, 13.6, -0.7)
+radius = 0.35
+material = ExtResource("r3_paint_teal")
+fitting_material = ExtResource("5_1un0n")
+bracket_every = 2.5
+wall_side = Vector3(0, 0, -1)
+wall_gap = 0.1
+draw_distance = 160.0
+
+[node name="Tower3_BackBranch1" type="Node3D" parent="Facades/BigPipes"]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 13.5, 44.77, 13)
+script = ExtResource("r3_pipe_run")
+points = PackedVector3Array(0, 0, 0.45, 3, 0, 0.45, 3, 0, -0.05)
+radius = 0.24
+material = ExtResource("r3_paint_teal")
+fitting_material = ExtResource("5_1un0n")
+bracket_every = 2.5
+wall_side = Vector3(0, 0, -1)
+wall_gap = 0.1
+draw_distance = 160.0
+
+[node name="Tower3_Left2" type="Node3D" parent="Facades/BigPipes"]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 3, 39.8, 13.5)
+script = ExtResource("r3_pipe_run")
+points = PackedVector3Array(0, 0, -0.05, 0, 0, 0.44, 0, 8.6, 0.44, 0, 8.6, -0.7, 0, 8.1, -0.7)
+radius = 0.34
+material = ExtResource("r3_paint_teal")
+fitting_material = ExtResource("5_1un0n")
+bracket_every = 2.5
+wall_side = Vector3(0, 0, -1)
+wall_gap = 0.1
+draw_distance = 160.0
+
+[node name="Tower13_Front3" type="Node3D" parent="Facades/BigPipes"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.75, 35.6, -14)
+script = ExtResource("r3_pipe_run")
+points = PackedVector3Array(0, 0, -0.05, 0, 0, 0.55, 0, 28.800001, 0.55, 0, 28.800001, -0.7, 0, 28.300001, -0.7)
+radius = 0.45
+fitting_material = ExtResource("5_1un0n")
+bracket_every = 2.5
+wall_side = Vector3(0, 0, -1)
+wall_gap = 0.1
+draw_distance = 160.0
+
+[node name="Tower13_FrontBranch1" type="Node3D" parent="Facades/BigPipes"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.75, 45.87, -14)
+script = ExtResource("r3_pipe_run")
+points = PackedVector3Array(0, 0, 0.55, 3, 0, 0.55, 3, 0, -0.05)
+radius = 0.32
+fitting_material = ExtResource("5_1un0n")
+bracket_every = 2.5
+wall_side = Vector3(0, 0, -1)
+wall_gap = 0.1
+draw_distance = 160.0
+
+[node name="Tower12_Front2" type="Node3D" parent="Facades/BigPipes"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 35.6, -16)
+script = ExtResource("r3_pipe_run")
+points = PackedVector3Array(0, 0, -0.05, 0, 0, 0.55, 0, 22.8, 0.55, 0, 22.8, -0.7, 0, 22.3, -0.7)
+radius = 0.45
+material = ExtResource("r3_paint_teal")
+fitting_material = ExtResource("5_1un0n")
+bracket_every = 2.5
+wall_side = Vector3(0, 0, -1)
+wall_gap = 0.1
+draw_distance = 160.0
+
+[node name="Tower11_Right3" type="Node3D" parent="Facades/BigPipes"]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -12, 35.6, -12.75)
+script = ExtResource("r3_pipe_run")
+points = PackedVector3Array(0, 0, -0.05, 0, 0, 0.55, 0, 34.8, 0.55, 0, 34.8, -0.7, 0, 34.3, -0.7)
+radius = 0.45
+material = ExtResource("r3_paint_teal")
+fitting_material = ExtResource("5_1un0n")
+bracket_every = 2.5
+wall_side = Vector3(0, 0, -1)
+wall_gap = 0.1
+draw_distance = 160.0
+
+[node name="Tower4_Back6" type="Node3D" parent="Facades/BigPipes"]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 29.5, 27.6, 14)
+script = ExtResource("r3_pipe_run")
+points = PackedVector3Array(0, 0, -0.05, 0, 0, 0.45, 0, 32.8, 0.45, 0, 32.8, -0.7, 0, 32.3, -0.7)
+radius = 0.35
+material = ExtResource("r3_paint_teal")
+fitting_material = ExtResource("5_1un0n")
+bracket_every = 2.5
+wall_side = Vector3(0, 0, -1)
+wall_gap = 0.1
+draw_distance = 160.0
+
+[node name="Tower11_Front3" type="Node3D" parent="Facades/BigPipes"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -29.25, 35.6, -12)
+script = ExtResource("r3_pipe_run")
+points = PackedVector3Array(0, 0, -0.05, 0, 0, 0.44, 0, 34.8, 0.44, 0, 34.8, -0.7, 0, 34.3, -0.7)
+radius = 0.34
+material = ExtResource("r3_pipe_rust")
+fitting_material = ExtResource("5_1un0n")
+bracket_every = 2.5
+wall_side = Vector3(0, 0, -1)
+wall_gap = 0.1
+draw_distance = 160.0
+
+[node name="Tower5_Left4" type="Node3D" parent="Facades/BigPipes"]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 23, 34.85, 8.25)
+script = ExtResource("r3_pipe_run")
+points = PackedVector3Array(0, 0, -0.05, 0, 0, 0.44, 0, 15.550001, 0.44, 0, 15.550001, -0.7, 0, 15.050001, -0.7)
+radius = 0.34
+fitting_material = ExtResource("5_1un0n")
+bracket_every = 2.5
+wall_side = Vector3(0, 0, -1)
+wall_gap = 0.1
+draw_distance = 160.0
+
+[node name="Tower3_Front3" type="Node3D" parent="Facades/BigPipes"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.5, 36.1, 30)
+script = ExtResource("r3_pipe_run")
+points = PackedVector3Array(0, 0, -0.05, 0, 0, 0.44, 0, 12.300001, 0.44, 0, 12.300001, -0.7, 0, 11.800001, -0.7)
+radius = 0.34
+material = ExtResource("r3_paint_teal")
+fitting_material = ExtResource("5_1un0n")
+bracket_every = 2.5
+wall_side = Vector3(0, 0, -1)
+wall_gap = 0.1
+draw_distance = 160.0
+
+[node name="Tower3_FrontBranch1" type="Node3D" parent="Facades/BigPipes"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.5, 41.760002, 30)
+script = ExtResource("r3_pipe_run")
+points = PackedVector3Array(0, 0, 0.44, 6, 0, 0.44, 6, 0, -0.05)
+radius = 0.24
+material = ExtResource("r3_paint_teal")
+fitting_material = ExtResource("5_1un0n")
+bracket_every = 2.5
+wall_side = Vector3(0, 0, -1)
+wall_gap = 0.1
+draw_distance = 160.0
+
+[node name="Tower4_Front7" type="Node3D" parent="Facades/BigPipes"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 29.5, 24.5, 30)
+script = ExtResource("r3_pipe_run")
+points = PackedVector3Array(0, 0, -0.05, 0, 0, 0.4, 0, 35.9, 0.4, 0, 35.9, -0.7, 0, 35.4, -0.7)
+radius = 0.3
+square = true
+material = ExtResource("r3_pipe_rust")
+fitting_material = ExtResource("5_1un0n")
+bracket_every = 2.5
+wall_side = Vector3(0, 0, -1)
+wall_gap = 0.1
+draw_distance = 160.0
+
+[node name="Tower1_Front7" type="Node3D" parent="Facades/BigPipes"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15, 24.5, 30)
+script = ExtResource("r3_pipe_run")
+points = PackedVector3Array(0, 0, -0.05, 0, 0, 0.48, 0, 27.9, 0.48, 0, 27.9, -0.7, 0, 27.4, -0.7)
+radius = 0.38
+square = true
+material = ExtResource("r3_paint_teal")
+fitting_material = ExtResource("5_1un0n")
+bracket_every = 2.5
+wall_side = Vector3(0, 0, -1)
+wall_gap = 0.1
+draw_distance = 160.0
+
+[node name="Tower5_Front2" type="Node3D" parent="Facades/BigPipes"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 29, 27.6, 9)
+script = ExtResource("r3_pipe_run")
+points = PackedVector3Array(0, 0, -0.05, 0, 0, 0.44, 0, 22.8, 0.44, 0, 22.8, -0.7, 0, 22.3, -0.7)
+radius = 0.34
+fitting_material = ExtResource("5_1un0n")
+bracket_every = 2.5
+wall_side = Vector3(0, 0, -1)
+wall_gap = 0.1
+draw_distance = 160.0
+
+[node name="Tower1_Back1" type="Node3D" parent="Facades/BigPipes"]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, -29, 39.6, 9)
+script = ExtResource("r3_pipe_run")
+points = PackedVector3Array(0, 0, -0.05, 0, 0, 0.4, 0, 12.8, 0.4, 0, 12.8, -0.7, 0, 12.3, -0.7)
+radius = 0.3
+fitting_material = ExtResource("5_1un0n")
+bracket_every = 2.5
+wall_side = Vector3(0, 0, -1)
+wall_gap = 0.1
+draw_distance = 160.0
+
+[node name="Tower1_BackBranch1" type="Node3D" parent="Facades/BigPipes"]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, -29, 45.620003, 9)
+script = ExtResource("r3_pipe_run")
+points = PackedVector3Array(0, 0, 0.4, -6, 0, 0.4, -6, 0, -0.05)
+radius = 0.21
+fitting_material = ExtResource("5_1un0n")
+bracket_every = 2.5
+wall_side = Vector3(0, 0, -1)
+wall_gap = 0.1
+draw_distance = 160.0
+
+[node name="Tower12_Left1" type="Node3D" parent="Facades/BigPipes"]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -8, 35.6, -16.5)
+script = ExtResource("r3_pipe_run")
+points = PackedVector3Array(0, 0, -0.05, 0, 0, 0.4, 0, 22.8, 0.4, 0, 22.8, -0.7, 0, 22.3, -0.7)
+radius = 0.3
+square = true
+fitting_material = ExtResource("5_1un0n")
+bracket_every = 2.5
+wall_side = Vector3(0, 0, -1)
+wall_gap = 0.1
+draw_distance = 160.0
+
+[node name="Tower12_LeftBranch1" type="Node3D" parent="Facades/BigPipes"]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -8, 39.72, -16.5)
+script = ExtResource("r3_pipe_run")
+points = PackedVector3Array(0, 0, 0.4, -6, 0, 0.4, -6, 0, -0.05)
+radius = 0.21
+square = true
+fitting_material = ExtResource("5_1un0n")
+bracket_every = 2.5
+wall_side = Vector3(0, 0, -1)
+wall_gap = 0.1
+draw_distance = 160.0
+
+[node name="Tower4_Left5" type="Node3D" parent="Facades/BigPipes"]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 16, 51.6, 29)
+script = ExtResource("r3_pipe_run")
+points = PackedVector3Array(0, 0, -0.05, 0, 0, 0.55, 0, 8.8, 0.55, 0, 8.8, -0.7, 0, 8.3, -0.7)
+radius = 0.45
+material = ExtResource("r3_pipe_rust")
+fitting_material = ExtResource("5_1un0n")
+bracket_every = 2.5
+wall_side = Vector3(0, 0, -1)
+wall_gap = 0.1
+draw_distance = 160.0
+
+[node name="Tower4_LeftBranch1" type="Node3D" parent="Facades/BigPipes"]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 16, 56.87, 29)
+script = ExtResource("r3_pipe_run")
+points = PackedVector3Array(0, 0, 0.55, -3, 0, 0.55, -3, 0, -0.05)
+radius = 0.32
+material = ExtResource("r3_pipe_rust")
+fitting_material = ExtResource("5_1un0n")
+bracket_every = 2.5
+wall_side = Vector3(0, 0, -1)
+wall_gap = 0.1
+draw_distance = 160.0
+
+[node name="Tower2_Left1" type="Node3D" parent="Facades/BigPipes"]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -12, 27.6, 29)
+script = ExtResource("r3_pipe_run")
+points = PackedVector3Array(0, 0, -0.05, 0, 0, 0.55, 0, 16.8, 0.55, 0, 16.8, -0.7, 0, 16.3, -0.7)
+radius = 0.45
+square = true
+material = ExtResource("r3_pipe_rust")
+fitting_material = ExtResource("5_1un0n")
+bracket_every = 2.5
+wall_side = Vector3(0, 0, -1)
+wall_gap = 0.1
+draw_distance = 160.0
+
+[node name="Tower2_LeftBranch1" type="Node3D" parent="Facades/BigPipes"]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -12, 34.87, 29)
+script = ExtResource("r3_pipe_run")
+points = PackedVector3Array(0, 0, 0.55, -3, 0, 0.55, -3, 0, -0.05)
+radius = 0.32
+square = true
+material = ExtResource("r3_pipe_rust")
+fitting_material = ExtResource("5_1un0n")
+bracket_every = 2.5
+wall_side = Vector3(0, 0, -1)
+wall_gap = 0.1
+draw_distance = 160.0
+
+[node name="Tower5_Back1" type="Node3D" parent="Facades/BigPipes"]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 24, 35.6, -9)
+script = ExtResource("r3_pipe_run")
+points = PackedVector3Array(0, 0, -0.05, 0, 0, 0.48, 0, 14.8, 0.48, 0, 14.8, -0.7, 0, 14.3, -0.7)
+radius = 0.38
+square = true
+fitting_material = ExtResource("5_1un0n")
+bracket_every = 2.5
+wall_side = Vector3(0, 0, -1)
+wall_gap = 0.1
+draw_distance = 160.0
+
+[node name="Tower5_BackBranch1" type="Node3D" parent="Facades/BigPipes"]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 24, 46.8, -9)
+script = ExtResource("r3_pipe_run")
+points = PackedVector3Array(0, 0, 0.48, -3, 0, 0.48, -3, 0, -0.05)
+radius = 0.27
+square = true
+fitting_material = ExtResource("5_1un0n")
+bracket_every = 2.5
+wall_side = Vector3(0, 0, -1)
+wall_gap = 0.1
+draw_distance = 160.0
+
+[node name="Tower1_Left1" type="Node3D" parent="Facades/BigPipes"]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -30, 24.5, 29.25)
+script = ExtResource("r3_pipe_run")
+points = PackedVector3Array(0, 0, -0.05, 0, 0, 0.44, 0, 27.9, 0.44, 0, 27.9, -0.7, 0, 27.4, -0.7)
+radius = 0.34
+fitting_material = ExtResource("5_1un0n")
+bracket_every = 2.5
+wall_side = Vector3(0, 0, -1)
+wall_gap = 0.1
+draw_distance = 160.0
+
+[node name="Tower1_LeftBranch1" type="Node3D" parent="Facades/BigPipes"]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -30, 45.671112, 29.25)
+script = ExtResource("r3_pipe_run")
+points = PackedVector3Array(0, 0, 0.44, -3, 0, 0.44, -3, 0, -0.05)
+radius = 0.24
+fitting_material = ExtResource("5_1un0n")
+bracket_every = 2.5
+wall_side = Vector3(0, 0, -1)
+wall_gap = 0.1
+draw_distance = 160.0
+
+[node name="Tower12_Right2" type="Node3D" parent="Facades/BigPipes"]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 8, 35.6, -29.5)
+script = ExtResource("r3_pipe_run")
+points = PackedVector3Array(0, 0, -0.05, 0, 0, 0.44, 0, 22.8, 0.44, 0, 22.8, -0.7, 0, 22.3, -0.7)
+radius = 0.34
+square = true
+material = ExtResource("r3_pipe_rust")
+fitting_material = ExtResource("5_1un0n")
+bracket_every = 2.5
+wall_side = Vector3(0, 0, -1)
+wall_gap = 0.1
+draw_distance = 160.0

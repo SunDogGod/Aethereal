@@ -1,7 +1,8 @@
 """The Agency captain: the boss of the Empty Town. Taller and broader than his agents, with only his
 LEFT arm (the right is gone at the shoulder: the uniform's sleeve is folded and pinned over the
 stump). He wears his white Agency coat draped around his shoulders like a cape, sleeves hanging
-empty, over a dark uniform and breastplate. The helmet is the Agency's, with a tall crimson crest.
+empty, over a dark uniform and breastplate. Bare-headed (agency_heads.py): an older, hard face, grey
+hair slicked back, and the officers' eyepiece over his left eye, its lens glowing like a visor.
 He fights with his one fist (captain_fists.py, mirrored onto his left by captain_anims.py); in
 the hall Kael cuts that arm off above the elbow: the arm below the cut is its own mesh,
 "Severable", over a hidden "Stump" cap (captain_story.py).
@@ -27,6 +28,8 @@ import pose                   # noqa: E402
 import rig as rigmod          # noqa: E402
 import agency_parts as ap     # noqa: E402
 import agent                  # noqa: E402
+import agency_heads as ah     # noqa: E402
+import face                   # noqa: E402
 import captain_gear as gear   # noqa: E402
 import captain_anims          # noqa: E402
 import captain_story          # noqa: E402
@@ -34,13 +37,24 @@ from agency_parts import C, at_z, shell, limb_shell  # noqa: E402
 from paint import rgb, shade  # noqa: E402
 
 HEIGHT, SHOULDERS = 1.95, 1.16
-HELM_SCALE = 1.12
+# His face (face.py): past fifty, weathered and hard: a long, strong nose, deep-set pale eyes under
+# heavy brows drawn down, hollow cheeks, a square jaw, a thin mouth turned down, grey stubble.
+FACE_C = {k: rgb(v) for k, v in {"skin": "#c49271", "hair": "#8e8c88", "brow": "#6f6c68", "iris": "#6e7f88",
+                                 "lip": "#9a6658", "lash": "#2a2321"}.items()}
+HEAD = [(0.000, 0.046, 0.036, 0.030, 0.030, 2.5), (0.016, 0.030, 0.058, 0.062, 0.052, 2.6),
+        (0.044, 0.016, 0.068, 0.079, 0.074, 2.6)] + body.HEAD_ROWS[3:]
+FACE = face.look(face.MAN, rows=HEAD, scale=1.06, eye_h=0.0050, eye_lo=0.0036, iris_r=0.0056, eye_tilt=-0.0002,
+                 brow_z0=0.1165, brow_z1=0.1225, brow_arch=0.0006, brow_thick=0.0046, brow_ridge=0.0058,
+                 socket=0.0070, nose=0.022, nose_bridge=0.0065, nose_w=5.6, cheek=0.0045, hollow=0.0045,
+                 jaw=0.0065, chin=0.0072, chin_w=15.0, lip_h_up=0.0016, lip_h_lo=0.0024, smile=-0.0008,
+                 lip_sat=0.2, age=0.85, stubble=0.45, skin=FACE_C["skin"], hair=FACE_C["hair"],
+                 brow=FACE_C["brow"], lash_col=FACE_C["lash"], iris=FACE_C["iris"], lip=FACE_C["lip"])
+HAIRLINE = ah.receding(lambda th: bb.hair_line(th) - 0.004)
 K = {k: rgb(v) for k, v in {           # the coat: near-white (tinted in game) with crimson painted in
     "cloth": "#f2f2ef", "fold": "#d2d2ce", "seam": "#a0a09b", "lining": "#6e1414", "lining_dk": "#4a0d0d",
     "band": "#7a1616", "dust": "#ab9f8a", "grime": "#80766a", "gold": "#e8e4dc"}.items()}
 U = {k: rgb(v) for k, v in {           # the dark uniform under it
-    "cloth": "#1d1f26", "fold": "#2a2d36", "seam": "#101116", "pin": "#9a8a5c", "crest": "#7d1512",
-    "crest_hi": "#a3221b", "wrap": "#5a1210"}.items()}
+    "cloth": "#1d1f26", "fold": "#2a2d36", "seam": "#101116", "pin": "#9a8a5c", "wrap": "#5a1210"}.items()}
 # The uniform tunic: the agent's coat torso, and a shorter skirt (to mid-thigh).
 TUNIC = agent.COAT_TORSO
 TUNIC_SKIRT = [r for r in agent.SKIRT if r[0] >= 0.62]
@@ -64,18 +78,18 @@ def forward_grip_left(ch):
 
 
 def build():
-    ch = cb.Character("captain", height=HEIGHT, shoulders=SHOULDERS)
+    ch = cb.Character("captain", height=HEIGHT, shoulders=SHOULDERS, atlas_size=512)
     forward_grip_left(ch)
     J, A = ch.J, ch.atlas
     P, T, M = ch.part("Body"), ch.part("Coat"), ch.part("Trim")
     s = J["height"] / 1.72
     R = {n: A.rect(n, w, h) for n, w, h in (
-        ("helm", 128, 72), ("cape", 112, 72), ("cuirass", 96, 48), ("tskirt", 64, 32), ("sleeve", 48, 40),
+        ("cape", 112, 72), ("cuirass", 96, 48), ("tskirt", 64, 32), ("sleeve", 48, 40),
         ("boot", 48, 40), ("tunic", 32, 32), ("trousers", 40, 32), ("foot", 40, 24), ("csleeve", 32, 40),
         ("gauntlet", 32, 24), ("collar", 48, 16), ("lame", 32, 12), ("hand", 24, 16), ("belt", 64, 8),
         ("stump", 24, 16), ("knee", 16, 16), ("pouch", 16, 12), ("neck", 16, 12), ("lining", 8, 8),
-        ("tlining", 8, 8), ("plate_in", 8, 8), ("buckle", 8, 8), ("visor", 16, 8), ("crest", 16, 8),
-        ("disc", 8, 8), ("trim", 16, 8), ("board", 16, 8), ("fringe", 16, 8), ("cut", 8, 8))}
+        ("tlining", 8, 8), ("plate_in", 8, 8), ("buckle", 8, 8), ("trim", 16, 8), ("board", 16, 8),
+        ("fringe", 16, 8), ("cut", 8, 8))}
     arm = (body.arm_joints(J), ("UpperArm_R", "LowerArm_R"))
 
     # --- The dark uniform: tunic, its skirt, the left sleeve, the pinned stump on the right.
@@ -101,12 +115,8 @@ def build():
         ap.left_only(P, lambda t0=t0: limb_shell(P, J, *arm, R["lame"], [(t0, 0.073, 0.074), (t0 + 0.15, 0.080, 0.081)],
                                                  (55, 305), lining=R["plate_in"]))
     agent.belt(P, J, R, TUNIC, TUNIC_SKIRT, pouches=(148,))   # the others would push through the coat
-    # --- Helmet with the tall crest; neck under the collar.
-    body.neck(P, J, R["neck"], r=0.054)
-    head = body.Head(J, rows=ap.HELM, brow=0.0, scale=HELM_SCALE)
-    head.build(P, R["helm"], segs=20)
-    ap.crest(P, head, R["crest"], tall=2.6)
-    bb.mirrored(P, lambda: ap.disc(P, head, R["disc"]))
+    # --- Bare-headed: face, slicked grey hair, the eyepiece (agency_heads.py); neck under the collar.
+    ah.officer_head(ch, P, FACE, ah.SLICKED, HAIRLINE)
     # --- His one gauntlet and fist, legs and boots.
     ap.left_only(P, lambda: body.limb(P, J, *arm, R["gauntlet"], agent.GAUNTLET, hand_bone="Hand_R"))
     ap.left_only(P, lambda: body.fist(P, J, R["hand"], size=1.12))
@@ -116,16 +126,13 @@ def build():
     gear.collar(T, J, R["collar"], R["lining"])
     gear.empty_sleeves(T, M, J, R["csleeve"], R["trim"])
     gear.epaulettes(M, J, R["board"], R["fringe"])
-    paint(R, head)
-    ap.visor(ch, head, R["visor"])
+    paint(R)
     captain_story.split_arm(ch, R["cut"])   # the arm below the cut: its own mesh, and the stump cap
     captain_story.paint_stump(R["cut"], U["cloth"], K["lining_dk"])
     return ch
 
 
-def paint(R, head):
-    ap.paint_helm(R, head, crest_col=U["crest"])
-    R["crest"].hline(0.7, U["crest_hi"])
+def paint(R):
     agent.paint_armour(R)
     agent.paint_lower(R)
     # The uniform.
@@ -173,8 +180,6 @@ def paint(R, head):
     f.fill(K["gold"])
     for k in range(8):
         f.vline(0.06 + k * 0.125, K["seam"])
-    R["disc"].fill(C["plate"])
-    R["disc"].box(0.3, 0.3, 0.7, 0.7, C["plate_hi"])
 
 
 animations = captain_anims.animations

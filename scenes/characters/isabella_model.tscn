@@ -8,7 +8,7 @@
 resource_name = "isabella_props_BrushMesh"
 _surfaces = [{
 "aabb": AABB(-0.0125, -0.010825317, -0.285, 0.025, 0.021650635, 0.39),
-"attribute_data": PackedByteArray("f9d/vqncf7ep3H++f9d/txTaf77U4X+31OF/vj/ff77/5n+3/+Z/vmnkf74p7H+3Kex/vpTpf75U8X+3VPF/vr/uf75/9n+3f/Z/vunzf75/AX/gqgJ/2aoCf+B/AX/Z1QN/2dUDf+D/BH/Z/wR/4CoGf9kqBn/gVQd/2VUHf+B/CH/Zfwh/4H8Lf+T/Dbnf/w1/5H8Lud9/ELnffxB/5P8Nf9l/C3/Zvwx/2X8Qf9k/D3/Z/xK53/8Sf+T/En/ZvxF/2X8Vud9/FX/kfxV/2T8Uf9n/F7nf/xd/5P8Xf9m/Fn/Zfxq5338af+R/Gn/ZPxl/2Q=="),
+"attribute_data": PackedByteArray("vy8/YlUyv15VMj9ivy+/XgoxP2LqNL9e6jQ/Yp8zP2J/N79efzc/YjU2P2IVOr9eFTo/Yso4P2KqPL9eqjw/Yl87P2I/P79ePz8/YvU9P2K/QD9iVUG/XlVBP2K/QL9e6kG/XupBP2J/Qr9ef0I/YhVDv14VQz9iqkO/XqpDP2I/RL9eP0Q/Yr9FP2T/Rtxh/0Y/ZL9F3GE/SNxhP0g/ZP9Gv16/Rb9eX0a/Xj9Iv16fR79ef0ncYX9JP2R/Sb9e30i/Xr9K3GG/Sj9kv0q/Xh9Kv17/S9xh/0s/ZP9Lv15fS79eP03cYT9NP2Q/Tb9en0y/Xg=="),
 "format": 34896613399,
 "index_count": 180,
 "index_data": PackedByteArray("AAABAAIAAAADAAEAAgAEAAAAAgABAAUAAgAFAAYABgAHAAIABgAFAAgABgAIAAkACQAKAAYACQAIAAsACQALAAwADAANAAkADAALAA4ADAAOAA8ADwAQAAwADwAOABEADwARABIAEgATAA8AFAAVABYAFAAXABUAFgAVABgAFgAYABkAGQAYABoAGQAaABsAGwAaABwAGwAcAB0AHQAcAB4AHQAeAB8AHwAeACAAHwAgACEAIgAjACQAIgAlACMAJAAjACYAJAAmACcAJQAoACMAJQApACgAKQAqACgAIwAoACsAIwArACYAKAAsACsAJwAmAC0AJwAtAC4AJgArAC8AJgAvAC0AKwAwAC8ALgAtADEALgAxADIALQAvADMALQAzADEALwA0ADMAMgAxADUAMgA1ADYAMQAzADcAMQA3ADUAMwA4ADcANgA1ADkANgA5ADoANQA7ADkANQA3ADsANwA8ADsA"),
@@ -25,7 +25,7 @@ blend_shape_mode = 0
 resource_name = "isabella_props_BellMesh"
 _surfaces = [{
 "aabb": AABB(-0.067999996, -0.03211927, -0.0453052, 0.076, 0.07680167, 0.12694699),
-"attribute_data": PackedByteArray("fx1/4OYef9nmHn/gfx1/2Uwgf9lMIH/gsyF/2bMhf+AZI3/ZGSN/4H8kf9l/JH/gfx1/4Koef9mqHn/gFR5/4H8df9kVHn/Z1R9/2T8ff9nVH3/gPx9/4P8gf9lqIH/Z/yB/4Gogf+AqIn/ZlSF/2Soif+CVIX/gVSN/2b8if9lVI3/gvyJ/4H8kf9nqI3/ZfyR/4Oojf+B/J3/ozCnI5swpf+imKH/ofyfI5swpEeV/JxHlGSzI5swp7OJ/J+ziGSwR5Rks7OLMKTXefyc13hksNd7MKTbbfyc22xksNtvMKSPafycj2hksI9rMKX/Zfyd/2aYof9kZLH/Z8yp/2WYuf9k/LX/ZZi4j2rMwf9mML3/ZZi4227MwI9r/Mn/Z2TF/2bMwNttmLjXe/zIj2mYu7OKzMDXe/zI220w1f9kmNH/ZTDUj2pk3f9lyNn/ZTDU22/8yNd6ZNyPa5jl/2b84f9mZNzbbszDs4kw1Nd7/MuziZi4R5bMwEeVmLsjmGSx/6PMqf+hmLn/oPy1/6LMwyOb/MhHlszB/6Iwvf+j/MsjmTDXs4kw1EeX/Mn/o2TF/6Ew1yOaZNzXemTfs4pk3EeVMNX/oJjR/6Jk3yObmOezimTd/6HI2f+jmORHl5jnI5uY5f+i/OH/o5jk13jI87OIyPBHlMjzI5jI8f+gMO3/ofz4R5X8+7OJ/Psjmfz5/6Fk9f+h/PjXeMjw13n8+NtsyPDbbfz4j2uY5NtsyPCPafz5/2eY5I9oyPH/ZWT1/2Qw7f9k="),
+"attribute_data": PackedByteArray("v04/YnJPv15yTz9iv06/XiZQv14mUD9i2VC/XtlQP2KMUb9ejFE/Yj9Sv14/Uj9iv04/YlVPv15VTz9iCk8/Yr9Ov14KT79e6k+/Xp9Pv17qTz9in08/Yn9Qv141UL9ef1A/YjVQP2IVUb9eylC/XhVRP2LKUD9iqlG/Xl9Rv16qUT9iX1E/Yj9Sv171Ub9eP1I/YvVRP2K/Uz9m5lRkZeZUP2ZSVD9mv1NkZeZUiGS/U4hkDFZkZeZUdmO/U3ZjDFaIZAxWdmPmVBthv1MbYQxWG2HmVJtfv1ObXwxWm1/mVBFfv1MRXwxWEV/mVL9ev1O/XlJUv14MVr9eeVW/XjJXv16fVr9eMlcRX1lYv17GV79eMlebX1lYEV9/Wb9e7Fi/XllYm18yVxthf1kRXzJXdmNZWBthf1mbX6Zav14SWr9eploRX8xbv145W79eplqbX39ZG2HMWxFf8ly/Xl9cv17MW5tfWVh2Y6ZaG2F/WXZjMleIZFlYiGQyV2RlDFY/ZnlVP2YyVz9mn1Y/ZllYZGV/WYhkWVg/ZsZXP2Z/WWRlplp2Y6ZaiGR/WT9m7Fg/ZqZaZGXMWxthzFt2Y8xbiGSmWj9mElo/ZsxbZGXyXHZjzFs/ZjlbP2byXIhk8lxkZfJcP2ZfXD9m8lwbYRledmMZXohkGV5kZRleP2aGXT9mP1+IZD9fdmM/X2RlP18/ZqxeP2Y/XxthGV4bYT9fm18ZXptfP18RX/Jcm18ZXhFfP1+/XvJcEV8ZXr9erF6/XoZdv14="),
 "format": 34896613399,
 "index_count": 582,
 "index_data": PackedByteArray("AAABAAIAAAADAAEAAgABAAQAAgAEAAUABQAEAAYABQAGAAcABwAGAAgABwAIAAkACQAIAAoACQAKAAsADAANAA4ADgAPAAwADAAQAA0AEAARAA0ADgANABIADQATABIADgASABQAFAAVAA4AFAASABYAEgAXABYAFAAWABgAGAAZABQAGAAWABoAFgAbABoAGAAaABwAHAAdABgAHAAaAB4AGgAfAB4AHAAeACAAIAAhABwAIAAeACIAHgAjACIAIAAiACQAJAAlACAAJgAnACgAKAApACYAJgAqACcAKgArACcAKgAsACsAKAAnAC0ALAAuACsALAAvAC4AJwArADAAJwAwAC0AKwAuADEAKwAxADAALwAyAC4ALwAzADIALgA0ADEALgAyADQAMwA1ADIAMwA2ADUAMgA3ADQAMgA1ADcANgA4ADUANgA5ADgANQA6ADcANQA4ADoAOQA7ADgAOQA8ADsAPAA9ADsAOAA7AD4AOAA+ADoAOwA/AD4AOgA+AEAAPgBBAEAAOgBAAEIANwA6AEIAQgBAAEMAQABEAEMANwBCAEUANAA3AEUAQgBDAEYARQBCAEYARgBDAEcAQwBIAEcARQBGAEkANABFAEoASgBFAEkAMQA0AEoASQBGAEsARgBHAEsAMQBKAEwAMAAxAEwASgBJAE0ATABKAE0ASQBLAE4ATQBJAE4ASwBHAE8ARwBQAE8ATgBLAFEASwBPAFEAUQBPAFIATwBTAFIATgBRAFQATQBOAFUAVQBOAFQAUQBSAFYAVABRAFYAVgBSAFcAUgBYAFcAVABWAFkAWgBNAFUATABNAFoAVQBUAFsAWwBUAFkAWgBVAFwAXABVAFsAXQBMAFoAMABMAF0ALQAwAF0AXQBaAF4AXgBaAFwALQBdAF8AXwBdAF4AYAAtAF8AKAAtAGAAYABhACgAYABfAGIAYgBjAGAAXwBeAGQAYgBfAGQAZABeAGUAXgBcAGUAYgBkAGYAZgBnAGIAZABlAGgAZgBkAGgAZQBcAGkAXABbAGkAaABlAGoAZQBpAGoAZgBoAGsAawBsAGYAaABqAG0AawBoAG0AaQBbAG4AWwBZAG4AagBpAG8AaQBuAG8AbQBqAHAAagBvAHAAawBtAHEAcQByAGsAbQBwAHMAcQBtAHMAcABvAHQAcQBzAHUAdQB2AHEAcwBwAHcAcAB0AHcAdQBzAHgAcwB3AHgAdQB4AHkAeQB6AHUAbwB7AHQAbwBuAHsAdwB0AHwAeAB3AH0AdwB8AH0AeQB4AH4AeAB9AH4AeQB+AH8AfwCAAHkAfgB9AIEAfQCCAIEAfQB8AIIAfgCBAIMAfwB+AIMAfwCDAIQAhACFAH8AfACGAIIAfACHAIYAdACHAHwAhwCIAIYAdAB7AIcAhwCJAIgAewCJAIcAiQCKAIgAewCLAIkAbgCLAHsAbgBZAIsAiQCMAIoAiwCMAIkAjACNAIoAWQCOAIsAiwCOAIwAWQBWAI4AVgBXAI4AjgCPAIwAjACPAI0AjgBXAI8AjwCQAI0AVwCRAI8A"),
@@ -38,31 +38,31 @@ _surfaces = [{
 }]
 blend_shape_mode = 0
 
-[node name="IsabellaModel" type="Node3D" unique_id=1606826178]
+[node name="IsabellaModel" type="Node3D" unique_id=663401977]
 
-[node name="isabella" type="Node3D" parent="." unique_id=875004419 instance=ExtResource("1_a7e3v")]
+[node name="isabella" type="Node3D" parent="." unique_id=1983617457 instance=ExtResource("1_a7e3v")]
 
-[node name="Brush" type="BoneAttachment3D" parent="." unique_id=1044997331]
+[node name="Brush" type="BoneAttachment3D" parent="." unique_id=1949161811]
 bone_name = "Weapon_R"
 bone_idx = 18
 use_external_skeleton = true
 external_skeleton = NodePath("../isabella/Armature/Skeleton3D")
 
-[node name="BrushMesh" type="MeshInstance3D" parent="Brush" unique_id=680091283]
+[node name="BrushMesh" type="MeshInstance3D" parent="Brush" unique_id=1672696779]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0)
 layers = 2
 mesh = SubResource("ArrayMesh_7nuvy")
 
-[node name="Bell" type="BoneAttachment3D" parent="." unique_id=1763475403]
+[node name="Bell" type="BoneAttachment3D" parent="." unique_id=1602656369]
 bone_name = "Sheath"
 bone_idx = 3
 use_external_skeleton = true
 external_skeleton = NodePath("../isabella/Armature/Skeleton3D")
 
-[node name="BellMesh" type="MeshInstance3D" parent="Bell" unique_id=2074932567]
+[node name="BellMesh" type="MeshInstance3D" parent="Bell" unique_id=38763973]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0)
 layers = 2
 mesh = SubResource("ArrayMesh_dewqt")
 
-[node name="Animator" type="Node" parent="." unique_id=1098974194]
+[node name="Animator" type="Node" parent="." unique_id=1524486332]
 script = ExtResource("3_lfftr")

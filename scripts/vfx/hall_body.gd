@@ -1,19 +1,28 @@
 @tool
 extends StaticBody3D
-## A villager's body, wrapped in a sheet and tied, laid on the hall floor to wait for the fire.
-## Shown restrained on purpose: a shroud with rope bindings, no face, no wounds. The body lies
-## along its local Z axis (head toward -Z), origin on the floor. It is solid (a low box), so
-## nobody walks through it; when the story hides it ([hide Body2]: thrown on the fire) its
-## collision switches off too, and the bonfire (hall_bonfire.gd) flares and the cube pulses.
-## The same shape, charred, is drawn into the bonfire's own mesh by add_to().
+## A dead villager on the hall floor, waiting for the fire. Shown restrained on purpose: no faces,
+## no wounds. Either wrapped in a sheet and tied (`clothed` off), or lying face down in their own
+## clothes as they fell. The shape is hall_figure.gd's: head, trunk, arms and legs, so it reads as a
+## person. The body lies along its local Z axis (head toward -Z), origin on the floor. It is solid
+## (a low box), so nobody walks through it; when the story hides it ([hide Body2]: thrown on the
+## fire) its collision switches off too, and the bonfire (hall_bonfire.gd) flares and the Black
+## Cube takes the soul.
 
+const HallFigure := preload("res://scripts/vfx/hall_figure.gd")
 const PropMesh := preload("res://scripts/props/prop_mesh.gd")
+const SHADER := preload("res://shaders/ps1_surface.gdshader")
 const M := {
 	shroud = preload("res://materials/hall_shroud.tres"),
 	soiled = preload("res://materials/hall_shroud_soiled.tres"),
 	rope = preload("res://materials/hall_rope.tres"),
-	charred = preload("res://materials/hall_charred.tres"),
 }
+## Clothes for the villagers who are not wrapped yet: muted, worn colours.
+const TUNICS := [Color(0.36, 0.31, 0.24), Color(0.24, 0.28, 0.34), Color(0.4, 0.22, 0.18), Color(0.3, 0.33, 0.24)]
+const POSES := [
+	{},                                                      # 0: laid straight
+	{arm_r = 1, knee_l = 0.35, head_turn = 0.3},             # 1: fallen, one arm flung out
+	{arm_l = 2, arm_r = 1, knee_r = 0.5, head_turn = -0.4},  # 2: sprawled
+]
 
 ## Hidden by the story after the level settled: the bonfire listens and flares.
 signal thrown(body: Node3D)
@@ -28,11 +37,23 @@ signal thrown(body: Node3D)
 	set(value):
 		soiled = value
 		_rebuild()
-## Changes the small bends and the knots, so two bodies don't look identical.
+## Not wrapped yet: face down in their own clothes.
+@export var clothed := false:
+	set(value):
+		clothed = value
+		_rebuild()
+## How they lie: 0 laid straight, 1 one arm flung out, 2 sprawled.
+@export_range(0, 2) var pose := 0:
+	set(value):
+		pose = value
+		_rebuild()
+## Changes the small bends and the clothes, so two bodies don't look identical.
 @export var variant := 0:
 	set(value):
 		variant = value
 		_rebuild()
+
+static var _mats := {}  # colour -> a plain PS1 material, made once
 
 var _mesh := MeshInstance3D.new()
 var _shape := CollisionShape3D.new()
@@ -64,12 +85,18 @@ func _rebuild_now() -> void:
 	var pm := PropMesh.new()
 	var rng := RandomNumberGenerator.new()
 	rng.seed = 4073 * (variant + 1)
-	add_to(pm, Transform3D.IDENTITY, length, M.soiled if soiled else M.shroud, M.rope, rng)
+	var look := {cloth = M.soiled if soiled else M.shroud, rope = M.rope}
+	if clothed:
+		look = {tunic = plain(TUNICS[variant % TUNICS.size()]), trousers = plain(Color(0.17, 0.15, 0.13)),
+				skin = plain(Color(0.5, 0.39, 0.32)), hair = plain(Color(0.07, 0.055, 0.05))}
+	HallFigure.add(pm, Transform3D.IDENTITY, length, look, POSES[clampi(pose, 0, POSES.size() - 1)], rng)
 	_mesh.mesh = pm.commit()
 	var box := BoxShape3D.new()
-	box.size = Vector3(0.5, 0.3, length)
+	# Taller than the body: a 0.3 m box is low enough for the navmesh to think fighters can step
+	# onto it (they can't), so they would walk into it. 0.7 m is plainly an obstacle.
+	box.size = Vector3(0.55 if pose == 0 else 0.8, 0.7, length)
 	_shape.shape = box
-	_shape.position = Vector3(0, 0.15, 0)
+	_shape.position = Vector3(0, 0.35, 0)
 
 
 func _on_visibility_changed() -> void:
@@ -79,39 +106,11 @@ func _on_visibility_changed() -> void:
 		thrown.emit(self)
 
 
-## Draws one wrapped body into `pm` at `xf` (local Z = head to feet, origin on the floor).
-## `rope` may be null (burnt through). Used by the bonfire for the bodies already on the fire.
-static func add_to(pm: PropMesh, xf: Transform3D, body_len: float, cloth: Material, rope: Material,
-		rng: RandomNumberGenerator) -> void:
-	var bend := rng.randf_range(-0.1, 0.1)
-	var flat := Basis.from_scale(Vector3(1.0, 0.62, 1.0))
-	# The wrapped trunk and legs: one tapered roll from the shoulders to the ankles.
-	var z0 := -0.3 * body_len
-	var z1 := 0.42 * body_len
-	var roll := Basis(Vector3.UP, bend) * flat * Basis(Vector3.RIGHT, PI / 2)  # its Y axis runs to the feet
-	pm.cyl(cloth, 0.12, 0.21, z1 - z0, xf * Transform3D(roll, Vector3(0, 0.13, (z0 + z1) * 0.5)), 10)
-	# Rounded parts over it: [along (fraction), half width, half height, length].
-	var parts := [
-		[-0.43, 0.115, 0.105, 0.2],   # head
-		[-0.36, 0.1, 0.085, 0.14],    # neck
-		[-0.27, 0.225, 0.14, 0.3],    # shoulders
-		[0.02, 0.2, 0.13, 0.4],       # hips
-		[0.43, 0.12, 0.085, 0.16],    # feet
-	]
-	for p: Array in parts:
-		var along: float = p[0]
-		var c := Vector3(bend * along, p[2], along * body_len)
-		var s := Vector3(p[1] * 2.0, p[2] * 2.0, p[3] * body_len / 1.7)
-		var turn := Basis(Vector3.UP, rng.randf_range(-0.05, 0.05) + bend)
-		pm.sphere(cloth, 0.5, 1.0, xf * Transform3D(turn * Basis.from_scale(s), c), 10, 5)
-	# The sheet's loose end past the feet.
-	pm.box(cloth, Vector3(0.2, 0.03, 0.16), xf * Transform3D(Basis(Vector3.UP, 0.2 + bend), Vector3(bend * 0.5, 0.03, 0.52 * body_len)))
-	if rope == null:
-		return  # burnt through
-	# Bindings round the chest, the knees and the ankles.
-	var ties := [[-0.2, 0.225, 0.14], [0.2, 0.17, 0.115], [0.37, 0.135, 0.09]]
-	for t: Array in ties:
-		var along: float = t[0]
-		var c := Vector3(bend * along, t[2], along * body_len)
-		var band := Basis(Vector3.UP, bend) * Basis.from_scale(Vector3(t[1] * 1.05, t[2] * 1.05, 1.0)) * Basis(Vector3.RIGHT, PI / 2)
-		pm.ring(rope, 0.97, 1.03, xf * Transform3D(band, c), 10, 4)
+## A plain PS1 material in one colour (shared between bodies).
+static func plain(color: Color) -> ShaderMaterial:
+	if not _mats.has(color):
+		var m := ShaderMaterial.new()
+		m.shader = SHADER
+		m.set_shader_parameter("albedo_color", color)
+		_mats[color] = m
+	return _mats[color]

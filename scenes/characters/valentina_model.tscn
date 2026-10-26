@@ -3,9 +3,9 @@
 [ext_resource type="PackedScene" path="res://models/characters/valentina.glb" id="1_4870s"]
 [ext_resource type="Script" path="res://scripts/character_animator.gd" id="2_eytir"]
 
-[node name="ValentinaModel" type="Node3D" unique_id=1943503546]
+[node name="ValentinaModel" type="Node3D" unique_id=1714916336]
 
-[node name="valentina" type="Node3D" parent="." unique_id=14958027 instance=ExtResource("1_4870s")]
+[node name="valentina" type="Node3D" parent="." unique_id=1756873941 instance=ExtResource("1_4870s")]
 
-[node name="Animator" type="Node" parent="." unique_id=1018748932]
+[node name="Animator" type="Node" parent="." unique_id=2114132823]
 script = ExtResource("2_eytir")

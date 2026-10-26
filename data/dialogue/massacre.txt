@@ -4,6 +4,9 @@
 
 === memory ===
 [camera CourtyardShot]
+# The memory opens slowly out of the dark into a pale haze that settles (the level's MemoryFade):
+# hold before the first line so it can.
+[wait 3.0]
 Lanterns. A courtyard full of people. Music somewhere.
 He is four years old, and this is all he will remember for ten years.
 [camera]

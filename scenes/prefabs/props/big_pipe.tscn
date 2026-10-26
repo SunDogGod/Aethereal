@@ -1,0 +1,16 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/props/pipe_run.gd" id="1_pipe"]
+[ext_resource type="Material" path="res://materials/pipe_rust.tres" id="2_rust"]
+[ext_resource type="Material" path="res://materials/trim_rail_worn.tres" id="3_fit"]
+
+[node name="BigPipe" type="Node3D"]
+script = ExtResource("1_pipe")
+points = PackedVector3Array(0, 0, -0.05, 0, 0, 0.45, 0, 9, 0.45, 0, 9, -0.05)
+radius = 0.35
+material = ExtResource("2_rust")
+fitting_material = ExtResource("3_fit")
+bracket_every = 2.5
+wall_side = Vector3(0, 0, -1)
+wall_gap = 0.1
+draw_distance = 160.0

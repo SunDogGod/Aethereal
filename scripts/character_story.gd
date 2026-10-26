@@ -19,6 +19,8 @@ const STORY := ["hostage", "drop_to_knees", "captive", "limp", "lifted_by_throat
 ## Upper-body poses: the legs keep walking under them while the scene moves the body.
 const STORY_UPPER := ["dragged", "drag_by_arm"]
 const KNIFE_POSES := ["captor_knife", "captor_knife_low"]
+## A pose this character lacks, played as another: [pose Player collapse] = his death fall.
+const FALLBACK := {"collapse": "death"}
 const HIDE_DURING := {"heave_body": ["Blade"], "throw_one_arm": []}
 const LAMENTO_SWAP := 0.32   ## draw_lamento: his hand closes on the grip behind his shoulder (kael_anims.py)
 const HEAVE_RELEASE := 1.05  ## heave_body: the body leaves the agent's hands (anims_agency.py)
@@ -40,7 +42,10 @@ func _extra(layer: String) -> Array:
 
 ## Plays a story pose. Returns false if this character has no such pose (nothing changes).
 ## `hold`: stay in it (a loop keeps looping) until story_clear() or another pose.
+## A character without its own "collapse" (only Isabella has one) falls with his death animation.
 func story_pose(anim: String, hold := true, fade := 0.2) -> bool:
+	if _player != null and not _player.has_animation(anim) and FALLBACK.has(anim):
+		anim = FALLBACK[anim]
 	if _player == null or not _player.has_animation(anim):
 		return false
 	_show_hidden()

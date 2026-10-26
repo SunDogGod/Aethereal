@@ -1,4 +1,4 @@
-"""Kael's sword Lamento, and the paint for his face and clothes (kael.py builds the shapes and
+"""Kael's sword Lamento, the paint for his clothes and his hairline (kael.py builds the shapes and
 holds the colour table C, which it passes in here).
 """
 import math
@@ -78,88 +78,50 @@ def hairline(theta):
     return bb.hair_line(theta) - 0.018
 
 
-def paint_face(head, r, C):
-    """Skin and scalp, then the face: level, slightly narrowed grey eyes, straight low brows, a
-    half smile (one corner up)."""
-    bb.paint_head(head, r, C["skin"], shade(C["hair"], 0.86), C["eye"], C["lip"], hairline=hairline, face=False)
-    img = r.atlas.img
-
-    def at(th, z):
-        return r.px(*head.uv(th, z))
-    white = rgb("#f0ece4")
-    for side in (1, -1):
-        th = 90 + 20.5 * side
-        x0, y0 = at(th - 7.5 * side, 0.100)
-        x1, _ = at(th + 7.5 * side, 0.100)
-        lo, hi = min(x0, x1), max(x0, x1)
-        img[y0 - 1:y0 + 2, lo + 1:hi] = white
-        img[y0, lo:hi + 1] = white
-        ix, iy = at(th - 1.5 * side, 0.100)
-        img[iy - 1:iy + 2, ix - 1:ix + 2] = C["iris"]
-        img[iy - 1:iy + 2, ix] = shade(C["eye"], 0.6)
-        img[iy - 1, ix - 1] = rgb("#f8f6f0")                 # a glint
-        img[y0 - 2, lo:hi + 1] = C["lash"]
-        outer = hi + 1 if side == 1 else lo - 1
-        img[y0 - 2:y0, outer] = C["lash"]                    # the outer corner sweeps out
-        img[y0 + 2, lo + 2:hi - 1] = shade(C["skin"], 0.84)
-        bx0, by0 = at(90 + 11 * side, 0.119)
-        bx1, by1 = at(90 + 33 * side, 0.125)
-        for k in range(abs(bx1 - bx0) + 1):
-            t = k / max(1, abs(bx1 - bx0))
-            x = bx0 + (k if bx1 > bx0 else -k)
-            y = round(by0 + (by1 - by0) * t - 0.8 * math.sin(math.pi * t))
-            img[y:y + (2 if t < 0.65 else 1), x] = C["brow"]
-    mx0, my = at(90 - 7, 0.042)
-    mx1, _ = at(90 + 7, 0.042)
-    lo, hi = min(mx0, mx1), max(mx0, mx1)
-    img[my, lo:hi] = C["lip"]
-    img[my - 1, hi] = C["lip"]                               # the half smile
-    img[my + 1, lo + 1:hi - 1] = shade(C["skin"], 1.05)
-    nx0, ny = at(90 - 4, 0.063)
-    nx1, _ = at(90 + 4, 0.063)
-    img[ny, min(nx0, nx1):max(nx0, nx1) + 1] = shade(C["skin"], 0.86)
-
-
 def paint_clothes(r, C):
-    coat, red, line = C["coat"], C["red"], C["coat_line"]
+    """The black coat: lighter seams and piping so its shape still reads in the dark, silver clasps,
+    the crimson lining only where it shows inside; a black leather sash, a charcoal scarf."""
+    coat, edge, line = C["coat"], C["coat_edge"], C["coat_line"]
     c = r["coat"]
     c.fill(coat)
-    c.box(0.0, 0.0, 0.03, 1.0, red)                      # red trim down both front edges
-    c.box(0.97, 0.0, 1.0, 1.0, red)
+    c.box(0.0, 0.0, 0.03, 1.0, edge)                     # piping down both front edges
+    c.box(0.97, 0.0, 1.0, 1.0, edge)
     for u in (0.25, 0.75):
-        c.seam(u, line, shade(coat, 1.04), 0.0, 0.95)    # side seams
-    c.seam(0.5, line, shade(coat, 1.04), 0.0, 1.0)       # back seam
-    c.hline(0.80, red)                                    # red piping across the shoulders
+        c.seam(u, line, shade(coat, 0.8), 0.0, 0.95)     # side seams
+    c.seam(0.5, line, shade(coat, 0.8), 0.0, 1.0)        # back seam
+    c.hline(0.80, edge)                                   # the yoke across the shoulders
     for u in (0.05, 0.95):
         for v in (0.3, 0.5, 0.7):
             c.dot(u, v, C["silver"])                      # clasps along the V
     r["collar"].fill(coat)
-    r["collar"].box(0, 0.78, 1, 1.0, red)
+    r["collar"].box(0, 0.80, 1, 1.0, edge)
+    r["collar"].hline(0.92, C["silver"])                  # a thin silver line round its top
     r["lining"].fill(C["lining"])
-    r["collar_in"].fill(shade(coat, 0.9))
+    r["collar_in"].fill(shade(coat, 1.2))
     k = r["skirt"]                                        # u: back slit (0) round to the front split (1)
     k.fill(coat)
-    k.box(0, 0.0, 1, 0.08, red)                           # hem band
-    k.hline(0.08, line)
-    k.box(0.0, 0.0, 0.025, 1.0, red)
-    k.box(0.975, 0.0, 1.0, 1.0, red)
+    k.box(0, 0.0, 1, 0.06, edge)                          # hem band
+    k.hline(0.06, line)
+    k.box(0.0, 0.0, 0.025, 1.0, edge)
+    k.box(0.975, 0.0, 1.0, 1.0, edge)
     for u in (0.3, 0.62):
         k.vline(u, line, 1, 0.08, 0.75)                   # two long folds
-    k.seam(0.5, line, shade(coat, 1.04), 0.08, 1.0)       # side seam
+    k.seam(0.5, line, shade(coat, 0.8), 0.06, 1.0)        # side seam
     sl = r["sleeve"]
     sl.fill(coat)
-    sl.box(0, 0.87, 1, 1.0, red)                          # turned-back red cuff
+    sl.box(0, 0.87, 1, 1.0, edge)                         # turned-back cuff
     sl.hline(0.87, C["lining"])
-    sl.seam(0.5, line, shade(coat, 1.04), 0.0, 0.86)
+    sl.seam(0.5, line, shade(coat, 0.8), 0.0, 0.86)
     sl.hline(0.48, line)                                  # a crease at the elbow
-    r["sash"].fill(red)
-    r["sash"].hline(0.5, shade(red, 0.75))
-    r["sash_tail"].fill(red)
-    r["sash_tail"].vline(0.5, shade(red, 0.75))
-    r["sash_tail"].box(0, 0.88, 1, 1.0, shade(red, 0.7))
-    r["scarf"].fill(red)
+    r["sash"].fill(C["sash"])
+    r["sash"].hline(0.2, shade(C["sash"], 1.6))
+    r["sash"].hline(0.8, shade(C["sash"], 1.6))
+    r["sash_tail"].fill(C["sash"])
+    r["sash_tail"].vline(0.5, shade(C["sash"], 1.5))
+    r["sash_tail"].box(0, 0.88, 1, 1.0, C["silver"])      # metal tips on the ends
+    r["scarf"].fill(C["scarf"])
     for v in (0.3, 0.65):
-        r["scarf"].hline(v, shade(red, 0.75))             # the wraps
+        r["scarf"].hline(v, shade(C["scarf"], 0.7))       # the wraps
     sh = r["shirt"]
     sh.fill(C["shirt"])
     sh.box(0, 0.0, 1, 0.22, C["trousers"])

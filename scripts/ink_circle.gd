@@ -1,28 +1,30 @@
 extends Node3D
-## Isabella's circle, painted on the floor round her as she kneels (her "kneel_draw" pose).
-## Showing it ([show InkCircle]) starts the painting: the ring follows her brush tip from about
-## 1.1 s to 3.0 s into the pose (her right-back, round the front, to her left), then the ink closes
-## the ring behind her by itself and the inner ring and marks fade in. [call InkCircle release]
-## is her sacrifice: the ink glows and a pale light (her soul) rises into the cube.
-## Shown during the level's first second (Continue replaying the scene), it appears finished.
+## Isabella's sigil, burnt into the hall floor round her as she kneels (her "kneel_draw" pose).
+## Showing it ([show InkCircle]) starts it: when her brush touches the floor (`draw_start`) the
+## ink races round faster than a hand could move, in about `draw_time` seconds: the outer double
+## ring, the seven-pointed star inside, the inner ring, then the glyphs between the rings.
+## [call InkCircle release] is her sacrifice: the ink flares and her soul rises out of her into
+## the Black Cube (`soul_target`, hall_aura.gd: a GREAT sacrifice, which the cube then gives to
+## Aeneas). Shown during the level's first second (Continue replaying the scene), it appears finished.
+##
+## PLACEHOLDER SIGIL: the author will choose Isabella's real symbol. Everything it is made of is
+## in sigil_strokes() (lines in a 1 m circle, each with when it draws); replace that to change it.
 
-const SEGMENTS := 48
 const INK := Color(0.02, 0.02, 0.03)
 const GLOW := Color(0.35, 0.15, 0.5)   ## the violet of her ink (ink_stroke.gd)
-const TIP := Vector3(0.0, 0.27, 0.0)   ## the brush's bristles in the Brush node's space
+const GREAT := 3.0                      ## what her soul is worth to the cube (hall_aura.gd)
 
 @export var radius := 1.05
-@export var width := 0.08
-@export var drawer: NodePath           ## who paints it (IsabellaHall): her brush leads the ring
+@export var width := 0.05
+@export var drawer: NodePath           ## who paints it (IsabellaHall)
 @export var draw_start := 1.1          ## seconds after it's shown that the brush touches the floor
-@export var draw_end := 3.0
+@export var draw_time := 1.2           ## seconds the whole sigil takes to draw
 @export var soul_target: NodePath      ## where her soul goes (the CubeAura)
 
-var _painted: Array[bool] = []
+var _strokes: Array = []   # [[points (unit circle), from 0..1, to 0..1], ...]
 var _t := 0.0
 var _age := 0.0
-var _last := -1
-var _marks := 0.0      # 0..1: the inner ring and the marks
+var _done := 1.0           # 0..1 how much of the sigil is drawn
 var _glow := 1.6
 var _mesh: ImmediateMesh
 var _mat: ShaderMaterial
@@ -30,8 +32,7 @@ var _drawing := false
 
 
 func _ready() -> void:
-	_painted.resize(SEGMENTS)
-	_painted.fill(false)
+	_strokes = sigil_strokes()
 	_mat = ShaderMaterial.new()
 	_mat.shader = load("res://shaders/ps1_surface.gdshader")
 	_mat.set_shader_parameter("albedo_color", INK)
@@ -46,17 +47,46 @@ func _ready() -> void:
 	visibility_changed.connect(_on_visibility_changed)
 
 
+## PLACEHOLDER: the sigil's lines, in a circle of radius 1 (x right, y toward -Z), each with the
+## part of the drawing time it takes (0 = the brush touches, 1 = done). Rings are polylines.
+static func sigil_strokes() -> Array:
+	var out: Array = []
+	out.append([_arc(1.0, 0.0, TAU, 48), 0.0, 0.38])          # the outer ring, round in one sweep
+	out.append([_arc(0.88, PI, TAU, 48), 0.08, 0.42])         # the second ring, the other way
+	# The seven-pointed star {7/3}: one line, point to point.
+	var star := PackedVector2Array()
+	for i in 8:
+		var a := -PI / 2 + TAU * float(i * 3 % 7) / 7.0
+		star.append(Vector2(cos(a), sin(a)) * 0.84)
+	out.append([star, 0.38, 0.8])
+	out.append([_arc(0.3, 0.0, TAU, 20), 0.72, 0.88])         # the inner ring
+	# Glyphs between the rings: a short upright, then a crossbar or a hook, in seven places.
+	for g in 7:
+		var a := -PI / 2 + TAU * (g + 0.5) / 7.0
+		var r := Vector2(cos(a), sin(a))
+		var t := Vector2(-r.y, r.x)
+		var at := 0.8 + 0.025 * g
+		out.append([PackedVector2Array([r * 0.9, r * 0.98]), at, at + 0.06])
+		var mark := PackedVector2Array([r * 0.94 - t * 0.035, r * 0.94 + t * 0.035]) if g % 2 == 0 \
+				else PackedVector2Array([r * 0.97 + t * 0.03, r * 0.92 + t * 0.03, r * 0.92 - t * 0.02])
+		out.append([mark, at + 0.04, at + 0.1])
+	return out
+
+
+static func _arc(r: float, from: float, sweep: float, steps: int) -> PackedVector2Array:
+	var pts := PackedVector2Array()
+	for i in steps + 1:
+		var a := from + sweep * float(i) / steps
+		pts.append(Vector2(cos(a), sin(a)) * r)
+	return pts
+
+
 func _on_visibility_changed() -> void:
 	if not visible:
 		return
 	_t = 0.0
-	_last = -1
-	_painted.fill(false)
-	_marks = 0.0
 	_drawing = _age > 1.0
-	if not _drawing:  # Continue: already painted
-		_painted.fill(true)
-		_marks = 1.0
+	_done = 0.0 if _drawing else 1.0  # Continue: already drawn
 	_rebuild()
 
 
@@ -65,54 +95,26 @@ func _process(delta: float) -> void:
 	if not visible or not _drawing:
 		return
 	_t += delta
-	var brush := _brush()
-	if _t >= draw_start and _t <= draw_end and brush:
-		var tip := brush.global_transform * TIP
-		_paint_to(_index_of(tip))
-	elif _t > draw_end:
-		_close_gap(delta)
+	_done = clampf((_t - draw_start) / draw_time, 0.0, 1.0)
+	# Fresh ink burns brighter while it is drawn, then cools to its glow.
+	_set_glow(1.6 + 2.0 * (1.0 - absf(_done * 2.0 - 1.0)) if _done > 0.0 and _done < 1.0 else 1.6)
 	_rebuild()
-	if _marks >= 1.0 and not _painted.has(false):
+	if _done >= 1.0:
 		_drawing = false
 
 
-## Her sacrifice: the ink flares and a pale light rises from her into the cube.
+## Her sacrifice: the ink flares, and her soul rises out of her into the cube.
 func release() -> void:
+	_done = 1.0
+	_drawing = false
+	_rebuild()
 	var tween := create_tween()
-	tween.tween_method(_set_glow, 1.6, 6.0, 0.4)
-	tween.tween_method(_set_glow, 6.0, 0.8, 2.2)
-	var soul := MeshInstance3D.new()
-	var ball := SphereMesh.new()
-	ball.radius = 0.07
-	ball.height = 0.14
-	ball.radial_segments = 8
-	ball.rings = 4
-	var mat := ShaderMaterial.new()
-	mat.shader = _mat.shader
-	mat.set_shader_parameter("albedo_color", Color(0.85, 0.85, 1.0))
-	mat.set_shader_parameter("emission_color", Color(0.8, 0.8, 1.0))
-	mat.set_shader_parameter("emission_energy", 2.0)
-	ball.material = mat
-	soul.mesh = ball
-	soul.layers = 2
-	add_child(soul)
-	soul.global_position = global_position + Vector3.UP * 0.9
-	var to: Vector3 = global_position + Vector3(0, 2.5, -8)
-	var target := get_node_or_null(soul_target) as Node3D
-	if target:
-		to = target.global_position
-	var from := soul.global_position
-	var mid := (from + to) * 0.5 + Vector3.UP * 2.5
-	var fly := create_tween()
-	fly.tween_interval(0.5)
-	fly.tween_method(func(k: float) -> void: soul.global_position = _arc(from, mid, to, k),
-		0.0, 1.0, 1.8).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
-	fly.tween_property(soul, "scale", Vector3.ZERO, 0.25)
-	fly.tween_callback(soul.queue_free)
-
-
-static func _arc(a: Vector3, b: Vector3, c: Vector3, k: float) -> Vector3:
-	return a.lerp(b, k).lerp(b.lerp(c, k), k)
+	tween.tween_method(_set_glow, 1.6, 7.0, 0.4)
+	tween.tween_interval(1.6)
+	tween.tween_method(_set_glow, 7.0, 0.8, 2.4)
+	var cube := get_node_or_null(soul_target)
+	if cube and cube.has_method("take"):
+		cube.take(self, GREAT)
 
 
 func _set_glow(v: float) -> void:
@@ -120,75 +122,45 @@ func _set_glow(v: float) -> void:
 	_mat.set_shader_parameter("emission_energy", v)
 
 
-func _brush() -> Node3D:
-	var who := get_node_or_null(drawer)
-	return who.find_child("Brush", true, false) as Node3D if who else null
-
-
-func _index_of(p: Vector3) -> int:
-	var local := to_local(p)
-	var a := atan2(local.z, local.x)
-	return posmod(int(round(a / TAU * SEGMENTS)), SEGMENTS)
-
-
-## Paints from the last brush segment to this one, the short way round.
-func _paint_to(i: int) -> void:
-	if _last < 0:
-		_last = i
-	var step := 1 if posmod(i - _last, SEGMENTS) <= SEGMENTS / 2 else -1
-	var j := _last
-	while j != i:
-		_painted[j] = true
-		j = posmod(j + step, SEGMENTS)
-	_painted[i] = true
-	_last = i
-
-
-## After the brush lifts: the unpainted arc fills from both ends, then the marks come.
-func _close_gap(delta: float) -> void:
-	var rate := int(ceil(delta * SEGMENTS / 0.7))
-	for n in rate:
-		var gap := _painted.find(false)
-		if gap < 0:
-			break
-		for j in SEGMENTS:  # paint the unpainted segments that touch a painted one
-			if not _painted[j] and (_painted[posmod(j - 1, SEGMENTS)] or _painted[posmod(j + 1, SEGMENTS)]):
-				_painted[j] = true
-				break
-	if not _painted.has(false):
-		_marks = minf(1.0, _marks + delta / 0.6)
-
-
 func _rebuild() -> void:
 	_mesh.clear_surfaces()
-	if not _painted.has(true):
-		return  # nothing painted yet (an empty surface is an error)
+	if _done <= 0.0:
+		return  # nothing drawn yet (an empty surface is an error)
 	_mesh.surface_begin(Mesh.PRIMITIVE_TRIANGLES, _mat)
-	for i in SEGMENTS:
-		if _painted[i]:
-			_band(radius, width, float(i) - 0.55, float(i) + 0.55)
-	if _marks > 0.0:
-		_band(radius * 0.72, width * 0.6 * _marks, 0.0, float(SEGMENTS))
-		for k in 6:  # six short marks between the rings, like brush ticks
-			var a := (float(k) + 0.25) * SEGMENTS / 6.0
-			_tick(a, radius * 0.76, radius * (0.76 + 0.2 * _marks))
+	for s: Array in _strokes:
+		var k := clampf((_done - float(s[1])) / maxf(float(s[2]) - float(s[1]), 0.001), 0.0, 1.0)
+		if k > 0.0:
+			_polyline(s[0], k)
 	_mesh.surface_end()
 
 
-func _band(r: float, w: float, from: float, to: float) -> void:
-	var steps := maxi(1, int(ceil(to - from)))
-	for s in steps:
-		var a0 := (from + (to - from) * s / steps) / SEGMENTS * TAU
-		var a1 := (from + (to - from) * (s + 1) / steps) / SEGMENTS * TAU
-		_quad(Vector3(cos(a0) * (r - w), 0, sin(a0) * (r - w)), Vector3(cos(a0) * (r + w), 0, sin(a0) * (r + w)),
-				Vector3(cos(a1) * (r + w), 0, sin(a1) * (r + w)), Vector3(cos(a1) * (r - w), 0, sin(a1) * (r - w)))
+## Draws the first `k` (0..1) of a polyline, as flat quads on the floor.
+func _polyline(pts: PackedVector2Array, k: float) -> void:
+	var total := 0.0
+	for i in pts.size() - 1:
+		total += pts[i].distance_to(pts[i + 1])
+	var left := total * k
+	for i in pts.size() - 1:
+		if left <= 0.0:
+			break
+		var a := pts[i]
+		var b := pts[i + 1]
+		var d := a.distance_to(b)
+		if d > left:
+			b = a.lerp(b, left / d)
+		left -= d
+		_segment(a * radius, b * radius)
 
 
-func _tick(seg: float, r0: float, r1: float) -> void:
-	var a := seg / SEGMENTS * TAU
-	var along := Vector3(cos(a), 0, sin(a))
-	var side := Vector3(-sin(a), 0, cos(a)) * width * 0.5
-	_quad(along * r0 - side, along * r0 + side, along * r1 + side, along * r1 - side)
+func _segment(a: Vector2, b: Vector2) -> void:
+	var dir := (b - a).normalized() if a.distance_to(b) > 0.0001 else Vector2.RIGHT
+	var n := Vector2(-dir.y, dir.x) * width
+	var e := dir * width * 0.5  # overlap a little, so corners don't gap
+	_quad(_v(a - e - n), _v(a - e + n), _v(b + e + n), _v(b + e - n))
+
+
+static func _v(p: Vector2) -> Vector3:
+	return Vector3(p.x, 0.0, -p.y)
 
 
 ## A flat quad, both faces (the PS1 shader culls back faces; the camera may be low or high).

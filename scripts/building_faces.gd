@@ -16,7 +16,7 @@ extends RefCounted
 ##
 ## Megastructure scale (Blame!): storeys whose bottom is above the Block's metadata
 ## "faces_dense_above" (world metres) use the DENSE_COLS tiles instead: dark wall with rows of tiny
-## slit windows, a few lit, so the upper floors read as a vast structure. Without it: unchanged.
+## slit windows (none lit in the town's lit atlas, a few in the skyline's unlit one). Unchanged without it.
 ##
 ## THE ATLAS (1280 x 128): 20 columns of 64 px, 2 rows of 64 px. One column is one 3 m bay.
 ## A window column holds two storeys (row 0 sits above row 1) and repeats vertically, so a whole

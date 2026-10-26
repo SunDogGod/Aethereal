@@ -38,6 +38,7 @@ put together: `docs/customizing.md`, "The big world".
 | Look at something (when a prompt like "E / Up: The well" shows) | E | D-pad up |
 | Flashlight on / off (in dark levels that have one: the Vacuum Station) | L | D-pad down |
 | Pause menu (resume, settings, title, quit) | Esc | Start (menu button) |
+| Skip a cutscene (hold) | Tab | Back / Select / View |
 | Developer menu (teleport, skip scene, fly, god mode; only while working on the game) | F1 | hold View/Back 1 s |
 
 ## What's here
@@ -169,7 +170,7 @@ For a different kind of guard, make a new GuardData file instead of a new script
   roofs or undersides, and a face under 5 m wide or 4 m tall stays blank, so extrusions and ledges
   don't carry windows. The tiles come from `textures/building_atlas.png` (20 x 2 tiles of 64 px). Add the metadata
   `faces_dense_above` (a height in metres) to give a block megastructure-scale upper floors: rows of
-  tiny slit windows, a few lit, above that height.
+  tiny slit windows, all dark on the town itself (lights stay on the far skyline), above that height.
   Turn **Ground Floor** off for a block that floats above the street.
 
 ## Editing the gray-box

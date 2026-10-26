@@ -7,7 +7,7 @@ her bell hangs from the sash at her left hip ("Bell").
 
 Rebuild:  .\\tools\\blender\\rebuild.ps1 isabella    (from the project folder, Godot closed)
 Colours and shape tables are here; the shapes the shared helpers don't have (the skirt her legs
-carry, the shawl, collar bands, hair shell, bun, knot, face paint) are in isabella_parts.py.
+carry, the shawl, collar bands, hair shell, bun, knot) are in isabella_parts.py; her face is FACE (face.py).
 """
 import math
 import os
@@ -22,6 +22,8 @@ import body                   # noqa: E402
 import mesh                   # noqa: E402
 import props                  # noqa: E402
 import isabella_parts as ip   # noqa: E402
+import face                   # noqa: E402
+import face_paint             # noqa: E402
 import isabella_anims         # noqa: E402
 from paint import rgb, shade  # noqa: E402
 
@@ -35,12 +37,18 @@ C = {k: rgb(v) for k, v in {
     "bamboo": "#c9ab66", "bamboo_dk": "#8f763e", "bristle": "#e6dcc4", "ink": "#121216",
     "bronze": "#c69c48", "bronze_dk": "#7c5d25", "cord": "#a82d31"}.items()}
 
-# A softer, narrower jaw than the default head (rows as body.HEAD_ROWS).
-HEAD_F = [(0.000, 0.046, 0.026, 0.028, 0.026, 2.1), (0.016, 0.030, 0.050, 0.060, 0.048, 2.2),
-          (0.044, 0.016, 0.064, 0.078, 0.070, 2.35), (0.074, 0.008, 0.071, 0.087, 0.088, 2.4),
+# A softer, narrower face than the default head, tapering to a small chin (rows as body.HEAD_ROWS).
+HEAD_F = [(0.000, 0.044, 0.022, 0.025, 0.024, 2.1), (0.016, 0.029, 0.045, 0.058, 0.046, 2.2),
+          (0.044, 0.015, 0.058, 0.077, 0.070, 2.3), (0.074, 0.007, 0.067, 0.086, 0.088, 2.4),
           (0.103, 0.004, 0.075, 0.088, 0.097, 2.4), (0.135, 0.0, 0.076, 0.089, 0.101, 2.4),
           (0.170, -0.005, 0.073, 0.083, 0.100, 2.3), (0.203, -0.010, 0.062, 0.066, 0.084, 2.2),
           (0.229, -0.015, 0.038, 0.040, 0.050, 2.0)]
+# Her face (face.py): calm and dignified; almond eyes under slightly lowered lids, a winged lash line,
+# fine high-arched brows, a straight nose, full lips, the faint lines of her years.
+FACE = face.look(face.WOMAN, rows=HEAD_F, eye_h=0.0068, eye_tilt=0.0015, iris_r=0.0062, nose=0.0145, nose_w=4.3,
+                 brow_z0=0.1215, brow_z1=0.1205, brow_arch=0.0040, cheek=0.0042, cheek_z=0.088, blush=0.15,
+                 age=0.12, lip_sat=0.7, skin=C["skin"], hair=C["hair"], brow=C["brow"],
+                 lash_col=shade(C["eye"], 0.45), iris=C["iris"], lip=C["lip"])
 # Rings, low to high: (height, half width, front, back, squareness), for a 1.72 m body.
 BODICE = [(1.06, 0.136, 0.088, 0.092, 2.4), (1.15, 0.138, 0.098, 0.090, 2.5), (1.24, 0.146, 0.110, 0.093, 2.5),
           (1.31, 0.156, 0.102, 0.093, 2.6), (1.36, 0.164, 0.086, 0.088, 2.7), (1.395, 0.138, 0.070, 0.075, 2.5),
@@ -97,11 +105,11 @@ Z_CROSS = 1.06 + 28 / 135.0
 
 
 def build():
-    ch = cb.Character("isabella", height=1.66, shoulders=0.9, hips=1.06)
+    ch = cb.Character("isabella", height=1.66, shoulders=0.9, hips=1.06, atlas_size=512)
     J, A, P = ch.J, ch.atlas, ch.part("Body")
-    # Blocks of the 256 px texture, in packing order (rows of the atlas fill left to right).
+    # Blocks of the 512 px texture, in packing order (rows of the atlas fill left to right).
     R = {n: A.rect(n, w, h) for n, w, h in (
-        ("head", 128, 72), ("shawl", 96, 40), ("skin", 16, 16), ("lining", 8, 8),
+        ("head", face.HEAD_RECT[0], face.HEAD_RECT[1]), ("shawl", 96, 40), ("skin", 16, 16), ("lining", 8, 8),
         ("bodice", 128, 64), ("skirt", 120, 56),
         ("sleeve", 64, 40), ("hair", 32, 32), ("boot", 40, 32), ("bun", 32, 16), ("knot", 24, 16),
         ("hand", 24, 16), ("cuff", 16, 8), ("pin", 8, 8),
@@ -110,12 +118,10 @@ def build():
     R["skin"].fill(C["skin"])
     R["lining"].fill(C["lining"])
     R["shawl_in"].fill(shade(C["shawl"], 0.86))
-    # Head, face, hair.
-    head = body.Head(J, rows=HEAD_F, brow=0.003)
+    # Head and face (face.py, face_paint.py), hair (it covers her ears).
+    head = face.Head(J, FACE)
     head.build(P, R["head"])
-    body.nose(P, head, R["head"], length=0.014)
-    bb.paint_head(head, R["head"], C["skin"], C["hair"], C["eye"], C["lip"], hairline=hair_line, face=False)
-    ip.paint_face(head, R["head"], C)
+    face_paint.paint(head, FACE, hair_line)
     body.neck(P, J, R["skin"], r=0.043)
     _hair(P, head, R)
     # Robe: bodice and its crossed collar, skirt, sleeves; the obi and its knot; the shawl.

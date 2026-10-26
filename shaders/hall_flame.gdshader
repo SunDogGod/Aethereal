@@ -21,6 +21,9 @@ uniform float speed = 1.5;
 uniform vec2 pixels = vec2(10.0, 20.0);
 // 0 = an upright tongue that turns only around Y; 1 = a round mote that always faces the camera.
 uniform int shape = 0;
+// Tongues only: how far (metres, world x and z) the top of a tongue is pulled sideways, as if
+// the flames were drawn toward something (the Black Cube taking Isabella's soul). The foot stays.
+uniform vec2 lean = vec2(0.0);
 
 // Per quad (MeshInstance3D: set_instance_shader_parameter): its own flicker and brightness.
 instance uniform float seed = 0.0;
@@ -48,6 +51,7 @@ void vertex() {
 		to_cam = length(to_cam) > 0.001 ? normalize(to_cam) : vec3(0.0, 0.0, 1.0);
 		vec3 right = vec3(to_cam.z, 0.0, -to_cam.x);
 		world = origin + right * VERTEX.x * size.x + vec3(0.0, VERTEX.y * size.y, 0.0);
+		world += vec3(lean.x, 0.0, lean.y) * VERTEX.y * VERTEX.y;  // VERTEX.y: 0 at the foot, 1 at the top
 	} else {
 		world = origin + INV_VIEW_MATRIX[0].xyz * VERTEX.x * size.x + INV_VIEW_MATRIX[1].xyz * VERTEX.y * size.y;
 	}

@@ -21,6 +21,8 @@ import mesh                   # noqa: E402
 import props                  # noqa: E402
 import aeneas_gear as gear    # noqa: E402
 import aeneas_hair as hair    # noqa: E402
+import face                   # noqa: E402
+import face_paint             # noqa: E402
 import aeneas_anims           # noqa: E402
 import anims_combat           # noqa: E402
 from paint import rgb, shade  # noqa: E402
@@ -54,15 +56,24 @@ BOOT = [(1.30, 0.066, 0.068, 0.072), (1.34, 0.067, 0.069, 0.073), (1.36, 0.061, 
 BELT = [(0.950, 0.163, 0.097, 0.101, 2.5), (0.992, 0.157, 0.095, 0.098, 2.5)]
 
 
+# His face (face.py): about sixteen, big open eyes, a short nose with a lifted tip, high cheekbones,
+# a narrow pointed chin, a mouth that turns up on one side.
+FACE = face.look(face.YOUNG_MAN, rows=face.HEART_ROWS, nose=0.0155, nose_w=4.7, nose_tip_z=0.072, chin=0.006,
+                 chin_w=11.0, jaw=0.001, cheek=0.0042, hollow=0.001, eye_tilt=0.0010,
+                 brow_thick=0.0036, brow_arch=0.0022, smirk=0.00045, lip_sat=0.35,
+                 skin=C["skin"], hair=C["hair_dark"], brow=C["brow"], lash_col=shade(C["eye"], 0.7),
+                 iris=C["iris"], lip=C["lip"])
+
+
 def hair_line(theta):
     """Aeneas's hair reaches lower at the back (short sides, a fuller nape)."""
     return bb.hair_line(theta) - 0.012
 
 
 def build():
-    ch = cb.Character("aeneas", height=1.72)
+    ch = cb.Character("aeneas", height=1.72, atlas_size=512)
     J, A, P = ch.J, ch.atlas, ch.part("Body")
-    r_head = A.rect("head", 128, 72)
+    r_head = A.rect("head", *face.HEAD_RECT)
     r_jacket = A.rect("jacket", 96, 56)
     r_sleeve = A.rect("sleeve", 64, 40)
     r_shirt = A.rect("shirt", 64, 48)
@@ -86,15 +97,12 @@ def build():
         r_shirt.dot(0.5, v, shade(C["shirt"], 0.7))
     body.neck(P, J, r_neck)
     r_neck.fill(C["skin"])
-    # Head, face, ears, nose.
-    head = body.Head(J)
+    # Head and face (face.py shapes it, face_paint.py paints it), ears, the haircut (aeneas_hair.py).
+    head = face.Head(J, FACE)
     head.build(P, r_head)
-    body.nose(P, head, r_head)
-    body.ear(P, head, r_head, 1)
-    body.ear(P, head, r_head, -1)
-    bb.paint_head(head, r_head, C["skin"], C["hair_dark"], C["eye"], C["lip"], brow=C["brow"],
-                  hairline=hair_line, iris=C["iris"])
-    hair.build(P, head, A, hair_line, C)   # the haircut: aeneas_hair.py
+    face.ears(P, head, A.rect("ear", 16, 16), FACE, C["skin"], shade(C["skin"], 0.8))
+    face_paint.paint(head, FACE, hair_line)
+    hair.build(P, head, A, hair_line, C)
     # Jacket, collar, sleeves.
     body.trunk(P, J, r_jacket, JACKET, segs=18, arc=(126, 414), thickness=0.008, lining=r_lining, legs=0.6)
     body.trunk(P, J, r_collar, COLLAR, segs=12, arc=(134, 406), thickness=0.007, lining=r_lining)

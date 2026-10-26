@@ -1,12 +1,12 @@
 """The shapes Isabella's look script (isabella.py) builds her from that the shared helpers don't
 have: a robe skirt her legs carry, a shawl panel, raised collar bands, a sleek hair shell, a bun,
-the obi knot, and her face paint. Colours and shape tables live in isabella.py; change them there.
+the obi knot. Colours and shape tables live in isabella.py; change them there (her face: face.py).
 """
 import math
 from mathutils import Vector
 import body
 import mesh
-from paint import rgb, shade
+from paint import shade
 
 
 def smooth(t):
@@ -26,52 +26,7 @@ def paint_tz(rect, z0, z1, fn):
                 img[rect.y + row, rect.x + col] = c
 
 
-# ---------------------------------------------------------------- face and hair
-def paint_face(head, r, C):
-    """Her face on the head block: almond eyes under calm, slightly lowered lids, fine arched
-    brows, a soft mouth."""
-    img = r.atlas.img
-    def at(th, z):
-        return r.px(*head.uv(th, z))
-    white, lash = rgb("#f1ebe2"), shade(C["eye"], 0.45)
-    for side in (1, -1):
-        th = 90 + 21 * side
-        x0, y0 = at(th - 7.5 * side, 0.100)
-        x1, _ = at(th + 7.5 * side, 0.100)
-        lo, hi = min(x0, x1), max(x0, x1)
-        inner, outer = (lo, hi) if side == 1 else (hi, lo)
-        img[y0 - 1:y0 + 2, lo + 1:hi] = white                  # the white, 3 rows
-        img[y0, lo:hi + 1] = white
-        ix, _ = at(th - 1.5 * side, 0.100)
-        img[y0 - 1:y0 + 2, ix - 1:ix + 2] = C["iris"]           # the iris, its top under the lid
-        img[y0:y0 + 2, ix:ix + 1] = shade(C["eye"], 0.5)
-        img[y0, ix + side] = rgb("#f6f1e8")                     # a glint
-        img[y0 - 2, lo:hi + 1] = lash                           # the upper lash line
-        o = outer + side
-        img[y0 - 3, min(o, outer - 2 * side):max(o, outer - 2 * side) + 1] = lash   # thicker, lifting outward
-        img[y0 - 4, o + side] = lash
-        img[y0 + 2, min(inner, outer) + 2:max(inner, outer)] = shade(C["skin"], 0.86)   # lower lid
-        img[y0 - 4, lo + 1:hi] = shade(C["skin"], 0.9)          # the lid crease
-        # A fine brow, arched, highest about two thirds of the way out.
-        bx0, by0 = at(90 + 12 * side, 0.127)
-        bx1, by1 = at(90 + 33 * side, 0.121)
-        n = abs(bx1 - bx0)
-        for k in range(n + 1):
-            t = k / max(1, n)
-            y = round(by0 + (by1 - by0) * t - 2.2 * math.sin(math.pi * min(1.0, t * 1.2)))
-            img[y:y + (2 if t < 0.35 else 1), bx0 + (k if bx1 > bx0 else -k)] = C["brow"]
-    mx0, my = at(90 - 7, 0.043)
-    mx1, _ = at(90 + 7, 0.043)
-    lo, hi = min(mx0, mx1), max(mx0, mx1)
-    img[my, lo:hi + 1] = shade(C["lip"], 0.72)                    # where the lips meet
-    img[my - 1, lo + 2:hi - 1] = C["lip"]                         # upper lip
-    img[my + 1, lo + 1:hi] = shade(C["lip"], 1.15)               # fuller lower lip
-    img[my + 2, lo + 3:hi - 2] = shade(C["skin"], 0.9)
-    nx0, ny = at(90 - 4, 0.064)
-    nx1, _ = at(90 + 4, 0.064)
-    img[ny, min(nx0, nx1):max(nx0, nx1) + 1] = shade(C["skin"], 0.84)   # under the nose
-
-
+# ---------------------------------------------------------------- hair
 def hair_shell(P, head, rect, hair_line, hair, sheen):
     """The hair's volume: rows from the hairline (on the skin, closing the edge) up to the crown,
     a little proud of the head, with a groove along the parting. Painted with strands sweeping

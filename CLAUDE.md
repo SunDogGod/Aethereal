@@ -8,7 +8,7 @@
 - Art direction (2026-10-25, the author): "our own style": PS1-flavoured but not bound to PS1
   hardware ("we might even go PS2"). The environment stays simpler and chunky; characters are more
   detailed, "cool but stylized", like Lorn's Lure's characters, never FF7-field low. Aeneas is
-  inspired by Jim Hawkins (Treasure Planet); Kael's theme is red and/or white.
+  inspired by Jim Hawkins (Treasure Planet); Kael wears a long black coat; his hair is white.
 - Pipes follow walls and corners with purpose (`_duct` polylines in the dressing scripts: a box per
   run, an elbow cube per bend, straps every 3 m). Square ducts or round pipes, both fine (ruled 2026-10-24).
 - The older 2D metroidvania prototype is a separate project in

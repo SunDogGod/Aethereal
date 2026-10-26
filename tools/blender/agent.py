@@ -1,9 +1,10 @@
-"""The Agency agent: the rank and file (the lieutenant too, in other colours from his GuardData
-file; the captain has his own model, captain.py). A faceless enforcer in a white long coat: a black
-helmet with a glowing visor slit, a dark breastplate and shoulder domes, black gauntlets, tall boots
-with knee plates, a heavy single-edged blade in his right hand and a knife across the small of
-his back (drawn for the hostage poses, anims_agency.py). The coat is old and dusty at
-the hem, the armour chipped: this world is thousands of years old.
+"""The Agency agent: the rank and file (the lieutenant is this body bare-headed, lieutenant.py, in
+his GuardData colours; the captain has his own model, captain.py). A faceless enforcer in a white
+long coat: a black helmet with a glowing visor slit (agency_heads.py), a dark breastplate and
+shoulder domes, black gauntlets, tall boots with knee plates, a heavy single-edged blade in his
+right hand and a knife across the small of his back (drawn for the hostage poses,
+anims_agency.py). The coat is old and dusty at the hem, the armour chipped: this world is
+thousands of years old.
 
 Rebuild:  .\\tools\\blender\\rebuild.ps1 agent   (or blender -b --factory-startup -P tools/blender/agent.py)
 
@@ -27,6 +28,7 @@ import pose                   # noqa: E402
 import anims_loco             # noqa: E402
 import anims_combat           # noqa: E402
 import agency_parts as ap     # noqa: E402
+import agency_heads as ah     # noqa: E402
 import anims_agency           # noqa: E402
 import props                  # noqa: E402
 from agency_parts import C, at_z, shell, limb_shell, box  # noqa: E402
@@ -66,17 +68,19 @@ FOOT = [(-0.095, 0.036, 0.040, -0.034), (-0.07, 0.048, 0.058, -0.024), (0.0, 0.0
 KNEE = [(0.84, 0.068, 0.074), (0.97, 0.074, 0.084), (1.10, 0.066, 0.074)]
 
 
-def build():
-    ch = cb.Character("agent", height=HEIGHT, shoulders=SHOULDERS)
+def build(name="agent", officer=None):
+    """officer: (face look, hair style, hairline) for a bare-headed officer (lieutenant.py) in
+    place of the helmet (agency_heads.py)."""
+    ch = cb.Character(name, height=HEIGHT, shoulders=SHOULDERS, atlas_size=512 if officer else 256)
     J, A = ch.J, ch.atlas
     P, T, M = ch.part("Body"), ch.part("Coat"), ch.part("Trim")
     s = J["height"] / 1.72
-    R = {n: A.rect(n, w, h) for n, w, h in (
-        ("helm", 128, 72), ("cuirass", 96, 48), ("skirt", 64, 56), ("sleeve", 48, 40), ("ctorso", 32, 32),
+    R = {n: A.rect(n, w, h) for n, w, h in (() if officer else (("helm", 128, 72),)) + (
+        ("cuirass", 96, 48), ("skirt", 64, 56), ("sleeve", 48, 40), ("ctorso", 32, 32),
         ("boot", 48, 40), ("trousers", 40, 32), ("foot", 40, 24), ("pauldron", 48, 24), ("lame", 32, 12),
         ("gauntlet", 32, 24), ("collar", 48, 16), ("hand", 24, 16), ("belt", 64, 8), ("knee", 16, 16),
         ("pouch", 16, 12), ("neck", 16, 12), ("lining", 8, 8), ("plate_in", 8, 8), ("buckle", 8, 8),
-        ("visor", 16, 8), ("crest", 16, 8), ("disc", 8, 8), ("trim", 16, 8))}
+        ("trim", 16, 8)) + (() if officer else (("visor", 16, 8), ("crest", 16, 8), ("disc", 8, 8)))}
     arm = (body.arm_joints(J), ("UpperArm_R", "LowerArm_R"))
 
     # --- The coat (tinted in game): torso, skirt halves that follow the thighs, sleeves.
@@ -108,18 +112,16 @@ def build():
         bb.mirrored(P, lambda t0=t0: limb_shell(P, J, *arm, R["lame"], [(t0, 0.071, 0.072), (t0 + 0.15, 0.078, 0.079)],
                                                 (55, 305), lining=R["plate_in"]))
     belt(P, J, R, COAT_TORSO, SKIRT)
-    # --- Helmet (on the head bone: no face), crest, side discs; neck under the collar.
-    body.neck(P, J, R["neck"], r=0.052)
-    head = body.Head(J, rows=ap.HELM, brow=0.0, scale=HELM_SCALE)
-    head.build(P, R["helm"], segs=20)
-    ap.crest(P, head, R["crest"])
-    bb.mirrored(P, lambda: ap.disc(P, head, R["disc"]))
+    # --- The helmet with its visor slit, or an officer's bare head and eyepiece; neck under the collar.
+    if officer:
+        ah.officer_head(ch, P, *officer)
+    else:
+        ah.helmet(ch, P, R, HELM_SCALE)
     # --- Gauntlets, gloves, trousers, boots with knee plates, feet.
     bb.mirrored(P, lambda: body.limb(P, J, *arm, R["gauntlet"], GAUNTLET, hand_bone="Hand_R"))
     bb.mirrored(P, lambda: body.fist(P, J, R["hand"], size=1.1))
     lower(P, J, R)
-    paint(R, head)
-    ap.visor(ch, head, R["visor"])
+    paint(R)
     ap.blade(ch.prop("BladeMesh", "Weapon_R", "Blade"), A)
     props.knife(ch.prop("KnifeMesh", "Knife", "Knife"), A)
     return ch
@@ -220,8 +222,8 @@ def paint_lower(R):
     R["pouch"].hline(0.7, C["leather"])
 
 
-def paint(R, head):
-    ap.paint_helm(R, head)
+def paint(R):
+    """The coat and trim, the armour, the lower body (the helmet paints itself: agency_heads.py)."""
     paint_armour(R)
     # The coat, near-white (guard_look.gd multiplies it by the coat colour), dusty at the hem.
     for n in ("ctorso", "skirt", "sleeve"):
@@ -251,8 +253,6 @@ def paint(R, head):
     R["trim"].hline(0.15, K["seam"])
     R["trim"].hline(0.85, K["seam"])
     paint_lower(R)
-    R["disc"].fill(C["plate"])
-    R["disc"].box(0.3, 0.3, 0.7, 0.7, C["plate_hi"])
 
 
 # ---------------------------------------------------------------- his own idle and walk

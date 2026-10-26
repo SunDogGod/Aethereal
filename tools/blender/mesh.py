@@ -48,24 +48,34 @@ def ring_point(r, theta):
 
 
 def loft(part, rings, segs, uv, start=-90.0, arc=None, cap0=None, cap1=None, thickness=0.0,
-         lining=None, smooth=True, u_map=None):
+         lining=None, smooth=True, u_map=None, thetas=None, vs=None):
     """Joins rings into a tube. uv = (u0, v0, u1, v1) in 0..1 texture space: u runs around the
     ring (from `start`, default the back), v from the first ring (v0) to the last (v1).
     arc = (a, b): only that part of the ring (an open shell, e.g. a jacket open at the front);
     then `thickness` gives it an inside (mapped to `lining` uv) so it isn't see-through.
-    cap0 / cap1: 'pole' closes that end with a fan, or None. u_map(fraction) warps u."""
+    cap0 / cap1: 'pole' closes that end with a fan, or None. u_map(fraction) warps u.
+    thetas (closed lofts only): the ring's own angles, uneven (more columns where the detail is),
+    instead of `segs` even steps; u_map then gets each angle's fraction of the turn.
+    vs: each ring's v (0..1) instead of v by distance along the loft."""
     u0, v0, u1, v1 = uv
     closed = arc is None
+    if thetas is not None:
+        segs = len(thetas)
     cols = segs if closed else segs + 1
     lens = [0.0]
     for a, b in zip(rings, rings[1:]):
         lens.append(lens[-1] + (b["c"] - a["c"]).length)
     total = lens[-1] or 1.0
     grid = []
-    thetas = []
-    for j in range(cols):
-        frac = j / segs
-        thetas.append((start + 360.0 * frac) if closed else (arc[0] + (arc[1] - arc[0]) * frac))
+    if thetas is not None:
+        thetas = list(thetas)
+        fracs = [(t - start) / 360.0 for t in thetas] + [1.0]
+    else:
+        thetas = []
+        for j in range(cols):
+            frac = j / segs
+            thetas.append((start + 360.0 * frac) if closed else (arc[0] + (arc[1] - arc[0]) * frac))
+        fracs = [j / segs for j in range(segs + 1)]
     for i, r in enumerate(rings):
         row = []
         for j in range(cols):
@@ -75,8 +85,8 @@ def loft(part, rings, segs, uv, start=-90.0, arc=None, cap0=None, cap1=None, thi
             row.append(part.vert(ring_point(r, th), r["wf"](th) if "wf" in r else r["w"]))
         grid.append(row)
     um = u_map or (lambda f: f)
-    U = [u0 + (u1 - u0) * um(j / segs) for j in range(segs + 1)]
-    V = [v0 + (v1 - v0) * (l / total) for l in lens]
+    U = [u0 + (u1 - u0) * um(f) for f in fracs]
+    V = [v0 + (v1 - v0) * (vs[i] if vs is not None else l / total) for i, l in enumerate(lens)]
     for i in range(len(rings) - 1):
         for j in range(segs):
             a, b = grid[i][j], grid[i][(j + 1) % cols]
