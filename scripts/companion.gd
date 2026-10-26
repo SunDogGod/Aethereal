@@ -32,17 +32,27 @@ var _hold_facing := 0.0           # seconds she keeps facing a guard she just bo
 
 func _ready() -> void:
 	_anchor = global_position
-	if leader == null:
-		return  # no leader: he just stands there (a figure in a scene)
+	if leader:
+		_join()  # no leader: he just stands there (a figure in a scene)
+
+
+## Starts following the leader: at _ready, or later when the big world hands her one (World.carry,
+## once the story reaches her zone).
+func _join() -> void:
+	_anchor = global_position
 	_trail = [_anchor, leader.global_position]
-	leader.crouched_changed.connect(_on_leader_crouched_changed)
-	leader.respawned.connect(_on_leader_respawned)
+	if not leader.crouched_changed.is_connected(_on_leader_crouched_changed):
+		leader.crouched_changed.connect(_on_leader_crouched_changed)
+	if not leader.respawned.is_connected(_on_leader_respawned):
+		leader.respawned.connect(_on_leader_respawned)
 	leader.companion = self  # so his takedowns can call on her ink
 
 
 func _physics_process(delta: float) -> void:
 	if leader == null:
 		return
+	if _trail.is_empty():
+		_join()  # the leader arrived after _ready (see _join)
 	var wanted := crouch_follow_distance if is_crouched else follow_distance
 	# He came back to her: forget the path he took, so she doesn't walk out and back along it.
 	var offset := leader.global_position - _anchor
