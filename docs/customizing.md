@@ -153,6 +153,11 @@ Nothing to do here; this is how it works, so nothing surprises you.
 - Writing a new prop script? Copy the pattern from any script in `scripts/props/`: the setters call
   `_rebuild()`, which is just `MeshBuild.request(self)`, and the building goes in `_rebuild_now()`
   (`scripts/mesh_build.gd` explains why). Build its shapes with `PropMesh`.
+- **Renderer**: on Windows the game (and the editor) draws through Vulkan
+  (**Project Settings > Rendering > Rendering Device > Driver** for Windows). On the Iris Xe laptop
+  it gave the town a steadier frame rate and used a quarter of the video memory of D3D12, with the
+  same picture. If Vulkan ever fails to start, Godot falls back to D3D12 by itself; to choose D3D12
+  for good, set that driver back to `d3d12`.
 
 ## Write dialogue scenes
 
