@@ -27,6 +27,7 @@ const BEACON := preload("res://materials/black_sand_beacon.tres")
 var _mesh := MeshInstance3D.new()
 var _lamp: ShaderMaterial
 var _t := 0.0
+var _build_pending := false  # waiting to be built once it is in a scene (mesh_build.gd)
 
 
 func _init() -> void:
@@ -34,7 +35,12 @@ func _init() -> void:
 	_rebuild()
 
 
+## Every setting calls this: the mesh is built once, when the prop is in a scene (mesh_build.gd).
 func _rebuild() -> void:
+	MeshBuild.request(self)
+
+
+func _rebuild_now() -> void:
 	var pm := PropMesh.new()
 	pm.box(HULL, Vector3(span, 2.4, 3.0), Transform3D())
 	pm.box(METAL, Vector3(span, 0.4, 0.4), Transform3D(Basis(), Vector3(0, -1.6, 1.2)))

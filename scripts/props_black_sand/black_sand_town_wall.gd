@@ -47,6 +47,7 @@ const WINDOW_MATS := [
 		_rebuild()
 
 var _mesh := MeshInstance3D.new()
+var _build_pending := false  # waiting to be built once it is in a scene (mesh_build.gd)
 
 
 func _init() -> void:
@@ -54,7 +55,12 @@ func _init() -> void:
 	_rebuild()
 
 
+## Every setting calls this: the mesh is built once, when the prop is in a scene (mesh_build.gd).
 func _rebuild() -> void:
+	MeshBuild.request(self)
+
+
+func _rebuild_now() -> void:
 	var pm := PropMesh.new()
 	var block := BoxMesh.new()
 	block.size = Vector3(width, height + sink, depth)

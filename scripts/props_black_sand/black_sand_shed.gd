@@ -35,6 +35,7 @@ var _mesh := MeshInstance3D.new()
 var _pm: PropMesh
 var _boxes: Array = []
 var _body: StaticBody3D
+var _build_pending := false  # waiting to be built once it is in a scene (mesh_build.gd)
 
 
 func _init() -> void:
@@ -46,7 +47,12 @@ func _ready() -> void:
 	_apply_collision()
 
 
+## Every setting calls this: the mesh is built once, when the prop is in a scene (mesh_build.gd).
 func _rebuild() -> void:
+	MeshBuild.request(self)
+
+
+func _rebuild_now() -> void:
 	_pm = PropMesh.new()
 	_boxes.clear()
 	_shell()

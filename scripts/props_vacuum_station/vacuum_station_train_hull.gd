@@ -79,6 +79,7 @@ extends StaticBody3D
 var _mesh := MeshInstance3D.new()
 var _shape := CollisionShape3D.new()
 var _tools := {}
+var _build_pending := false  # waiting to be built once it is in a scene (mesh_build.gd)
 
 
 func _init() -> void:
@@ -93,7 +94,12 @@ func _end_z(y: float, end: float, inset: float) -> float:
 	return end * (length * 0.5 - inset - lean)
 
 
+## Every setting calls this: the mesh is built once, when the prop is in a scene (mesh_build.gd).
 func _rebuild() -> void:
+	MeshBuild.request(self)
+
+
+func _rebuild_now() -> void:
 	_tools = {}
 	_shell(skin, width * 0.5, bottom, roof, 0.0, 1.0)
 	_shell(lining, width * 0.5 - wall, floor_top, roof - wall, wall, -1.0)

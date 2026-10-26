@@ -32,13 +32,19 @@ var _rings: Array[MeshInstance3D] = []
 var _parts: Array[MeshInstance3D] = []
 var _t := 0.0
 var _rng := RandomNumberGenerator.new()
+var _build_pending := false  # waiting to be built once it is in a scene (mesh_build.gd)
 
 
 func _init() -> void:
 	_rebuild()
 
 
+## Every setting calls this: the mesh is built once, when the prop is in a scene (mesh_build.gd).
 func _rebuild() -> void:
+	MeshBuild.request(self)
+
+
+func _rebuild_now() -> void:
 	for p in _parts:
 		remove_child(p)
 		p.free()

@@ -28,6 +28,7 @@ const STANDOFF := 0.06  # gap between the wall and the back of the unit (the bra
 		_rebuild()
 
 var _mesh := MeshInstance3D.new()
+var _build_pending := false  # waiting to be built once it is in a scene (mesh_build.gd)
 
 
 func _init() -> void:
@@ -40,7 +41,12 @@ func _at(x: float, y: float, z: float) -> Transform3D:
 	return Transform3D(Basis(), Vector3(x, y, z))
 
 
+## Every setting calls this: the mesh is built once, when the prop is in a scene (mesh_build.gd).
 func _rebuild() -> void:
+	MeshBuild.request(self)
+
+
+func _rebuild_now() -> void:
 	var pm := PropMesh.new()
 	var casing: Material = [M.plaster, M.metal, M.rust][posmod(variant, 3)]
 	var side := 1.0 if posmod(variant, 2) == 0 else -1.0  # which side the pipes leave from
