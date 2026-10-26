@@ -1,5 +1,7 @@
 # Level 1 — The Empty Town (arc 0.1)
 
+> **The story was retold by the author on 2026-10-26: see `docs/empty_town_story.md`, which supersedes the beats below where they disagree.**
+
 Designed with the author, 2026-10-22. **Decided** = the author's call. **Proposed** = Claude's suggestion,
 waiting for the author's OK.
 
