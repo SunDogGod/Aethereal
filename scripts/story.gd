@@ -5,6 +5,10 @@ extends Node
 ## The words live in plain-text files in data/dialogue/, so writing a scene
 ## never means touching code. It also handles fades, title cards and moving
 ## to the next level.
+## The town, Black Sand and the station live together in one big world (scenes/world/world.tscn).
+## Going to one of those levels loads the world at that zone's start; inside the world a [level]
+## line for one of them just lets Aeneas walk on. A scene looks up cameras, markers and characters
+## in its own level first (black_sand.txt looks in Black Sand), then anywhere in the world.
 
 signal scene_finished(scene: String)
 
@@ -19,6 +23,7 @@ var _box: DialogueBox
 var _fade: ColorRect
 var _title: Label
 var _files := {}  # path -> parsed scenes, read once
+var _scope: Node  # the level the playing scene belongs to (in the world: its zone's level)
 
 
 func _ready() -> void:
@@ -36,6 +41,8 @@ func play(path: String, scene: String) -> bool:
 	if steps.is_empty():
 		push_warning("Story: no scene '%s' in %s" % [scene, path])
 		return false
+	var root := _root()
+	_scope = root.level_for_dialogue(path) if root.has_method("level_for_dialogue") else root
 	_run(steps, scene)
 	return true
 
@@ -49,16 +56,18 @@ func narrate(lines: Array) -> void:
 	var steps: Array = []
 	for line: String in lines:
 		steps.append({"type": "line", "speaker": "", "text": line})
+	_scope = null
 	_run(steps, "narrate")
 
 
-## Goes to another level with a fade to black. Used by the title screen and by [level].
+## Goes to another level with a fade to black. Used by the title screen and the chapter lists.
+## A level that lives in the big world loads the world, starting at that level's zone.
 func go_to_level(path: String) -> void:
 	var run_id := _run_id
 	await fade("out")
 	if run_id != _run_id:
 		return  # stop() was called during the fade
-	get_tree().change_scene_to_file(path)
+	_change_scene(path)
 	SaveGame.record_level(path)  # Continue on the title screen starts here
 	await get_tree().process_frame
 	await get_tree().process_frame
@@ -98,7 +107,6 @@ func _run(steps: Array, scene: String) -> void:
 		player.in_cutscene = true
 		player.velocity = Vector3.ZERO
 	var gameplay_camera := get_viewport().get_camera_3d()
-	var left_level := false
 	var run_id := _run_id
 	for step: Dictionary in steps:
 		if run_id != _run_id:
@@ -111,7 +119,7 @@ func _run(steps: Array, scene: String) -> void:
 			"wait":
 				await get_tree().create_timer(step.seconds, false).timeout  # false: stops while paused
 			"hide", "show":
-				var node := _level().find_child(step.name, true, false)
+				var node := _find(step.name)
 				if node is Node3D:
 					node.visible = step.type == "show"
 			"fade":
@@ -120,35 +128,41 @@ func _run(steps: Array, scene: String) -> void:
 			"title":
 				_box.close()  # the last line shouldn't sit under the title card
 				await _show_title(step.text)
+			"frame":
+				var framed := _find(step.name)
+				if framed is Node3D and player:
+					var shot := StoryFrame.place(_level(), player, framed)
+					shot.make_current()
+					_box.letterbox(true)
 			"teleport":
-				var mark := _level().find_child(step.name, true, false)
+				var mark := _find(step.name)
 				if mark is Node3D and player:
 					player.respawn_at(mark.global_position)
 					player.get_node("CameraPivot").rotation.y = mark.global_rotation.y
 					# Restarts (spotted, slain, fell) now happen here, not at the last checkpoint behind.
-					var director := _level().find_child("StealthDirector", true, false)
+					var director := _root().find_child("StealthDirector", true, false)
 					if director and director.has_method("move_checkpoint"):
 						director.move_checkpoint(mark.global_position)
 			"fight":
-				var fight := _level().find_child(step.name, true, false)
+				var fight := _find(step.name)
 				if fight and fight.has_method("start"):
 					fight.call_deferred("start")  # after this scene gives control back
 			"erupt":
 				if player:
 					player.get_node("Combat").set_erupting(step.on)
 			"empower":
-				var guard := _level().find_child(step.name, true, false)
+				var guard := _find(step.name)
 				if guard is Guard:
 					guard.empower()
 			"collapse":
-				var body := _level().find_child(step.name, true, false)
+				var body := _find(step.name)
 				if body:
 					for n in [body] + body.find_children("*", "", true, false):
 						if n.has_method("die") and not n is Guard:
 							n.die()  # its animator plays the death and holds the last pose
 							break
 			"kill":
-				var victim := _level().find_child(step.name, true, false)
+				var victim := _find(step.name)
 				if victim is Guard:
 					victim.sacrifice()
 			"heal":
@@ -156,31 +170,38 @@ func _run(steps: Array, scene: String) -> void:
 					player.get_node("Combat").heal_full()
 			"level":
 				_box.close()
-				if _fade.color.a < 0.99:  # not already faded (e.g. after [fade white])
-					await fade("out")
-				if run_id != _run_id:
+				if World.has_level(step.path) and _root() is World:
+					# Already in the big world, where that place is just ahead: he walks on.
+					if _fade.color.a > 0.01:
+						await fade("in")
+				else:
+					if _fade.color.a < 0.99:  # not already faded (e.g. after [fade white])
+						await fade("out")
+					if run_id != _run_id:
+						return
+					_change_scene(step.path)
+					SaveGame.record_level(step.path)
+					# This scene is over: the next level's opening trigger (Aeneas starts inside it)
+					# may start its own scene while the screen fades back in.
+					playing = false
+					scene_finished.emit(scene)
+					await get_tree().process_frame
+					await get_tree().process_frame
+					await fade("in")
 					return
-				get_tree().change_scene_to_file(step.path)
-				SaveGame.record_level(step.path)
-				left_level = true
-				await get_tree().process_frame
-				await get_tree().process_frame
-				await fade("in")
-				break
 	if run_id != _run_id:
 		return
 	_box.close()
-	if not left_level:
-		_cut_to("", gameplay_camera)
-		# Two physics ticks before handing control back, so the press that closed the box is
-		# not also read as a swing, a jump or a new look.
-		await get_tree().physics_frame
-		await get_tree().physics_frame
-		if run_id != _run_id:
-			return
-		if is_instance_valid(player):
-			player.controls_enabled = true
-			player.in_cutscene = false
+	_cut_to("", gameplay_camera)
+	# Two physics ticks before handing control back, so the press that closed the box is
+	# not also read as a swing, a jump or a new look.
+	await get_tree().physics_frame
+	await get_tree().physics_frame
+	if run_id != _run_id:
+		return
+	if is_instance_valid(player):
+		player.controls_enabled = true
+		player.in_cutscene = false
 	playing = false
 	scene_finished.emit(scene)
 
@@ -205,7 +226,7 @@ func _cut_to(camera_name: String, gameplay_camera: Camera3D) -> void:
 			gameplay_camera.make_current()
 		_box.letterbox(false)
 		return
-	var shot := _level().find_child(camera_name, true, false)
+	var shot := _find(camera_name)
 	if shot is Camera3D:
 		shot.make_current()
 		_box.letterbox(true)
@@ -219,5 +240,29 @@ func _scenes_in(path: String) -> Dictionary:
 	return _files[path]
 
 
+## The level the playing scene belongs to.
 func _level() -> Node:
+	return _scope if is_instance_valid(_scope) and _scope.is_inside_tree() else _root()
+
+
+## The current scene (the big world, or a level running on its own).
+func _root() -> Node:
 	return get_tree().current_scene if get_tree().current_scene else get_tree().root
+
+
+## A node by name: in the scene's own level first, then anywhere (a companion who joined Aeneas
+## lives in the world's Carry node, not in his old level).
+func _find(node_name: String) -> Node:
+	var found := _level().find_child(node_name, true, false)
+	if found == null and _level() != _root():
+		found = _root().find_child(node_name, true, false)
+	return found
+
+
+## Loads a level, or the big world at that level's zone.
+func _change_scene(path: String) -> void:
+	if World.has_level(path):
+		World.pending_level = path
+		get_tree().change_scene_to_file(World.SCENE)
+	else:
+		get_tree().change_scene_to_file(path)

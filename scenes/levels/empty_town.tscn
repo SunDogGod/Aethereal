@@ -1,6 +1,8 @@
 [gd_scene format=3]
 
 [ext_resource type="Script" path="res://scripts/block.gd" id="1_jb07p"]
+[ext_resource type="Shader" path="res://shaders/sky_backdrop.gdshader" id="r8_sky_shader"]
+[ext_resource type="Texture2D" path="res://textures/backdrop_city.png" id="r8_backdrop_tex"]
 [ext_resource type="Material" path="res://materials/concrete_dark_worn.tres" id="2_i3j7n"]
 [ext_resource type="Material" path="res://materials/black_cube.tres" id="3_bjaku"]
 [ext_resource type="Material" path="res://materials/trim_pipe_worn.tres" id="4_1m23x"]
@@ -89,8 +91,17 @@
 [ext_resource type="Material" path="res://materials/metal.tres" id="r3_metal"]
 [ext_resource type="Script" path="res://scripts/props/empty_town_ac.gd" id="r3_empty_town_ac"]
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_r8sky"]
+shader = ExtResource("r8_sky_shader")
+shader_parameter/faces = ExtResource("r8_backdrop_tex")
+
+[sub_resource type="Sky" id="Sky_r8"]
+sky_material = SubResource("ShaderMaterial_r8sky")
+radiance_size = 0
+
 [sub_resource type="Environment" id="Environment_6hhm0"]
-background_mode = 1
+background_mode = 2
+sky = SubResource("Sky_r8")
 background_color = Color(0.035, 0.042, 0.068, 1)
 ambient_light_source = 2
 ambient_light_color = Color(0.27, 0.29, 0.43, 1)
@@ -102,6 +113,7 @@ fog_density = 1.0
 fog_depth_curve = 1.4
 fog_depth_begin = 8.0
 fog_depth_end = 190.0
+fog_sky_affect = 0.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_cwnmm"]
 render_priority = 0
@@ -585,18 +597,6 @@ rings = 0
 height = 0.95
 radius = 0.32
 
-[sub_resource type="BoxMesh" id="BoxMesh_h30vo"]
-size = Vector3(13.2, 0.6, 12)
-
-[sub_resource type="BoxMesh" id="BoxMesh_bi0ad"]
-size = Vector3(14.4, 0.6, 12)
-
-[sub_resource type="BoxMesh" id="BoxMesh_i05aa"]
-size = Vector3(16.8, 0.6, 14.4)
-
-[sub_resource type="BoxMesh" id="BoxMesh_k0bv6"]
-size = Vector3(18, 0.6, 18)
-
 [sub_resource type="CylinderMesh" id="CylinderMesh_i0dls"]
 top_radius = 9.0
 bottom_radius = 11.0
@@ -864,6 +864,7 @@ script = ExtResource("1_jb07p")
 size = Vector3(16, 28, 21)
 material = ExtResource("9_1un0n")
 style = 1
+metadata/faces_dense_above = 42.0
 
 [node name="Tower2" type="StaticBody3D" parent="SouthDistrict" unique_id=772985192]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.5, 34, 22)
@@ -871,6 +872,7 @@ script = ExtResource("1_jb07p")
 size = Vector3(9, 20, 16)
 material = ExtResource("9_1un0n")
 style = 1
+metadata/faces_dense_above = 42.0
 
 [node name="Tower2Top" type="StaticBody3D" parent="SouthDistrict" unique_id=7121113]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.5, 47, 22)
@@ -879,6 +881,7 @@ size = Vector3(5, 6, 8)
 material = ExtResource("9_1un0n")
 style = 1
 ground_floor = false
+metadata/faces_dense_above = 42.0
 
 [node name="Tower3" type="StaticBody3D" parent="SouthDistrict" unique_id=1676906883]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.5, 36, 21.5)
@@ -886,6 +889,7 @@ script = ExtResource("1_jb07p")
 size = Vector3(11, 24, 17)
 material = ExtResource("9_1un0n")
 style = 1
+metadata/faces_dense_above = 42.0
 
 [node name="Tower3Top" type="StaticBody3D" parent="SouthDistrict" unique_id=1834165790]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.5, 51.5, 20)
@@ -894,6 +898,7 @@ size = Vector3(7, 7, 8)
 material = ExtResource("9_1un0n")
 style = 1
 ground_floor = false
+metadata/faces_dense_above = 42.0
 
 [node name="Tower4" type="StaticBody3D" parent="SouthDistrict" unique_id=1921056943]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 23, 42, 22)
@@ -901,6 +906,7 @@ script = ExtResource("1_jb07p")
 size = Vector3(14, 36, 16)
 material = ExtResource("9_1un0n")
 style = 1
+metadata/faces_dense_above = 42.0
 
 [node name="GateArch" type="StaticBody3D" parent="SouthDistrict" unique_id=1411054446]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 29, 28.5)
@@ -1013,6 +1019,7 @@ script = ExtResource("1_jb07p")
 size = Vector3(7, 34, 18)
 material = ExtResource("9_1un0n")
 style = 1
+metadata/faces_dense_above = 42.0
 
 [node name="Tower5Top" type="StaticBody3D" parent="EastDistrict" unique_id=366234914]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 26.5, 54, -1)
@@ -1021,6 +1028,7 @@ size = Vector3(5, 8, 10)
 material = ExtResource("9_1un0n")
 style = 1
 ground_floor = false
+metadata/faces_dense_above = 42.0
 
 [node name="Tower6" type="StaticBody3D" parent="EastDistrict" unique_id=742366597]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14.5, 25, 5.5)
@@ -1028,6 +1036,7 @@ script = ExtResource("1_jb07p")
 size = Vector3(5, 18, 7)
 material = ExtResource("9_1un0n")
 style = 1
+metadata/faces_dense_above = 42.0
 
 [node name="Tower6Top" type="StaticBody3D" parent="EastDistrict" unique_id=1203873183]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14.75, 37, 5.5)
@@ -1119,6 +1128,7 @@ script = ExtResource("1_jb07p")
 size = Vector3(7.7, 22, 6)
 material = ExtResource("9_1un0n")
 style = 1
+metadata/faces_dense_above = 42.0
 
 [node name="Tower7Overhang" type="StaticBody3D" parent="WestDistrict" unique_id=1110692247]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.15, 22, 3.5)
@@ -1132,6 +1142,7 @@ script = ExtResource("1_jb07p")
 size = Vector3(10, 32, 8)
 material = ExtResource("9_1un0n")
 style = 1
+metadata/faces_dense_above = 42.0
 
 [node name="Tower8Top" type="StaticBody3D" parent="WestDistrict" unique_id=1283006295]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -25, 43.5, -5)
@@ -1145,6 +1156,7 @@ script = ExtResource("1_jb07p")
 size = Vector3(10, 28, 7)
 material = ExtResource("9_1un0n")
 style = 1
+metadata/faces_dense_above = 42.0
 
 [node name="Tower10" type="StaticBody3D" parent="WestDistrict" unique_id=1017488808]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14.5, 17, -6.5)
@@ -1152,6 +1164,7 @@ script = ExtResource("1_jb07p")
 size = Vector3(5, 18, 5)
 material = ExtResource("9_1un0n")
 style = 1
+metadata/faces_dense_above = 42.0
 
 [node name="WellRailNorth" type="StaticBody3D" parent="WestDistrict" unique_id=2023218560]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.15, 8.5, -6)
@@ -1315,6 +1328,7 @@ size = Vector3(18, 38, 18)
 material = ExtResource("9_1un0n")
 style = 1
 ground_floor = false
+metadata/faces_dense_above = 42.0
 
 [node name="Tower12" type="StaticBody3D" parent="NorthDistrict" unique_id=68620857]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 45, -23)
@@ -1323,6 +1337,7 @@ size = Vector3(16, 26, 14)
 material = ExtResource("9_1un0n")
 style = 1
 ground_floor = false
+metadata/faces_dense_above = 42.0
 
 [node name="Tower13" type="StaticBody3D" parent="NorthDistrict" unique_id=1290525200]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21, 48, -22)
@@ -1331,6 +1346,7 @@ size = Vector3(18, 32, 16)
 material = ExtResource("9_1un0n")
 style = 1
 ground_floor = false
+metadata/faces_dense_above = 42.0
 
 [node name="WellOverhang" type="StaticBody3D" parent="NorthDistrict" unique_id=19774704]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 21.5, -7.5)
@@ -2119,6 +2135,7 @@ dialogue_file = "res://data/dialogue/empty_town.txt"
 death_scene = "valentina_death"
 boss = NodePath("Captain")
 boss_half_scene = "lieutenant"
+choreography_file = "res://data/fights/captain.txt"
 
 [node name="Captain" type="CharacterBody3D" parent="CaptainFight" unique_id=1223360607 instance=ExtResource("guard_scene")]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 1.25, -23.6)
@@ -3118,26 +3135,6 @@ cull_mask = 1
 
 [node name="Skyline" type="Node3D" parent="." unique_id=2051772613]
 
-[node name="Crown0" type="MeshInstance3D" parent="Skyline" unique_id=94462276]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -120, 35.3, -60)
-material_override = ExtResource("6_m6bg3")
-mesh = SubResource("BoxMesh_h30vo")
-
-[node name="Crown4" type="MeshInstance3D" parent="Skyline" unique_id=1624849565]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 95, 60.3, -90)
-material_override = ExtResource("6_m6bg3")
-mesh = SubResource("BoxMesh_bi0ad")
-
-[node name="Crown8" type="MeshInstance3D" parent="Skyline" unique_id=1943857293]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -140, 70.3, 30)
-material_override = ExtResource("6_m6bg3")
-mesh = SubResource("BoxMesh_i05aa")
-
-[node name="Crown12" type="MeshInstance3D" parent="Skyline" unique_id=1841661049]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -200, 60.3, -120)
-material_override = ExtResource("6_m6bg3")
-mesh = SubResource("BoxMesh_k0bv6")
-
 [node name="Column0" type="MeshInstance3D" parent="Skyline" unique_id=72274539]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -110, 0, -20)
 material_override = ExtResource("2_i3j7n")
@@ -3184,124 +3181,169 @@ material_override = ExtResource("4_1rnr7")
 mesh = SubResource("CylinderMesh_7cayb")
 
 [node name="Tower0" type="StaticBody3D" parent="Skyline" unique_id=2111170132]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -120, -92.5, -60)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -120, 10, -60)
 script = ExtResource("1_jb07p")
-size = Vector3(22, 255, 20)
+size = Vector3(25, 320, 21)
 material = ExtResource("47_h30vo")
 style = 1
 grime = 0.0
+ground_floor = false
+metadata/faces_context = false
+metadata/faces_dense_above = -1000.0
 
 [node name="Tower1" type="StaticBody3D" parent="Skyline" unique_id=1720735519]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -85, -70, -130)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -85, 40, -130)
 script = ExtResource("1_jb07p")
-size = Vector3(30, 300, 26)
+size = Vector3(31, 380, 27)
 material = ExtResource("47_h30vo")
 style = 1
 grime = 0.0
+ground_floor = false
+metadata/faces_context = false
+metadata/faces_dense_above = -1000.0
 
 [node name="Tower2" type="StaticBody3D" parent="Skyline" unique_id=58994548]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -30, -85, -170)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15, 25, -170)
 script = ExtResource("1_jb07p")
-size = Vector3(26, 270, 22)
+size = Vector3(28, 350, 22)
 material = ExtResource("47_h30vo")
 style = 1
 grime = 0.0
+ground_floor = false
+metadata/faces_context = false
+metadata/faces_dense_above = -1000.0
 
 [node name="Tower3" type="StaticBody3D" parent="Skyline" unique_id=453882250]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 40, -60, -150)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 40, 55, -150)
 script = ExtResource("1_jb07p")
-size = Vector3(34, 320, 28)
+size = Vector3(36, 410, 28)
 material = ExtResource("47_h30vo")
 style = 1
 grime = 0.0
+ground_floor = false
+metadata/faces_context = false
+metadata/faces_dense_above = -1000.0
 
 [node name="Tower4" type="StaticBody3D" parent="Skyline" unique_id=1362559531]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 95, -80, -90)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 92, 20, -100)
 script = ExtResource("1_jb07p")
-size = Vector3(24, 280, 20)
+size = Vector3(22, 340, 18)
 material = ExtResource("47_h30vo")
 style = 1
 grime = 0.0
+ground_floor = false
+metadata/faces_context = false
+metadata/faces_dense_above = -1000.0
 
 [node name="Tower5" type="StaticBody3D" parent="Skyline" unique_id=1839238020]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 130, -95, -20)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 130, 5, -20)
 script = ExtResource("1_jb07p")
-size = Vector3(20, 250, 20)
+size = Vector3(21, 310, 25)
 material = ExtResource("47_h30vo")
 style = 1
 grime = 0.0
+ground_floor = false
+metadata/faces_context = false
+metadata/faces_dense_above = -1000.0
 
 [node name="Tower6" type="StaticBody3D" parent="Skyline" unique_id=1896154444]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 150, -65, 40)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 150, 35, 50)
 script = ExtResource("1_jb07p")
-size = Vector3(30, 310, 30)
+size = Vector3(29, 370, 29)
 material = ExtResource("47_h30vo")
 style = 1
 grime = 0.0
+ground_floor = false
+metadata/faces_context = false
+metadata/faces_dense_above = -1000.0
 
 [node name="Tower7" type="StaticBody3D" parent="Skyline" unique_id=808499892]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 120, -85, 95)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 120, 12.5, 95)
 script = ExtResource("1_jb07p")
-size = Vector3(24, 270, 22)
+size = Vector3(23, 325, 21)
 material = ExtResource("47_h30vo")
 style = 1
 grime = 0.0
+ground_floor = false
+metadata/faces_context = false
+metadata/faces_dense_above = -1000.0
 
 [node name="Tower8" type="StaticBody3D" parent="Skyline" unique_id=853424939]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -140, -75, 30)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -140, 30, 30)
 script = ExtResource("1_jb07p")
-size = Vector3(28, 290, 24)
+size = Vector3(27, 360, 23)
 material = ExtResource("47_h30vo")
 style = 1
 grime = 0.0
+ground_floor = false
+metadata/faces_context = false
+metadata/faces_dense_above = -1000.0
 
 [node name="Tower9" type="StaticBody3D" parent="Skyline" unique_id=265044650]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -160, -90, 90)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -160, 15, 90)
 script = ExtResource("1_jb07p")
-size = Vector3(22, 260, 22)
+size = Vector3(22, 330, 22)
 material = ExtResource("47_h30vo")
 style = 1
 grime = 0.0
+ground_floor = false
+metadata/faces_context = false
+metadata/faces_dense_above = -1000.0
 
 [node name="Tower10" type="StaticBody3D" parent="Skyline" unique_id=35521955]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -70, -50, -230)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -80, 75, -260)
 script = ExtResource("1_jb07p")
-size = Vector3(40, 340, 36)
+size = Vector3(40, 450, 36)
 material = ExtResource("47_h30vo")
 style = 1
 grime = 0.0
+ground_floor = false
+metadata/faces_context = false
+metadata/faces_dense_above = -1000.0
 
 [node name="Tower11" type="StaticBody3D" parent="Skyline" unique_id=1303981730]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 70, -40, -240)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 85, 85, -255)
 script = ExtResource("1_jb07p")
-size = Vector3(44, 360, 40)
+size = Vector3(43, 470, 34)
 material = ExtResource("47_h30vo")
 style = 1
 grime = 0.0
+ground_floor = false
+metadata/faces_context = false
+metadata/faces_dense_above = -1000.0
 
 [node name="Tower12" type="StaticBody3D" parent="Skyline" unique_id=1618758992]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -200, -80, -120)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -200, 45, -120)
 script = ExtResource("1_jb07p")
-size = Vector3(30, 280, 30)
+size = Vector3(31, 390, 31)
 material = ExtResource("47_h30vo")
 style = 1
 grime = 0.0
+ground_floor = false
+metadata/faces_context = false
+metadata/faces_dense_above = -1000.0
 
 [node name="Tower13" type="StaticBody3D" parent="Skyline" unique_id=1794281625]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 200, -70, -110)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 200, 50, -110)
 script = ExtResource("1_jb07p")
-size = Vector3(34, 300, 30)
+size = Vector3(34, 400, 29)
 material = ExtResource("47_h30vo")
 style = 1
 grime = 0.0
+ground_floor = false
+metadata/faces_context = false
+metadata/faces_dense_above = -1000.0
 
 [node name="Tower14" type="StaticBody3D" parent="Skyline" unique_id=1892447029]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -95, -110)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -110)
 script = ExtResource("1_jb07p")
-size = Vector3(18, 250, 18)
+size = Vector3(18, 300, 18)
 material = ExtResource("47_h30vo")
 style = 1
 grime = 0.0
+ground_floor = false
+metadata/faces_context = false
+metadata/faces_dense_above = -1000.0
 
 [node name="Dressing2" type="Node3D" parent="." unique_id=465366275]
 
@@ -8126,10 +8168,10 @@ kind = 1
 [node name="Sound" type="AudioStreamPlayer3D" parent="Courtyard/RunningTap"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, -0.3)
 stream = ExtResource("90_water")
-volume_db = -4.0
-unit_size = 2.0
+volume_db = -6.0
+unit_size = 1.0
 autoplay = true
-max_distance = 14.0
+max_distance = 8.0
 
 [node name="Drip" type="Node3D" parent="Courtyard/RunningTap"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.93, -0.3)
@@ -9303,13 +9345,13 @@ script = ExtResource("r3_empty_town_ac")
 drain = 0.35
 
 [node name="AC5" type="Node3D" parent="Dressing2/r5_AC"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 27.5, 41.95, 30.002)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 27.5, 38.95, 30.002)
 script = ExtResource("r3_empty_town_ac")
 variant = 3
 drain = 0.35
 
 [node name="Streak5" type="Decal" parent="Decals/r5_ac_streaks"]
-transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 27.471298, 41, 30)
+transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 27.471298, 38, 30)
 size = Vector3(0.7, 0.3, 1.3)
 texture_albedo = ExtResource("r3_decal_rust_streak")
 upper_fade = 0.0
@@ -9389,11 +9431,11 @@ script = ExtResource("r3_empty_town_ac")
 drain = 0.5
 
 [node name="AC11" type="Node3D" parent="Dressing2/r5_AC"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.5, 44.95, 30.002)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.5, 41.95, 30.002)
 script = ExtResource("r3_empty_town_ac")
 
 [node name="Streak11" type="Decal" parent="Decals/r5_ac_streaks"]
-transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 11.339623, 43.800003, 30)
+transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 11.339623, 40.800003, 30)
 size = Vector3(0.7, 0.3, 1.7)
 texture_albedo = ExtResource("r3_decal_rust_streak")
 upper_fade = 0.0
@@ -9505,13 +9547,13 @@ cull_mask = 1
 modulate = Color(1, 1, 1, 0.85)
 
 [node name="AC18" type="Node3D" parent="Dressing2/r5_AC"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20.5, 48.905556, 30.002)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20.5, 45.905556, 30.002)
 script = ExtResource("r3_empty_town_ac")
 variant = 1
 drain = 0.4
 
 [node name="Streak18" type="Decal" parent="Decals/r5_ac_streaks"]
-transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, -20.57166, 47.955555, 30)
+transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, -20.57166, 44.955555, 30)
 size = Vector3(0.7, 0.3, 1.3)
 texture_albedo = ExtResource("r3_decal_rust_streak")
 upper_fade = 0.0
@@ -9617,13 +9659,13 @@ variant = 5
 drain = 0.5
 
 [node name="AC26" type="Node3D" parent="Dressing2/r5_AC"]
-transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 8.5, 44.95, 12.998)
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 8.5, 41.95, 12.998)
 script = ExtResource("r3_empty_town_ac")
 variant = 1
 drain = 0.6
 
 [node name="Streak26" type="Decal" parent="Decals/r5_ac_streaks"]
-transform = Transform3D(-1, 0, 0, 0, 0, -1, 0, -1, 0, 8.299599, 43.800003, 13)
+transform = Transform3D(-1, 0, 0, 0, 0, -1, 0, -1, 0, 8.299599, 40.800003, 13)
 size = Vector3(0.7, 0.3, 1.7)
 texture_albedo = ExtResource("r3_decal_rust_streak")
 upper_fade = 0.0

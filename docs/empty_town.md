@@ -101,9 +101,13 @@ the last ground you stood on.
      bell, "I sacrifice", gone.
    - **The eruption (playable):** Aeneas can't be hurt; each press slams everything within 7 m.
      Four agents attack; when they're down the captain steps in.
-   - **Captain phase 1:** a fair fight (260 hp, hard hits, parryable).
+   - **Captain phase 1:** a fair fight (260 hp, hard hits, parryable). **Decided 2026-10-25 (the
+     author):** "completely choreographed because the cutscenes". The captain plays a fixed list of
+     beats (step in, feint, swing, combo, a pause, a heavy cut you must dodge, short camera cuts)
+     from `data/fights/captain.txt`; the lieutenant keeps to his shoulder and cuts in now and then.
+     Hits land and parries stagger him, but hitting him never breaks his rhythm.
    - **Lieutenant:** at half health the captain feeds him to the cube. The captain is then
-     invulnerable and unblockable.
+     invulnerable and unblockable, and switches to his phase 2 beats, which end with a finishing blow.
    - **The loss:** Aeneas's death plays the Valentina scene, Kael, the blackout, then the Massacre.
    - **Proposed:** the lines are drafts; the captain's "Sacrificio" uses the trigger word from the
      massacre notes on purpose (same cult, same word).
@@ -210,3 +214,31 @@ city textures, doors that don't open").
 - **For the author:** the well's and the tap's look-at lines are yours and unchanged, but the well
   line says there's no water in it, and the tap line has the water hitting the plates; with the
   tap now at the well, over a basin, you may want to rewrite both.
+
+## Round 8 (2026-10-25): Blame!-scale skyline, a prerendered city behind the town, the tap
+- **The far city** is now a prerendered backdrop: a city of about 550 megastructure blocks
+  (70-800 m wide, kilometres tall, 0.7-7.5 km away, bridges between them, a ceiling far overhead)
+  rendered once into `textures/backdrop_city.png` and shown as the level's sky. Tiny sparse lights
+  (a few pixels at most, some in dotted walkway lines), layers fading into the fog. Being a sky it
+  never clips, so it fills the back of the town in the second opening shot, and it looks the same
+  from the bridge, the streets and every shot. Its haze is the fog colour: change the fog, re-render it.
+- **The skyline towers** around the town are taller (300-470 m) megastructure shafts with the new
+  tiny-window faces all the way up; the glowing crowns on top are gone.
+- **The apartment towers** switch to the same tiny-window bays above 42 m (`faces_dense_above` on
+  each tower): the street fronts keep their big windows, the tops read as one vast structure.
+  Four AC units on the south faces (and their streaks) moved down one storey to stay under real windows.
+- **The tap** sounds like a sink or a hose now: a thin hiss and a trickle of small bubbles, half
+  as loud, heard within about 8 m (it carried 14).
+- **Proposed:** the 42 m line, the backdrop's density and brightness, and the slit-window tile are
+  first passes; say if the tops should go further down (or stay big-windowed) or the city be darker.
+
+## Round 8 (2026-10-25): the town as part of one world
+- **Decided (the author):** the levels blend into one big level with walkways between them. The town
+  is the first zone of `scenes/world/world.tscn`; this scene is untouched and still plays alone (F6).
+- **Proposed:** the way down to Black Sand is a service door at the back of the hall's stage, right of
+  the cube, behind a shutter that stays shut until the story reaches Black Sand (so the captain fight
+  and the loss play exactly as before). Behind it, a stair inside the town's foundation comes out high
+  on the sand drift against Black Sand's town wall. In the world, the hall's back wall is the walkway's
+  own copy with the doorway cut in (`scenes/world/descent.tscn`).
+- **Proposed:** once the story has passed the hall, the town you walk back into is empty: no agents,
+  no figures, no story scenes.

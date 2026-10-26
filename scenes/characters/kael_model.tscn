@@ -21,20 +21,20 @@ _surfaces = [{
 }]
 blend_shape_mode = 0
 
-[node name="KaelModel" type="Node3D" unique_id=132561714]
+[node name="KaelModel" type="Node3D" unique_id=1192417308]
 
-[node name="kael" type="Node3D" parent="." unique_id=862884266 instance=ExtResource("1_dqjmd")]
+[node name="kael" type="Node3D" parent="." unique_id=1928475316 instance=ExtResource("1_dqjmd")]
 
-[node name="Lamento" type="BoneAttachment3D" parent="." unique_id=1461037344]
+[node name="Lamento" type="BoneAttachment3D" parent="." unique_id=1232599093]
 bone_name = "Back"
-bone_idx = 4
+bone_idx = 6
 use_external_skeleton = true
 external_skeleton = NodePath("../kael/Armature/Skeleton3D")
 
-[node name="LamentoMesh" type="MeshInstance3D" parent="Lamento" unique_id=537758973]
+[node name="LamentoMesh" type="MeshInstance3D" parent="Lamento" unique_id=695673776]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0)
 layers = 2
 mesh = SubResource("ArrayMesh_pkscn")
 
-[node name="Animator" type="Node" parent="." unique_id=1547490198]
+[node name="Animator" type="Node" parent="." unique_id=919782682]
 script = ExtResource("3_jwagc")

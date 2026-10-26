@@ -3,6 +3,8 @@ extends RefCounted
 ## The list of levels, in story order. The title screen's Chapters page is built from it,
 ## and Continue only remembers levels that are on it. Add a level here when you build one:
 ## [number, name, scene]. An entry with no number is a test space (listed, never "continued").
+## The town, Black Sand and the station are zones of one big world (scenes/world/world.tscn):
+## their entries still name the level, and Story starts the world at that zone's Start marker.
 
 const LIST := [
 	["0.1", "The Empty Town", "res://scenes/levels/empty_town.tscn"],
@@ -15,8 +17,11 @@ const LIST := [
 const FIRST_LEVEL := "res://scenes/levels/empty_town.tscn"  ## where New Game starts
 
 
-## The entry for a scene path, or [] when it isn't a listed level.
+## The entry for a scene path, or [] when it isn't a listed level. In the big world it is the
+## entry of the zone Aeneas is in.
 static func find(path: String) -> Array:
+	if path == World.SCENE:
+		path = World.current_level
 	for entry: Array in LIST:
 		if entry[2] == path:
 			return entry

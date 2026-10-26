@@ -38,31 +38,31 @@ _surfaces = [{
 }]
 blend_shape_mode = 0
 
-[node name="AgentModel" type="Node3D" unique_id=2131655913]
+[node name="AgentModel" type="Node3D" unique_id=333019055]
 
-[node name="agent" type="Node3D" parent="." unique_id=2105445940 instance=ExtResource("1_srapr")]
+[node name="agent" type="Node3D" parent="." unique_id=871561833 instance=ExtResource("1_srapr")]
 
-[node name="HeadGear" type="BoneAttachment3D" parent="." unique_id=1760898446]
+[node name="HeadGear" type="BoneAttachment3D" parent="." unique_id=1471322620]
 bone_name = "Head"
 bone_idx = 8
 use_external_skeleton = true
 external_skeleton = NodePath("../agent/Armature/Skeleton3D")
 
-[node name="Visor" type="MeshInstance3D" parent="HeadGear" unique_id=1783277921]
+[node name="Visor" type="MeshInstance3D" parent="HeadGear" unique_id=2035559408]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0)
 layers = 2
 mesh = SubResource("ArrayMesh_r0bac")
 
-[node name="Blade" type="BoneAttachment3D" parent="." unique_id=1387117901]
+[node name="Blade" type="BoneAttachment3D" parent="." unique_id=2030743174]
 bone_name = "Weapon_R"
 bone_idx = 18
 use_external_skeleton = true
 external_skeleton = NodePath("../agent/Armature/Skeleton3D")
 
-[node name="BladeMesh" type="MeshInstance3D" parent="Blade" unique_id=1089783964]
+[node name="BladeMesh" type="MeshInstance3D" parent="Blade" unique_id=412970060]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0)
 layers = 2
 mesh = SubResource("ArrayMesh_k4axd")
 
-[node name="Animator" type="Node" parent="." unique_id=1687024411]
+[node name="Animator" type="Node" parent="." unique_id=220494900]
 script = ExtResource("3_kb33u")

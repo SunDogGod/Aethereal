@@ -8,6 +8,7 @@ Close the Godot editor, then in PowerShell from the project folder:
 
 ```
 .\tools\blender\rebuild.ps1 aeneas          # one character
+.\tools\blender\rebuild.ps1 aeneas,kael    # several (commas between the names)
 .\tools\blender\rebuild.ps1                 # all of them
 ```
 
@@ -17,8 +18,9 @@ model scene. Open Godot again and press F5.
 ## What's where
 | File | What it does |
 | --- | --- |
-| `aeneas.py` | Aeneas: colours (top of the file), jacket / collar / sleeve / boot shapes, hair locks, face paint, his sword Rocinante and its scabbard, knife and rifle; `PONCHO = True` builds the first arc's poncho |
+| `aeneas.py` | Aeneas: colours (top of the file), jacket / collar / sleeve / boot shapes, face paint, his sword Rocinante and its scabbard, knife and rifle; `PONCHO = True` builds the first arc's poncho |
 | `aeneas_gear.py` | Aeneas's poncho (shape, hem, hood, sling, how it follows his arms), its painting, and the knife's sheath at the small of his back |
+| `aeneas_hair.py` | Aeneas's haircut: the shell (cropped sides, the long top standing proud above `LEDGE`), the locks (`FRINGE`, `TOP`, `CROWN`: paths of angle, height, lift), the tied tail |
 | `aeneas_anims.py` | Aeneas's own animations: the walks with the sword sheathed (`*_sheathed`, left hand on the scabbard), `iai` (the stance), `draw_cut` (the quick draw), `sheathe` |
 | `agent.py` | The Agency agent (and the lieutenant, in his GuardData colours): white long coat, black helmet with the visor slit, dark armour, dust at the hem; his own idle and patrol walk |
 | `captain.py` | The Agency captain: taller, one arm (his left), dark uniform and breastplate, crimson-crested helmet, longer blade in his left hand |
@@ -28,7 +30,9 @@ model scene. Open Godot again and press F5.
 | `grey_bodies.py` | Plain grey stand-ins for Kael, Isabella and the guards, until their own scripts exist |
 | `rig.py` | The shared skeleton and its bone names |
 | `anims_loco.py` | idle, walk, run, sprint, crouch_idle, crouch_walk, jump, fall |
-| `anims_combat.py` | the sword swings, block, dodge roll, hit, knife stab, death; the guards' telegraph, strike, stagger; Isabella's cast |
+| `anims_combat.py` | the fighting guard, block, dodge roll, hit, knife stab, death; the guards' telegraph, strike, stagger; Isabella's cast (her calligraphy slash) |
+| `anims_swings.py` | the sword swings (`windup_L/R`, `sweep_LR/RL`) as tables of keys: where the hand goes and where the blade points |
+| `natural_arm.py` | keeps a sword arm human: for every frame of a swing it picks the elbow and the turn of the blade in the hand with the least strain (no bent-back wrists or wrung forearms) and the smoothest path |
 | `base_body.py`, `body.py`, `props.py` | shapes every character is made of (torso, limbs, head, hair locks, hands, boots, swords) |
 | `mesh.py`, `paint.py`, `pose.py` | the machinery: tubes of polygons, the painted texture, posing and keying |
 | `preview.py` | contact sheets of animations rendered in Blender (handy before going into Godot) |
@@ -43,9 +47,17 @@ Outputs land in `models/characters/` (`<name>.glb` with every animation, `<name>
 - **Colours**: the `C = {...}` table at the top of `aeneas.py`.
 - **Shapes**: the profile tables (`JACKET`, `SLEEVE`, `BOOT`...): each row is a ring of the shape,
   height first, then radii. Bigger number, wider.
-- **Animation timing**: `anims_combat.py` keys are `(time in seconds, pose)`. The cut's
-  `SWEEP_HIT` is when the blade crosses his front; `character_animator.gd` has the same number
-  (`SWEEP_HIT`) and the hit lands then, so change both together.
+- **Animation timing**: keys are `(time in seconds, pose)`. The cut's `SWEEP_HIT`
+  (`anims_combat.py`) is when the blade crosses his front; `character_animator.gd` has the same
+  number (`SWEEP_HIT`) and the hit lands then, so change both together. Isabella's slash:
+  `CAST_HIT` (both files too) is when her stroke ends and the ink flies to the agent.
+- **The swings**: the rows of `SWEEP_LR` / `SWEEP_RL` in `anims_swings.py` (the comment at the
+  top says what each number is). The hit row's radius is how far his arm reaches; the last rows'
+  height is how high the follow-through rises. You only say where the hand goes and where the
+  blade points: `natural_arm.py` works out the elbow and wrist. How much strain it allows:
+  `WRIST_FREE`, `FOREARM_FREE`... at its top.
+- **The haircut**: `aeneas_hair.py`. `LEDGE` / `LEDGE_BACK` is where the cropped sides stop,
+  `volume()` how proud the long top stands, and each lock is a path you can push about.
 - **The quick draw**: `DRAW_HIT` in `aeneas_anims.py` is when the drawn blade crosses his front
   (`DRAW_HIT` in `character_animator.gd` too); `SHEATHE_HOME` is when the sheathed blade is home
   (`SHEATHE_HOME` in `character_anim_layers.gd` too). Where the sword hangs: `SCABBARD_THROAT` and

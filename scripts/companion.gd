@@ -88,14 +88,21 @@ func pick_bind_target(candidates: Array[Guard]) -> Guard:
 	return best
 
 
-## Binds a guard with ink: she turns to him and flicks her brush; he stops dead and drops.
+## Binds a guard with ink: she turns to him and slashes the air with her brush; the stroke hangs
+## in the air as ink (ink_stroke.gd), a drop flies from its end to him, and he drops in a glyph.
+## He stops dead at once, so he can't raise the alarm while the stroke is drawn.
 func bind(guard: Guard) -> void:
-	guard.bind_with_ink()
+	var stroke := InkStroke.new()
+	stroke.finish = CharacterAnimator.CAST_HIT + 0.02
+	guard.bind_with_ink(stroke.finish + stroke.fly_time)
 	var look := guard.global_position - global_position
 	model.rotation.y = atan2(-look.x, -look.z)
 	_hold_facing = 0.8
 	if animator:
-		animator.cast()  # the brush flick
+		animator.cast()  # the slash
+	stroke.brush = model.get_node_or_null("Brush")
+	stroke.target = guard.ink_glyph.global_position
+	add_child(stroke)
 
 
 ## Distance to the leader along the trail (not in a straight line).

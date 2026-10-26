@@ -6,11 +6,15 @@ A third-person action game with a PS1 look, set in the Construct.
 1. Open Godot 4.7 and pick **Aethereal 3D** in the project list.
 2. Press **F5** (or the ▶ button at the top right). The **title screen** opens: Continue, New Game, Chapters (any
    level), Settings, Quit. Arrows, WASD or the stick move; Enter, A or click choose; Esc or B goes back.
-   The story runs on from level to level.
+   The story runs on from level to level. The town, Black Sand and the station are one connected
+   world (`scenes/world/world.tscn`): you walk from one into the next.
    To run one scene directly, open it and press **F6**.
 
 Levels so far (rough cuts): 0.1 The Empty Town, 0.2 The Massacre, 0.3 Black Sand, 0.4 The Vacuum
-Station. Their designs are in `docs/`.
+Station. Their designs are in `docs/`. The town, Black Sand and the station are joined into one big world
+(`scenes/world/world.tscn`): a service stair from the back of the hall's stage down to Black Sand, and
+the road tunnel from Black Sand to the station. The Massacre stays its own scene (a memory). How it is
+put together: `docs/customizing.md`, "The big world".
 
 ## Controls
 | Action | Keyboard + mouse | Gamepad |
@@ -25,8 +29,9 @@ Station. Their designs are in `docs/`.
 | Attack: with the sword sheathed, the first attack is a quick draw (tap = draw and cut at once; hold = the draw stance, feet planted, release = a harder cut); he puts it away about 4 s after a fight. With it drawn: tap = instant light swing; hold to wind up, release to swing (longer = harder, up to 0.6 s). Tap again as soon as a swing lands to chain the next; swings alternate sides | F or left click | X |
 | Full-power swing at once | G | Y |
 | Block (hold) / parry (tap as the blade lands) | Right click | LB |
-| Dodge roll (while locked on) | Space | B |
+| Dodge roll (with an agent fighting you close by, or while locked on) | Space | B |
 | Look at something (when a prompt like "E / Up: The well" shows) | E | D-pad up |
+| Flashlight on / off (in dark levels that have one: the Vacuum Station) | L | D-pad down |
 | Pause menu (resume, settings, title, quit) | Esc | Start (menu button) |
 | Developer menu (teleport, skip scene, fly, god mode; only while working on the game) | F1 | hold View/Back 1 s |
 
@@ -34,11 +39,12 @@ Station. Their designs are in `docs/`.
 | Folder | What it holds |
 | --- | --- |
 | `scenes/levels/` | `empty_town.tscn`, `massacre.tscn`, `black_sand.tscn`, `vacuum_station.tscn`. Designs in `docs/` |
+| `scenes/world/` | `world.tscn` (the town, Black Sand and the station as one world), `descent.tscn` and `road_tunnel.tscn` (the walkways between them). Scripts in `scripts/world/`: `world.gd` (puts it together, shows only the zone you are in, fades fog and light between zones), `world_zone.gd`, `world_link.gd`, `world_gate.gd` (the service door that stays shut until Black Sand), `world_blend.gd` |
 | `scenes/location_menu.tscn` | The level picker (main scene). Add new levels to the list in `scripts/location_menu.gd` |
 | `scenes/kael.tscn` | Kael as a follower (same code as Isabella) |
 | `scenes/` | `test_yard.tscn` (movement test level), `player.tscn` (Aeneas + camera), `isabella.tscn` (his mother, follows him), `ps1_screen.tscn` (the full-screen color filter) |
 | `scenes/` (sneaking) | `guard.tscn` (an Agency agent), `stealth_director.tscn` (spotted → fade → back to checkpoint) |
-| `scripts/` | `player.gd` (running, jumping, crouching, fall respawn), `player_footsteps.gd` (step sounds by floor), `player_takedown.gd` (knife takedowns + prompt), `player_camera.gd` (the camera), `companion.gd` (following, hiding, ink binds), `guard.gd` + `guard_data.gd` (agents), `stealth_director.gd`, `checkpoint.gd`, `hud.gd`, `block.gd` (gray-box blocks) + `building_faces.gd` (building fronts), `flicker_light.gd` / `tv_window.gd` / `steam_vent.gd` / `drip.gd` (life signs), `interactable.gd` (look-at prompts), `sfx.gd` (the "Sfx" autoload) + `sfx_bus.gd` (how scripts reach it) |
+| `scripts/` | `player.gd` (running, jumping, crouching, fall respawn), `player_footsteps.gd` (step sounds by floor), `player_takedown.gd` (knife takedowns + prompt), `swing_assist.gd` (swings aim at the enemy ahead without lock-on), `choreography.gd` + `choreography_file.gd` (the captain's authored fight, from `data/fights/`), `player_camera.gd` (the camera), `companion.gd` (following, hiding, ink binds) + `ink_stroke.gd` (her brush stroke in the air), `guard.gd` + `guard_data.gd` (agents), `stealth_director.gd`, `checkpoint.gd`, `hud.gd`, `block.gd` (gray-box blocks) + `building_faces.gd` (building fronts), `flicker_light.gd` / `tv_window.gd` / `steam_vent.gd` / `drip.gd` (life signs), `interactable.gd` (look-at prompts), `sfx.gd` (the "Sfx" autoload) + `sfx_bus.gd` (how scripts reach it) |
 | `data/enemies/` | Guard kinds (GuardData files) |
 | `data/dialogue/` | Every level's spoken scenes, as plain text |
 | `data/inspect/` | What Aeneas says when he looks at things (`NodeName|line|line`), one file per level |
@@ -80,11 +86,13 @@ For a different kind of guard, make a new GuardData file instead of a new script
 ## Fighting (Souls-style)
 - Top left: health (red) and stamina (green). Attacks, dodges and blocked hits spend stamina;
   it refills when you stop for a moment.
-- **Lock on** (Q) to face an enemy and strafe around him. A ◇ marks him.
+- Swings and the quick draw turn Aeneas toward the nearest enemy in front of him (or where you
+  push the stick) and step in a little, so you can fight without locking on. **Lock on** (Q) is a
+  helper: he keeps facing that enemy and strafes around him. A ◇ marks him.
 - Enemies telegraph: the **visor flares red** and the blade rises before a swing.
 - **Block** most of a hit (a quarter gets through). **Parry** by tapping block in the last
   moment of the flare: he reels, and your next attack is a riposte at three times the damage.
-- **Dodge** (Space while locked on) is untouchable for its first third of a second.
+- **Dodge** (Space, in a fight) is untouchable for its first third of a second.
 - Enemy numbers (health, damage, windup, range) live in `data/enemies/*.tres`. A new kind of
   enemy is a new file, not a new script. A **Fight** node (`scripts/fight.gd`) groups the guards
   of one fight; a dialogue scene starts it with `[fight NodeName]`, and it plays a scene when won
@@ -120,7 +128,9 @@ For a different kind of guard, make a new GuardData file instead of a new script
 - **How Isabella follows**: select `Isabella` in a level; distance, side offset, speed and reaction time are in the Inspector.
 - **Vertex wobble**: Project → Project Settings → Shader Globals → `ps1_snap_resolution`. Lower = wobblier.
 - **Texture warping**: open a material in `materials/` and change `Affine Amount` (1 = full PS1, 0 = off).
-- **Fog / sky color / light**: the `WorldEnvironment` and `Sun` nodes in each level.
+- **Fog / sky color / light**: the `WorldEnvironment` and `Sun` nodes in each level. The Empty Town's sky is
+  a prerendered far city (`textures/backdrop_city.png` through `shaders/sky_backdrop.gdshader`); its haze is
+  the fog colour, so if you change the fog colour, re-render it (scratch `r8_sky/render_backdrop.gd`).
 - **Screen color and dither**: `scenes/ps1_screen.tscn` → `Filter` → its material.
 - **Sound**: ambient loops (neon hums, vending hums, the cube's drone) are AudioStreamPlayer3D nodes in
   the level: Volume Db, Unit Size (how far it stays at full volume) and Max Distance are in the
@@ -146,7 +156,9 @@ For a different kind of guard, make a new GuardData file instead of a new script
   as real fronts: a ground floor with doors (they don't open) and shuttered shopfronts, 3 m window
   bays with blank corners, a slab line per storey, a parapet and a plain roof. No windows on edges,
   roofs or undersides, and a face under 5 m wide or 4 m tall stays blank, so extrusions and ledges
-  don't carry windows. The tiles come from `textures/building_atlas.png` (16 x 2 tiles of 64 px).
+  don't carry windows. The tiles come from `textures/building_atlas.png` (20 x 2 tiles of 64 px). Add the metadata
+  `faces_dense_above` (a height in metres) to give a block megastructure-scale upper floors: rows of
+  tiny slit windows, a few lit, above that height.
   Turn **Ground Floor** off for a block that floats above the street.
 
 ## Editing the gray-box

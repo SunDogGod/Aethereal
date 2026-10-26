@@ -13,6 +13,7 @@ extends CharacterAnimLayers
 const STRIDE := {"walk": 1.5, "run": 3.4, "sprint": 4.8, "crouch_walk": 1.9}
 const SWEEP_HIT := 0.07     ## a sweep's blade crosses his front this long after it starts
 const DRAW_HIT := 0.105     ## the quick draw's blade crosses his front (tools/blender/aeneas_anims.py)
+const CAST_HIT := 0.22      ## Isabella's slash: her brush finishes the stroke (tools/blender/anims_combat.py)
 
 @export var body_path: NodePath        ## the body to follow (empty: the model's parent)
 @export var walk_speed := 1.6          ## speeds (m/s) where each cycle plays on its own
@@ -250,6 +251,12 @@ func telegraph(seconds: float) -> void:
 	if dead:
 		return
 	_play("upper", "telegraph", 0.6 / maxf(seconds, 0.1), true, 0.08)
+
+
+## A feint: the raised blade comes back down without striking (the captain's choreography).
+func lower_blade() -> void:
+	if playing("upper") == "telegraph":
+		_stop("upper", 0.15)
 
 
 func strike() -> void:

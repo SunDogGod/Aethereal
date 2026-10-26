@@ -20,6 +20,7 @@ import body                   # noqa: E402
 import mesh                   # noqa: E402
 import props                  # noqa: E402
 import aeneas_gear as gear    # noqa: E402
+import aeneas_hair as hair    # noqa: E402
 import aeneas_anims           # noqa: E402
 import anims_combat           # noqa: E402
 from paint import rgb, shade  # noqa: E402
@@ -28,7 +29,7 @@ PONCHO = True   # build the first arc's poncho (its own object, "Poncho", so the
 
 C = {k: rgb(v) for k, v in {
     "skin": "#e2b593", "hair": "#5e3c25", "hair_dark": "#3f2717", "eye": "#3a2a1e", "iris": "#6b4a2b",
-    "lip": "#b27a66", "brow": "#4a2e1b",
+    "lip": "#b27a66", "brow": "#4a2e1b", "tie": "#2b1b12",
     "jacket": "#4d3020", "trim": "#a4805a", "lining": "#2b1b12", "seam": "#352113",
     "shirt": "#e9dec4", "trousers": "#2c2b33", "boot": "#6e4729", "boot_cuff": "#8c5d38", "sole": "#2a1d14",
     "belt": "#3a2415", "brass": "#c9a24a", "strap": "#5a3d26",
@@ -72,7 +73,6 @@ def build():
     r_lining = A.rect("lining", 8, 8)
     r_hand = A.rect("hand", 24, 16)
     r_neck = A.rect("neck", 16, 12)
-    r_hair = A.rect("hair", 32, 32)
     r_belt = A.rect("belt", 64, 8)
     r_strap = A.rect("strap", 8, 32)
     r_sheath = A.rect("sheath", 16, 16)
@@ -94,7 +94,7 @@ def build():
     body.ear(P, head, r_head, -1)
     bb.paint_head(head, r_head, C["skin"], C["hair_dark"], C["eye"], C["lip"], brow=C["brow"],
                   hairline=hair_line, iris=C["iris"])
-    _hair(P, head, r_hair, J)
+    hair.build(P, head, A, hair_line, C)   # the haircut: aeneas_hair.py
     # Jacket, collar, sleeves.
     body.trunk(P, J, r_jacket, JACKET, segs=18, arc=(126, 414), thickness=0.008, lining=r_lining, legs=0.6)
     body.trunk(P, J, r_collar, COLLAR, segs=12, arc=(134, 406), thickness=0.007, lining=r_lining)
@@ -192,44 +192,6 @@ def _paint_jacket(r, collar, lining, sleeve):
     sleeve.hline(0.88, shade(jk, 0.7))
     sleeve.seam(0.5, sm, shade(jk, 1.25), 0.0, 0.86)
     sleeve.hline(0.48, shade(jk, 0.8))         # a crease at the elbow
-
-
-def _hair(P, head, r, J):
-    """Chunky sculpted locks: longer on top and swept forward-left, short sides, a thin tail."""
-    r.fill(C["hair"])
-    r.vline(0.25, shade(C["hair"], 0.72), 1, 0.15, 1.0)
-    r.vline(0.75, shade(C["hair"], 0.72), 1, 0.15, 1.0)
-    r.vline(0.5, shade(C["hair"], 1.3), 1, 0.0, 0.6)
-    r.box(0, 0.85, 1, 1.0, shade(C["hair"], 0.8))
-    W4 = [0.040, 0.044, 0.034, 0.0]
-    locks = [
-        ([(60, 0.226, 0.0), (75, 0.218, 0.028), (96, 0.180, 0.030), (110, 0.152, 0.018)], W4),
-        ([(100, 0.236, 0.0), (106, 0.222, 0.032), (120, 0.186, 0.032), (134, 0.156, 0.016)], W4),
-        ([(142, 0.226, 0.0), (148, 0.212, 0.030), (158, 0.180, 0.026), (168, 0.148, 0.010)], W4),
-        ([(28, 0.224, 0.0), (40, 0.214, 0.026), (56, 0.186, 0.026), (70, 0.160, 0.014)], W4),
-        ([(84, 0.240, 0.0), (82, 0.252, 0.040), (74, 0.236, 0.062)], [0.036, 0.030, 0.0]),
-        ([(200, 0.226, 0.0), (214, 0.206, 0.022), (224, 0.172, 0.018), (230, 0.140, 0.006)], W4),
-        ([(250, 0.232, 0.0), (250, 0.242, 0.030), (244, 0.216, 0.046)], [0.040, 0.034, 0.0]),
-        ([(300, 0.226, 0.0), (294, 0.206, 0.022), (288, 0.172, 0.018), (284, 0.140, 0.006)], W4),
-        ([(272, 0.222, 0.0), (270, 0.196, 0.024), (268, 0.150, 0.010)], [0.044, 0.040, 0.0]),
-        ([(2, 0.214, 0.0), (352, 0.196, 0.020), (344, 0.166, 0.008)], [0.040, 0.034, 0.0]),
-        ([(178, 0.214, 0.0), (188, 0.196, 0.020), (196, 0.166, 0.008)], [0.040, 0.034, 0.0]),
-        ([(120, 0.244, 0.0), (130, 0.240, 0.034), (150, 0.214, 0.040), (162, 0.186, 0.030)], W4),
-        ([(12, 0.200, 0.0), (6, 0.172, 0.012), (8, 0.136, 0.006)], [0.040, 0.034, 0.0]),
-        ([(168, 0.200, 0.0), (174, 0.172, 0.012), (172, 0.136, 0.006)], [0.040, 0.034, 0.0]),
-        ([(230, 0.214, 0.0), (238, 0.190, 0.016), (242, 0.150, 0.006)], [0.040, 0.034, 0.0]),
-        ([(310, 0.214, 0.0), (302, 0.190, 0.016), (298, 0.150, 0.006)], [0.040, 0.034, 0.0]),
-    ]
-    for path, widths in locks:
-        body.lock(P, head, r, path, widths, depth=0.42, sides=5)
-    # The tail: from the nape down between the shoulder blades.
-    s = J["height"] / 1.72
-    nape = head.surface(270, 0.07, 0.004)
-    pts = [nape, nape + body.Vector((0, -0.012 * s, -0.06 * s)), nape + body.Vector((0, -0.022 * s, -0.13 * s)),
-           nape + body.Vector((0, -0.018 * s, -0.19 * s))]
-    def tail_w(k):
-        return {"Head": 1.0} if k < 0.3 else ({"Head": 0.4, "Neck": 0.6} if k < 0.7 else {"Neck": 0.4, "Chest": 0.6})
-    body.strand(P, pts, [0.016 * s, 0.014 * s, 0.010 * s, 0.0], 0.8, r.uv, tail_w, up=body.Vector((0, -1, 0)), sides=5)
 
 
 def _strap(P, J, r):

@@ -1,5 +1,6 @@
 # Rebuilds characters from their Blender scripts and refreshes them in Godot.
-#   Right-click > Run with PowerShell, or in a terminal:  .\tools\blender\rebuild.ps1 aeneas kael
+#   Right-click > Run with PowerShell, or in a terminal:  .\tools\blender\rebuild.ps1 aeneas,kael
+#   (several names: commas between them; with spaces only the first one is rebuilt)
 # With no names it rebuilds every character. Close the Godot editor first (or reopen the
 # project afterwards) so it picks up the new models.
 param([string[]]$Names = @("aeneas", "kael", "isabella", "agent", "captain"))

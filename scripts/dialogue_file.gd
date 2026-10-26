@@ -27,6 +27,8 @@ static func parse(source: String) -> Dictionary:
 			match word:
 				"camera":
 					steps.append({"type": "camera", "name": arg})
+				"frame":
+					steps.append({"type": "frame", "name": arg})     # a side-on shot of Aeneas and that node
 				"wait":
 					steps.append({"type": "wait", "seconds": arg.to_float()})
 				"hide", "show":

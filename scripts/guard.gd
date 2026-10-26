@@ -190,9 +190,9 @@ func take_hit(damage: float, from: Vector3) -> void:
 	elif state == State.STAGGERED:
 		pass  # a riposte doesn't wake him early
 	else:
-		fighter.interrupt()
+		var flinch: bool = fighter.take_hit_reaction()  # a choreographed boss keeps his beat
 		engage()
-		if animator:
+		if animator and flinch:
 			animator.hit()
 
 
@@ -246,16 +246,19 @@ func take_down() -> void:
 	create_tween().tween_property(blood, "size", Vector3(1.5, 2.4, 1.5), 2.0).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 
 
-## Isabella's ink: he stops dead inside a glyph, then drops.
-func bind_with_ink() -> void:
+## Isabella's ink: he stops dead, and when her stroke's ink reaches him (`delay` seconds later)
+## a glyph opens round him and he drops.
+func bind_with_ink(delay := 0.0) -> void:
 	if state == State.DOWN:
 		return
 	state = State.DOWN
 	velocity = Vector3.ZERO
 	alert.visible = false
-	ink_glyph.visible = true
 	ink_glyph.scale = Vector3.ONE * 0.2
 	var tween := create_tween()
+	if delay > 0.0:
+		tween.tween_interval(delay)
+	tween.tween_callback(func() -> void: ink_glyph.visible = true)
 	tween.tween_property(ink_glyph, "scale", Vector3.ONE, 0.15)
 	tween.tween_property(ink_glyph, "rotation:z", TAU, 0.55)
 	tween.tween_callback(_go_down)

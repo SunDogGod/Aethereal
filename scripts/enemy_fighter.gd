@@ -3,9 +3,12 @@ extends Node
 ## He closes in, circles a little, and swings: a red flash on his visor and a raised
 ## blade for attack_windup seconds, then the hit lands if Aeneas is still in front of him.
 ## Parry him in the flash's last moment; dodge when the blade drops.
+## A Fight with a choreography file gives a guard a `choreography` (choreography.gd): he then
+## plays its authored beats instead (the captain).
 
 @onready var guard: Guard = get_parent()
 
+var choreography: Choreography  ## set by the Fight; null = the usual close, circle and swing
 var _cooldown := 1.0
 var _windup := -1.0   # > 0 while winding up
 var _circle := 1.0
@@ -20,13 +23,17 @@ func tick(delta: float) -> void:
 		_circle = 1.0 if randf() < 0.5 else -1.0
 	if _player == null:
 		return
+	if choreography:
+		choreography.tick(delta)
+		_separate()
+		return
 	var to: Vector3 = _player.global_position - guard.global_position
 	to.y = 0.0
 	var distance := to.length()
 	var dir := to.normalized()
 	var face := dir
 	if _windup < 0.0 and distance > guard.data.attack_range * 0.9:
-		face = _chase_dir(delta, dir)  # walking: look where he goes
+		face = chase_dir(delta, dir)  # walking: look where he goes
 	guard.model.rotation.y = lerp_angle(guard.model.rotation.y, atan2(-face.x, -face.z), guard.data.turn_speed * delta)
 
 	if _windup >= 0.0:
@@ -34,7 +41,8 @@ func tick(delta: float) -> void:
 		guard.velocity.x = 0.0
 		guard.velocity.z = 0.0
 		if _windup >= guard.data.attack_windup:
-			_land(distance, dir)
+			guard.strike()
+			land_hit(guard.data.attack_damage, guard.data.unblockable)
 			_windup = -1.0
 			_cooldown = guard.data.attack_cooldown * randf_range(0.8, 1.3)
 		return
@@ -60,26 +68,44 @@ func _begin_swing() -> void:
 	guard.telegraph(guard.data.attack_windup)
 
 
-func _land(distance: float, dir: Vector3) -> void:
-	guard.strike()
-	if distance > guard.data.attack_range + 0.3:
+## The blade lands: it hurts Aeneas if he is in reach (and, with `arc` over 0, within that many
+## degrees either side of where the guard faces, so a sidestep can slip it).
+func land_hit(damage: float, unblockable: bool, arc := 0.0) -> void:
+	if _player == null:
 		return
-	if absf(_player.global_position.y - guard.global_position.y) > 1.5:
+	var to: Vector3 = _player.global_position - guard.global_position
+	if absf(to.y) > 1.5:
 		return  # he is on a ramp or ledge above (or below): the blade can't reach through it
+	to.y = 0.0
+	if to.length() > guard.data.attack_range + 0.3:
+		return
+	if arc > 0.0 and rad_to_deg((-guard.model.global_basis.z).angle_to(to)) > arc:
+		return
 	var combat: PlayerCombat = _player.get_node_or_null("Combat")
 	if combat:
-		combat.take_hit(guard.data.attack_damage, guard.global_position, guard.data.unblockable)
+		combat.take_hit(damage, guard.global_position, unblockable)
 
 
 ## Called when the guard is staggered or killed mid-swing.
 func interrupt() -> void:
+	if choreography:
+		choreography.interrupted()
 	_windup = -1.0
 	_cooldown = maxf(_cooldown, 0.6)
 
 
+## Aeneas's sword landed (not a parry): returns true if the guard should flinch. A usual guard
+## loses his swing; a choreographed one keeps his beat and only flinches between attacks.
+func take_hit_reaction() -> bool:
+	if choreography:
+		return choreography.flinches()
+	interrupt()
+	return true
+
+
 ## Which way to walk to reach Aeneas: along the level's navigation mesh when it has one (so he
 ## goes round the stage's edge to its ramp instead of walking into it), straight at him when not.
-func _chase_dir(delta: float, straight: Vector3) -> Vector3:
+func chase_dir(delta: float, straight: Vector3) -> Vector3:
 	_repath -= delta
 	if _repath <= 0.0:
 		_repath = 0.25

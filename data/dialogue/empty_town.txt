@@ -10,6 +10,7 @@
 #   The wind stops.             a line with no NAME is narration.
 #   [camera KaelShot]           cut to a camera (a Camera3D under the level's Shots node).
 #   [camera]                    cut back to the normal camera behind Aeneas.
+#   [frame Captain]             cut to a side-on shot of Aeneas and the Captain, wherever they stand.
 #   [wait 1.5]                  pause for 1.5 seconds.
 #   [hide Kael] / [show Kael]   hide or show something in the level, by its node name.
 #   [collapse IsabellaHall]     a character falls and stays down (her death animation).
@@ -47,7 +48,7 @@ Kael splits off from them.
 An agent drags Valentina toward the hall.
 AENEAS: Valentina!
 Aeneas breaks cover.
-(Fight: Q locks on. F swings, G swings hard. Hold right-click to block; tap it as a blade lands to parry.)
+(Fight: F swings at whoever is in front of you, G swings hard. Hold right-click to block; tap it as a blade lands to parry. Space rolls. Q locks on if you want it.)
 [camera]
 [fight ValentinaFight]
 
@@ -96,6 +97,24 @@ CAPTAIN: Raw. Untrained. Still worth collecting.
 The power drains out of him as fast as it came. Only the sword is left.
 [camera]
 [fight CaptainFight]
+
+# The captain's fight is choreographed: data/fights/captain.txt lists his moves, and plays the
+# three short scenes below at its marked beats (each one once). They only cut the camera for now.
+=== captain_measure ===
+[frame Captain]
+[wait 1.2]
+[camera]
+
+=== captain_taunt ===
+[frame Captain]
+# DRAFT slot: a taunt from the captain could go here (CAPTAIN: ...). Empty until you write one.
+[wait 1.4]
+[camera]
+
+=== captain_final ===
+[frame Captain]
+[wait 0.9]
+[camera]
 
 === lieutenant ===
 [camera CaptainShot]

@@ -38,31 +38,31 @@ _surfaces = [{
 }]
 blend_shape_mode = 0
 
-[node name="CaptainModel" type="Node3D" unique_id=1306801476]
+[node name="CaptainModel" type="Node3D" unique_id=1287309058]
 
-[node name="captain" type="Node3D" parent="." unique_id=1645432893 instance=ExtResource("1_0ckwo")]
+[node name="captain" type="Node3D" parent="." unique_id=1472432609 instance=ExtResource("1_0ckwo")]
 
-[node name="HeadGear" type="BoneAttachment3D" parent="." unique_id=6633262]
+[node name="HeadGear" type="BoneAttachment3D" parent="." unique_id=22666432]
 bone_name = "Head"
 bone_idx = 8
 use_external_skeleton = true
 external_skeleton = NodePath("../captain/Armature/Skeleton3D")
 
-[node name="Visor" type="MeshInstance3D" parent="HeadGear" unique_id=1481003298]
+[node name="Visor" type="MeshInstance3D" parent="HeadGear" unique_id=709655785]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0)
 layers = 2
 mesh = SubResource("ArrayMesh_60bb5")
 
-[node name="Blade" type="BoneAttachment3D" parent="." unique_id=884058179]
+[node name="Blade" type="BoneAttachment3D" parent="." unique_id=917417598]
 bone_name = "Weapon_L"
 bone_idx = 13
 use_external_skeleton = true
 external_skeleton = NodePath("../captain/Armature/Skeleton3D")
 
-[node name="BladeMesh" type="MeshInstance3D" parent="Blade" unique_id=1556060792]
+[node name="BladeMesh" type="MeshInstance3D" parent="Blade" unique_id=2137267438]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0)
 layers = 2
 mesh = SubResource("ArrayMesh_2akba")
 
-[node name="Animator" type="Node" parent="." unique_id=904590769]
+[node name="Animator" type="Node" parent="." unique_id=950052470]
 script = ExtResource("3_28jj5")

@@ -3,6 +3,7 @@ extends Node3D
 ## When they're all down it plays `won_scene`; if Aeneas dies it plays `death_scene`,
 ## or, with none set, sends him back to the last checkpoint. A `boss` can have a
 ## `boss_half_scene` that plays the first time his health drops under half.
+## With a `choreography_file`, its guards play authored beats instead of fighting freely (the captain).
 
 @export_file("*.txt") var dialogue_file := ""
 @export var won_scene := ""
@@ -12,10 +13,14 @@ extends Node3D
 ## Optional: an Area3D (e.g. a StoryTrigger kept switched off) that switches on when the fight is
 ## won. The Valentina fight uses it so the capture waits at the hall door instead of starting at once.
 @export var unlock_on_win: Area3D
+## Optional: the beats this fight's guards play instead of fighting freely (data/fights/*.txt; the
+## format is at the top of data/fights/captain.txt). Sections without a guard name are the boss's.
+@export_file("*.txt") var choreography_file := ""
 
 var active := false
 var _half_done := false
 var _player: Player
+var _scenes_played := {}  # a choreography's scenes play once per visit, even across restarts
 
 
 func start() -> void:
@@ -32,6 +37,7 @@ func start() -> void:
 		guard.engage()
 		if not guard.taken_down.is_connected(_on_guard_down):
 			guard.taken_down.connect(_on_guard_down)
+	_choreograph()
 	if boss and boss_half_scene != "" and not boss.health_changed.is_connected(_on_boss_health):
 		boss.health_changed.connect(_on_boss_health)
 	# Safety net: if every agent is somehow down already, the fight is won (never a soft lock).
@@ -109,5 +115,34 @@ func _on_player_died() -> void:
 ## headless tests load this script before it registers.
 func _story_play(scene: String) -> void:
 	var story := get_tree().root.get_node_or_null("Story")
-	if story:
-		story.play(dialogue_file, scene)
+	if story == null:
+		return
+	while story.playing:  # a choreography's camera beat is still on: this scene comes right after
+		await get_tree().process_frame
+	story.play(dialogue_file, scene)
+
+
+## Gives each guard his beats from the choreography file (a fresh start every time the fight
+## starts, so a restart plays the set piece from the top). Guards with no section fight freely.
+func _choreograph() -> void:
+	var sections := {}
+	if choreography_file != "":
+		sections = ChoreographyFile.parse(FileAccess.get_file_as_string(choreography_file))
+	for guard in _guards():
+		var key := String(guard.name)
+		if guard == boss and not sections.has(key):
+			key = ""
+		var beats: Choreography = null
+		if sections.has(key):
+			beats = Choreography.new(guard, guard.fighter, self, sections[key])
+		guard.fighter.set("choreography", beats)
+
+
+## A choreography's scene beat (a camera cut, a taunt): plays once per visit. False if it can't
+## play now (another scene is playing) or already has.
+func play_scene_once(scene: String) -> bool:
+	var story := get_tree().root.get_node_or_null("Story")
+	if _scenes_played.has(scene) or story == null or story.playing:
+		return false
+	_scenes_played[scene] = true
+	return story.play(dialogue_file, scene)

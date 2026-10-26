@@ -14,11 +14,15 @@ extends RefCounted
 ## no window where something solid stands within 1.5 m in front of it.
 ## Set the Block's metadata "faces_context" to false to switch that off for one block.
 ##
-## THE ATLAS (1024 x 128): 16 columns of 64 px, 2 rows of 64 px. One column is one 3 m bay.
+## Megastructure scale (Blame!): storeys whose bottom is above the Block's metadata
+## "faces_dense_above" (world metres) use the DENSE_COLS tiles instead: dark wall with rows of tiny
+## slit windows, a few lit, so the upper floors read as a vast structure. Without it: unchanged.
+##
+## THE ATLAS (1280 x 128): 20 columns of 64 px, 2 rows of 64 px. One column is one 3 m bay.
 ## A window column holds two storeys (row 0 sits above row 1) and repeats vertically, so a whole
 ## stack of storeys is one quad whose v runs past 1. The painter (scratchpad
 ## paint_building_atlas.gd) reads these constants, so the mesh and the paint always agree.
-const ATLAS_W := 1024
+const ATLAS_W := 1280
 const ATLAS_H := 128
 const TILE := 64
 const COL_BLANK := 0  # plain wall in both rows: corner piers, margins, small faces
@@ -29,6 +33,7 @@ const COL_SHOP := 10  # row 1 shutter down, row 0 dark glass under a sign plate
 const COL_ROOF := 11  # roof concrete in both rows (repeats vertically)
 const COL_PARAPET := 12  # the top PARAPET_PX pixels of row 0 are the parapet strip
 const PARAPET_PX := 13
+const DENSE_COLS: Array[int] = [16, 17, 18, 19]  # megastructure bays: tiny slit windows, few lit
 # Metres.
 const BAY := 3.0
 const STOREY := 3.0
@@ -161,9 +166,16 @@ func _side(n: Vector3, u_axis: Vector3, h: Vector3) -> void:
 	if band > 0.0:
 		_blank(0.0, w, y, y + band)  # a plain service band above the shops
 		y += band
-	if storeys > 0:
-		_storeys(bays, margin, w, y, storeys, storey_h)
-		y += storeys * storey_h
+	# Storeys above faces_dense_above (world height) switch to the megastructure tiles.
+	var plain := storeys
+	if _block.has_meta("faces_dense_above"):
+		var bottom: float = (_block.global_position.y if _block.is_inside_tree() else _block.position.y) - ht * 0.5
+		plain = clampi(ceili((float(_block.get_meta("faces_dense_above")) - bottom - y) / storey_h), 0, storeys)
+	if plain > 0:
+		_storeys(bays, margin, w, y, plain, storey_h)
+	if storeys > plain:
+		_storeys(bays, margin, w, y + plain * storey_h, storeys - plain, storey_h, true)
+	y += storeys * storey_h
 	_parapet(w, y, ht)
 
 
@@ -213,7 +225,7 @@ func _base_tile(col: int, row: int, u0: float, u1: float, y0: float, f0: float, 
 
 ## Window bays in vertical runs of a few storeys each; every run picks its own lit pattern.
 ## A run with a blocked window in it is laid storey by storey, with plain wall where blocked.
-func _storeys(bays: int, margin: float, w: float, y0: float, storeys: int, storey_h: float) -> void:
+func _storeys(bays: int, margin: float, w: float, y0: float, storeys: int, storey_h: float, dense := false) -> void:
 	var seg := maxi(3, ceili(storeys / 12.0))
 	var s := 0
 	while s < storeys:
@@ -227,6 +239,8 @@ func _storeys(bays: int, margin: float, w: float, y0: float, storeys: int, store
 		_quad(w - margin, w, ya, yb, _u(COL_BLANK, 0.0), _u(COL_BLANK, margin / BAY), vb, vt)
 		for i in bays:
 			var col := _window_col(i + 7, s + 3)
+			if dense:
+				col = DENSE_COLS[int(_rnd(i + 3, s + 5) * DENSE_COLS.size())]
 			var x := margin + i * BAY
 			var blocked: Array[int] = []
 			if _ctx:

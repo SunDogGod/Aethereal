@@ -36,12 +36,17 @@
   mesh UVs. Buildings use `materials/facade*.tres`: windows on walls, plain tops (`use_top_texture`).
 - Buildings are Blocks with `style = BUILDING` (`scripts/building_faces.gd`): a 3.2 m base course with
   doors and shopfronts, 3 m bays and storeys, blank corner piers (>= 1 m), slab lines, a 0.6 m parapet,
-  a plain roof tile. Tiles come from `textures/building_atlas.png` (16 x 2 tiles of 64 px: 0 blank,
-  1-7 windows, 8 base blank, 9 door, 10 shop, 11 roof, 12 parapet), painted by paint_building_atlas.gd.
+  a plain roof tile. Tiles come from `textures/building_atlas.png` (20 x 2 tiles of 64 px: 0 blank,
+  1-7 and 13-15 windows, 8 base blank, 9 door, 10 shop, 11 roof, 12 parapet, 16-19 megastructure bays
+  of tiny slit windows), painted by paint_building_atlas.gd. A Block with metadata `faces_dense_above`
+  (world metres) uses the megastructure bays for storeys above that height (Blame!-scale upper floors).
   Rules the author asked for: no windows on edges, roofs or undersides; a face under 5 m wide or
   4 m tall stays blank, so an extrusion never continues the main wall's texture; doors that don't open.
   A BUILDING block builds its mesh in `_ready` (its doors are picked from its position) and rebuilds
   when moved in the editor. Set `ground_floor = false` on any block that does not stand on a street.
+- The Empty Town's sky is a prerendered far city (`textures/backdrop_city.png`, six cube faces, shown by
+  `shaders/sky_backdrop.gdshader`; regenerate with scratch r8_sky/render_backdrop.gd, windowed). Its haze
+  is the fog colour, so the Environment keeps `fog_sky_affect = 0`; change both together.
 - A script that extends Block must be `@tool` too (tool mode is not inherited, so the editor would
   show nothing), and must guard its runtime behaviour with `Engine.is_editor_hint()`.
 - Scripts that change a Block's look while the game runs call `set_runtime_material(copy)`, never
@@ -54,6 +59,12 @@
 ## Combat
 - `scripts/player_combat.gd` (a child of the Player): lock-on, stamina, light/heavy, dodge,
   block, parry, riposte, and the eruption mode. Enemies call `take_hit()` on it.
+- Lock-on is only a helper (the author, 2026-10-25): without it a swing or quick draw turns him
+  toward the nearest enemy roughly ahead and steps in a little (`scripts/swing_assist.gd`); the
+  camera is never moved by it.
+- A Fight with a `choreography_file` (`data/fights/*.txt`, parsed by `choreography_file.gd`, run
+  by `choreography.gd` in place of the Fighter's AI) plays authored beats: the captain's set piece.
+  Hits don't break a choreographed beat; a parry does. Phase 2 starts when the boss is empowered.
 - Guards fight through `scripts/enemy_fighter.gd` (child "Fighter"); `Guard.fights` makes a
   sighting start a fight instead of a stealth restart; `dormant` holds him until `[fight X]`.
 - Every guard duplicates its GuardData in `_ready`, so `empower()` only changes that one.
@@ -104,7 +115,14 @@
 ## Rough-cut levels (Act 0 onward)
 - Each story location gets a rough walkable level first: signature space, landmark, its own fog
   and light, beats told through dialogue scenes. Detail comes later, after the author walks it.
-- Levels chain with `[level ...]` at the end of a dialogue scene; the location menu lists them all.
+- Levels chain with `[level ...]` at the end of a dialogue scene; the title screen's Chapters page lists them all.
+- The town, Black Sand and the station are one big world (`scenes/world/world.tscn`, the author asked
+  2026-10-25): each level is instanced as a WorldZone and stays runnable alone (F6). The world removes
+  each level's own Player/StealthDirector and uses one of each; links (`scenes/world/*.tscn`) are the
+  walkways and list the level pieces they replace, so the level scenes are never edited for the world.
+  Only the zone Aeneas is in is shown and processed (both on a link). A `[level]` line for a world level
+  loads the world at that zone's Start (or, inside the world, lets him walk on). Story lookups search the
+  scene's own level first. Zone boxes must not overlap; geometry of hidden zones may overlap other zones.
 - Walkable means no steps: CharacterBody3D won't climb a ledge, even 30 cm. Use ramps, keep floors
   flush (a 2 cm lip is fine).
 - Terrain meshes: triangles must face up (normal.y > 0) or collision and sight lines fall through.

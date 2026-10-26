@@ -102,8 +102,8 @@ func _handle_jump(delta: float) -> void:
 	if controls_enabled and Input.is_action_just_pressed("jump"):
 		_jump_buffer_timer = jump_buffer_time
 	var combat: PlayerCombat = get_node_or_null("Combat")
-	if combat and (combat.lock_target or combat.move != PlayerCombat.Move.NONE):
-		_jump_buffer_timer = 0.0  # Space is the dodge while locked on
+	if combat and (combat.dodge_ready() or combat.move != PlayerCombat.Move.NONE):
+		_jump_buffer_timer = 0.0  # Space is the dodge while locked on or in a fight
 		return
 	if _jump_buffer_timer > 0.0 and _coyote_timer > 0.0:
 		# Jumping stands him up first; no jump if something is right above his head.
@@ -143,6 +143,8 @@ func _handle_run(delta: float) -> void:
 		model.rotation.y = atan2(-combat.dodge_facing.x, -combat.dodge_facing.z)  # rolling: face the roll
 	elif combat and combat.lock_target:
 		face(combat.lock_target.global_position)
+	elif combat and combat.aiming():
+		pass  # a swing's soft aim is turning him toward the enemy in front (swing_assist.gd)
 	elif direction.length() > 0.1:
 		var facing := atan2(-direction.x, -direction.z)
 		model.rotation.y = lerp_angle(model.rotation.y, facing, turn_speed * delta)

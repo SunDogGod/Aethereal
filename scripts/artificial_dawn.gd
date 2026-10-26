@@ -21,7 +21,9 @@ func _ready() -> void:
 			_panels.append(child)
 	# Far panels light first: sort by z, most negative (far) first.
 	_panels.sort_custom(func(a, b): return a.position.z < b.position.z)
-	var sun := get_tree().current_scene.find_child("Sun", true, false) if get_tree().current_scene else null
+	# Its own level's Sun and WorldEnvironment (owner), also when the level is a zone of the big world.
+	var level: Node = owner if owner else get_tree().current_scene
+	var sun := level.find_child("Sun", true, false) if level else null
 	await get_tree().create_timer(delay).timeout
 	_started = true
 	for i in _panels.size():
@@ -32,7 +34,7 @@ func _ready() -> void:
 	if sun is DirectionalLight3D:
 		tween.tween_property(sun, "light_energy", sun_energy, wave_time).set_trans(Tween.TRANS_SINE)
 		tween.tween_property(sun, "light_color", sun_color, wave_time)
-	var we := get_tree().current_scene.find_child("WorldEnvironment", true, false) if get_tree().current_scene else null
+	var we := level.find_child("WorldEnvironment", true, false) if level else null
 	if we is WorldEnvironment:
 		var env: Environment = we.environment.duplicate()
 		we.environment = env

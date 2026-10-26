@@ -18,6 +18,7 @@ import math
 from pose import make_action, keyed
 import anims_loco as L
 import anims_combat as K
+from natural_arm import tracked
 
 DRAW_HIT = 0.105
 SHEATHE_HOME = 0.50
@@ -110,42 +111,63 @@ def iai_pose(s, depth):
 
 
 def iai(rig, s):
-    return keyed([(0.0, iai_pose(s, 0.0), "snap"), (0.10, iai_pose(s, 0.25), "io"), (0.6, iai_pose(s, 1.0))])
+    def held(depth):   # the hand on the hilt, free to turn round it (natural_arm.tracked)
+        return _held(rig, s, iai_pose(s, depth), 0.0, 6 + 6 * depth, 50)
+    return tracked(rig, keyed([(0.0, held(0.0), "snap"), (0.10, held(0.25), "io"), (0.6, held(1.0))]), 0.6)
 
 
-def _held(rig, s, p, t, scab):
+def _held(rig, s, p, t, scab, tol=None):
     """Pose p with the right hand gripping the sword t metres out of the scabbard (0 = home),
     written as a free grip so it blends with swinging keys."""
     p = dict(p)
     p["arm_R"] = {"hold": ("Scabbard", t * s, ROLL_R), "pole": (0.6, -0.45, -0.65)}
     p["arm_L"] = left_hold(s)
     p["Scabbard"] = (0, 0, scab)
-    return rig.hold_as_grip(p, "R", ref_yaw=170.0)
+    p = rig.hold_as_grip(p, "R", ref_yaw=170.0)
+    if tol is not None:      # the hand may turn round the grip this far (natural_arm.tracked)
+        p["arm_R"]["roll_tol"] = tol
+    return p
 
 
-def _swing(rig, s, twist, lean, loc, ang, rad, h, yaw, pitch, roll, scab, feet=None):
-    """A key with the blade held freely (written as a grip) and the left hand still on the scabbard."""
+def _swing(rig, s, twist, lean, loc, ang, rad, h, yaw, pitch, roll, scab, feet=None, shoulder=(0, 0, 0), tol=None):
+    """A key with the blade held freely (written as a grip) and the left hand still on the scabbard.
+    tol: how far natural_arm.tracked() may roll the edge to keep his wrist human (None: exactly)."""
     p = K.P(K.torso(twist, lean, 0, loc, s), feet or K.stance(s, front=0.17, back=-0.15, width=0.15),
             K.sword_arm(s, ang, rad, h, yaw, pitch, roll, (0.5, -0.3, -0.9)),
-            {"arm_L": left_hold(s), "Scabbard": (0, 0, scab)})
-    return rig.ikc_as_grip(p, "R")
+            {"arm_L": left_hold(s), "Scabbard": (0, 0, scab), "Shoulder_R": shoulder})
+    p = rig.ikc_as_grip(p, "R")
+    if tol is not None:
+        p["arm_R"]["roll_tol"] = tol
+    return p
+
+
+def _guard(rig, s, roll_near=None):
+    """The fighting guard (anims_combat.guard_pose) with his left hand on the scabbard, as a grip."""
+    g = K.P(K.guard_pose(s), {"arm_L": left_hold(s), "Scabbard": (0, 0, 0)})
+    arm = dict(g["arm_R"])
+    if roll_near is not None:
+        yaw, pitch, r = arm["blade"]
+        arm["blade"] = (yaw, pitch, r + 360.0 * round((roll_near - r) / 360.0))
+    g["arm_R"] = arm
+    return rig.ikc_as_grip(g, "R")
 
 
 def draw_cut(rig, s):
     """From the iai stance: the hand pulls the blade along the scabbard while the left hand turns
-    the scabbard's mouth forward, the blade comes free beside his left hip and sweeps across. The
-    left hand keeps hold of the scabbard all through (it lets go as the cut blends out)."""
-    k0 = _held(rig, s, iai_pose(s, 0.35), 0.0, 9)
-    pull = K.P(iai_pose(s, 0.35), K.torso(11, -11, 0, (0.0, -0.01, -0.12), s, hips_share=0.25))
-    k1 = _held(rig, s, pull, -0.26, 32)
-    out = _swing(rig, s, 30, -10, (0, 0.0, -0.12), 70, 0.40, 1.02, 118, -4, -30, 26)
-    hit = _swing(rig, s, 0, -9, (0, 0.04, -0.10), 4, 0.53, 1.10, 4, 3, 0, 10)
-    c = _swing(rig, s, -30, -8, (0, 0.05, -0.09), -40, 0.52, 1.12, -72, 2, 0, 2)
-    d = _swing(rig, s, -46, -6, (0, 0.03, -0.08), -76, 0.43, 1.11, -136, -6, 0, 0)
-    e = _swing(rig, s, -44, -5, (0, 0.02, -0.07), -82, 0.38, 1.07, -150, -14, 0, 0)
-    end = _swing(rig, s, -8, -3, (0, 0, -0.05), -22, 0.30, 0.98, -10, -32, 70, 0, K.stance(s))
-    return keyed([(0.0, k0, "lin"), (0.035, k1, "lin"), (0.068, out, "lin"), (DRAW_HIT, hit, "lin"),
-                  (0.135, c, "out"), (0.18, d, "out"), (0.26, e, "io"), (0.5, end)])
+    the scabbard's mouth forward, the blade comes free beside his left hip and sweeps across, his
+    arm reaching out as it crosses his front, and the follow-through rises over his right
+    shoulder, the wrist turning over. The left hand keeps hold of the scabbard all through (it
+    lets go as the cut blends out). natural_arm.tracked() keeps the right arm human."""
+    k0 = _held(rig, s, iai_pose(s, 0.35), 0.0, 9, 50)
+    pull = K.P(iai_pose(s, 0.35), K.torso(20, -12, 0, (0.0, -0.01, -0.12), s, hips_share=0.25))
+    k1 = _held(rig, s, pull, -0.22, 32, 50)
+    out = _swing(rig, s, 30, -10, (0, 0.0, -0.12), 70, 0.40, 1.02, 118, -4, -30, 26, shoulder=(0, 0, 18), tol=45)
+    hit = _swing(rig, s, -2, -12, (0, 0.07, -0.11), -12, 0.66, 1.12, 12, 3, 15, 10, shoulder=(0, -2, 16), tol=30)
+    c = _swing(rig, s, -24, -11, (0, 0.07, -0.10), -46, 0.57, 1.22, -64, 14, -30, 2, shoulder=(0, -6, 8), tol=45)
+    d = _swing(rig, s, -38, -8, (0, 0.05, -0.09), -66, 0.47, 1.36, -110, 32, -60, 0, shoulder=(0, -12, 2), tol=45)
+    e = _swing(rig, s, -42, -5, (0, 0.03, -0.08), -60, 0.34, 1.48, -150, 48, -80, 0, shoulder=(0, -16, 0), tol=45)
+    return tracked(rig, keyed([(0.0, k0, "lin"), (0.035, k1, "lin"), (0.068, out, "lin"), (DRAW_HIT, hit, "lin"),
+                               (0.135, c, "out"), (0.18, d, "out"), (0.26, e, "io"), (0.5, _guard(rig, s, -80))]), 0.5)
 
 
 def sheathe(rig, s):
@@ -154,7 +176,7 @@ def sheathe(rig, s):
     into his walk (character_animator.gd)."""
     body = K.P(K.torso(30, -13, 0, (0.015, 0.0, -0.022), s), K.stance(s),
                {"hips": {"loc": (0.015 * s, 0.0, -0.022 * s), "rot": (0, -2.0, 3.0)}, "Shoulder_R": (0, -4, 32)})
-    start = _swing(rig, s, -8, -3, (0, 0, -0.05), -22, 0.30, 0.98, -10, -32, 70, 0, K.stance(s))
+    start = _guard(rig, s)
     across = _swing(rig, s, 14, -4, (0.015, 0.0, -0.022), 62, 0.36, 1.16, 150, -22, -90, 22, K.stance(s))
     mouth = _held(rig, s, body, -0.42, 22)
     home = _held(rig, s, body, 0.0, 4)

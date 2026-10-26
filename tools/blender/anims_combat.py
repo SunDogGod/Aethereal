@@ -1,19 +1,20 @@
 """Fighting animations.
 
-Sword swings are horizontal. Seen from the camera behind him:
-  windup_L    cocked across his body to his LEFT (held; the last part deepens up to 0.6 s of charge)
-  sweep_LR    the cut, left to right; the blade crosses his front at SWEEP_HIT seconds
-  windup_R    cocked out to his RIGHT, edge turned for the return stroke (held)
-  sweep_RL    the return cut, right to left (ends near windup_L, so swings chain)
-Plus block (held), dodge_roll, dodge_back, hit, stab (knife takedown), death (held), and for
-guards telegraph (blade raised, held), strike and stagger; cast is Isabella's brush flick.
+Sword swings (windup_L / sweep_LR / windup_R / sweep_RL) are in anims_swings.py; add_all() makes
+them too. SWEEP_HIT is when a sweep's blade crosses his front.
+Here: block (held), dodge_roll, dodge_back, hit, stab (knife takedown), death (held), and for
+guards telegraph (blade raised, held), strike and stagger; cast is Isabella's brush slash.
 Upper-body ones (windup_*, block, telegraph, cast) play over the legs' walking in Godot.
 """
 from pose import make_action, keyed
+from natural_arm import natural, tracked
 
 SWEEP_HIT = 0.07    # seconds into a sweep when the blade crosses his front (player_combat.gd uses this)
 STAB_DRAW = 0.13    # the knife moves from the sheath to his left hand (character_animator.gd)
 STAB_SHEATHE = 0.64
+CAST_HIT = 0.22     # Isabella's slash: the brush finishes its stroke (companion.gd: the ink lands)
+_RIG = None         # add_all() sets it, so guard_pose() can keep the wrist human (natural_arm.py)
+_GUARD = {}
 
 
 def _v(t, s):
@@ -52,47 +53,12 @@ def free_arm(s, x, y, z, pole=(-0.4, -1.0, -0.3), hand=(5, 0, -10)):
 
 
 def guard_pose(s):
-    """Neutral fighting stance: sword low and forward at his right side."""
-    return P(torso(-8, -3, 0, (0.0, 0.0, -0.05), s), stance(s), sword_arm(s, -22, 0.30, 0.98, -10, -32, 70),
-             free_arm(s, -0.06, 0.06, -0.48))
-
-
-# ---------------------------------------------------------------- swings
-def windup(s, side):
-    """side 1: cocked to his left (opens a left-to-right cut); -1: cocked to his right."""
-    k = side
-    roll = 0 if k > 0 else 180
-    pole = (0.4, -0.2, -1.0) if k > 0 else (0.6, -0.6, -0.6)
-    cocked = P(torso(42 * k, -4, 0, (0.0, -0.01, -0.06), s, hips_share=0.0), stance(s),
-               sword_arm(s, 80 * k, 0.34, 1.18, 140 * k, 10, roll, pole),
-               free_arm(s, -0.10 if k > 0 else -0.16, 0.16 if k > 0 else -0.18, -0.34))
-    deep = P(torso(60 * k, -7, 0, (0.0, -0.02, -0.09), s, hips_share=0.0), stance(s),
-             sword_arm(s, 98 * k, 0.36, 1.16, 154 * k, 12, roll, pole),
-             free_arm(s, -0.14 if k > 0 else -0.20, 0.22 if k > 0 else -0.24, -0.30))
-    return keyed([(0.0, guard_pose(s), "snap"), (0.09, cocked, "io"), (0.6, deep)])
-
-
-def sweep(s, side):
-    """The cut. side 1: left to right; -1: right to left (the return stroke)."""
-    k = side
-    roll = 0 if k > 0 else 180
-    pole_a = (0.4, -0.2, -1.0) if k > 0 else (0.6, -0.6, -0.6)
-    pole_b = (0.6, -0.6, -0.6) if k > 0 else (0.4, -0.2, -1.0)
-
-    def key(twist, ang, rad, h, yaw, pitch, pole, loc=(0, 0, -0.07), lean=-6, free=(-0.1, 0.1, -0.34)):
-        return P(torso(twist * k, lean, 0, loc, s), stance(s), sword_arm(s, ang * k, rad, h, yaw * k, pitch, roll, pole),
-                 free_arm(s, *free))
-    a = key(48, 82, 0.34, 1.17, 146, 9, pole_a, (0, -0.01, -0.07), -4,
-            (-0.10, 0.18, -0.34) if k > 0 else (-0.18, -0.18, -0.32))
-    b = key(22, 45, 0.42, 1.16, 95, 4, pole_a, (0, 0.01, -0.08), -6)
-    hit = key(0, 4, 0.52, 1.15, 4, 2, pole_b, (0, 0.03, -0.09), -8, (-0.14, 0.0, -0.32))
-    c = key(-30, -40, 0.52, 1.14, -72, 0, pole_b, (0, 0.04, -0.09), -8, (-0.18, -0.12, -0.30))
-    d = key(-46, -76, 0.43, 1.12, -136, -6, pole_b, (0, 0.03, -0.08), -6,
-            (-0.20, -0.22, -0.28) if k > 0 else (-0.06, 0.20, -0.34))
-    e = key(-44, -82, 0.38, 1.08, -150, -14, pole_b, (0, 0.02, -0.07), -5,
-            (-0.18, -0.20, -0.30) if k > 0 else (-0.06, 0.18, -0.36))
-    return keyed([(0.0, a, "in"), (0.04, b, "lin"), (SWEEP_HIT, hit, "lin"), (0.10, c, "out"), (0.14, d, "out"),
-                  (0.22, e, "io"), (0.45, guard_pose(s))])
+    """Neutral fighting stance: sword at his right side, its point forward at chest height."""
+    if s not in _GUARD:
+        p = P(torso(-8, -3, 0, (0.0, 0.0, -0.05), s), stance(s), sword_arm(s, -20, 0.32, 1.02, -6, 8, 70),
+              free_arm(s, -0.06, 0.06, -0.48))
+        _GUARD[s] = natural(_RIG, p, roll_tol=90) if _RIG else p
+    return _GUARD[s]
 
 
 def block(s):
@@ -229,21 +195,32 @@ def stagger(s):
 
 
 def cast(s):
-    up = P(torso(-10, 4, 0, (0, 0, -0.03), s, hips_share=0.0), stance(s),
-           {"arm_R": {"ik": _v((0.16, 0.30, 1.46), s), "pole": (0.6, -0.4, -0.4), "blade": (-5, 40, 90)}},
-           free_arm(s, -0.08, 0.05, -0.46))
-    flick = P(torso(6, -8, 0, (0, 0.02, -0.04), s, hips_share=0.0), stance(s),
-              {"arm_R": {"ik": _v((0.10, 0.56, 1.22), s), "pole": (0.6, -0.4, -0.6), "blade": (0, -20, 90)}},
-              free_arm(s, -0.10, 0.0, -0.46))
-    return keyed([(0.0, guard_pose(s), "out"), (0.12, up, "in"), (0.20, flick, "out"), (0.32, flick, "io"),
-                  (0.5, guard_pose(s))])
+    """Isabella's ink: one quick calligraphy slash. The brush rises by her right shoulder, sweeps
+    down and across her front to her left (the ink lands on the agent as the stroke finishes, at
+    CAST_HIT), flicks off the end of the stroke, holds a beat and settles."""
+    def key(twist, lean, ang, rad, h, yaw, pitch, roll, free, shoulder, tol=45):
+        p = P(torso(twist, lean, 0, (0, 0.02 if lean < -4 else 0, -0.03), s, hips_share=0.0), stance(s),
+              sword_arm(s, ang, rad, h, yaw, pitch, roll, (0.6, -0.4, -0.5)), free_arm(s, *free),
+              {"Shoulder_R": shoulder})
+        p["arm_R"]["roll_tol"] = tol
+        return p
+    sleeve = (-0.02, 0.20, -0.22)       # her left hand gathers her right sleeve at her chest
+    rise = key(-26, 4, -52, 0.36, 1.62, -36, 70, 90, sleeve, (0, -14, 2))
+    mid = key(-2, -8, 0, 0.56, 1.30, 10, 6, 90, sleeve, (0, -6, 14))
+    end = key(24, -12, 48, 0.46, 0.98, 44, -40, 90, (-0.04, 0.16, -0.26), (0, 0, 18))
+    flick = key(16, -9, 36, 0.42, 1.12, 34, -12, 90, (-0.04, 0.16, -0.26), (0, -2, 14))
+    keys = [(0.0, guard_pose(s), "out"), (0.10, rise, "in"), (0.16, mid, "lin"), (CAST_HIT, end, "out"),
+            (0.27, flick, "io"), (0.34, flick, "io"), (0.5, guard_pose(s))]
+    return tracked(_RIG, keyed(keys), 0.5) if _RIG else keyed(keys)
 
 
 def add_all(rig):
+    global _RIG
+    import anims_swings
+    _RIG = rig
+    _GUARD.clear()
     s = rig.head("Hips").z / 0.93
-    for side, name in ((1, "L"), (-1, "R")):
-        make_action(rig, "windup_" + name, windup(s, side), 0.6)
-        make_action(rig, "sweep_" + ("LR" if side > 0 else "RL"), sweep(s, side), 0.45)
+    anims_swings.add_all(rig, make_action)
     make_action(rig, "block", block(s), 0.4)
     make_action(rig, "dodge_roll", dodge_roll(s), 0.55)
     make_action(rig, "dodge_back", dodge_back(s), 0.4)

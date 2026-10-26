@@ -26,4 +26,5 @@ Behind the great house, a drain under the wall. The way out nobody was meant to 
 
 === whiteout ===
 [fade white]
+# Black Sand is part of the big world (scenes/world/world.tscn): he wakes at its Start marker.
 [level res://scenes/levels/black_sand.tscn]

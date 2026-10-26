@@ -4,7 +4,8 @@ extends Node
 ##   1. a fight: fight.gd calls MusicBus.fight(true / false)
 ##   2. a story cue: [music name] / [music off] in a dialogue file call play() / stop()
 ##   3. a zone inside a level (ZONES: the Empty Town's hall plays "hall")
-##   4. the scene's own bed (SCENE_BEDS)
+##   4. the scene's own bed (SCENE_BEDS). In the big world (scenes/world/world.tscn) that is the
+##      bed of the level Aeneas is walking in, crossfading as he walks from one into the next.
 ## Tracks are res://audio/music/<name>.wav (synthesized by the scratchpad script make_music.py);
 ## drop in a .ogg or .mp3 of the same name to replace one. It keeps running while the game is
 ## paused, a little quieter and muffled. It also sends every other sound player still on the
@@ -189,7 +190,11 @@ func _wanted() -> String:
 	if scene == null:
 		return ""
 	var path := scene.scene_file_path
-	var zone := _zone(path)
+	var level := scene as Node3D
+	if scene.has_method("level_here"):  # the big world: the zone Aeneas is in picks the bed
+		level = scene.level_here()
+		path = level.scene_file_path if level else ""
+	var zone := _zone(path, level)
 	if zone != "":
 		return zone
 	return str(SCENE_BEDS.get(path, ""))
@@ -207,12 +212,15 @@ func _fight_active() -> bool:
 
 
 ## The zone track Aeneas stands in ("" for none). Leaving needs a step past the box's edge,
-## so standing in the doorway doesn't flip back and forth.
-func _zone(path: String) -> String:
+## so standing in the doorway doesn't flip back and forth. The boxes are in the level's own
+## coordinates (in the big world a level can sit anywhere).
+func _zone(path: String, level: Node3D) -> String:
 	var player := get_tree().get_first_node_in_group("player") as Node3D
 	if player == null:
 		return ""
 	var at := player.global_position
+	if level and level.is_inside_tree():
+		at = level.to_local(at)
 	for z: Array in ZONES:
 		if z[0] != path:
 			continue

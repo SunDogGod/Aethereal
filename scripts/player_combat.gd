@@ -3,7 +3,7 @@ extends Node
 ## Aeneas's sword fighting, Souls-style: lock on, stamina, a charged swing, a dodge roll,
 ## a block, and a parry (tap block just as a hit lands) that opens a riposte.
 ## Lives under the Player as "Combat". Enemies call take_hit() on it.
-##   Q / right stick click: lock on
+##   Q / right stick click: lock on (only a helper: without it, swings aim themselves; swing_assist.gd)
 ##   F, left click / X: attack. Tap = an instant light swing; HOLD to wind up, release to
 ##     swing. The longer the hold (up to charge_time), the harder the hit. With the sword in
 ##     its scabbard (player_sword.gd) the first attack is the quick draw: tap = draw and cut
@@ -62,6 +62,7 @@ var _charging := false
 var _charge := 0.0
 var _drawing := false  # this charge is the iai stance: its release is the quick draw
 var sword: PlayerSword  ## whether the sword is out, and when he puts it away
+var assist := SwingAssist.new()  ## without lock-on, a swing turns him toward the enemy in front
 
 
 func _ready() -> void:
@@ -83,6 +84,17 @@ func _physics_process(delta: float) -> void:
 
 func is_charging() -> bool:
 	return _charging
+
+
+## True when the jump button rolls instead: locked on, or an agent is fighting him close by (so the
+## dodge works without lock-on too).
+func dodge_ready() -> bool:
+	return lock_target != null or SwingAssist.in_fight(player)
+
+
+## True while a swing's soft aim is turning him (the Player then leaves his facing alone).
+func aiming() -> bool:
+	return move == Move.SWING and assist.target != null
 
 
 ## Starts an attack: winds up a drawn sword, or takes the iai stance with it sheathed.
@@ -140,7 +152,7 @@ func _tick(delta: float) -> void:
 	elif Input.is_action_just_pressed("heavy_attack"):
 		_begin_attack()
 		_swing(1.0, _drawing)
-	elif lock_target and Input.is_action_just_pressed("jump"):
+	elif dodge_ready() and Input.is_action_just_pressed("jump"):
 		_start_dodge()
 
 
@@ -225,6 +237,9 @@ func _swing(power: float, draw := false) -> void:
 	blocking = false
 	if lock_target:
 		player.face(lock_target.global_position)
+		assist.clear()
+	else:
+		assist.pick(player, sword_reach, _riposte_target)
 	if draw:
 		player.release_draw(power)
 	else:
@@ -262,9 +277,12 @@ func _advance_move(delta: float) -> void:
 	else:
 		player.velocity.x = move_toward(player.velocity.x, 0.0, 30.0 * delta)
 		player.velocity.z = move_toward(player.velocity.z, 0.0, 30.0 * delta)
+		if not _hit_done:
+			assist.tick(player, delta)
 		if not _hit_done and _move_time >= spec.windup:
 			_hit_done = true
 			_land_hit(spec.damage)
+			assist.clear()
 	if _move_time >= spec.windup + spec.active + spec.recovery:
 		move = Move.NONE
 
@@ -336,6 +354,7 @@ func _knockback(from: Vector3, strength: float) -> void:
 
 
 func _cancel_move() -> void:
+	assist.clear()
 	if move != Move.DODGE:
 		move = Move.NONE
 	if _charging:

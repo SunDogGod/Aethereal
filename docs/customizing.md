@@ -75,6 +75,65 @@ makes a separate copy you can change freely. When unsure, use the buttons.
 Without the button: in the FileSystem panel, right-click `scenes/prefabs/level_template.tscn` >
 **Duplicate...**, give it a new name in `scenes/levels/`, and make its dialogue file by hand.
 
+To make the new level part of the big world (walk into it instead of loading it), see below.
+
+## The big world (one connected level)
+
+The Empty Town, Black Sand and the Vacuum Station are one place you can walk through:
+`scenes/world/world.tscn`. The Massacre stays its own scene (it is a memory). F5 and the chapter
+list play the world; each level scene is still its own file, and **F6** on it still plays it alone,
+so you keep editing the levels exactly as before. Open `world.tscn` to see them all in place.
+
+How it is put together (the Scene panel of `world.tscn`):
+- **Zones**: one **WorldZone** per place (`Town`, `BlackSand`, `Station`), holding that level as an
+  instance and a **Start** marker (where a chapter starts). Move the zone node to move the level.
+  In the Inspector: **Order** (the chapter's number after the dot), **Box** (the zone's space; its
+  bottom is where falling restarts you), and the lists the world uses instead of editing the level:
+  **Remove In World** (the level's own Player and StealthDirector), **Followers** (who joins Aeneas
+  once the story gets here: Isabella in the town, Kael in Black Sand, the station's flashlight),
+  **Gone After** / **Hidden After** / **Shown After** (what changes once the story has moved past
+  this zone: the town's agents, figures and story triggers are gone after the hall; Kael's figure
+  in Black Sand is hidden and the following Kael shown).
+- **Links**: the walkways. `Descent` (`scenes/world/descent.tscn`) is the service stair: a door at
+  the back of the hall's stage (shut until the story reaches Black Sand), three flights down inside
+  the town's foundation, out through a door in the town wall high on the drifted sand, and a
+  gangway down the drift. `RoadTunnel` (`scenes/world/road_tunnel.tscn`) runs from the bottom of
+  Black Sand's arch ramp to the station's entry corridor. A link lists the pieces of each level it
+  replaces (**Replaces In A/B**: the hall's back wall, Black Sand's town wall and barrier, the two
+  end walls of the tunnel) and brings its own; its **InA** / **InB** pieces move into that level
+  when the game starts, so they show and hide with it. If you change one of the replaced pieces in
+  its level, change the link's copy too (the world uses the link's).
+- One **Player**, one **StealthDirector** (every level's checkpoints and agents), a **Carry** node
+  for whoever follows Aeneas, and one **WorldEnvironment** that the world fills in itself.
+
+While you play, only the zone Aeneas is in is shown and running (both zones while he walks a link),
+so the world costs about what one level costs. Each zone keeps its own fog, light and sky: set them
+on that level's `WorldEnvironment` as before; on a link they fade from one into the other, and the
+music crossfades to the next level's track.
+
+The story: `[level ...]` and the chapter list still name the level file. If that level is in the
+world, the world loads with Aeneas at that zone's Start; if he is already in the world, the line just
+lets him walk on (Black Sand's `down` scene ends with the title card and he walks the tunnel into
+the station). Use `[teleport MarkerName]` after a fade when the story skips time. Continue
+remembers the furthest zone he has walked into. A scene finds cameras, markers and characters in
+its own level first (a `black_sand.txt` scene uses Black Sand's `TownShot`, not the town's).
+
+To add a zone:
+1. Build the level as usual (its own Player, sun and fog), and add it to `scripts/ui/chapters.gd`.
+2. In `world.tscn`, select `Zones`, add a child Node3D, give it the script
+   `scripts/world/world_zone.gd`, and drag the level scene onto it (it must be the zone's first
+   child). Add a Marker3D called `Start` where Aeneas begins. Move the zone so the level sits where
+   it belongs, clear of the other levels.
+3. Set **Order** and **Box** (cover where he can walk; boxes must not overlap), and fill in the
+   lists (at least `Player`, and `StealthDirector` if the level has one, under **Remove In World**).
+4. Add the level's path to `LEVELS` at the top of `scripts/world/world.gd`.
+5. Build a link: a scene whose top node has `scripts/world/world_link.gd`, with **Zone A** and
+   **Zone B** set, a **Box** covering the walkway, two markers `Blend/A` and `Blend/B` (the fade runs
+   from A to B), the walkway's Blocks, and **Replaces In A/B** for the end walls in the way. Instance
+   it under `Links`. (The two links were built by the scratch script `world/build_links.gd`, and the
+   world by `world/build_world.gd`; after the first build, edit them in the editor.)
+6. Walk it: the walkway must have no steps (ramps), like any level.
+
 ## Write dialogue scenes
 
 Each level's scenes live in one plain-text file: `data/dialogue/<level>.txt`. Open it in any text
@@ -99,6 +158,7 @@ Commands, one per line, in square brackets:
 | --- | --- |
 | `[camera ShotName]` | Cut to a camera under the level's `Shots` node |
 | `[camera]` | Back to the normal camera behind Aeneas |
+| `[frame Name]` | Cut to a side-on shot of Aeneas and that character, wherever they are standing (mid-fight) |
 | `[wait 1.5]` | Pause for 1.5 seconds |
 | `[hide Name]` / `[show Name]` | Hide or show something in the level, by its node name |
 | `[fade out]` / `[fade white]` / `[fade in]` | Fade to black, fade to white, fade back |
@@ -109,9 +169,9 @@ Commands, one per line, in square brackets:
 | `[empower GuardName]` | That agent can't be beaten (hits land but don't count) |
 | `[kill GuardName]` | That agent drops (sacrificed), no blood |
 | `[heal]` | Aeneas back to full health |
-| `[level res://scenes/levels/name.tscn]` | Fade out and go to that level |
+| `[level res://scenes/levels/name.tscn]` | Fade out and go to that level (in the big world: walk on to it, see "The big world") |
 
-Names are looked up anywhere in the level, so give things unique names. The full, current list of
+Names are looked up anywhere in the level (in the big world, the scene's own level first), so give things unique names. The full, current list of
 commands is in `scripts/dialogue_file.gd` (if a new one appears there, it works here too).
 
 ## Story triggers and camera shots
@@ -168,9 +228,40 @@ after being spotted (new levels have one).
    - **Death Scene**: plays if Aeneas dies. Empty = back to the last checkpoint, fight again.
    - **Boss** and **Boss Half Scene**: a scene the first time the boss drops under half health.
    - **Unlock On Win**: a switched-off trigger that switches on when the fight is won.
+   - **Choreography File**: optional, see below.
 
 Fighters walk on the navigation mesh, so press **Bake navigation** after moving walls or ramps
 where a fight happens.
+
+### Choreographed fights (the captain)
+
+A fight wrapped in cutscenes can follow a script instead of the agents fighting freely. The
+captain's is `data/fights/captain.txt` (the CaptainFight's **Choreography File**). Open it in any
+text editor; the list of beats and what each one does is at the top. In short:
+
+```
+=== phase 1 ===
+approach 2.6         walk up to 2.6 m from Aeneas
+guard 0.8            stand on guard for 0.8 s (a pause)
+feint 0.5            raise the blade, don't cut
+swing 0.75           a cut with a 0.75 s wind-up (block, parry or dodge it)
+scene captain_measure   play that scene from the level's dialogue file (camera cuts, lines)
+loop                 after the last beat, start again from here
+combo 0.75 0.4 0.4   three cuts in a row
+heavy 1.1            a cut that can't be blocked (his coat flashes red): dodge it
+```
+
+- `=== phase 1 ===` is the Fight's **Boss** until the Boss Half Scene; `=== phase 2 ===` is the
+  boss afterwards (once that scene has empowered him). `=== Lieutenant phase 1 ===` gives another
+  guard in the same fight his own beats, by node name. Guards with no section fight freely.
+- The fight is still real: Aeneas's hits land, and a parry staggers the captain (his next beat
+  starts when he recovers). Hitting him doesn't interrupt his beat.
+- `scene` beats play once each (even after a restart). Write them in the dialogue file like any
+  scene; `[frame Captain]` cuts to a side-on shot of Aeneas and the captain wherever they stand.
+  The fight pauses while a scene plays.
+- Damage and reach come from the guard's data file (`data/enemies/agency_captain.tres`).
+- Changes show up the next time the fight starts (F5 or F6). To try a new fight's choreography,
+  copy `captain.txt`, change it, and pick the copy as that Fight's **Choreography File**.
 
 ## Checkpoints
 

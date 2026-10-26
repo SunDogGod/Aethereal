@@ -174,6 +174,8 @@ class Rig:
         h1, R1, _ = self.rest[n1]
         h2, R2, _ = self.rest[n2]
         S = D[parent] @ (h0 - self.rest[parent][0]) + P[parent]
+        self.last_root = getattr(self, "last_root", {})
+        self.last_root[limb + "_" + side] = S.copy()   # where the limb starts (natural_arm.py reads it)
         Dg = None   # the hand's turn when the spec places the held item's grip instead of the wrist
         if limb == "arm" and ("hold" in sub or "grip" in sub or "gripc" in sub):
             hw, Rw, _ = self.rest["Weapon_" + side]

@@ -97,9 +97,13 @@ func _front_end() -> void:
 		span(M.amber if s < 0.0 else M.glass, Vector3(s * 3.6 - 0.22, 1.61, 0.14), Vector3(s * 3.6 + 0.22, 1.89, 0.17))
 		span(M.metal, Vector3(s * 4.45 - 0.13, 1.6, 0), Vector3(s * 4.45 + 0.13, 1.9, 0.1))
 		span(M.red if s > 0.0 else M.off, Vector3(s * 4.45 - 0.09, 1.65, 0.1), Vector3(s * 4.45 + 0.09, 1.85, 0.12))
-		pm.stick(M.metal, Vector3(s * 4.78, 2.3, 0.14), Vector3(s * 4.78, 3.8, 0.14), 0.05)
-		for y in [2.3, 3.8]:
-			pm.stick(M.metal, Vector3(s * 4.78, y, 0.0), Vector3(s * 4.78, y, 0.14), 0.04)
+		# The grab rails lean back with the end wall (above 2 m it leans 2.2 m in 6.15 m, see
+		# vacuum_station_train_hull.gd).
+		var lo := 2.2 * 0.3 / 6.15
+		var hi := 2.2 * 1.8 / 6.15
+		pm.stick(M.metal, Vector3(s * 4.78, 2.3, 0.14 - lo), Vector3(s * 4.78, 3.8, 0.14 - hi), 0.05)
+		for r in [[2.3, lo], [3.8, hi]]:
+			pm.stick(M.metal, Vector3(s * 4.78, r[0], -r[1]), Vector3(s * 4.78, r[0], 0.14 - r[1]), 0.04)
 	fp(Vector3(9.9, 0.92, 1.5), Vector3(0, 0.46, 0.75))
 
 

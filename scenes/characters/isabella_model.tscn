@@ -38,31 +38,31 @@ _surfaces = [{
 }]
 blend_shape_mode = 0
 
-[node name="IsabellaModel" type="Node3D" unique_id=2017966115]
+[node name="IsabellaModel" type="Node3D" unique_id=1947519627]
 
-[node name="isabella" type="Node3D" parent="." unique_id=988229635 instance=ExtResource("1_a7e3v")]
+[node name="isabella" type="Node3D" parent="." unique_id=276897068 instance=ExtResource("1_a7e3v")]
 
-[node name="Brush" type="BoneAttachment3D" parent="." unique_id=1456940385]
+[node name="Brush" type="BoneAttachment3D" parent="." unique_id=748916860]
 bone_name = "Weapon_R"
-bone_idx = 16
+bone_idx = 18
 use_external_skeleton = true
 external_skeleton = NodePath("../isabella/Armature/Skeleton3D")
 
-[node name="BrushMesh" type="MeshInstance3D" parent="Brush" unique_id=852956460]
+[node name="BrushMesh" type="MeshInstance3D" parent="Brush" unique_id=1968348964]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0)
 layers = 2
 mesh = SubResource("ArrayMesh_7nuvy")
 
-[node name="Bell" type="BoneAttachment3D" parent="." unique_id=85432444]
+[node name="Bell" type="BoneAttachment3D" parent="." unique_id=58918423]
 bone_name = "Sheath"
-bone_idx = 1
+bone_idx = 3
 use_external_skeleton = true
 external_skeleton = NodePath("../isabella/Armature/Skeleton3D")
 
-[node name="BellMesh" type="MeshInstance3D" parent="Bell" unique_id=737387094]
+[node name="BellMesh" type="MeshInstance3D" parent="Bell" unique_id=1357277990]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0)
 layers = 2
 mesh = SubResource("ArrayMesh_dewqt")
 
-[node name="Animator" type="Node" parent="." unique_id=41996778]
+[node name="Animator" type="Node" parent="." unique_id=2012154037]
 script = ExtResource("3_lfftr")
