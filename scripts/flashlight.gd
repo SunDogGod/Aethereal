@@ -33,6 +33,10 @@ var _camera: Camera3D
 var _aim := Vector3.FORWARD
 
 
+func _enter_tree() -> void:
+	add_to_group("flashlights")
+
+
 func _ready() -> void:
 	ensure_action()
 	# The Player joins the "player" group in his own _ready, which may run after this one.
@@ -75,6 +79,16 @@ func _attach() -> void:
 
 func is_on() -> bool:
 	return light != null and light.visible
+
+
+## On or off without a sound (Continue puts it back the way it was saved).
+func set_on(on: bool) -> void:
+	if light == null:
+		start_on = on  # not clipped to him yet: _attach() uses this
+	elif enabled:
+		light.visible = on
+		if on:
+			_place(1.0)
 
 
 func toggle() -> void:

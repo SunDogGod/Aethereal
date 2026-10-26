@@ -38,9 +38,9 @@ func _ready() -> void:
 	items.add_child(MenuItem.make("Resume", ITEM_WIDTH, resume))
 	items.add_child(MenuItem.make("Settings", ITEM_WIDTH, _open_settings))
 	items.add_child(MenuItem.make("Return to Title", ITEM_WIDTH, _ask.bind(
-			"Return to the title screen?", "Continue starts this level from the beginning.", _return_to_title)))
+			"Return to the title screen?", "", _return_to_title)))
 	items.add_child(MenuItem.make("Quit Game", ITEM_WIDTH, _ask.bind(
-			"Quit the game?", "Continue starts this level from the beginning.", func() -> void: get_tree().quit())))
+			"Quit the game?", "", func() -> void: get_tree().quit())))
 	_no = MenuItem.make("No", 96.0, _show_main)
 	answers.add_child(_no)
 	answers.add_child(MenuItem.make("Yes", 96.0, func() -> void: _on_yes.call()))
@@ -129,11 +129,15 @@ func _open_settings() -> void:
 	hints.text = "Left / Right   change        Esc / B   back"
 
 
-## A yes/no question; "No" has the focus, so a stray press never quits.
+## A yes/no question; "No" has the focus, so a stray press never quits. With no small print it
+## says where Continue will pick up (the game saves by itself: scripts/autosave.gd).
 func _ask(text: String, small_print: String, on_yes: Callable) -> void:
 	_return_to = get_viewport().gui_get_focus_owner()
 	_on_yes = on_yes
 	question.text = text
+	if small_print == "":
+		small_print = "Continue returns to your last save." if SaveGame.recording \
+				else "This level is running on its own: nothing is saved."
 	note.text = small_print
 	note.visible = small_print != ""
 	main_box.visible = false

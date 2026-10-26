@@ -6,8 +6,10 @@ A third-person action game with a PS1 look, set in the Construct.
 1. Open Godot 4.7 and pick **Aethereal 3D** in the project list.
 2. Press **F5** (or the ▶ button at the top right). The **title screen** opens: Continue, New Game, Chapters (any
    level), Settings, Quit. Arrows, WASD or the stick move; Enter, A or click choose; Esc or B goes back.
-   Continue starts at the furthest chapter you have reached; replaying an earlier chapter doesn't move it
-   back, and New Game asks first when there is a save further on.
+   **Continue** returns to your last save. The game saves by itself: at each checkpoint, at the end of
+   each story scene, when you win a story fight and when you walk into the next place (a small
+   "saved" shows in the bottom-right corner). New Game and Chapters ask first when they would replace
+   your save. How it works: `docs/customizing.md`, "Saving".
    The story runs on from level to level. The town, Black Sand and the station are one connected
    world (`scenes/world/world.tscn`): you walk from one into the next. A change of scene is a short
    black screen (a small LOADING line shows in the corner if it takes more than a moment).
@@ -53,6 +55,7 @@ put together: `docs/customizing.md`, "The big world".
 | `data/inspect/` | What Aeneas says when he looks at things (`NodeName|line|line`), one file per level |
 | `audio/` | The sound effects: short WAVs synthesized by the scratch script `make_sfx.gd` (footsteps, swing, hit, parry, takedown, hums, the cube's drone) |
 | Story system | `scripts/story.gd` (the "Story" autoload that plays scenes), `scene_loader.gd` (loads the next scene on a thread behind the fade, with a small LOADING line), `dialogue_file.gd` (reads the text files), `dialogue_box.gd` + `scenes/dialogue_box.tscn` (the text box), `story_trigger.gd` |
+| Saving | `scripts/autosave.gd` (saves by itself at checkpoints, scene ends, won fights, new zones), `save_state.gd` (what a save holds), `ui/save_game.gd` (the file: `savegame.json`, written safely, with a spare), `save_restore.gd` + `story_replay.gd` (Continue puts it all back), `ui/hud_saved.gd` (the small "saved" mark) |
 | `docs/` | Level designs |
 | `shaders/` | `ps1_surface.gdshader` (the PS1 look on every 3D surface), `ps1_screen.gdshader` (color depth + dither) |
 | `materials/` | Ready-made PS1 materials: dirt, concrete, dev grid |
@@ -74,9 +77,10 @@ Inspector set **Leader** to the Player.
   see it, he spots you, unless **Isabella** can reach him: then she binds him with ink at the same
   moment. The prompt at the bottom of the screen tells you which.
 - **Checkpoints**: the bridge end, the rim, the top of the ramp, partway down the catwalk, the alley
-  junction, and the courtyard. Being spotted, dying in a fight or falling off the town sends you back
-  to the last one (SPOTTED / SLAIN / FELL). Walking back through an earlier one doesn't move you back. Agents
-  you took down before it stay down. After the capture,
+  junction, and the courtyard; in Black Sand before and past the road; in the station, the middle of
+  the hall. Each one also saves the game. Being spotted, dying in a fight or falling off the town sends
+  you back to the last one (SPOTTED / SLAIN / FELL). Walking back through an earlier one doesn't move
+  you back, and during a story fight they do nothing. Agents you took down before it stay down. After the capture,
   restarts happen in the hall, and agents from fights you already won stay down. A level
   without a StealthDirector just puts you back on the last ground you stood on.
 - **Drops**: jumping off a deck into the light well (any drop over 6 m) counts as a fall too: FELL,

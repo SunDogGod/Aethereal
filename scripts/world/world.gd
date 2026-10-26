@@ -22,6 +22,7 @@ const LEVELS := [
 ]
 
 static var pending_level := ""  ## set before loading the world: start at this level's zone
+static var pending_save := {}   ## Continue: start at this save's spot (save_restore.gd)
 static var current_level := ""  ## the level of the zone Aeneas is in (pause menu, music)
 
 var stage := 0                  ## the furthest zone order the story has reached in this run
@@ -94,6 +95,10 @@ func _enter_tree() -> void:
 			l.prepare(self)
 	var start := _start_zone()
 	stage = start.order if start else 0
+	if not pending_save.is_empty():  # Continue: the saved zone, spot and story stage
+		start = SaveRestore.place(self, pending_save, start)
+		stage = maxi(start.order if start else 0, int(pending_save.get("stage", 0)))
+		pending_save = {}
 	for z in zones:
 		z.apply_stage(self, stage)
 	_update(true)
@@ -169,7 +174,8 @@ func _dominant() -> WorldZone:
 		return _here
 	if _here is WorldLink:
 		var link := _here as WorldLink
-		return link.b if link.progress(player.global_position) >= 0.5 else link.a
+		var at := player.global_position if player.is_inside_tree() else player.position  # also in _enter_tree
+		return link.b if link.progress(at) >= 0.5 else link.a
 	return null
 
 
@@ -222,12 +228,11 @@ func _update(initial: bool) -> void:
 			_reach(main)
 
 
-## He walked into a zone further on in the story: Continue starts there from now on, restarts
-## happen at its Start (not back in the zone he left), and the zones behind him move on (their
-## story triggers and checkpoints go, and so on).
+## He walked into a zone further on in the story: restarts happen at its Start (not back in the
+## zone he left), the game saves there (autosave.gd listens to stage_changed), and the zones
+## behind him move on (their story triggers and checkpoints go, and so on).
 func _reach(zone: WorldZone) -> void:
 	stage = zone.order
-	SaveGame.record_level(zone.level_path())
 	var director := get_node_or_null("StealthDirector")
 	if director and director.has_method("move_checkpoint"):
 		director.move_checkpoint(zone.start_transform(self).origin)

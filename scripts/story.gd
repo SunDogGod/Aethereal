@@ -9,12 +9,17 @@ extends Node
 ## Going to one of those levels loads the world at that zone's start; inside the world a [level]
 ## line for one of them just lets Aeneas walk on. A scene looks up cameras, markers and characters
 ## in its own level first (black_sand.txt looks in Black Sand), then anywhere in the world.
+## Saving: each level start is saved (SaveGame.start_level), Autosave (added to each story level
+## loaded here) saves when a scene ends, and Continue's save is put back as the level loads.
 
 signal scene_finished(scene: String)
+## A dialogue file's scene played to its normal end (not a look-at, not a scene that left the level).
+signal scene_done(path: String, scene: String)
 
 const DIALOGUE_BOX := preload("res://scenes/dialogue_box.tscn")
 
 var playing := false
+var last_started_fights: Array = []  ## the fights the playing (or last) scene started with [fight]
 
 var _run_id := 0  # stop() bumps this; a scene or level change still waiting then gives up
 var _fade_tween: Tween
@@ -46,7 +51,7 @@ func play(path: String, scene: String) -> bool:
 		return false
 	var root := _root()
 	_scope = root.level_for_dialogue(path) if root.has_method("level_for_dialogue") else root
-	_run(steps, scene)
+	_run(steps, scene, path)
 	return true
 
 
@@ -65,14 +70,16 @@ func narrate(lines: Array) -> void:
 
 ## Goes to another level with a fade to black. Used by the title screen and the chapter lists.
 ## A level that lives in the big world loads the world, starting at that level's zone.
-func go_to_level(path: String) -> void:
+## `fresh` saves the start of that level (New Game, a chapter); Continue passes false.
+func go_to_level(path: String, fresh := true) -> void:
 	var run_id := _run_id
 	await fade("out")
 	if run_id != _run_id:
 		return  # stop() was called during the fade
 	if not await _change_scene(path, run_id):
 		return
-	SaveGame.record_level(path)  # Continue on the title screen starts here
+	if fresh:
+		SaveGame.start_level(path)  # Continue on the title screen starts here, until the next save
 	await get_tree().process_frame
 	await get_tree().process_frame
 	_loader.finish(get_tree().current_scene.scene_file_path if get_tree().current_scene else "")
@@ -96,6 +103,7 @@ func fade(how: String) -> void:
 func stop() -> void:
 	_run_id += 1
 	playing = false
+	SaveGame.pending = {}  # a Continue still loading is called off too
 	if _fade_tween and _fade_tween.is_valid():
 		_fade_tween.kill()
 	_loader.cancel()
@@ -105,8 +113,9 @@ func stop() -> void:
 	_box.letterbox(false)
 
 
-func _run(steps: Array, scene: String) -> void:
+func _run(steps: Array, scene: String, path := "") -> void:
 	playing = true
+	last_started_fights = []
 	var player: Player = get_tree().get_first_node_in_group("player")
 	if player:
 		player.controls_enabled = false
@@ -153,6 +162,7 @@ func _run(steps: Array, scene: String) -> void:
 				var fight := _find(step.name)
 				if fight and fight.has_method("start"):
 					fight.call_deferred("start")  # after this scene gives control back
+					last_started_fights.append(fight)
 			"erupt":
 				if player:
 					player.get_node("Combat").set_erupting(step.on)
@@ -187,7 +197,7 @@ func _run(steps: Array, scene: String) -> void:
 						return
 					if not await _change_scene(step.path, run_id):
 						return
-					SaveGame.record_level(step.path)
+					SaveGame.start_level(step.path)
 					# This scene is over: the next level's opening trigger (Aeneas starts inside it)
 					# may start its own scene while the screen fades back in.
 					playing = false
@@ -212,6 +222,8 @@ func _run(steps: Array, scene: String) -> void:
 		player.in_cutscene = false
 	playing = false
 	scene_finished.emit(scene)
+	if path != "":
+		scene_done.emit(path, scene)  # Autosave saves here
 
 
 ## A title card over the fade: "ACT 0 - BLACK SAND". Lines split on " / ".
@@ -269,13 +281,19 @@ func _find(node_name: String) -> Node:
 
 ## Loads a level, or the big world at that level's zone, behind the black screen and without
 ## freezing the window (scene_loader.gd), then swaps it in. False if stop() came meanwhile.
+## A story level gets an Autosave; Continue's save (SaveGame.pending) is put back as it starts.
 func _change_scene(path: String, run_id: int) -> bool:
 	var next: Node = await _loader.prepare(World.SCENE if World.has_level(path) else path)
 	if next == null or run_id != _run_id:
 		if next:
 			next.free()
 		return false
+	var restore: Dictionary = SaveGame.pending if SaveGame.pending.get("level", "") == path else {}
+	SaveGame.pending = {}
 	if World.has_level(path):
 		World.pending_level = path
+	SaveRestore.prepare(next, restore)
+	if Chapters.is_story_level(path):
+		Autosave.attach(next, restore)
 	get_tree().change_scene_to_node(next)
 	return true

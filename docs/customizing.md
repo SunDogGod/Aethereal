@@ -32,7 +32,7 @@ What the buttons make:
 | Story trigger | A zone that plays a dialogue scene when Aeneas walks in |
 | Look-at spot | Something Aeneas can look at ("E / Up: Look") |
 | Camera shot | A story camera, exactly where your 3D view is looking |
-| Checkpoint | A save spot for restarts |
+| Checkpoint | A restart spot (spotted, slain, fell) that also saves the game |
 | Agency guard | An agent with a two-point patrol |
 | Patrol point | One more point on the selected guard's walk |
 | Fight | A story fight with one agent in it |
@@ -67,7 +67,7 @@ makes a separate copy you can change freely. When unsure, use the buttons.
    ["0.5", "The Old Mill", "res://scenes/levels/the_old_mill.tscn"],
    ```
 
-   Keep the comma at the end. An empty number (`""`) marks a test space that Continue never remembers.
+   Keep the comma at the end. An empty number (`""`) marks a test space, which is never saved.
 5. **Lead into it from the level before.** At the end of that level's last dialogue scene, add
    `[level res://scenes/levels/the_old_mill.tscn]`.
 6. Play it: **F6** plays the open level; **F5** starts from the title screen.
@@ -114,9 +114,9 @@ music crossfades to the next level's track.
 
 The story: `[level ...]` and the chapter list still name the level file. If that level is in the
 world, the world loads with Aeneas at that zone's Start; if he is already in the world, the line just
-lets him walk on (Black Sand's `down` scene ends with the title card and he walks the tunnel into
-the station). Use `[teleport MarkerName]` after a fade when the story skips time. Continue
-remembers the furthest zone he has walked into. A scene finds cameras, markers and characters in
+lets him walk on (Black Sand's `down` scene fades out and back in, and he walks the tunnel into
+the station). Use `[teleport MarkerName]` after a fade when the story skips time. Walking into
+the next zone saves the game at that zone's `Start` (see "Saving"). A scene finds cameras, markers and characters in
 its own level first (a `black_sand.txt` scene uses Black Sand's `TownShot`, not the town's).
 
 To add a zone:
@@ -158,6 +158,65 @@ Nothing to do here; this is how it works, so nothing surprises you.
   it gave the town a steadier frame rate and used a quarter of the video memory of D3D12, with the
   same picture. If Vulkan ever fails to start, Godot falls back to D3D12 by itself; to choose D3D12
   for good, set that driver back to `d3d12`.
+
+## Saving
+
+The game saves by itself: there is no save menu, and there is one save. **Continue** on the title
+screen puts Aeneas back at the last save, with the place as he left it.
+
+**When it saves**
+- At a **checkpoint** that moves the restart point on. Continue puts him on the checkpoint.
+- At the **end of a story scene**, where he stands. A scene that starts a fight (`[fight X]`) saves
+  the start of that fight, so Continue starts the fight again.
+- When a **story fight is won**, where he stands.
+- When he **walks into the next zone** of the big world, at that zone's `Start`.
+- At the **start of every level** (New Game, a chapter, a `[level ...]` line). Continue then starts
+  that level the normal way, opening scene and all. This is the only save in the Massacre until its
+  first scene ends.
+
+It never saves during a fight, a scene, a restart or a fall; a save that comes up then waits for a
+quiet moment. Nothing is saved when you pause or quit, and a level played on its own (F6) never
+saves. When the file is written, a small diamond and the word **saved** fade in and out in the
+bottom-right corner (`scripts/ui/hud_saved.gd`; set `SHOW` to false there to hide it).
+
+**What it remembers**: the zone and how far the story has come, where he stands and which way he
+and the camera face, the restart point, the story scenes finished (in order), the checkpoints
+reached, the fights won, the agents down for good (where they lie, knifed or bound), look-at spots
+that can only be read once, and the flashlight. Health is not saved: Continue starts at full health,
+like every restart. Companions come back from the story: whoever has joined Aeneas by then follows
+him, shown or hidden as the scenes left them.
+
+**How Continue puts it back**: the level loads with Aeneas already at the saved spot, so no trigger
+sees him at the start. The triggers of finished scenes are marked done, and those scenes are run
+again without playing: only the commands that change the level for good (`[hide]`, `[show]`,
+`[collapse]`, `[kill]`, `[empower]`, `[erupt]`). A fight the save was in starts again a moment after
+the screen fades in. Then the agents lie down where they fell, won fights stay won (the capture door
+stays open), the checkpoints already reached count as passed, and the flashlight is as it was.
+
+**The file** is `savegame.json` in the game's user folder (on Windows
+`%APPDATA%\Godot\app_userdata\Aethereal 3D\`). It is plain text you can open. Each save is written to
+`savegame.tmp.json` first and then replaces the old file, which stays as `savegame.bak.json`: a crash
+in the middle of saving can't spoil the save, and a broken file falls back to the spare. A file from
+a newer version of the game is never overwritten (it is kept as `savegame.v2.json`, or whichever
+number). The old `save.cfg` from before saving still works (Continue starts that level) until the
+first new save, which keeps it as `save.cfg.old`. To start over, choose New Game, or delete
+`savegame.json` and `savegame.bak.json`.
+
+**New Game and Chapters ask first** ("This replaces your saved game (0.3 Black Sand).", No has the
+focus) whenever they would replace a save. With no save, or a save of the very start of that same
+level, they go straight in.
+
+**When you change the game**
+- Saves name things by their node path and scene name. If you rename a dialogue scene, a trigger, a
+  fight or an agent, older saves lose that part (the scene plays again, the agent stands up). Harmless,
+  but expect it while testing.
+- A new dialogue command that changes the level for good must also be handled in
+  `scripts/story_replay.gd`, or Continue will forget what it did.
+- Something new that changes for good (a door that opens, a lever) needs a line in
+  `scripts/save_state.gd` (what goes in the file) and `scripts/save_restore.gd` (putting it back).
+- The pieces: `scripts/autosave.gd` (when to save), `scripts/save_state.gd` (what),
+  `scripts/ui/save_game.gd` (the file), `scripts/save_restore.gd` and `scripts/story_replay.gd`
+  (Continue).
 
 ## Write dialogue scenes
 
@@ -255,6 +314,10 @@ after being spotted (new levels have one).
    - **Unlock On Win**: a switched-off trigger that switches on when the fight is won.
    - **Choreography File**: optional, see below.
 
+
+The scene that starts a fight saves the game first (Continue starts the fight again), and winning
+it saves too (see "Saving").
+
 Fighters walk on the navigation mesh, so press **Bake navigation** after moving walls or ramps
 where a fight happens.
 
@@ -301,6 +364,9 @@ panel, top to bottom: walking back through one higher up the list keeps the rest
 keep the list in the order he reaches them (drag a new one into place). In the big world, a zone's
 checkpoints go once the story is past it (`Checkpoints` in the zone's **Gone After**), and walking
 into a new zone moves the restart to its `Start`.
+
+A checkpoint that moves the restart point on also **saves the game** (Continue puts him back on
+it). During a story fight checkpoints do nothing: the fight restarts where it started.
 
 ## Look-at spots
 

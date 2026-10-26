@@ -21,12 +21,14 @@ walks through from the town to the end of the station.
   be skipped. After the hall the town is empty when you walk back up: its agents, figures and story
   scenes are gone.
 - **Proposed:** Black Sand's descent corridor runs on as a 40 m road tunnel (two strip lights still
-  glow) straight into the station's entry corridor. The `down` scene keeps its title card, then you
-  walk the tunnel; there is no load.
+  glow) straight into the station's entry corridor. The `down` scene fades out and back in (its title
+  card was removed with the act-divider screens), then you walk the tunnel; there is no load.
 - **Proposed:** Kael follows from Black Sand into the station (the station's own Kael is not used in
   the world). The flashlight comes with the station, as before, and stays with you after it.
-- **Proposed:** Continue remembers the furthest place you have walked into (Black Sand, then the
-  station); walking back up to the town does not move it.
+- **Proposed:** Continue returns to your last save. The game saves by itself at checkpoints, at the
+  end of story scenes, when a story fight is won and when you walk into the next place (at its
+  start). After the end of Act 0, Continue lands in the training room just before `end_of_act`.
+  New checkpoints: Black Sand past the road, and the middle of the station's hall.
 
 ## 0.2 The Massacre (a memory) — `scenes/levels/massacre.tscn`
 - **Decided:** plays as the blackout dream after the Empty Town; you are four years old.

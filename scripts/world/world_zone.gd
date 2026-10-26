@@ -20,6 +20,7 @@ extends Node3D
 @export var shown_after := PackedStringArray()   ## shown once the story is past this zone
 
 var level: Node3D  ## the level instance (this node's first child)
+var _carried := {}  # follower path -> the node, once it has moved out of the level into Carry
 
 
 ## The level's file, e.g. res://scenes/levels/black_sand.tscn.
@@ -66,17 +67,27 @@ func apply_stage(world: World, stage: int) -> void:
 	var past := stage > order
 	if past:
 		for path in gone_after:
-			World.drop(level.get_node_or_null(path))
+			World.drop(_node(path))
+			_carried.erase(path)  # a companion already following him goes too
 		for path in hidden_after:
-			var n := level.get_node_or_null(path) as Node3D
+			var n := _node(path) as Node3D
 			if n:
 				n.visible = false
 		for path in shown_after:
-			var n := level.get_node_or_null(path) as Node3D
+			var n := _node(path) as Node3D
 			if n:
 				n.visible = true
 	if stage >= order:
 		for path in followers:
-			var n := level.get_node_or_null(path) as Node3D
+			var n := _node(path) as Node3D
 			if n:
 				world.carry(n)
+				_carried[path] = n
+
+
+## A node of the level by its path, also once it follows Aeneas (it is no longer in the level then).
+func _node(path: String) -> Node:
+	var n: Variant = _carried.get(path)  # untyped: it may have been freed
+	if is_instance_valid(n) and not n.is_queued_for_deletion():
+		return n
+	return level.get_node_or_null(path)

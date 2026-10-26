@@ -228,9 +228,11 @@ func stab() -> void:
 	_stop("upper", 0.05)
 
 
-func die() -> void:
+## Falls and holds the last pose. `instant`: reaches it in a few frames (Continue lays the dead
+## down under the black screen).
+func die(instant := false) -> void:
 	dead = true
-	_play("full", "death", 1.0, true, 0.06)
+	_play("full", "death", 40.0 if instant else 1.0, true, 0.0 if instant else 0.06)
 	_stop("upper", 0.06)
 
 

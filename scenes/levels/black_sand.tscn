@@ -1426,6 +1426,17 @@ script = ExtResource("22_ftox7")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
 shape = SubResource("BoxShape3D_nqvqg")
 
+[node name="PastRoad" type="Area3D" parent="Checkpoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, -61)
+collision_layer = 0
+collision_mask = 2
+monitorable = false
+script = ExtResource("22_ftox7")
+
+[node name="Zone" type="CollisionShape3D" parent="Checkpoints/PastRoad"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+shape = SubResource("BoxShape3D_nqvqg")
+
 [node name="Signs" type="Node3D" parent="." unique_id=1346972662]
 
 [node name="Figures" type="Node3D" parent="." unique_id=1504666270]

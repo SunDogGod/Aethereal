@@ -114,6 +114,29 @@
 - Checkpoints only move forward: the StealthDirector ranks them by their order under the level's
   `Checkpoints` node (and, in the big world, by zone order first), so keep that list in route order.
   A lost fight waits for the director's `restarted` signal before it starts again (pause-safe).
+  During a story fight checkpoints do nothing (the fight restarts where it started).
+
+## Saving
+- The game saves by itself, one slot (`scripts/autosave.gd`, added by Story to every story level it
+  loads): at a checkpoint that moves the restart on, at the normal end of a story scene (Story's
+  `scene_done`), when a story fight is won, on walking into the next zone, and at each level start
+  (`SaveGame.start_level`). Never mid-fight, mid-scene, mid-restart or mid-fall. `docs/customizing.md`
+  "Saving" is the author's guide.
+- Continue restores in the same frame the scene becomes ready, before any physics step
+  (`save_restore.gd`; the World places Aeneas in `_enter_tree`). Order matters: agents are laid down
+  before the director's `restore()` commits them.
+- State that changes for good must be restorable: give it a quiet `mark_*` / `restore_*` method (no
+  signals, no sounds; see StoryTrigger.mark_done, Checkpoint.mark_reached, Fight.restore_won) and add
+  it to `save_state.gd` (capture) and `save_restore.gd` (apply). Keys are `<level file>::<node path>`,
+  positions level-local.
+- Story state is rebuilt by replaying finished scenes' state commands (`story_replay.gd`): a new
+  dialogue command that changes the level for good must be handled there too.
+- The file layer (`scripts/ui/save_game.gd`) writes atomically (tmp, then rename, previous kept as
+  .bak), validates everything it reads, and never overwrites a newer version's file. Bump `VERSION`
+  only with a migration in `_clean()`.
+- Test scripts that show the title screen or set `SaveGame.recording` must first point
+  `SaveGame.folder` at a scratch folder, so a test (or a test killed by a timeout) never touches the
+  author's save.
 
 ## Rough-cut levels (Act 0 onward)
 - Each story location gets a rough walkable level first: signature space, landmark, its own fog

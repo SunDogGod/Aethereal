@@ -6,6 +6,8 @@ extends Node
 ## Emitted once a restart has put everyone back, as the screen fades in again. A lost fight
 ## waits for it before it starts again.
 signal restarted
+## Emitted when a checkpoint moves the restart point on (the game saves there: autosave.gd).
+signal checkpoint_committed(checkpoint: Node3D)
 
 @export var player: Player
 
@@ -28,8 +30,9 @@ func _ready() -> void:
 
 ## Checkpoints only move forward: walking back through one he already passed (or one further
 ## up the list) keeps the restart where it is. Agents he took down stay down either way.
+## During a story fight a checkpoint does nothing: the fight restarts where it started.
 func _on_checkpoint_reached(checkpoint: Node3D) -> void:
-	if _resetting:
+	if _resetting or _fight_on():
 		return
 	get_tree().call_group("guards", "commit_checkpoint")
 	var rank := _rank_of(checkpoint)
@@ -37,6 +40,32 @@ func _on_checkpoint_reached(checkpoint: Node3D) -> void:
 		return
 	_rank = rank
 	_checkpoint = checkpoint.global_position
+	checkpoint_committed.emit(checkpoint)
+
+
+func _fight_on() -> bool:
+	for fight in get_tree().get_nodes_in_group("fights"):
+		if fight.get("active") == true:
+			return true
+	return false
+
+
+## Where a restart puts him now (the save keeps it).
+func checkpoint_position() -> Vector3:
+	return _checkpoint
+
+
+## True while a restart's fade is under way (nothing is saved meanwhile).
+func is_resetting() -> bool:
+	return _resetting
+
+
+## Continue: the restart point the save had, and the checkpoints already reached count as passed,
+## so walking back through one doesn't move it back.
+func restore(reached: Array, at: Vector3) -> void:
+	for checkpoint: Node in reached:
+		_rank = maxi(_rank, _rank_of(checkpoint))
+	move_checkpoint(at)
 
 
 ## How far on a checkpoint is: its place in the level's Checkpoints list (top to bottom in the

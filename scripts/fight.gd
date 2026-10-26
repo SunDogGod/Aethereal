@@ -4,6 +4,9 @@ extends Node3D
 ## or, with none set, sends him back to the last checkpoint. A `boss` can have a
 ## `boss_half_scene` that plays the first time his health drops under half.
 ## With a `choreography_file`, its guards play authored beats instead of fighting freely (the captain).
+## Winning it saves the game (autosave.gd listens to `fight_won`).
+
+signal fight_won
 
 @export_file("*.txt") var dialogue_file := ""
 @export var won_scene := ""
@@ -18,9 +21,14 @@ extends Node3D
 @export_file("*.txt") var choreography_file := ""
 
 var active := false
+var won := false  ## all its agents went down (the save remembers it)
 var _half_done := false
 var _player: Player
 var _scenes_played := {}  # a choreography's scenes play once per visit, even across restarts
+
+
+func _enter_tree() -> void:
+	add_to_group("fights")
 
 
 func start() -> void:
@@ -72,13 +80,24 @@ func _on_guard_down(_guard: Guard) -> void:
 		if guard.state != Guard.State.DOWN:
 			return
 	stop()
+	won = true
 	# A won story fight counts as a checkpoint for its agents: a later death must not stand them up.
 	for guard in _guards():
 		guard.commit_checkpoint()
 	if unlock_on_win:
 		unlock_on_win.monitoring = true
+	fight_won.emit()
 	if won_scene != "":
 		_story_play(won_scene)
+
+
+## Continue: this fight was won before the save (its agents are already laid down). Nothing plays.
+func restore_won() -> void:
+	won = true
+	for guard in _guards():
+		guard.commit_checkpoint()
+	if unlock_on_win:
+		unlock_on_win.monitoring = true
 
 
 func _on_boss_health(health: float, max_health: float) -> void:

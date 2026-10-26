@@ -41,7 +41,7 @@ var _waited := 0.0
 var _last_seen := Vector3.ZERO
 var _start_position := Vector3.ZERO
 var _start_facing := 0.0
-var _down_at_checkpoint := false
+var down_for_good := false  ## down before the last checkpoint (or the save): a restart leaves him down
 var _player: Player
 
 
@@ -152,7 +152,7 @@ func sacrifice() -> void:
 		return
 	fighter.interrupt()
 	_go_down()
-	_down_at_checkpoint = true
+	down_for_good = true
 
 
 ## The captain after the lieutenant's sacrifice: full health, harder hits, nothing gets through.
@@ -267,12 +267,12 @@ func bind_with_ink(delay := 0.0) -> void:
 
 ## Called when Aeneas reaches a checkpoint: guards already down stay down from now on.
 func commit_checkpoint() -> void:
-	_down_at_checkpoint = state == State.DOWN
+	down_for_good = state == State.DOWN
 
 
 ## Called when Aeneas is sent back to a checkpoint.
 func reset_to_checkpoint() -> void:
-	if _down_at_checkpoint:
+	if down_for_good:
 		return
 	state = State.PATROL
 	suspicion = 0.0

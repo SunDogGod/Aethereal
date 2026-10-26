@@ -21,6 +21,10 @@ var _player: Player = null
 var _done := false
 
 
+func _enter_tree() -> void:
+	add_to_group("interactables")
+
+
 func _ready() -> void:
 	ensure_action()
 	body_entered.connect(_on_body_entered)
@@ -30,6 +34,16 @@ func _ready() -> void:
 func _exit_tree() -> void:
 	if active == self:
 		_hide()
+
+
+## A once-only spot that has been read (the save remembers it).
+func is_read() -> bool:
+	return once and _done
+
+
+## Continue: it was read before the save.
+func mark_read() -> void:
+	_done = true
 
 
 func _physics_process(_delta: float) -> void:

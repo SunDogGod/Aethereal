@@ -7,6 +7,7 @@ extends CanvasLayer
 ##   hud_target.gd     the locked-on enemy's name and bar, the boss bar at the bottom
 ##   hud_hints.gd      one-time control hints
 ##   hud_prompt.gd     how the prompt line looks
+##   hud_saved.gd      the small "saved" mark (bottom right) when the game saves
 ## Everything fades out while a story scene plays.
 
 const HudBar := preload("res://scripts/ui/hud_bar.gd")
@@ -16,6 +17,7 @@ const HudHints := preload("res://scripts/ui/hud_hints.gd")
 ## Off: the author asked for no floating tutorial text (2026-10-25). Turn on to bring the hints back.
 const SHOW_HINTS := false
 const HudPrompt := preload("res://scripts/ui/hud_prompt.gd")
+const HudSaved := preload("res://scripts/ui/hud_saved.gd")
 
 const HEALTH_RED := Color(0.8, 0.2, 0.17)
 const STAMINA_GREEN := Color(0.44, 0.72, 0.38)
@@ -36,6 +38,7 @@ var screen_fx: Control
 var targets: Control
 var hints: Control
 var prompt_view: PanelContainer
+var saved_mark: Control
 var stamina_denials := 0      ## how often he tried to act without the stamina (tests read it)
 
 var _lock_target: Node3D
@@ -69,6 +72,8 @@ func _ready() -> void:
 	prompt_view = HudPrompt.new()
 	prompt.add_child(prompt_view)
 	prompt.self_modulate.a = 0.0  # the label keeps the text; PromptView draws it
+	saved_mark = HudSaved.new()
+	add_child(saved_mark)
 	lock_mark.add_theme_color_override("font_color", MenuFx.ACCENT)
 	lock_mark.add_theme_font_size_override("font_size", 14)
 	lock_mark.visible = false
@@ -89,6 +94,7 @@ func _process(delta: float) -> void:
 	bars.modulate.a = alpha
 	targets.modulate.a = alpha
 	screen_fx.modulate.a = alpha
+	saved_mark.visible = not in_scene
 	prompt_view.modulate.a = move_toward(prompt_view.modulate.a, 1.0, delta * 8.0) if prompt.visible else 0.0
 	if is_instance_valid(_lock_target):
 		var camera := get_viewport().get_camera_3d()
@@ -128,6 +134,11 @@ func _physics_process(_delta: float) -> void:
 func stamina_denied() -> void:
 	stamina_denials += 1
 	stamina.flash(Color(1.0, 0.35, 0.3), 0.5, 2.0)
+
+
+## The game has just saved (autosave.gd): the small mark in the corner.
+func show_saved() -> void:
+	saved_mark.show_saved()
 
 
 ## The takedown prompt (Takedown's prompt_changed signal). It wins over hints.

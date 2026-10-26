@@ -9,8 +9,17 @@ extends Area3D
 var _done := false
 
 
+func _enter_tree() -> void:
+	add_to_group("story_triggers")
+
+
 func _ready() -> void:
 	body_entered.connect(_on_body_entered)
+
+
+## Its scene has played already (Continue calls this for the scenes finished before the save).
+func mark_done() -> void:
+	_done = true
 
 
 func _on_body_entered(body: Node3D) -> void:

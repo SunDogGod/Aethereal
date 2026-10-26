@@ -14,6 +14,7 @@
 [ext_resource type="Material" path="res://materials/wood.tres" id="12_urg01"]
 [ext_resource type="Material" path="res://materials/dev_grid.tres" id="13_w2g5o"]
 [ext_resource type="Script" path="res://scripts/story_trigger.gd" id="14_1olu5"]
+[ext_resource type="Script" path="res://scripts/checkpoint.gd" id="vs_checkpoint"]
 [ext_resource type="PackedScene" path="res://scenes/player.tscn" id="15_ijtbg"]
 [ext_resource type="PackedScene" path="res://scenes/kael.tscn" id="17_b7fct"]
 [ext_resource type="Script" path="res://scripts/flicker_light.gd" id="vs_flicker_light"]
@@ -174,6 +175,9 @@ size = Vector3(6, 3, 3)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_c12o8"]
 size = Vector3(6, 3, 1.5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_midhall"]
+size = Vector3(80, 4, 3)
 
 [node name="VacuumStation" type="Node3D" unique_id=1620133448]
 
@@ -747,6 +751,18 @@ scene = "end_of_act"
 [node name="Zone" type="CollisionShape3D" parent="StoryTriggers/EndOfAct" unique_id=595226886]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
 shape = SubResource("BoxShape3D_c12o8")
+
+[node name="Checkpoints" type="Node3D" parent="."]
+
+[node name="MidHall" type="Area3D" parent="Checkpoints"]
+collision_layer = 0
+collision_mask = 2
+monitorable = false
+script = ExtResource("vs_checkpoint")
+
+[node name="Zone" type="CollisionShape3D" parent="Checkpoints/MidHall"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+shape = SubResource("BoxShape3D_midhall")
 
 [node name="Signs" type="Node3D" parent="." unique_id=948342724]
 visible = false
