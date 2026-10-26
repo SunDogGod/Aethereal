@@ -281,6 +281,16 @@ func _start(track: String, from: float) -> Voice:
 	return v
 
 
+## The game is closing: stop and let go of the tracks, so nothing still holds them at exit.
+func _exit_tree() -> void:
+	for p in find_children("*", "AudioStreamPlayer", false, false):
+		(p as AudioStreamPlayer).stop()
+		(p as AudioStreamPlayer).stream = null
+	_voices.clear()
+	_tension = null
+	Files.forget()
+
+
 func _route(node: Node) -> void:
 	Files.route(node, SFX_BUS)
 

@@ -51,3 +51,9 @@ static func ensure_bus(bus_name: String) -> void:
 	var i := AudioServer.bus_count - 1
 	AudioServer.set_bus_name(i, bus_name)
 	AudioServer.set_bus_send(i, &"Master")
+
+
+## Lets go of every loaded track (the Music autoload calls this as the game closes, so nothing is
+## left holding them at exit).
+static func forget() -> void:
+	_streams.clear()
