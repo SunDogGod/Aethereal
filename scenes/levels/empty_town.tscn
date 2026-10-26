@@ -1811,6 +1811,28 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 0, 0)
 
 [node name="Checkpoints" type="Node3D" parent="." unique_id=442407587]
 
+[node name="BridgeEnd" type="Area3D" parent="Checkpoints" unique_id=2043491520]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 24, 33)
+collision_layer = 0
+collision_mask = 2
+monitorable = false
+script = ExtResource("checkpoint_script")
+
+[node name="Zone" type="CollisionShape3D" parent="Checkpoints/BridgeEnd" unique_id=1195694591]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+shape = SubResource("BoxShape3D_h30vo")
+
+[node name="Rim" type="Area3D" parent="Checkpoints" unique_id=1313821293]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 24, 12)
+collision_layer = 0
+collision_mask = 2
+monitorable = false
+script = ExtResource("checkpoint_script")
+
+[node name="Zone" type="CollisionShape3D" parent="Checkpoints/Rim" unique_id=1647466167]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+shape = SubResource("BoxShape3D_xwkxk")
+
 [node name="SneakStart" type="Area3D" parent="Checkpoints" unique_id=429974206 node_paths=PackedStringArray("hide_when_reached")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 24, 11)
 collision_layer = 0
@@ -1859,28 +1881,6 @@ shape = SubResource("BoxShape3D_vcuqj")
 [node name="CourtyardFloor" type="CollisionShape3D" parent="Checkpoints/Courtyard" unique_id=1812884933]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.1, 1.5, 7)
 shape = SubResource("Shape_courtyard_floor")
-
-[node name="BridgeEnd" type="Area3D" parent="Checkpoints" unique_id=2043491520]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 24, 33)
-collision_layer = 0
-collision_mask = 2
-monitorable = false
-script = ExtResource("checkpoint_script")
-
-[node name="Zone" type="CollisionShape3D" parent="Checkpoints/BridgeEnd" unique_id=1195694591]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
-shape = SubResource("BoxShape3D_h30vo")
-
-[node name="Rim" type="Area3D" parent="Checkpoints" unique_id=1313821293]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 24, 12)
-collision_layer = 0
-collision_mask = 2
-monitorable = false
-script = ExtResource("checkpoint_script")
-
-[node name="Zone" type="CollisionShape3D" parent="Checkpoints/Rim" unique_id=1647466167]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
-shape = SubResource("BoxShape3D_xwkxk")
 
 [node name="StealthDirector" type="Node" parent="." unique_id=1380121056 node_paths=PackedStringArray("player") instance=ExtResource("director_scene")]
 script = ExtResource("23_20pu7")

@@ -92,7 +92,7 @@ How it is put together (the Scene panel of `world.tscn`):
   **Remove In World** (the level's own Player and StealthDirector), **Followers** (who joins Aeneas
   once the story gets here: Isabella in the town, Kael in Black Sand, the station's flashlight),
   **Gone After** / **Hidden After** / **Shown After** (what changes once the story has moved past
-  this zone: the town's agents, figures and story triggers are gone after the hall; Kael's figure
+  this zone: the town's agents, figures, story triggers and checkpoints are gone after the hall; Kael's figure
   in Black Sand is hidden and the following Kael shown).
 - **Links**: the walkways. `Descent` (`scenes/world/descent.tscn`) is the service stair: a door at
   the back of the hall's stage (shut until the story reaches Black Sand), three flights down inside
@@ -270,6 +270,12 @@ heavy 1.1            a cut that can't be blocked (his coat flashes red): dodge i
 2. **Hide When Reached** (optional): something to hide once he gets there.
 
 Don't put one where he only passes while falling: checkpoints wait until he lands safely.
+
+Checkpoints only move forward. Their order is the order of the `Checkpoints` list in the Scene
+panel, top to bottom: walking back through one higher up the list keeps the restart where it is. So
+keep the list in the order he reaches them (drag a new one into place). In the big world, a zone's
+checkpoints go once the story is past it (`Checkpoints` in the zone's **Gone After**), and walking
+into a new zone moves the restart to its `Start`.
 
 ## Look-at spots
 

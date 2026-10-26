@@ -222,11 +222,15 @@ func _update(initial: bool) -> void:
 			_reach(main)
 
 
-## He walked into a zone further on in the story: Continue starts there from now on, and the
-## zones behind him move on (their story triggers go, and so on).
+## He walked into a zone further on in the story: Continue starts there from now on, restarts
+## happen at its Start (not back in the zone he left), and the zones behind him move on (their
+## story triggers and checkpoints go, and so on).
 func _reach(zone: WorldZone) -> void:
 	stage = zone.order
 	SaveGame.record_level(zone.level_path())
+	var director := get_node_or_null("StealthDirector")
+	if director and director.has_method("move_checkpoint"):
+		director.move_checkpoint(zone.start_transform(self).origin)
 	for z in zones:
 		z.apply_stage(self, stage)
 	stage_changed.emit(stage)

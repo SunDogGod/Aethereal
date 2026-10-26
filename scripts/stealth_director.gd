@@ -3,12 +3,17 @@ extends Node
 ## dies outside a story fight, the screen fades and he, Isabella and the guards go back to
 ## the last checkpoint. Guards he took down before that checkpoint stay down.
 
+## Emitted once a restart has put everyone back, as the screen fades in again. A lost fight
+## waits for it before it starts again.
+signal restarted
+
 @export var player: Player
 
 @onready var fade: ColorRect = $Screen/Fade
 @onready var message: Label = $Screen/Message
 
 var _checkpoint := Vector3.ZERO
+var _rank := -1  # how far on the last checkpoint is (see _rank_of); -1 = none reached yet
 var _resetting := false
 
 
@@ -21,11 +26,28 @@ func _ready() -> void:
 		checkpoint.reached.connect(_on_checkpoint_reached)
 
 
+## Checkpoints only move forward: walking back through one he already passed (or one further
+## up the list) keeps the restart where it is. Agents he took down stay down either way.
 func _on_checkpoint_reached(checkpoint: Node3D) -> void:
 	if _resetting:
 		return
-	_checkpoint = checkpoint.global_position
 	get_tree().call_group("guards", "commit_checkpoint")
+	var rank := _rank_of(checkpoint)
+	if rank <= _rank:
+		return
+	_rank = rank
+	_checkpoint = checkpoint.global_position
+
+
+## How far on a checkpoint is: its place in the level's Checkpoints list (top to bottom in the
+## Scene panel = the order he reaches them) and, in the big world, its zone's story order first.
+static func _rank_of(checkpoint: Node) -> int:
+	var n := checkpoint.get_parent()
+	while n:
+		if n is WorldZone:
+			return (n as WorldZone).order * 1000 + checkpoint.get_index()
+		n = n.get_parent()
+	return checkpoint.get_index()
 
 
 func _on_guard_spotted(_guard: Guard) -> void:
@@ -57,6 +79,7 @@ func restart(reason := "SPOTTED") -> void:
 	back.tween_property(fade, "color:a", 0.0, 0.5)
 	player.controls_enabled = true
 	_resetting = false
+	restarted.emit()
 
 
 ## A story scene moved Aeneas somewhere new (into the hall): restarts happen there from now on,

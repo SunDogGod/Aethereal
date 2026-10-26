@@ -58,7 +58,7 @@ script = ExtResource("6_m114p")
 box = AABB(-45, -15, -27.8, 90, 145, 182.8)
 remove_in_world = PackedStringArray("Player", "StealthDirector")
 followers = PackedStringArray("Isabella")
-gone_after = PackedStringArray("Isabella", "StoryTriggers", "Guards", "ValentinaFight", "HallFight", "CaptainFight", "Figures")
+gone_after = PackedStringArray("Isabella", "StoryTriggers", "Guards", "ValentinaFight", "HallFight", "CaptainFight", "Figures", "Checkpoints")
 hidden_after = PackedStringArray()
 shown_after = PackedStringArray()
 
@@ -74,7 +74,7 @@ order = 3
 box = AABB(-92, -15, -112.4, 184, 100, 211.8)
 remove_in_world = PackedStringArray("Player", "StealthDirector")
 followers = PackedStringArray("Kael")
-gone_after = PackedStringArray("StoryTriggers")
+gone_after = PackedStringArray("StoryTriggers", "Checkpoints")
 hidden_after = PackedStringArray("Figures/KaelFigure", "Figures/KaelFigureTag")
 shown_after = PackedStringArray("Kael")
 

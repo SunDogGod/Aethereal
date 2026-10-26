@@ -6,6 +6,8 @@ A third-person action game with a PS1 look, set in the Construct.
 1. Open Godot 4.7 and pick **Aethereal 3D** in the project list.
 2. Press **F5** (or the ▶ button at the top right). The **title screen** opens: Continue, New Game, Chapters (any
    level), Settings, Quit. Arrows, WASD or the stick move; Enter, A or click choose; Esc or B goes back.
+   Continue starts at the furthest chapter you have reached; replaying an earlier chapter doesn't move it
+   back, and New Game asks first when there is a save further on.
    The story runs on from level to level. The town, Black Sand and the station are one connected
    world (`scenes/world/world.tscn`): you walk from one into the next.
    To run one scene directly, open it and press **F6**.
@@ -72,7 +74,8 @@ Inspector set **Leader** to the Player.
   moment. The prompt at the bottom of the screen tells you which.
 - **Checkpoints**: the bridge end, the rim, the top of the ramp, partway down the catwalk, the alley
   junction, and the courtyard. Being spotted, dying in a fight or falling off the town sends you back
-  to the last one (SPOTTED / SLAIN / FELL). Agents you took down before it stay down. After the capture,
+  to the last one (SPOTTED / SLAIN / FELL). Walking back through an earlier one doesn't move you back. Agents
+  you took down before it stay down. After the capture,
   restarts happen in the hall, and agents from fights you already won stay down. A level
   without a StealthDirector just puts you back on the last ground you stood on.
 - **Drops**: jumping off a deck into the light well (any drop over 6 m) counts as a fall too: FELL,

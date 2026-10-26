@@ -40,3 +40,9 @@ static func label_of(path: String) -> String:
 static func is_story_level(path: String) -> bool:
 	var entry := find(path)
 	return not entry.is_empty() and entry[0] != ""
+
+
+## How far on in the story a level is (its line in LIST, from 0), or -1 if it isn't listed.
+static func index_of(path: String) -> int:
+	var entry := find(path)
+	return -1 if entry.is_empty() else LIST.find(entry)

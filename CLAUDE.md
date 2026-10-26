@@ -111,6 +111,9 @@
 - Checkpoints and StoryTriggers wait for `player.land_safely()`: a zone he passes through on the way
   down a fatal drop (over `fall_death_height`, 6 m) doesn't count, or a fall restart would put him past
   the section he skipped.
+- Checkpoints only move forward: the StealthDirector ranks them by their order under the level's
+  `Checkpoints` node (and, in the big world, by zone order first), so keep that list in route order.
+  A lost fight waits for the director's `restarted` signal before it starts again (pause-safe).
 
 ## Rough-cut levels (Act 0 onward)
 - Each story location gets a rough walkable level first: signature space, landmark, its own fog

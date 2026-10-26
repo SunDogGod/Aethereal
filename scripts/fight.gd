@@ -105,9 +105,12 @@ func _on_player_died() -> void:
 			guard.reset_to_checkpoint()
 		elif guard.state != Guard.State.DOWN:
 			guard.state = Guard.State.PATROL  # lower the blades; the director puts them back once the screen is black
-	if director and director.has_method("restart"):
+	if director and director.has_signal("restarted"):
 		director.restart("SLAIN")
-	await get_tree().create_timer(2.2).timeout
+		await director.restarted  # everyone is back at the checkpoint (a pause during the fade waits too)
+		await get_tree().create_timer(1.1, false).timeout  # and the screen has faded back in
+	else:
+		await get_tree().create_timer(2.2, false).timeout  # false: the wait stops while the game is paused
 	start()
 
 
