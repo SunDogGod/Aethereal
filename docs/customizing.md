@@ -107,7 +107,8 @@ How it is put together (the Scene panel of `world.tscn`):
   for whoever follows Aeneas, and one **WorldEnvironment** that the world fills in itself.
 
 While you play, only the zone Aeneas is in is shown and running (both zones while he walks a link),
-so the world costs about what one level costs. Each zone keeps its own fog, light and sky: set them
+so playing costs about what one level costs; loading still builds all three (see "Loading" below).
+Each zone keeps its own fog, light and sky: set them
 on that level's `WorldEnvironment` as before; on a link they fade from one into the other, and the
 music crossfades to the next level's track.
 
@@ -133,6 +134,25 @@ To add a zone:
    it under `Links`. (The two links were built by the scratch script `world/build_links.gd`, and the
    world by `world/build_world.gd`; after the first build, edit them in the editor.)
 6. Walk it: the walkway must have no steps (ramps), like any level.
+
+## Loading
+
+Nothing to do here; this is how it works, so nothing surprises you.
+
+- **Changing scenes** (New Game, Continue, a chapter, a `[level ...]` line) goes through Story: the
+  screen fades to black, the next scene loads on a background thread and is built a little each
+  frame, so the window never freezes. If it takes more than a moment, a small **LOADING** line with
+  a bar shows in the bottom-right corner. Its look is in `scripts/scene_loader.gd` (`attach`).
+- **The title screen starts loading the world** as soon as it shows, and after every change the
+  scenes its dialogue can lead to (`[level]` lines) start loading too, so the next change is quick.
+  A level's music is loaded the same way.
+- **Blocks and props build their mesh once**, when they are in a scene. In the editor that is the
+  moment you open the scene or change a setting, exactly as before. While the game runs, identical
+  plain Blocks share one mesh. Nothing is baked into files, so there is nothing to rebuild after
+  editing a level.
+- Writing a new prop script? Copy the pattern from any script in `scripts/props/`: the setters call
+  `_rebuild()`, which is just `MeshBuild.request(self)`, and the building goes in `_rebuild_now()`
+  (`scripts/mesh_build.gd` explains why). Build its shapes with `PropMesh`.
 
 ## Write dialogue scenes
 

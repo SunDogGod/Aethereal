@@ -157,6 +157,13 @@
 - Systems talk through signals, not direct node references across trees.
 - No file over ~300 lines. Split it.
 - No feature is "done" until the game runs and I have played it.
+- Code-built meshes (Blocks, prop scripts) build ONCE, when the node is in a scene: setters call
+  `_rebuild()` = `MeshBuild.request(self)`, the work goes in `_rebuild_now()` (`scripts/mesh_build.gd`).
+  Never build in `_init` or on every setter, and never pass a PrimitiveMesh to
+  `SurfaceTool.append_from` at runtime (a GPU round trip per piece): use PropMesh. Rebuilding on
+  every setter made New Game freeze for 30 s on the author's Iris Xe laptop.
+- Scene changes go through Story (`go_to_level`, `[level]`), which loads on a thread behind the fade
+  (`scripts/scene_loader.gd`); don't call `change_scene_to_file` on a level from gameplay code.
 
 ## How to work with me
 - I am learning. Explain what you wrote and why, briefly, after every change.

@@ -9,7 +9,8 @@ A third-person action game with a PS1 look, set in the Construct.
    Continue starts at the furthest chapter you have reached; replaying an earlier chapter doesn't move it
    back, and New Game asks first when there is a save further on.
    The story runs on from level to level. The town, Black Sand and the station are one connected
-   world (`scenes/world/world.tscn`): you walk from one into the next.
+   world (`scenes/world/world.tscn`): you walk from one into the next. A change of scene is a short
+   black screen (a small LOADING line shows in the corner if it takes more than a moment).
    To run one scene directly, open it and press **F6**.
 
 Levels so far (rough cuts): 0.1 The Empty Town, 0.2 The Massacre, 0.3 Black Sand, 0.4 The Vacuum
@@ -46,12 +47,12 @@ put together: `docs/customizing.md`, "The big world".
 | `scenes/kael.tscn` | Kael as a follower (same code as Isabella) |
 | `scenes/` | `test_yard.tscn` (movement test level), `player.tscn` (Aeneas + camera), `isabella.tscn` (his mother, follows him), `ps1_screen.tscn` (the full-screen color filter) |
 | `scenes/` (sneaking) | `guard.tscn` (an Agency agent), `stealth_director.tscn` (spotted → fade → back to checkpoint) |
-| `scripts/` | `player.gd` (running, jumping, crouching, fall respawn), `player_footsteps.gd` (step sounds by floor), `player_takedown.gd` (knife takedowns + prompt), `swing_assist.gd` (swings aim at the enemy ahead without lock-on), `choreography.gd` + `choreography_file.gd` (the captain's authored fight, from `data/fights/`), `player_camera.gd` (the camera), `companion.gd` (following, hiding, ink binds) + `ink_stroke.gd` (her brush stroke in the air), `guard.gd` + `guard_data.gd` (agents), `stealth_director.gd`, `checkpoint.gd`, `hud.gd`, `block.gd` (gray-box blocks) + `building_faces.gd` (building fronts), `flicker_light.gd` / `tv_window.gd` / `steam_vent.gd` / `drip.gd` (life signs), `interactable.gd` (look-at prompts), `sfx.gd` (the "Sfx" autoload) + `sfx_bus.gd` (how scripts reach it) |
+| `scripts/` | `player.gd` (running, jumping, crouching, fall respawn), `player_footsteps.gd` (step sounds by floor), `player_takedown.gd` (knife takedowns + prompt), `swing_assist.gd` (swings aim at the enemy ahead without lock-on), `choreography.gd` + `choreography_file.gd` (the captain's authored fight, from `data/fights/`), `player_camera.gd` (the camera), `companion.gd` (following, hiding, ink binds) + `ink_stroke.gd` (her brush stroke in the air), `guard.gd` + `guard_data.gd` (agents), `stealth_director.gd`, `checkpoint.gd`, `hud.gd`, `block.gd` (gray-box blocks) + `building_faces.gd` (building fronts) + `mesh_build.gd` (code-built meshes are built once, in the scene), `flicker_light.gd` / `tv_window.gd` / `steam_vent.gd` / `drip.gd` (life signs), `interactable.gd` (look-at prompts), `sfx.gd` (the "Sfx" autoload) + `sfx_bus.gd` (how scripts reach it) |
 | `data/enemies/` | Guard kinds (GuardData files) |
 | `data/dialogue/` | Every level's spoken scenes, as plain text |
 | `data/inspect/` | What Aeneas says when he looks at things (`NodeName|line|line`), one file per level |
 | `audio/` | The sound effects: short WAVs synthesized by the scratch script `make_sfx.gd` (footsteps, swing, hit, parry, takedown, hums, the cube's drone) |
-| Story system | `scripts/story.gd` (the "Story" autoload that plays scenes), `dialogue_file.gd` (reads the text files), `dialogue_box.gd` + `scenes/dialogue_box.tscn` (the text box), `story_trigger.gd` |
+| Story system | `scripts/story.gd` (the "Story" autoload that plays scenes), `scene_loader.gd` (loads the next scene on a thread behind the fade, with a small LOADING line), `dialogue_file.gd` (reads the text files), `dialogue_box.gd` + `scenes/dialogue_box.tscn` (the text box), `story_trigger.gd` |
 | `docs/` | Level designs |
 | `shaders/` | `ps1_surface.gdshader` (the PS1 look on every 3D surface), `ps1_screen.gdshader` (color depth + dither) |
 | `materials/` | Ready-made PS1 materials: dirt, concrete, dev grid |

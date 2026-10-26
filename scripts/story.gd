@@ -4,7 +4,7 @@ extends Node
 ## While a scene plays, Aeneas can't move and guards don't look for him.
 ## The words live in plain-text files in data/dialogue/, so writing a scene
 ## never means touching code. It also handles fades, title cards and moving
-## to the next level.
+## to the next level (loaded behind the black screen by scene_loader.gd, so the window never freezes).
 ## The town, Black Sand and the station live together in one big world (scenes/world/world.tscn).
 ## Going to one of those levels loads the world at that zone's start; inside the world a [level]
 ## line for one of them just lets Aeneas walk on. A scene looks up cameras, markers and characters
@@ -24,6 +24,7 @@ var _fade: ColorRect
 var _title: Label
 var _files := {}  # path -> parsed scenes, read once
 var _scope: Node  # the level the playing scene belongs to (in the world: its zone's level)
+var _loader := SceneLoader.new()  # changes scenes behind the fade without freezing the window
 
 
 func _ready() -> void:
@@ -31,6 +32,8 @@ func _ready() -> void:
 	add_child(_box)
 	_fade = _box.get_node("Fade")
 	_title = _box.get_node("Title")
+	add_child(_loader)
+	_loader.attach(_box)
 
 
 ## Starts a scene. Returns false if it can't (another scene is playing, or no such scene).
@@ -67,10 +70,12 @@ func go_to_level(path: String) -> void:
 	await fade("out")
 	if run_id != _run_id:
 		return  # stop() was called during the fade
-	_change_scene(path)
+	if not await _change_scene(path, run_id):
+		return
 	SaveGame.record_level(path)  # Continue on the title screen starts here
 	await get_tree().process_frame
 	await get_tree().process_frame
+	_loader.finish(get_tree().current_scene.scene_file_path if get_tree().current_scene else "")
 	await fade("in")
 
 
@@ -93,6 +98,7 @@ func stop() -> void:
 	playing = false
 	if _fade_tween and _fade_tween.is_valid():
 		_fade_tween.kill()
+	_loader.cancel()
 	_fade.color.a = 0.0
 	_title.visible = false
 	_box.close()
@@ -179,7 +185,8 @@ func _run(steps: Array, scene: String) -> void:
 						await fade("out")
 					if run_id != _run_id:
 						return
-					_change_scene(step.path)
+					if not await _change_scene(step.path, run_id):
+						return
 					SaveGame.record_level(step.path)
 					# This scene is over: the next level's opening trigger (Aeneas starts inside it)
 					# may start its own scene while the screen fades back in.
@@ -187,6 +194,7 @@ func _run(steps: Array, scene: String) -> void:
 					scene_finished.emit(scene)
 					await get_tree().process_frame
 					await get_tree().process_frame
+					_loader.finish(get_tree().current_scene.scene_file_path if get_tree().current_scene else "")
 					await fade("in")
 					return
 	if run_id != _run_id:
@@ -259,10 +267,15 @@ func _find(node_name: String) -> Node:
 	return found
 
 
-## Loads a level, or the big world at that level's zone.
-func _change_scene(path: String) -> void:
+## Loads a level, or the big world at that level's zone, behind the black screen and without
+## freezing the window (scene_loader.gd), then swaps it in. False if stop() came meanwhile.
+func _change_scene(path: String, run_id: int) -> bool:
+	var next: Node = await _loader.prepare(World.SCENE if World.has_level(path) else path)
+	if next == null or run_id != _run_id:
+		if next:
+			next.free()
+		return false
 	if World.has_level(path):
 		World.pending_level = path
-		get_tree().change_scene_to_file(World.SCENE)
-	else:
-		get_tree().change_scene_to_file(path)
+	get_tree().change_scene_to_node(next)
+	return true

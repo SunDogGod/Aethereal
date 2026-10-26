@@ -69,10 +69,11 @@ func _unhandled_input(event: InputEvent) -> void:
 	get_viewport().set_input_as_handled()
 
 
-## True in a level with a Player, with no title screen up and the game not already paused.
+## True in a level with a Player, with no title screen up, the game not already paused and no
+## level loading behind the black screen.
 func can_open() -> bool:
 	var tree := get_tree()
-	return not tree.paused and tree.current_scene != null \
+	return not tree.paused and tree.current_scene != null and not SceneLoader.busy \
 			and tree.get_first_node_in_group("player") != null \
 			and tree.get_first_node_in_group("title_screen") == null
 

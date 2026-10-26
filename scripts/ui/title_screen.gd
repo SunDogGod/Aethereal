@@ -40,6 +40,11 @@ func _ready() -> void:
 	_show_main()
 	_intro()
 	MusicBus.play("title", 2.0)  # fades in with the picture
+	# Where New Game and Continue lead starts loading on a background thread while the menu is up
+	# (scene_loader.gd), so pressing them doesn't wait for the files.
+	SceneLoader.fetch(World.SCENE)
+	if last != "" and not World.has_level(last):
+		SceneLoader.fetch(last)
 
 
 func _build_chapters() -> void:
