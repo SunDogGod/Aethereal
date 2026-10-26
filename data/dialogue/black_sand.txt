@@ -45,6 +45,5 @@ KAEL: Precursor work. If anything still runs, it runs down there.
 
 === down ===
 [fade out]
-[title ACT 0 / THE VACUUM STATION]
 # The station is part of the same big world: this line just lets Aeneas walk on, down the tunnel.
 [level res://scenes/levels/vacuum_station.tscn]

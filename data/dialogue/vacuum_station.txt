@@ -36,5 +36,4 @@ KAEL: You hold it like it owes you money. Again.
 
 === end_of_act ===
 [fade out]
-[title END OF ACT 0 / Next: 1-0 Bonding Road, 1-1 Horus (Temek)]
 [level res://scenes/ui/title_screen.tscn]

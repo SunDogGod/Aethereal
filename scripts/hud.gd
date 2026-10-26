@@ -13,6 +13,8 @@ const HudBar := preload("res://scripts/ui/hud_bar.gd")
 const HudScreenFx := preload("res://scripts/ui/hud_screen_fx.gd")
 const HudTarget := preload("res://scripts/ui/hud_target.gd")
 const HudHints := preload("res://scripts/ui/hud_hints.gd")
+## Off: the author asked for no floating tutorial text (2026-10-25). Turn on to bring the hints back.
+const SHOW_HINTS := false
 const HudPrompt := preload("res://scripts/ui/hud_prompt.gd")
 
 const HEALTH_RED := Color(0.8, 0.2, 0.17)
@@ -58,11 +60,12 @@ func _ready() -> void:
 	stamina.set_home(Vector2(0, 10))
 	targets = HudTarget.new()
 	add_child(targets)
-	hints = HudHints.new()
-	hints.player = _player
-	hints.combat = _combat
-	hints.prompt = prompt
-	add_child(hints)
+	if SHOW_HINTS:
+		hints = HudHints.new()
+		hints.player = _player
+		hints.combat = _combat
+		hints.prompt = prompt
+		add_child(hints)
 	prompt_view = HudPrompt.new()
 	prompt.add_child(prompt_view)
 	prompt.self_modulate.a = 0.0  # the label keeps the text; PromptView draws it
@@ -144,7 +147,8 @@ func show_hint(text: String) -> void:
 	prompt.visible = text != ""
 	prompt_view.show_text(text)
 	if text != "":
-		hints.trigger("look")
+		if hints:
+			hints.trigger("look")
 
 
 func _on_health(value: float, max_value: float) -> void:
@@ -161,7 +165,8 @@ func _on_health(value: float, max_value: float) -> void:
 func _on_stamina(value: float, max_value: float) -> void:
 	stamina.set_share(value / max_value)
 	if value <= max_value * 0.05:
-		hints.trigger("stamina")  # ran dry: once, ever, explain the refill
+		if hints:
+			hints.trigger("stamina")  # ran dry: once, ever, explain the refill
 
 
 func _on_lock(target: Node3D) -> void:

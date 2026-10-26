@@ -48,7 +48,6 @@ Kael splits off from them.
 An agent drags Valentina toward the hall.
 AENEAS: Valentina!
 Aeneas breaks cover.
-(Fight: F swings at whoever is in front of you, G swings hard. Hold right-click to block; tap it as a blade lands to parry. Space rolls. Q locks on if you want it.)
 [camera]
 [fight ValentinaFight]
 
@@ -85,7 +84,6 @@ And she is gone. Perfectly.
 Something opens behind Aeneas's eyes, and the floor forgets which way is down.
 [camera]
 [erupt on]
-(The eruption: press F to slam everything around you. Nothing can hurt you.)
 [fight HallFight]
 
 === captain_phase ===
@@ -135,5 +133,4 @@ The captain kills her anyway, and brings the hilt down on Aeneas's skull.
 [hide ValentinaHall]
 [fade out]
 A sword from nowhere. A stranger's voice. Kael.
-[title BLACKOUT]
 [level res://scenes/levels/massacre.tscn]
