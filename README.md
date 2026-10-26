@@ -45,7 +45,7 @@ put together: `docs/customizing.md`, "The big world".
 | --- | --- |
 | `scenes/levels/` | `empty_town.tscn`, `massacre.tscn`, `black_sand.tscn`, `vacuum_station.tscn`. Designs in `docs/` |
 | `scenes/world/` | `world.tscn` (the town, Black Sand and the station as one world), `descent.tscn` and `road_tunnel.tscn` (the walkways between them). Scripts in `scripts/world/`: `world.gd` (puts it together, shows only the zone you are in, fades fog and light between zones), `world_zone.gd`, `world_link.gd`, `world_gate.gd` (the service door that stays shut until Black Sand), `world_blend.gd` |
-| `scenes/location_menu.tscn` | The level picker (main scene). Add new levels to the list in `scripts/location_menu.gd` |
+| `scenes/ui/` | `title_screen.tscn` (the main scene: Continue, New Game, Chapters, Settings), `pause_menu.tscn`, `settings_panel.tscn`. The chapter list is `scripts/ui/chapters.gd`; saving is `scripts/ui/save_game.gd` (automatic, one slot, see docs/customizing.md) |
 | `scenes/kael.tscn` | Kael as a follower (same code as Isabella) |
 | `scenes/` | `test_yard.tscn` (movement test level), `player.tscn` (Aeneas + camera), `isabella.tscn` (his mother, follows him), `ps1_screen.tscn` (the full-screen color filter) |
 | `scenes/` (sneaking) | `guard.tscn` (an Agency agent), `stealth_director.tscn` (spotted → fade → back to checkpoint) |
