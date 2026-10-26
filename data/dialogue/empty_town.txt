@@ -40,7 +40,6 @@ AENEAS: Let me check it out.
 Agency agents lead the villagers across the catwalk, down toward the hall.
 Kael splits off from them.
 [hide Kael]
-[hide KaelTag]
 [camera]
 
 === valentina ===
@@ -60,7 +59,6 @@ There is nothing left to do but be taken.
 [fade out]
 [hide Isabella]
 [hide Valentina]
-[hide ValentinaTag]
 [hide Reinforcements]
 [teleport HallMark]
 [show ValentinaHall]

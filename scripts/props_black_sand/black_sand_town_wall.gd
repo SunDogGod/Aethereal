@@ -39,6 +39,12 @@ const WINDOW_MATS := [
 	set(value):
 		seed_value = value
 		_rebuild()
+## How far the block runs back (+Z) from its face. The big world's copies are thin (0.05), because
+## the service stair down from the town runs right behind the face.
+@export var depth := 6.0:
+	set(value):
+		depth = value
+		_rebuild()
 
 var _mesh := MeshInstance3D.new()
 
@@ -50,7 +56,6 @@ func _init() -> void:
 
 func _rebuild() -> void:
 	var pm := PropMesh.new()
-	var depth := 6.0
 	var block := BoxMesh.new()
 	block.size = Vector3(width, height + sink, depth)
 	block.subdivide_width = int(width / 6.0)

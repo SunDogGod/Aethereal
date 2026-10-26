@@ -275,19 +275,22 @@ omni_range = 11.0
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -30.55, -50, -36)
 script = ExtResource("10_pvl64")
 width = 120.9
+depth = 0.05
 
 [node name="WorldTownWallEast" type="Node3D" parent="InB" unique_id=1561445843]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 62.05, -50, -36)
 script = ExtResource("10_pvl64")
 width = 57.9
 seed_value = 11
+depth = 0.05
 
 [node name="WorldTownWallSlotLow" type="Node3D" parent="InB" unique_id=442125762]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 31.5, -50, -36)
 script = ExtResource("10_pvl64")
 width = 3.200000000000003
-height = 14.0
+height = 13.6
 windows_from = 999.0
+depth = 0.05
 
 [node name="WorldTownWallSlotHigh" type="Node3D" parent="InB" unique_id=350390062]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 31.5, -33, -36)
@@ -296,6 +299,7 @@ width = 3.200000000000003
 height = 65.0
 sink = 0.0
 windows_from = 999.0
+depth = 0.05
 
 [node name="WorldBarrierWest" type="StaticBody3D" parent="InB" unique_id=111753938]
 
@@ -310,15 +314,15 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 63.1, -16, -35)
 shape = SubResource("BoxShape3D_r6ime")
 
 [node name="WorldDoorJambW" type="StaticBody3D" parent="InB" unique_id=1837324687]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30.099998, -35.55, -36.25)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30.099998, -35.75, -36.25)
 script = ExtResource("2_6hfcy")
-size = Vector3(0.39999962, 5.9000015, 0.5)
+size = Vector3(0.39999962, 5.5, 0.5)
 material = ExtResource("8_ec4cp")
 
 [node name="WorldDoorJambE" type="StaticBody3D" parent="InB" unique_id=1936893416]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32.9, -35.55, -36.25)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32.9, -35.75, -36.25)
 script = ExtResource("2_6hfcy")
-size = Vector3(0.3999977, 5.9000015, 0.5)
+size = Vector3(0.3999977, 5.5, 0.5)
 material = ExtResource("8_ec4cp")
 
 [node name="WorldDoorLintel" type="StaticBody3D" parent="InB" unique_id=336495304]
@@ -346,13 +350,13 @@ size = Vector3(2.4, 0.4, 23.09401)
 material = ExtResource("11_563mx")
 
 [node name="WorldGangwayRailW" type="StaticBody3D" parent="InB" unique_id=863603641]
-transform = Transform3D(1, 0, 0, 0, 0.86602545, 0.5, 0, -0.5, 0.86602545, 30.25, -41.206516, -46.25)
+transform = Transform3D(1, 0, 0, 0, 0.86602545, 0.5, 0, -0.5, 0.86602545, 30.28, -41.206516, -46.25)
 script = ExtResource("2_6hfcy")
 size = Vector3(0.1, 1, 23.09401)
 material = ExtResource("8_ec4cp")
 
 [node name="WorldGangwayRailE" type="StaticBody3D" parent="InB" unique_id=1692785349]
-transform = Transform3D(1, 0, 0, 0, 0.86602545, 0.5, 0, -0.5, 0.86602545, 32.75, -41.206516, -46.25)
+transform = Transform3D(1, 0, 0, 0, 0.86602545, 0.5, 0, -0.5, 0.86602545, 32.72, -41.206516, -46.25)
 script = ExtResource("2_6hfcy")
 size = Vector3(0.1, 1, 23.09401)
 material = ExtResource("8_ec4cp")

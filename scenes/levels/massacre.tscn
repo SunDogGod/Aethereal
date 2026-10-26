@@ -428,27 +428,27 @@ size = Vector3(6, 22, 2)
 material = ExtResource("3_grep3")
 
 [node name="CeilingPipe0" type="StaticBody3D" parent="Hall" unique_id=937020383]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -49.4, 25.1, 5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -49.4, 25.1, 4.95)
 script = ExtResource("1_2ox2m")
-size = Vector3(1.2000008, 1.2000008, 150)
+size = Vector3(1.2000008, 1.2000008, 149.9)
 material = ExtResource("4_861q4")
 
 [node name="CeilingPipe40" type="StaticBody3D" parent="Hall" unique_id=2140569698]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.4, 25.1, 5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.4, 25.1, 4.95)
 script = ExtResource("1_2ox2m")
-size = Vector3(1.1999998, 1.2000008, 150)
+size = Vector3(1.1999998, 1.2000008, 149.9)
 material = ExtResource("4_861q4")
 
 [node name="CeilingPipe80" type="StaticBody3D" parent="Hall" unique_id=1740033201]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30.6, 25.1, 5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30.6, 25.1, 4.95)
 script = ExtResource("1_2ox2m")
-size = Vector3(1.2000008, 1.2000008, 150)
+size = Vector3(1.2000008, 1.2000008, 149.9)
 material = ExtResource("4_861q4")
 
 [node name="CeilingPipe110" type="StaticBody3D" parent="Hall" unique_id=1831555333]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 60.6, 25.1, 5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 60.6, 25.1, 4.95)
 script = ExtResource("1_2ox2m")
-size = Vector3(1.2000008, 1.2000008, 150)
+size = Vector3(1.2000008, 1.2000008, 149.9)
 material = ExtResource("4_861q4")
 
 [node name="FloorSeam" type="StaticBody3D" parent="Hall" unique_id=143874015]
@@ -1128,9 +1128,9 @@ material = ExtResource("6_veer7")
 [node name="Corridor" type="Node3D" parent="." unique_id=492195153]
 
 [node name="Floor" type="StaticBody3D" parent="Corridor" unique_id=1846140112]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 94)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 95)
 script = ExtResource("1_2ox2m")
-size = Vector3(6, 1, 32)
+size = Vector3(6, 1, 30)
 material = ExtResource("3_grep3")
 
 [node name="WallWest" type="StaticBody3D" parent="Corridor" unique_id=859970138]
@@ -2463,9 +2463,9 @@ size = Vector3(17, 3.2, 0.39999962)
 material = ExtResource("9_x1hb0")
 
 [node name="GateBeam" type="StaticBody3D" parent="Estates/GreatEstate" unique_id=31835958]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.45, -26.2)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.435, -26.2)
 script = ExtResource("1_2ox2m")
-size = Vector3(6.6, 0.5, 0.80000114)
+size = Vector3(6.6, 0.53, 0.80000114)
 material = ExtResource("11_nmlba")
 
 [node name="CopingSouth" type="StaticBody3D" parent="Estates/GreatEstate" unique_id=410734430]
@@ -2777,9 +2777,9 @@ size = Vector3(6, 0.39999986, 0.40000153)
 material = ExtResource("3_grep3")
 
 [node name="Floor" type="StaticBody3D" parent="Drain" unique_id=1529741246]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14, -0.5, -76.75)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14, -0.5, -77)
 script = ExtResource("1_2ox2m")
-size = Vector3(3.6000004, 1, 14.5)
+size = Vector3(3.6000004, 1, 14)
 material = ExtResource("4_861q4")
 
 [node name="WallW" type="StaticBody3D" parent="Drain" unique_id=1959705849]
@@ -2801,7 +2801,7 @@ size = Vector3(3.6000004, 0.4000001, 12)
 material = ExtResource("4_861q4")
 
 [node name="Grate" type="StaticBody3D" parent="Drain" unique_id=1072868266]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14, -0.05, -71.7)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14, -0.025, -71.7)
 script = ExtResource("1_2ox2m")
 size = Vector3(2.7999992, 0.1, 0.40000153)
 material = ExtResource("4_861q4")

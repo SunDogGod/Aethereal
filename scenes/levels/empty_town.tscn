@@ -802,9 +802,9 @@ size = Vector3(3, 242.8, 3)
 material = ExtResource("2_i3j7n")
 
 [node name="LampPost40" type="StaticBody3D" parent="Bridge" unique_id=320011136]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.85, 26.5, 40)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.85, 26.4, 40)
 script = ExtResource("1_jb07p")
-size = Vector3(0.29999995, 3, 0.30000305)
+size = Vector3(0.29999995, 2.8, 0.30000305)
 material = ExtResource("4_1rnr7")
 
 [node name="LampHead40" type="StaticBody3D" parent="Bridge" unique_id=950282290]
@@ -814,9 +814,9 @@ size = Vector3(1, 0.30000114, 0.5)
 material = ExtResource("6_m6bg3")
 
 [node name="LampPost56" type="StaticBody3D" parent="Bridge" unique_id=1057035763]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.85, 26.5, 56)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.85, 26.4, 56)
 script = ExtResource("1_jb07p")
-size = Vector3(0.29999995, 3, 0.30000305)
+size = Vector3(0.29999995, 2.8, 0.30000305)
 material = ExtResource("4_1rnr7")
 
 [node name="LampHead56" type="StaticBody3D" parent="Bridge" unique_id=2045720508]
@@ -826,9 +826,9 @@ size = Vector3(1, 0.30000114, 0.5)
 material = ExtResource("6_m6bg3")
 
 [node name="LampPost72" type="StaticBody3D" parent="Bridge" unique_id=1667450664]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.85, 26.5, 72)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.85, 26.4, 72)
 script = ExtResource("1_jb07p")
-size = Vector3(0.29999995, 3, 0.30000305)
+size = Vector3(0.29999995, 2.8, 0.30000305)
 material = ExtResource("4_1rnr7")
 
 [node name="LampHead72" type="StaticBody3D" parent="Bridge" unique_id=534033989]
@@ -838,9 +838,9 @@ size = Vector3(1, 0.30000114, 0.5)
 material = ExtResource("6_m6bg3")
 
 [node name="LampPost88" type="StaticBody3D" parent="Bridge" unique_id=884878090]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.85, 26.5, 88)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.85, 26.4, 88)
 script = ExtResource("1_jb07p")
-size = Vector3(0.29999995, 3, 0.30000305)
+size = Vector3(0.29999995, 2.8, 0.30000305)
 material = ExtResource("4_1rnr7")
 
 [node name="LampHead88" type="StaticBody3D" parent="Bridge" unique_id=915290948]
@@ -3050,14 +3050,14 @@ upper_fade = 0.0
 cull_mask = 1
 
 [node name="Poster0" type="Decal" parent="Decals" unique_id=708435728]
-transform = Transform3D(0.00000004371139, -1.0, 0.00000004371139, 0.0, -0.00000004371139, -1.0, 1.0, 0.00000004371139, -0.0, -2.95, 25.4, 20.5)
+transform = Transform3D(-0.00000004371139, 1.0, -0.00000004371139, 0.0, -0.00000004371139, -1.0, -1.0, -0.00000004371139, 0.0, -2.95, 25.4, 20.5)
 size = Vector3(0.75, 0.3, 1)
 texture_albedo = ExtResource("46_ac0n1")
 upper_fade = 0.0
 cull_mask = 1
 
 [node name="Poster1" type="Decal" parent="Decals" unique_id=1919884368]
-transform = Transform3D(0.00000004371139, 1.0, -0.00000004371139, 0.0, -0.00000004371139, -1.0, -1.0, 0.00000004371139, -0.0, -17.05, 9.6, 2.0)
+transform = Transform3D(-0.00000004371139, -1.0, 0.00000004371139, 0.0, -0.00000004371139, -1.0, 1.0, -0.00000004371139, 0.0, -17.05, 9.6, 2.0)
 size = Vector3(0.75, 0.3, 1)
 texture_albedo = ExtResource("46_ac0n1")
 upper_fade = 0.0
@@ -3071,63 +3071,63 @@ upper_fade = 0.0
 cull_mask = 1
 
 [node name="NoticeAlley1" type="Decal" parent="Decals" unique_id=1421335091]
-transform = Transform3D(-1.0, 0.0, 0.0, 0.0, 0.0, -1.0, 0.0, -1.0, 0.0, -13.2, 9.5, -3.97)
+transform = Transform3D(1.0, 0.0, 0.0, 0.0, 0.0, -1.0, 0.0, 1.0, 0.0, -13.2, 9.5, -3.97)
 size = Vector3(0.48, 0.3, 0.64)
 texture_albedo = ExtResource("r3_decal_notice")
 upper_fade = 0.0
 cull_mask = 1
 
 [node name="NoticeAlley2" type="Decal" parent="Decals" unique_id=512253209]
-transform = Transform3D(0.0, 1.0, 0.0, 0.0, 0.0, -1.0, -1.0, 0.0, 0.0, -17.03, 9.5, 0.95)
+transform = Transform3D(0.0, -1.0, 0.0, 0.0, 0.0, -1.0, 1.0, 0.0, 0.0, -17.03, 9.5, 0.95)
 size = Vector3(0.48, 0.3, 0.64)
 texture_albedo = ExtResource("r3_decal_notice")
 upper_fade = 0.0
 cull_mask = 1
 
 [node name="FlyerAlley" type="Decal" parent="Decals" unique_id=995672292]
-transform = Transform3D(1.0, 0.0, 0.0, 0.0, 0.0, -1.0, 0.0, 1.0, 0.0, -15.5, 9.5, 8.97)
+transform = Transform3D(-1.0, 0.0, 0.0, 0.0, 0.0, -1.0, 0.0, -1.0, 0.0, -15.5, 9.5, 8.97)
 size = Vector3(0.48, 0.3, 0.64)
 texture_albedo = ExtResource("r3_decal_flyer")
 upper_fade = 0.0
 cull_mask = 1
 
 [node name="NoticeCourt" type="Decal" parent="Decals" unique_id=1239752966]
-transform = Transform3D(1.0, 0.0, 0.0, 0.0, 0.0, -1.0, 0.0, 1.0, 0.0, -2.2, 1.6, 8.97)
+transform = Transform3D(-1.0, 0.0, 0.0, 0.0, 0.0, -1.0, 0.0, -1.0, 0.0, -2.2, 1.6, 8.97)
 size = Vector3(0.48, 0.3, 0.64)
 texture_albedo = ExtResource("r3_decal_notice")
 upper_fade = 0.0
 cull_mask = 1
 
 [node name="NoticeHall" type="Decal" parent="Decals" unique_id=1195358055]
-transform = Transform3D(-1.0, 0.0, 0.0, 0.0, 0.0, -1.0, 0.0, -1.0, 0.0, -5.5, 1.6, -8.97)
+transform = Transform3D(1.0, 0.0, 0.0, 0.0, 0.0, -1.0, 0.0, 1.0, 0.0, -5.5, 1.6, -8.97)
 size = Vector3(0.48, 0.3, 0.64)
 texture_albedo = ExtResource("r3_decal_notice")
 upper_fade = 0.0
 cull_mask = 1
 
 [node name="FlyerCourt" type="Decal" parent="Decals" unique_id=290207086]
-transform = Transform3D(1.0, 0.0, 0.0, 0.0, 0.0, -1.0, 0.0, 1.0, 0.0, 6.8, 1.7, 8.97)
+transform = Transform3D(-1.0, 0.0, 0.0, 0.0, 0.0, -1.0, 0.0, -1.0, 0.0, 6.8, 1.7, 8.97)
 size = Vector3(0.48, 0.3, 0.64)
 texture_albedo = ExtResource("r3_decal_flyer")
 upper_fade = 0.0
 cull_mask = 1
 
 [node name="PosterGateEast" type="Decal" parent="Decals" unique_id=425177640]
-transform = Transform3D(0.0, 1.0, 0.0, 0.0, 0.0, -1.0, -1.0, 0.0, 0.0, 2.97, 25.9, 17.0)
+transform = Transform3D(0.0, -1.0, 0.0, 0.0, 0.0, -1.0, 1.0, 0.0, 0.0, 2.97, 25.9, 17.0)
 size = Vector3(0.75, 0.3, 1)
 texture_albedo = ExtResource("46_ac0n1")
 upper_fade = 0.0
 cull_mask = 1
 
 [node name="PosterRim" type="Decal" parent="Decals" unique_id=1113009318]
-transform = Transform3D(1.0, 0.0, 0.0, 0.0, 0.0, -1.0, 0.0, 1.0, 0.0, 12.5, 25.6, 12.97)
+transform = Transform3D(-1.0, 0.0, 0.0, 0.0, 0.0, -1.0, 0.0, -1.0, 0.0, 12.5, 25.6, 12.97)
 size = Vector3(0.75, 0.3, 1)
 texture_albedo = ExtResource("46_ac0n1")
 upper_fade = 0.0
 cull_mask = 1
 
 [node name="PosterTower4" type="Decal" parent="Decals" unique_id=279087597]
-transform = Transform3D(1.0, 0.0, 0.0, 0.0, 0.0, -1.0, 0.0, 1.0, 0.0, 22.3, 25.6, 13.97)
+transform = Transform3D(-1.0, 0.0, 0.0, 0.0, 0.0, -1.0, 0.0, -1.0, 0.0, 22.3, 25.6, 13.97)
 size = Vector3(0.75, 0.3, 1)
 texture_albedo = ExtResource("46_ac0n1")
 upper_fade = 0.0
@@ -8551,18 +8551,18 @@ material = ExtResource("2_i3j7n")
 grime = 0.0
 
 [node name="JambW" type="StaticBody3D" parent="Megastructure/Exit"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.175, 26.675, 111.875)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.175, 26.5, 111.875)
 collision_layer = 0
 script = ExtResource("1_jb07p")
-size = Vector3(0.3499999, 5.3500004, 0.25)
+size = Vector3(0.3499999, 5.0, 0.25)
 material = ExtResource("4_1rnr7")
 grime = 0.0
 
 [node name="JambE" type="StaticBody3D" parent="Megastructure/Exit"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.175, 26.675, 111.875)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.175, 26.5, 111.875)
 collision_layer = 0
 script = ExtResource("1_jb07p")
-size = Vector3(0.3499999, 5.3500004, 0.25)
+size = Vector3(0.3499999, 5.0, 0.25)
 material = ExtResource("4_1rnr7")
 grime = 0.0
 

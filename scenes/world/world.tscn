@@ -75,7 +75,7 @@ box = AABB(-92, -15, -112.4, 184, 100, 211.8)
 remove_in_world = PackedStringArray("Player", "StealthDirector")
 followers = PackedStringArray("Kael")
 gone_after = PackedStringArray("StoryTriggers", "Checkpoints")
-hidden_after = PackedStringArray("Figures/KaelFigure", "Figures/KaelFigureTag")
+hidden_after = PackedStringArray("Figures/KaelFigure")
 shown_after = PackedStringArray("Kael")
 
 [node name="BlackSand" parent="Zones/BlackSand" unique_id=388668477 instance=ExtResource("8_bt7bg")]

@@ -436,9 +436,9 @@ size = Vector3(45, 0.2, 0.6)
 material = ExtResource("6_u0cvu")
 
 [node name="Strip5" type="StaticBody3D" parent="Hall" unique_id=2143534943]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.5, 29.9, 0.3)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.51, 29.9, 0.3)
 script = ExtResource("1_doaf5")
-size = Vector3(45, 0.2, 0.6)
+size = Vector3(44.98, 0.2, 0.6)
 material = ExtResource("6_u0cvu")
 
 [node name="Strip6" type="StaticBody3D" parent="Hall" unique_id=822557031]
@@ -448,9 +448,9 @@ size = Vector3(45, 0.2, 0.6)
 material = ExtResource("6_u0cvu")
 
 [node name="Strip7" type="StaticBody3D" parent="Hall" unique_id=276934148]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.5, 29.9, 24.3)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.51, 29.9, 24.3)
 script = ExtResource("1_doaf5")
-size = Vector3(45, 0.2, 0.6)
+size = Vector3(44.98, 0.2, 0.6)
 material = ExtResource("6_u0cvu")
 
 [node name="Strip8" type="StaticBody3D" parent="Hall" unique_id=1167834486]
@@ -3051,7 +3051,7 @@ cull_mask = 1
 modulate = Color(1, 1, 1, 0.85)
 
 [node name="HullRust-495" type="Decal" parent="Decals/Wear"]
-transform = Transform3D(0, -1, 0, 0, 0, -1, 1, 0, 0, -5.01, 6.5, -49.5)
+transform = Transform3D(0, -1, 0, 0, 0, -1, 1, 0, 0, -5.01, 6.5, -51)
 size = Vector3(1, 0.3, 3)
 texture_albedo = ExtResource("vs_decal_rust_streak")
 upper_fade = 0.0

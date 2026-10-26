@@ -28,7 +28,6 @@ AENEAS: I've seen that before.
 KAEL: So have I. They took my wife.
 KAEL: The road north is watched. We go anyway.
 [hide KaelFigure]
-[hide KaelFigureTag]
 [show Kael]
 [camera]
 
