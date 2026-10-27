@@ -4,7 +4,8 @@ extends Node3D
 ## marker posts, survey stakes, Agency barriers, a floodlight, camp gear, stones and scrap.
 ## The origin sits on the sand (a Road lamp head's origin is the TOP of its post; its arm reaches
 ## toward -Z, over the road). Purely visual: no collision, so it never makes a step on a walked
-## floor. Change Kind or Variant in the Inspector and it rebuilds. Big things are sand_structure.gd.
+## floor. The one exception is the Barrier: a solid box, so nobody walks or sees through it.
+## Change Kind or Variant in the Inspector and it rebuilds. Big things are sand_structure.gd.
 
 const PropMesh := preload("res://scripts/props/prop_mesh.gd")
 const M := {
@@ -38,6 +39,7 @@ const M := {
 
 var _mesh := MeshInstance3D.new()
 var _pm: PropMesh
+var _body: StaticBody3D  # only the Barrier has one (layer 1, like the Blocks)
 var _build_pending := false  # waiting to be built once it is in a scene (mesh_build.gd)
 
 
@@ -70,6 +72,25 @@ func _rebuild_now() -> void:
 		12: _mound()
 		13: _campfire()
 	_mesh.mesh = _pm.commit()
+	_apply_collision()
+
+
+## The Barrier stands across the road at crouch height: one box round its legs and plank (layer 1,
+## so it blocks Aeneas and the guards' sight). Every other Kind has no collision.
+func _apply_collision() -> void:
+	if _body:
+		_body.queue_free()
+		_body = null
+	if kind != 4:
+		return
+	_body = StaticBody3D.new()
+	add_child(_body, false, INTERNAL_MODE_FRONT)
+	var shape := BoxShape3D.new()
+	shape.size = Vector3(2.5, 1.1, 0.8)
+	var col := CollisionShape3D.new()
+	col.shape = shape
+	col.position = Vector3(0, 0.55, 0)
+	_body.add_child(col)
 
 
 func _at(x: float, y: float, z: float) -> Transform3D:

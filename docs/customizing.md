@@ -50,6 +50,98 @@ FileSystem panel into the 3D view. The difference: a dragged prefab stays linked
 `scenes/prefabs/checkpoint.tscn`, change it, and every dragged copy changes too), while a button
 makes a separate copy you can change freely. When unsure, use the buttons.
 
+## Build Mode: change a level from inside the game
+
+You can move, copy, delete and add things while the game runs, looking at the level the way the
+player sees it. It only exists while you work on the game (F5 / F6 from the editor); players
+never see it.
+
+**Open it**
+
+1. Run the game (F5) and walk into a level, or open a level and press F6.
+2. Press **F2** (or **F1** for the dev menu, then **Build mode**). The game pauses and you get a
+   free camera with a small **+** in the middle of the screen.
+
+**Look around**
+
+- **W A S D** fly, **Space** up, **C** down, hold **Shift** to go faster.
+- Hold the **right mouse button** and move the mouse to look around.
+- The **mouse wheel** changes the flying speed.
+
+**Pick something**
+
+- **Click** it. An amber box shows around it and the panel at the top left says what it is and
+  which scene it belongs to (for example `Courtyard/Crate1`, `empty_town.tscn`).
+- A click always picks the whole thing (the crate, the balcony, the lamp), never a piece inside it.
+- Lamps, sounds, zones and story cameras are invisible in the game, so Build Mode shows them as
+  small diamonds: yellow = lamp, blue = sound, red = zone or story camera, green = decal. Click
+  a diamond to pick that thing.
+- A **red** box means the story needs it: story triggers, camera shots, checkpoints, guards,
+  fights, Aeneas, Isabella and the other characters, the navigation floor. You can still look at
+  them (and move most of them), but they can't be deleted or copied here; the panel says why.
+  Change those in the editor.
+- **Esc** drops the selection.
+
+**Change it**
+
+| To | Do |
+| --- | --- |
+| Move it along the ground | Click it again and drag |
+| Nudge it | Arrow keys (along the ground, the way you look); **Page Up / Page Down** for up and down |
+| Turn it | **Q** / **E** |
+| Snap on / off | **G**. With snap on, things move on a 0.5 m grid and turn 15 degrees at a time |
+| Copy it | **Ctrl+D** (the copy appears beside it, already picked, ready to move) |
+| Delete it | **Delete** (or Backspace) |
+| Undo | **Ctrl+Z**, as many times as you like while the level is loaded |
+
+**Add something new**
+
+1. Press **Tab**. The asset panel opens on the right with a picture of everything you can place:
+   the prefabs (Block, Building, Steam vent...), the prop scenes (Balcony, Big pipe...) and every
+   prop that builds itself, one tile per kind (Street prop: Bin, Street prop: Bicycle...). Type in
+   the **search** box to find one by name. (The first time, the pictures take a few seconds to
+   appear; after that they are remembered.)
+2. Point the **+** in the middle of the screen at the spot where it should go.
+3. Click the tile. The thing appears there, facing you, and is picked: drag, nudge or turn it.
+4. **Tab** again closes the panel.
+
+Story pieces (triggers, checkpoints, guards, fights, camera shots, look-at spots) are not in the
+panel: they need their words and names filled in, which the editor's Inspector does. Add them
+with the Aethereal dock.
+
+**Leave**
+
+Press **F2** again (or **F1**, or **Esc** with nothing picked). The game carries on where it was.
+
+**Where your changes go**
+
+Every change is saved the moment you make it, in `data/edits/<level>.json` (for example
+`data/edits/empty_town.json`). You don't need to save anything. Each time that level loads,
+alone or inside the big world, the game puts your changes back, so you can quit, come back
+tomorrow and they are still there. (They also work in an exported game.)
+
+The editor doesn't show these changes yet: they live beside the scene, not in it. To make them
+part of the scene for good:
+
+1. Close the game. In the editor, find the **Aethereal** dock (right side).
+2. Press **Bake in-game edits** (in the **Level** part). Each level with changes is opened, changed
+   and saved. The dock's message says what happened.
+3. The edits file is kept as `<level>.json.bak`, just in case. Once you've checked the level
+   looks right, you can delete it.
+
+Bake before you rename or move things in the editor: an edit remembers a thing by its place in
+the scene's tree (`Courtyard/Crate1`), and if that name changes, the edit can't find it any more
+(the game skips it and the Output panel says which ones).
+
+Exporting the game: add `data/edits/*.json` to the export preset's "non-resource files" filter
+(next to the dialogue's `*.txt`), so changes you haven't baked yet ship too.
+
+The files: `scripts/dev/build_mode.gd` (opening, picking, dragging), `build_actions.gd` (the keys),
+`build_session.gd` (what each change does and undo), `level_edits.gd` (the edits file and putting
+it back), `edits_applier.gd` (applies it as a level loads), `edit_rules.gd` (what can be deleted),
+`build_catalog.gd` (the asset list), `build_thumbs.gd` (the pictures) and
+`addons/aethereal_tools/edits_baker.gd` (the bake button).
+
 ## Make a new level
 
 1. In the dock, press **New level...**, type its name (for example `The Old Mill`) and press OK.

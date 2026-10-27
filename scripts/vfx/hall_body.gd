@@ -102,7 +102,9 @@ func _rebuild_now() -> void:
 func _on_visibility_changed() -> void:
 	var shown := is_visible_in_tree()
 	_shape.set_deferred("disabled", not shown)
-	if not shown and _settled:
+	# Only the story hiding this body ([hide BodyN]) is a throw. The world hiding the whole
+	# town zone when Aeneas walks out hides it too, and that must not feed the fire.
+	if not visible and _settled:
 		thrown.emit(self)
 
 

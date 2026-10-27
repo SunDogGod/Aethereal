@@ -242,10 +242,11 @@ And gives it to him. The seal she put on Aeneas's aether, long ago, breaks with 
 [show FireFlare]
 [wait 1.6]
 [fade white]
-[fade in]
+# Moved while the screen is white, so nobody visibly jumps to the new marks.
 [place Lieutenant LieutenantThrownMark]
 [place Captain CaptainRampMark]
 [place Dragger DraggerHallMark]
+[fade in]
 # DRAFT
 Something opens behind his eyes. Raw aether tears out of him, and the floor forgets which way is down.
 [camera]

@@ -7,6 +7,7 @@ signal add_requested(kind: String, label: String)
 signal bake_requested
 signal guide_requested
 signal new_level_requested
+signal bake_edits_requested
 
 const ACCENT := Color(1.0, 0.76, 0.4)  # the amber of the menus (scripts/ui/menu_fx.gd)
 const Builders := preload("res://addons/aethereal_tools/builders.gd")
@@ -71,6 +72,7 @@ func setup(editor_theme: Theme) -> void:
 	refresh_props()
 	var level := _section("Level")
 	_button(level, "Bake navigation", "NavigationRegion3D", "Rebakes the floor fighters path over (the level's Navigation node).\nDo it after moving walls, ramps or columns where fights happen.", bake_requested.emit)
+	_button(level, "Bake in-game edits", "Save", "Moves the changes made in the game's Build Mode (F2, saved in data/edits/) into the scene files\nand saves them, so the scenes stay the one true copy. The edits files are kept as .bak.", bake_edits_requested.emit)
 	_button(level, "New level...", "PackedScene", "Makes a new level from the template, with its own dialogue file, and opens it.", new_level_requested.emit)
 	_button(level, "Open the guide", "Help", "How to customize everything: docs/customizing.md.", guide_requested.emit)
 	add_child(HSeparator.new())

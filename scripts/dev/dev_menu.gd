@@ -12,6 +12,7 @@ const HOLD := 1.0      ## seconds the gamepad's Back button is held to open or c
 var cheats: Node
 var places: Node
 var overlay: CanvasLayer
+var build: Node   ## DevTools/Build (Build Mode), opened from the "Build mode" line
 var is_open := false
 
 @onready var root_control: Control = $Root
@@ -45,6 +46,8 @@ func _ready() -> void:
 func _build_main() -> void:
 	_add_item("teleport", Rows.action("Teleport...", WIDTH, _open_teleport))
 	_add_item("chapters", Rows.action("Chapters...", WIDTH, _open_chapters))
+	if build:
+		_add_item("build", Rows.action("Build mode", WIDTH, _after_close.bind(Callable(build, "open")), "F2"))
 	main_page.add_child(Rows.rule())
 	items["god"] = Rows.switch(main_page, "God mode", Callable(cheats, "set_god"))
 	items["noclip"] = Rows.switch(main_page, "Noclip fly", Callable(cheats, "set_noclip"))
@@ -91,8 +94,11 @@ func _input(event: InputEvent) -> void:
 
 func _process(_delta: float) -> void:
 	# Holding Back for a second toggles the menu (once per hold; real time, not game time).
-	# Back is also the hold-to-skip button in a story scene, so the menu waits for gameplay.
-	if _back_down_at >= 0 and not _back_used and not cheats.story_playing() \
+	# Back is also the hold-to-skip button in a story scene: a hold that touched a scene (the
+	# skip ends it before the second is up) never opens the menu.
+	if _back_down_at >= 0 and cheats.story_playing():
+		_back_used = true
+	if _back_down_at >= 0 and not _back_used \
 			and Time.get_ticks_msec() - _back_down_at >= HOLD * 1000.0:
 		_back_used = true
 		toggle()

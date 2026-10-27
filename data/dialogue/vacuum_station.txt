@@ -11,6 +11,10 @@ KAEL: Precursor transit. The tubes ran under everything, once.
 === the_ai ===
 [camera HoloShot]
 Kael tries the panel. Nothing. Aeneas tries. Nothing.
+[show Hologram]
+[show HoloProjection]
+[show HoloLight]
+[show HoloHum]
 The emitter wakes on its own.
 STATION: One destination remains in service.
 STATION: Estimated transit: one month. Board when ready.

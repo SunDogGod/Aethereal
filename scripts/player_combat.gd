@@ -158,6 +158,8 @@ func _tick(delta: float) -> void:
 
 ## Enemies call this. Returns true if the hit landed.
 func take_hit(damage: float, from: Vector3, unblockable := false) -> bool:
+	if health <= 0.0:
+		return false  # already down: `died` goes out once, whatever keeps swinging at him
 	if invulnerable or (move == Move.DODGE and _move_time < DODGE.active):
 		return false
 	var now := Time.get_ticks_msec() / 1000.0

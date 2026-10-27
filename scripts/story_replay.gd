@@ -8,7 +8,7 @@ extends RefCounted
 ## If you add a dialogue command that changes the level, handle it here too, or Continue
 ## will forget it. Skipping a scene (story_skip.gd) uses apply() too.
 
-const SKIPPED := ["line", "camera", "wait", "fade", "title", "frame", "teleport", "heal", "level", "call"]
+const SKIPPED := ["line", "camera", "wait", "fade", "title", "frame", "teleport", "heal", "level", "call", "music"]
 const STAGE := ["place", "stand", "move", "face", "pose", "ink"]
 
 

@@ -43,6 +43,8 @@ var _start_position := Vector3.ZERO
 var _start_facing := 0.0
 var down_for_good := false  ## down before the last checkpoint (or the save): a restart leaves him down
 var _player: Player
+var _start_fights := false   # the level's own `fights` / `dormant`: a restart puts them back
+var _start_dormant := false
 
 
 func _enter_tree() -> void:
@@ -67,6 +69,8 @@ func _ready() -> void:
 	data = data.duplicate()  # his own copy, so empower() can't change every agent at once
 	health = data.health
 	_player = get_tree().get_first_node_in_group("player")
+	_start_fights = fights
+	_start_dormant = dormant
 
 
 func _physics_process(delta: float) -> void:
@@ -274,6 +278,12 @@ func commit_checkpoint() -> void:
 func reset_to_checkpoint() -> void:
 	if down_for_good:
 		return
+	fighter.interrupt()  # a wind-up doesn't carry over
+	# A sneaking agent he cut fought back (engage() made him a fighter): after the restart he is
+	# the level's agent again. A story Fight's agents keep what the Fight set.
+	if not get_parent().is_in_group("fights"):
+		fights = _start_fights
+		dormant = _start_dormant
 	state = State.PATROL
 	suspicion = 0.0
 	killed = false

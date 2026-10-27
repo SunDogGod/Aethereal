@@ -1,0 +1,6 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/props_vacuum_station/station_scatter.gd" id="1_station_scatter"]
+
+[node name="StationScatter" type="Node3D"]
+script = ExtResource("1_station_scatter")

@@ -103,13 +103,19 @@ func take(from: Node3D, strength := 1.0, give_to: Node3D = null) -> void:
 		if fire and fire.has_method("bend"):
 			fire.bend(global_position, 6.0)
 		_swell_drone(7.0)
+	# The receiver may be gone by the time the soul arrives (the world drops the town's agents
+	# when the story moves on): hold him weakly, never as a captured Node.
+	var target: WeakRef = weakref(give_to) if give_to else null
 	stream.arrived.connect(func() -> void:
 		pulse(minf(strength, 1.5))
 		if great:
 			_blaze_hold = 12.0  # until give() sends it on (or it gives up waiting)
 			surge(3.0)
-		elif give_to:
-			get_tree().create_timer(0.45, false).timeout.connect(give.bind(give_to, strength)))
+		elif target:
+			get_tree().create_timer(0.45, false).timeout.connect(func() -> void:
+				var n: Node3D = target.get_ref()
+				if n:
+					give(n, strength)))
 
 
 ## The cube sends what it holds into `to`, who glows with it.
@@ -123,8 +129,11 @@ func give(to: Node3D, strength := 1.0) -> void:
 		beam = 0.16 if great else 0.0,
 		color_from = Color.WHITE if great else CRIMSON, color_to = AETHER if great else CRIMSON})
 	pulse(0.6)
+	var target: WeakRef = weakref(to)
 	stream.arrived.connect(func() -> void:
-		HallGlow.on(to, AETHER if great else CRIMSON, strength, 7.0 if great else 1.6)
+		var n: Node3D = target.get_ref()
+		if n:
+			HallGlow.on(n, AETHER if great else CRIMSON, strength, 7.0 if great else 1.6)
 		if great:
 			_blaze_hold = 2.4)  # the cube lets go as the beam does
 

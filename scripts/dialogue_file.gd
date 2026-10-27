@@ -53,6 +53,8 @@ static func parse(source: String) -> Dictionary:
 					steps.append({"type": "collapse", "name": arg})  # a character falls and stays down (plays its death)
 				"heal":
 					steps.append({"type": "heal"})
+				"music":
+					steps.append({"type": "music", "name": arg})  # a track from audio/music; [music off] = silence
 				"pose", "place", "stand", "move", "face", "ink", "call":
 					# stage directions (story_stage.gd): [pose Name anim], [place Name Mark] ...
 					var words := arg.split(" ", false)

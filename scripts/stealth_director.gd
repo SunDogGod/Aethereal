@@ -22,6 +22,9 @@ var _resetting := false
 func _ready() -> void:
 	_checkpoint = player.global_position
 	player.fell.connect(func() -> void: restart("FELL"))
+	var combat: PlayerCombat = player.get_node_or_null("Combat")
+	if combat:
+		combat.died.connect(_on_player_died)
 	for guard: Guard in get_tree().get_nodes_in_group("guards"):
 		guard.spotted.connect(_on_guard_spotted)
 	for checkpoint in get_tree().get_nodes_in_group("checkpoints"):
@@ -83,6 +86,14 @@ func _on_guard_spotted(_guard: Guard) -> void:
 	restart("SPOTTED")
 
 
+## Killed in a fight that is not a story Fight (an agent he cut while sneaking fights back):
+## back to the checkpoint. A story Fight restarts its own deaths (fight.gd); this handler is
+## connected in _ready, before any fight connects, so it runs while that fight is still active.
+func _on_player_died() -> void:
+	if not _fight_on():
+		restart("SLAIN")
+
+
 ## Fade out, put everyone back to the last checkpoint, fade in. `reason` is the word shown.
 func restart(reason := "SPOTTED") -> void:
 	if _resetting:
@@ -106,7 +117,10 @@ func restart(reason := "SPOTTED") -> void:
 
 	var back := create_tween()
 	back.tween_property(fade, "color:a", 0.0, 0.5)
-	player.controls_enabled = true
+	# A story scene that began during the fade (he landed in a trigger) keeps him: Story hands
+	# control back when it ends.
+	if not player.in_cutscene:
+		player.controls_enabled = true
 	_resetting = false
 	restarted.emit()
 

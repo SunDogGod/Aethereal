@@ -7,3 +7,8 @@ __pycache__/
 /build/
 /export/
 *.tmp
+
+# test battery output
+/tests/logs/
+/tests/**/saves/
+/tests/**/shots/

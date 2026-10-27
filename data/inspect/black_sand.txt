@@ -1,0 +1,18 @@
+# BLACK SAND: what Aeneas sees when he looks at things (E / D-pad up).
+#
+# DRAFT. Placeholder lines so the prompts work; rewrite them in your voice.
+#
+# One entry per line:  NodeName|first line|second line|third line
+# The name is the Interactable node's name in the level (under Inspect). Lines are shown one
+# after another as narration; keep them short. Lines starting with # are notes.
+
+Garden|A bed of carried soil, walled with plate. She sowed it in rows, on a string.|Most of it came up pale. Some of it came up.
+RainDrums|Drums under the downpipe. Water runs off the roof when the ceiling sweats.|One drop at a time, they filled them.
+ToolRack|A shovel, a pick, a saw with half its teeth. Everything here was dug out of the sand.|The shovel's handle is worn dark where two hands held it.
+FirePit|A ring of stones and cold ash. The pot is still on its hook.|Nobody has lit it since.
+Washing|Washing on a line, stiff with sand.|Hers and his, side by side.
+Fence|A fence of pipe offcuts, wire and an old door. It wouldn't stop anyone.|It was never meant to. It said: this part is ours.
+DeadMachine|A machine older than the town, buried to its waist. One lamp on it still blinks.|Nothing it was built to do is left to do.
+FallenBalcony|A balcony, fallen from the town above. The railing still has a plant pot wired to it.|Up there, someone's door now opens onto nothing.
+SunkModule|A module like theirs, sinking on its side. The sand is already inside.|Without someone to live in it, it's just a box going under.
+TownCables|Cables hang from the town's lit storeys, far up, down to the sand.|Nobody up there knows where they end.

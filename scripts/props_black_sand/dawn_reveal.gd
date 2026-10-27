@@ -1,9 +1,12 @@
 extends Node
-## Black Sand's dawn, the parts artificial_dawn.gd doesn't do: while the ceiling lights come on,
-## the fog draws back (you wake seeing only the nearest dunes; by day the columns, the arch and the
+## Black Sand's dawn, the parts black_sand_dawn.gd (the ArtificialDawn node) doesn't do: while the
+## ceiling lights come on, the fog draws back (you wake seeing only the nearest dunes; by day the columns, the arch and the
 ## town stand out of the haze) and the "sun" climbs from low over the far end to its morning angle.
 ## It also owns one ceiling panel that comes on late, stutters, and blinks now and then.
 ## It follows the timing of the ArtificialDawn node (its delay and wave time), so retime that one.
+## The level's Environment keeps fog_density at 0.98, not 1: past fog_end a dark wall still vanishes,
+## but bright lights (the town's windows far overhead, lit ceiling panels) show faintly through the
+## haze, so the waking scene's look back at the town reads before the fog has drawn back.
 
 @export var dawn: NodePath  ## the ArtificialDawn node
 @export var fog_end_dark := 55.0    ## metres you can see before the dawn

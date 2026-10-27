@@ -49,6 +49,40 @@ walks through from the town to the end of the station.
 - Child Aeneas: smaller, slower, lower camera, no knife or rifle. The whiteout at the drain leads
   into Black Sand.
 - Beats: `memory` (courtyard), `the_men` (the Great Estate gate), `the_drain`, `whiteout`.
+- **Dressed (overnight 2026-10-26), detail like the town's; no new story beats.** All of it is
+  **Proposed**: change, move or delete anything. The props are in `scripts/props_massacre/`.
+  - The houses: dark stone footings, timber posts and beam bands on the white plaster, terracotta
+    gable roofs laid with round tiles (in the style of the family house in Black Sand), a raised plank
+    veranda along each courtyard front under the eave, lattice paper windows lit warm from inside, a
+    sliding door left a hand open, a noren curtain, red paper lanterns on the veranda posts. The Great
+    Estate's hall has a gabled entrance porch over its door.
+  - Each estate gate is a small roofed gate with its two plank doors swung open against the wall.
+  - The courtyards: a tree (pine, maple, persimmon; a pink blossom tree in the Great Estate), the
+    basin made a stone water trough with a bamboo spout dripping into it, stepping stones from the
+    gate, a vegetable bed, a washing line, a stone lantern, a well or a woodpile, hens, a cat on
+    the veranda, potted geraniums and a bonsai, persimmons drying under the eave, birds and pots on
+    the wall tops. The Great Estate's courtyard has festival banners, two drums by the dais, barrels
+    and sacks, low tables and a red parasol.
+  - The lane is packed earth, with paths to every gate; lantern posts down both sides and strings of
+    paper lanterns across it.
+  - **Proposed landmark: the market** by the way in: seven stalls (fruit and greens, cloth, pottery,
+    lanterns, a food stall with a steaming pot), parasols, benches, banners.
+  - **Proposed landmark: the village shrine** at the foot of the pillar behind the Great Estate, on
+    the way to the drain: a vermilion torii, two stone lanterns, a small shrine with candles and rice
+    cakes, a row of jizo with red bibs.
+  - Fields under the lamps: rice paddies, vegetable beds, low grow-lamp frames, irrigation channels
+    with plank bridges (one runs along the back to a sump by the drain), field sheds, drying racks,
+    a persimmon orchard, bamboo along the hall walls.
+  - The megastructure: pilasters and two ledges on the hall walls, concrete beams across the
+    ceiling, ten free-standing pillars with conduits, big pipes along the walls, tiny lit windows far
+    up the walls. The grow-lamp panels now hang 4 m below the ceiling on steel rigs with cable trays.
+  - The haze is warmer and paler (the fog is a dim amber, not black). Lantern lights breathe like
+    candles; birds peck, cats look round or breathe, chimes sway; running water by the channels and
+    the fire basin crackles.
+  - Look-at spots (draft lines in `data/inspect/massacre.txt`): the drum, the shrine, the food
+    stall, a paddy.
+  - Fixed: the two roof fires that show when the men come hung in the courtyards' air; they now sit
+    on the roofs of the first two houses. The wall copings and the corridor mouth no longer flicker.
 
 ## 0.3 Black Sand — `scenes/levels/black_sand.tscn`
 - **Decided 2026-10-25 (the author):** dark and foggy (Blame! is an inspiration). The family home is a giant steel module repurposed into a shed with two beds ("No one was going to build that house for them"); Isabella's body lies inside. Sand drifts up the steel side walls; the south side is the town as a solid black block with windows starting high up.
@@ -65,6 +99,29 @@ walks through from the town to the end of the station.
 - **Proposed:** Kael joins as a follower after the camp scene (the static Kael is swapped for the
   companion).
 - Beats: `waking`, `the_grave`, `the_cube`, `the_road`, `the_arch`, `down`.
+- **Proposed (overnight 2026-10-26, dressed like the town; still dark and foggy):**
+  - The family's yard in front of the shed: a hand-made fence of pipe offcuts, wire and an old door;
+    a raised garden of carried soil with pale sprouts under a lamp whose bulb is going; a windbreak
+    of stakes and tarp; water drums under a downpipe off the roof (it drips); a tool rack and a
+    barrow on the east wall; salvage sorted in stacks; a drag sled; a cold fire pit with its pot; a
+    second washing line; boards laid from the door to where the guide lamps lead in; worn sand.
+  - The dunes: the megastructure's bones coming out of the sand: girders (some bent, one lying),
+    two girder frames, big pipes that rise and dive back in, masts with a blinking red lamp,
+    modules like theirs sinking on their sides (one burst open on a dark inside), dead machines
+    with one lamp still blinking, tanks. A few sit right beside the walk so the route passes them.
+  - Cables hang from the ceiling far up, some to the sand where they lie coiled, some ending in
+    the air. Wind-blown sand drifts across the dunes; a wind loop (`audio/black_sand_wind.wav`,
+    a placeholder like the other sounds) plays from the walls and the yard.
+  - Under the town: balconies, air conditioners, bags and rubble that came down from it, pipes out
+    of the block's foot (two broken ones high up drip), cables from the lit storeys to the sand.
+  - Trail stakes with rags from the camp to the road, and from the road to the arch.
+  - Ten things to look at (E / D-pad up), lines in `data/inspect/black_sand.txt` (DRAFT): the
+    garden, the drums, the tools, the fire pit, the washing, the fence, the dead machine, the
+    fallen balcony, the sunk module, the town's cables.
+  - New pieces: `sand_relic.gd` (girder, frame, pipe bend, mast, wall conduits), `sand_hulk.gd`
+    (module, machine, tank, fallen balcony), `sand_yard.gd` and `sand_salvage.gd` (the family's
+    things), `sand_scatter.gd` (small clutter as one MultiMesh per patch). Each has a Kind,
+    Variant and Length in the Inspector; Drift heaps sand against a piece's foot.
 
 ## 0.4 The Vacuum Station — `scenes/levels/vacuum_station.tscn`
 - From Notion: a dead Precursor vacuum-tube station, a house-sized capsule, neither can work the
@@ -95,6 +152,36 @@ walks through from the town to the end of the station.
 - **Proposed:** the lights that point the way: the lit door into the hall, three lamps down the east
   side, a lamp over the east ramp, cyan arrows on the floor, the hologram, the lit train door. The
   inside of the train stays warmly lit (inhabited places are cleaner, and brighter).
+- **Proposed (overnight 2, dressed like the town):** the station is filled out in its own
+  character: ages of dust, rust and roots, and what the last travellers left behind. Nothing new
+  lights the way; most of it shows under the few lamps or in the flashlight.
+  - The concourse: two ticket booths beside the gates, windows to the aisle (one pane cracked
+    out, a sign in the old script on each roof); cases, a trunk and a heap of luggage dropped at
+    the gates, a trail of cases out across the hall to the platform; crowd barriers knocked flat;
+    old tickets and paper everywhere; faded posters (a tube mouth with a capsule leaving it, a
+    network map half torn away) and stencilled words in the old script on the walls and columns.
+  - Signs in the old script: one hangs on long chains from the roof beams over the aisle, its twin
+    lies broken on the floor below; two hang under the catwalk (one by a single chain), two from
+    the conduit high on the north wall, small ones from the wall pipes on the east side.
+  - The east side: a waiting area nobody waits in (two rows of benches, one rotted through, the
+    luggage), a third booth, a dead hologram emitter (the platform's live one has a dead twin on
+    the west deck too), ceiling lamps fallen from under the gallery, water dripping from the
+    gallery into rusty puddles, roots and moss coming through the wall.
+  - The collapse: grit, broken floor tiles and moss round every heap, puddles where the roof is
+    open, roots on the walls, dead cables hanging from the torn roof edge, dust drifting in the
+    cold light through the hole (and under the working lamps). A wind sound through the hole.
+  - The platform: benches, luggage, roots and posters on both decks. The east tube and its
+    walkway are left bare for the secret.
+  - The train: a locker on the training room's partition, a stack of mats, a water drum, chalk
+    tally marks on the wall; a network map pinned up over the galley.
+  - Look-at spots (E / D-pad up): the booth, the luggage, a poster, the fallen sign, the dead
+    emitter, the roots, the old capsule, the chalk marks. Their lines are DRAFT, in
+    `data/inspect/vacuum_station.txt`: rewrite them in your voice.
+  - New pieces you can drag in from `scenes/prefabs/props/`: `station_relic.tscn` (Kind: suitcase,
+    trunk, luggage heap, ticket booth, broken bench, dead emitter, hanging sign, fallen sign,
+    roots, fallen lamp, train locker, mat stack, water drum), `station_scatter.tscn` (a patch of
+    grit, tile shards, paper, rust flakes or moss: set its size and how many) and
+    `dust_motes.tscn` (dust in the air, seen only in light).
 - Beats: `arrival`, `the_ai`, `launch`, `training`, `end_of_act` (back to the menu).
 
 ## Shared pieces added

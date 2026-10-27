@@ -14,8 +14,9 @@ He is four years old, and this is all he will remember for ten years.
 === the_men ===
 [camera CorridorShot]
 Noise, from the only way in.
-Men come through the corridor. They start killing.
+# The raiders show on this shot, so the line plays over them; the crowd goes at the cut.
 [show Raiders]
+Men come through the corridor. They start killing.
 [hide Crowd]
 [camera IsabellaShot]
 A hand closes on his arm.

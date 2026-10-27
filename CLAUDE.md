@@ -201,3 +201,6 @@
 - My notes are old and messy. I design each location with you: ask me how a place looks and plays
   instead of building it from the notes alone.
 - Ability behavior must match the Aether system as written. Ask if unclear.
+
+## Skills and tests
+The full test battery lives in `tests/` (`bash tests/run_battery.sh`). Project skills in `.claude/skills/`: aethereal-test-battery, aethereal-level-audit, aethereal-performance.

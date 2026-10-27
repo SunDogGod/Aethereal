@@ -53,6 +53,7 @@
 [ext_resource type="Script" path="res://scripts/props_vacuum_station/capsule_prop.gd" id="vs_capsule_prop"]
 [ext_resource type="Script" path="res://scripts/props_vacuum_station/holo_projection.gd" id="vs_holo_projection"]
 [ext_resource type="AudioStream" path="res://audio/vacuum_station_holo_hum.wav" id="vs_vacuum_station_holo_hum"]
+[ext_resource type="Script" path="res://scripts/props_vacuum_station/holo_hum.gd" id="vs_holo_hum"]
 [ext_resource type="AudioStream" path="res://audio/vacuum_station_tube_breath.wav" id="vs_vacuum_station_tube_breath"]
 [ext_resource type="AudioStream" path="res://audio/vending_hum.wav" id="vs_vending_hum"]
 [ext_resource type="Material" path="res://materials/metal_worn.tres" id="vs_metal_worn"]
@@ -72,6 +73,19 @@
 [ext_resource type="Script" path="res://scripts/props_vacuum_station/vacuum_station_rubble.gd" id="vs_vacuum_station_rubble"]
 [ext_resource type="Material" path="res://materials/vacuum_station_far_light.tres" id="vs_vacuum_station_far_light"]
 [ext_resource type="PackedScene" path="res://scenes/flashlight.tscn" id="vs_flashlight"]
+[ext_resource type="Texture2D" path="res://textures/decal_vs_poster.png" id="vs_decal_vs_poster"]
+[ext_resource type="Texture2D" path="res://textures/decal_vs_poster_b.png" id="vs_decal_vs_poster_b"]
+[ext_resource type="Texture2D" path="res://textures/decal_vs_stencil.png" id="vs_decal_vs_stencil"]
+[ext_resource type="Texture2D" path="res://textures/decal_vs_tickets.png" id="vs_decal_vs_tickets"]
+[ext_resource type="Texture2D" path="res://textures/decal_vs_rust_bloom.png" id="vs_decal_vs_rust_bloom"]
+[ext_resource type="Texture2D" path="res://textures/decal_vs_roots.png" id="vs_decal_vs_roots"]
+[ext_resource type="Script" path="res://scripts/props_vacuum_station/station_scatter.gd" id="vs_station_scatter"]
+[ext_resource type="Script" path="res://scripts/props_vacuum_station/station_relic.gd" id="vs_station_relic"]
+[ext_resource type="Script" path="res://scripts/props_vacuum_station/dust_motes.gd" id="vs_dust_motes"]
+[ext_resource type="Script" path="res://scripts/props/cable_run.gd" id="vs_cable_run"]
+[ext_resource type="Texture2D" path="res://textures/decal_vs_tally.png" id="vs_decal_vs_tally"]
+[ext_resource type="AudioStream" path="res://audio/running_water.wav" id="vs_running_water"]
+[ext_resource type="Script" path="res://scripts/interactable.gd" id="vs_interactable"]
 
 [sub_resource type="Environment" id="Environment_eil6x"]
 background_mode = 1
@@ -178,6 +192,9 @@ size = Vector3(6, 3, 1.5)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_midhall"]
 size = Vector3(80, 4, 3)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_o2look"]
+size = Vector3(3, 2.5, 3)
 
 [node name="VacuumStation" type="Node3D" unique_id=1620133448]
 
@@ -555,6 +572,7 @@ material = ExtResource("9_r2u8g")
 
 [node name="Hologram" type="Node3D" parent="Console" unique_id=126369540]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 2.6, -48.9)
+visible = false
 script = ExtResource("10_7m78f")
 
 [node name="Body" type="MeshInstance3D" parent="Console/Hologram" unique_id=435491060]
@@ -569,6 +587,7 @@ mesh = SubResource("TorusMesh_hbbmv")
 
 [node name="HoloLight" type="OmniLight3D" parent="Console" unique_id=373070760]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 3.7, -49)
+visible = false
 light_color = Color(0.3, 0.85, 1, 1)
 light_energy = 1.3
 omni_range = 7.0
@@ -1617,7 +1636,7 @@ grime = 0.0
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -36, 7.8, 25)
 collision_layer = 0
 script = ExtResource("1_doaf5")
-size = Vector3(0.3, 1.6, 26)
+size = Vector3(0.3, 1.6, 26.02)
 material = ExtResource("vs_vacuum_station_wall")
 grime = 0.0
 
@@ -1838,6 +1857,7 @@ script = ExtResource("1_doaf5")
 size = Vector3(50, 0.08, 0.08)
 material = ExtResource("vs_trim_rail")
 grime = 0.0
+trim = true
 
 [node name="CatwalkRailS" type="StaticBody3D" parent="Dressing/Structure"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 19, -15)
@@ -1846,6 +1866,7 @@ script = ExtResource("1_doaf5")
 size = Vector3(50, 0.08, 0.08)
 material = ExtResource("vs_trim_rail")
 grime = 0.0
+trim = true
 
 [node name="CatwalkDoorE" type="StaticBody3D" parent="Dressing/Structure"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 39.98, 19.3, -16)
@@ -2340,16 +2361,18 @@ variant = 1
 
 [node name="HoloProjection" type="Node3D" parent="Life"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 10.6, -49)
+visible = false
 script = ExtResource("vs_holo_projection")
 radius = 2.3
 beam_length = 7.95
 
 [node name="HoloHum" type="AudioStreamPlayer3D" parent="Sound"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 3, -49)
+visible = false
 stream = ExtResource("vs_vacuum_station_holo_hum")
 volume_db = -9.0
 unit_size = 3.0
-autoplay = true
+script = ExtResource("vs_holo_hum")
 max_distance = 22.0
 
 [node name="TubeBreath" type="AudioStreamPlayer3D" parent="Sound"]
@@ -3567,7 +3590,7 @@ grime = 0.0
 transform = Transform3D(1, 0, 0, 0, 0.9284858, 0.37136784, 0, -0.37136784, 0.9284858, -36, 4, 2.5)
 script = ExtResource("1_doaf5")
 size = Vector3(0.3, 1.6, 20.46)
-material = ExtResource("vs_metal_worn")
+material = ExtResource("vs_vacuum_station_wall")
 grime = 0.0
 
 [node name="ColumnFallen" type="StaticBody3D" parent="Collapse"]
@@ -4438,3 +4461,1628 @@ variant = 6
 solid = false
 
 [node name="Flashlight" parent="." instance=ExtResource("vs_flashlight")]
+
+[node name="Ages" type="Node3D" parent="Dressing"]
+
+[node name="Corridor" type="Node3D" parent="Dressing/Ages"]
+
+[node name="Ages" type="Node3D" parent="Decals"]
+
+[node name="PosterCorridorW" type="Decal" parent="Decals/Ages"]
+transform = Transform3D(0, 1, 0, 0, 0, 1, 1, 0, 0, -3, 2, 46.5)
+size = Vector3(0.75, 0.4, 1)
+texture_albedo = ExtResource("vs_decal_vs_poster")
+upper_fade = 0.0
+lower_fade = 0.3
+cull_mask = 1
+
+[node name="PosterCorridorW2" type="Decal" parent="Decals/Ages"]
+transform = Transform3D(0, 1, 0, 0, 0, 1, 1, 0, 0, -3, 1.9, 62.3)
+size = Vector3(0.75, 0.4, 1)
+texture_albedo = ExtResource("vs_decal_vs_poster_b")
+upper_fade = 0.0
+lower_fade = 0.3
+cull_mask = 1
+
+[node name="PosterCorridorE" type="Decal" parent="Decals/Ages"]
+transform = Transform3D(0, -1, 0, 0, 0, 1, -1, 0, 0, 3, 2.1, 53.4)
+size = Vector3(0.75, 0.4, 1)
+texture_albedo = ExtResource("vs_decal_vs_poster")
+upper_fade = 0.0
+lower_fade = 0.3
+cull_mask = 1
+
+[node name="StencilCorridorE" type="Decal" parent="Decals/Ages"]
+transform = Transform3D(0, -1, 0, 0, 0, 1, -1, 0, 0, 3, 3.6, 64.8)
+size = Vector3(2.4, 0.4, 0.6)
+texture_albedo = ExtResource("vs_decal_vs_stencil")
+upper_fade = 0.0
+lower_fade = 0.3
+cull_mask = 1
+
+[node name="TicketsCorridor" type="Decal" parent="Decals/Ages"]
+transform = Transform3D(0.8253356, 0, 0.5646425, 0, 1, 0, -0.5646425, 0, 0.8253356, 1.4, 0, 43.5)
+size = Vector3(1.6, 0.4, 1.6)
+texture_albedo = ExtResource("vs_decal_vs_tickets")
+upper_fade = 0.0
+lower_fade = 0.3
+cull_mask = 1
+
+[node name="RustCorridor" type="Decal" parent="Decals/Ages"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.9, 0, 66.5)
+size = Vector3(1.8, 0.4, 1.8)
+texture_albedo = ExtResource("vs_decal_vs_rust_bloom")
+upper_fade = 0.0
+lower_fade = 0.3
+cull_mask = 1
+
+[node name="RootsCorridor" type="Decal" parent="Decals/Ages"]
+transform = Transform3D(0, 1, 0, 0, 0, 1, 1, 0, 0, -3, 0.9, 59.6)
+size = Vector3(1.6, 0.4, 1.8)
+texture_albedo = ExtResource("vs_decal_vs_roots")
+upper_fade = 0.0
+lower_fade = 0.3
+cull_mask = 1
+
+[node name="PaperKiosk" type="Node3D" parent="Dressing/Ages/Corridor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.1, 0, 50.6)
+script = ExtResource("vs_station_scatter")
+kind = 2
+extent = Vector2(1.4, 2.6)
+count = 18
+seed_value = 1
+clump = 0.5
+
+[node name="GritDoor" type="Node3D" parent="Dressing/Ages/Corridor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.2, 0, 41.6)
+script = ExtResource("vs_station_scatter")
+kind = 0
+extent = Vector2(1.4, 2.2)
+count = 26
+seed_value = 2
+clump = 0.5
+
+[node name="CaseCorridor" type="StaticBody3D" parent="Dressing/Ages/Corridor"]
+transform = Transform3D(0.16996716, 0, -0.98544973, 0, 1, 0, 0.98544973, 0, 0.16996716, 2.62, 0, 62.9)
+script = ExtResource("vs_station_relic")
+kind = 0
+solid = false
+draw_distance = 45.0
+
+[node name="CableCorridor" type="Node3D" parent="Dressing/Ages/Corridor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.6, 4.98, 50.2)
+script = ExtResource("vs_ruin_prop")
+kind = 9
+variant = 1
+length = 1.4
+
+[node name="DustDoor" type="Node3D" parent="Dressing/Ages/Corridor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.6, 43.5)
+script = ExtResource("vs_dust_motes")
+extent = Vector3(5, 3.5, 6)
+count = 60
+seed_value = 1
+
+[node name="Concourse" type="Node3D" parent="Dressing/Ages"]
+
+[node name="BoothW" type="StaticBody3D" parent="Dressing/Ages/Concourse"]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -18.5, 0, 34.5)
+script = ExtResource("vs_station_relic")
+kind = 3
+
+[node name="BoothE" type="StaticBody3D" parent="Dressing/Ages/Concourse"]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 18.5, 0, 34.5)
+script = ExtResource("vs_station_relic")
+kind = 3
+variant = 1
+
+[node name="GlassBoothW" type="Node3D" parent="Dressing/Ages/Concourse"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16.6, 0, 34.4)
+script = ExtResource("vs_station_scatter")
+kind = 1
+extent = Vector2(2, 3)
+count = 22
+seed_value = 3
+clump = 0.7
+
+[node name="PaperBoothE" type="Node3D" parent="Dressing/Ages/Concourse"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.5, 0, 33.8)
+script = ExtResource("vs_station_scatter")
+kind = 2
+extent = Vector2(3, 3.5)
+count = 30
+seed_value = 4
+clump = 0.5
+
+[node name="HeapGates" type="StaticBody3D" parent="Dressing/Ages/Concourse"]
+transform = Transform3D(0.9393727, 0, 0.3428978, 0, 1, 0, -0.3428978, 0, 0.9393727, -8.2, 0, 35.6)
+script = ExtResource("vs_station_relic")
+kind = 2
+
+[node name="CaseGatesA" type="StaticBody3D" parent="Dressing/Ages/Concourse"]
+transform = Transform3D(0.3623577, 0, 0.9320391, 0, 1, 0, -0.9320391, 0, 0.3623577, -6.6, 0, 35.9)
+script = ExtResource("vs_station_relic")
+kind = 0
+variant = 1
+solid = false
+draw_distance = 45.0
+
+[node name="CaseGatesB" type="StaticBody3D" parent="Dressing/Ages/Concourse"]
+transform = Transform3D(0.87758255, 0, -0.47942555, 0, 1, 0, 0.47942555, 0, 0.87758255, 5.8, 0, 28.6)
+script = ExtResource("vs_station_relic")
+kind = 0
+variant = 1
+solid = false
+draw_distance = 45.0
+
+[node name="CaseOpen" type="StaticBody3D" parent="Dressing/Ages/Concourse"]
+transform = Transform3D(-0.7373938, 0, 0.67546314, 0, 1, 0, -0.67546314, 0, -0.7373938, -2.9, 0, 26.2)
+script = ExtResource("vs_station_relic")
+kind = 0
+variant = 2
+solid = false
+draw_distance = 45.0
+
+[node name="TrunkGates" type="StaticBody3D" parent="Dressing/Ages/Concourse"]
+transform = Transform3D(0.9553365, 0, -0.29552022, 0, 1, 0, 0.29552022, 0, 0.9553365, 11.2, 0, 35.2)
+script = ExtResource("vs_station_relic")
+kind = 1
+
+[node name="PaperGatesW" type="Node3D" parent="Dressing/Ages/Concourse"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.4, 0, 28.3)
+script = ExtResource("vs_station_scatter")
+kind = 2
+extent = Vector2(5, 3.4)
+count = 46
+seed_value = 5
+clump = 0.5
+
+[node name="PaperGatesE" type="Node3D" parent="Dressing/Ages/Concourse"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.8, 0, 33.6)
+script = ExtResource("vs_station_scatter")
+kind = 2
+extent = Vector2(4.2, 2.6)
+count = 34
+seed_value = 6
+clump = 0.5
+
+[node name="TicketsGatesA" type="Decal" parent="Decals/Ages"]
+transform = Transform3D(0.4535961, 0, 0.8912074, 0, 1, 0, -0.8912074, 0, 0.4535961, -3.4, 0, 33.2)
+size = Vector3(2, 0.4, 2)
+texture_albedo = ExtResource("vs_decal_vs_tickets")
+upper_fade = 0.0
+lower_fade = 0.3
+cull_mask = 1
+
+[node name="TicketsGatesB" type="Decal" parent="Decals/Ages"]
+transform = Transform3D(-0.666276, 0, 0.74570525, 0, 1, 0, -0.74570525, 0, -0.666276, 4, 0, 29.4)
+size = Vector3(1.6, 0.4, 1.6)
+texture_albedo = ExtResource("vs_decal_vs_tickets")
+upper_fade = 0.0
+lower_fade = 0.3
+cull_mask = 1
+
+[node name="PosterSouthA" type="Decal" parent="Decals/Ages"]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, -6.4, 2.3, 39.98)
+size = Vector3(1, 0.4, 1.35)
+texture_albedo = ExtResource("vs_decal_vs_poster")
+upper_fade = 0.0
+lower_fade = 0.3
+cull_mask = 1
+
+[node name="PosterSouthB" type="Decal" parent="Decals/Ages"]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, -7.7, 2.1, 39.98)
+size = Vector3(1, 0.4, 1.35)
+texture_albedo = ExtResource("vs_decal_vs_poster_b")
+upper_fade = 0.0
+lower_fade = 0.3
+cull_mask = 1
+
+[node name="PosterSouthC" type="Decal" parent="Decals/Ages"]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 7.2, 2.4, 39.98)
+size = Vector3(1, 0.4, 1.35)
+texture_albedo = ExtResource("vs_decal_vs_poster")
+upper_fade = 0.0
+lower_fade = 0.3
+cull_mask = 1
+
+[node name="StencilSouth" type="Decal" parent="Decals/Ages"]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 12.5, 4.6, 39.98)
+size = Vector3(5.2, 0.4, 1.3)
+texture_albedo = ExtResource("vs_decal_vs_stencil")
+upper_fade = 0.0
+lower_fade = 0.3
+cull_mask = 1
+
+[node name="StencilSouthW" type="Decal" parent="Decals/Ages"]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, -24, 4.2, 39.98)
+size = Vector3(5.2, 0.4, 1.3)
+texture_albedo = ExtResource("vs_decal_vs_stencil")
+upper_fade = 0.0
+lower_fade = 0.3
+cull_mask = 1
+
+[node name="RootsSouthW" type="StaticBody3D" parent="Dressing/Ages/Concourse"]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -25.5, 0, 39.9)
+script = ExtResource("vs_station_relic")
+kind = 8
+variant = 1
+solid = false
+draw_distance = 45.0
+
+[node name="RootsSouthWWall" type="Decal" parent="Decals/Ages"]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, -25.5, 1.4, 39.98)
+size = Vector3(2.6, 0.4, 2.8)
+texture_albedo = ExtResource("vs_decal_vs_roots")
+upper_fade = 0.0
+lower_fade = 0.3
+cull_mask = 1
+
+[node name="SignFallen" type="StaticBody3D" parent="Dressing/Ages/Concourse"]
+transform = Transform3D(0.90044713, 0, 0.43496552, 0, 1, 0, -0.43496552, 0, 0.90044713, -5.4, 0, 16)
+script = ExtResource("vs_station_relic")
+kind = 7
+variant = 1
+solid = false
+draw_distance = 45.0
+width = 5.0
+
+[node name="GritSignFallen" type="Node3D" parent="Dressing/Ages/Concourse"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.6, 0, 16.4)
+script = ExtResource("vs_station_scatter")
+kind = 0
+extent = Vector2(3.4, 2.4)
+count = 30
+seed_value = 7
+clump = 0.5
+
+[node name="SignHangingS" type="StaticBody3D" parent="Dressing/Ages/Concourse"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 27.55, 18)
+script = ExtResource("vs_station_relic")
+kind = 6
+variant = 1
+solid = false
+drop = 17.5
+width = 5.0
+
+[node name="CableCols24" type="Node3D" parent="Dressing/Ages/Concourse"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 9.2, 24)
+script = ExtResource("vs_cable_run")
+points = PackedVector3Array(0, 0, 0, 12, 0.40000057, 0)
+sag = 1.6
+thickness = 0.05
+
+[node name="CableCols0" type="Node3D" parent="Dressing/Ages/Concourse"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 8.4, 0.4)
+script = ExtResource("vs_cable_run")
+points = PackedVector3Array(0, 0, 0, 12, 0.6000004, 0)
+sag = 2.0
+thickness = 0.05
+
+[node name="CableColsW" type="Node3D" parent="Dressing/Ages/Concourse"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13, 9.4, 24.4)
+script = ExtResource("vs_cable_run")
+points = PackedVector3Array(0, 0, 0, 26, 0.40000057, 0)
+sag = 2.6
+thickness = 0.06
+
+[node name="EastWaiting" type="Node3D" parent="Dressing/Ages"]
+
+[node name="BenchN0" type="StaticBody3D" parent="Dressing/Ages/EastWaiting"]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 21, 0, 14.4)
+script = ExtResource("vs_station_prop")
+kind = 3
+
+[node name="BenchS0" type="StaticBody3D" parent="Dressing/Ages/EastWaiting"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21, 0, 16.6)
+script = ExtResource("vs_station_prop")
+kind = 3
+
+[node name="BenchN1" type="StaticBody3D" parent="Dressing/Ages/EastWaiting"]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 23.6, 0, 14.4)
+script = ExtResource("vs_station_prop")
+kind = 3
+variant = 1
+
+[node name="BenchS1" type="StaticBody3D" parent="Dressing/Ages/EastWaiting"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 23.6, 0, 16.6)
+script = ExtResource("vs_station_relic")
+kind = 4
+
+[node name="BenchN2" type="StaticBody3D" parent="Dressing/Ages/EastWaiting"]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 26.2, 0, 14.4)
+script = ExtResource("vs_station_prop")
+kind = 3
+variant = 2
+
+[node name="BenchS2" type="StaticBody3D" parent="Dressing/Ages/EastWaiting"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 26.2, 0, 16.6)
+script = ExtResource("vs_station_prop")
+kind = 3
+variant = 2
+
+[node name="HeapEast" type="StaticBody3D" parent="Dressing/Ages/EastWaiting"]
+transform = Transform3D(0.6967067, 0, -0.7173561, 0, 1, 0, 0.7173561, 0, 0.6967067, 30.6, 0, 12.6)
+script = ExtResource("vs_station_relic")
+kind = 2
+variant = 1
+
+[node name="TrunkEast" type="StaticBody3D" parent="Dressing/Ages/EastWaiting"]
+transform = Transform3D(0.9800666, 0, 0.19866933, 0, 1, 0, -0.19866933, 0, 0.9800666, 32.6, 0, 16.4)
+script = ExtResource("vs_station_relic")
+kind = 1
+variant = 1
+
+[node name="CaseEastA" type="StaticBody3D" parent="Dressing/Ages/EastWaiting"]
+transform = Transform3D(0.9553365, 0, 0.29552022, 0, 1, 0, -0.29552022, 0, 0.9553365, 24.4, 0, 18.4)
+script = ExtResource("vs_station_relic")
+kind = 0
+solid = false
+draw_distance = 45.0
+
+[node name="CaseEastB" type="StaticBody3D" parent="Dressing/Ages/EastWaiting"]
+transform = Transform3D(-0.41614684, 0, 0.9092974, 0, 1, 0, -0.9092974, 0, -0.41614684, 19.4, 0, 12.4)
+script = ExtResource("vs_station_relic")
+kind = 0
+variant = 2
+solid = false
+draw_distance = 45.0
+
+[node name="PaperEast" type="Node3D" parent="Dressing/Ages/EastWaiting"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24.5, 0, 15.5)
+script = ExtResource("vs_station_scatter")
+kind = 2
+extent = Vector2(9, 6)
+count = 70
+seed_value = 8
+clump = 0.3
+
+[node name="RustEast" type="Node3D" parent="Dressing/Ages/EastWaiting"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 23.6, 0, 16.6)
+script = ExtResource("vs_station_scatter")
+kind = 3
+extent = Vector2(2.4, 1.4)
+count = 26
+seed_value = 9
+clump = 0.8
+
+[node name="BoothEast" type="StaticBody3D" parent="Dressing/Ages/EastWaiting"]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 34, 0, 24)
+script = ExtResource("vs_station_relic")
+kind = 3
+variant = 2
+
+[node name="EmitterEast" type="StaticBody3D" parent="Dressing/Ages/EastWaiting"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22, 0, -12)
+script = ExtResource("vs_station_relic")
+kind = 5
+
+[node name="GritEmitter" type="Node3D" parent="Dressing/Ages/EastWaiting"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22.2, 0, -11.6)
+script = ExtResource("vs_station_scatter")
+kind = 0
+extent = Vector2(2.6, 2.6)
+count = 22
+seed_value = 10
+clump = 0.5
+
+[node name="LampDownA" type="StaticBody3D" parent="Dressing/Ages/EastWaiting"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 36.6, 0, 5.6)
+script = ExtResource("vs_station_relic")
+kind = 9
+solid = false
+draw_distance = 45.0
+drop = 7.6
+
+[node name="LampDownB" type="StaticBody3D" parent="Dressing/Ages/EastWaiting"]
+transform = Transform3D(0.9553365, 0, 0.29552022, 0, 1, 0, -0.29552022, 0, 0.9553365, 36.4, 0, -23.4)
+script = ExtResource("vs_station_relic")
+kind = 9
+variant = 1
+solid = false
+draw_distance = 45.0
+drop = 7.6
+
+[node name="CableGalleryA" type="Node3D" parent="Dressing/Ages/EastWaiting"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 37.2, 7.56, 19.6)
+script = ExtResource("vs_ruin_prop")
+kind = 9
+length = 2.4
+
+[node name="CableGalleryB" type="Node3D" parent="Dressing/Ages/EastWaiting"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 37.6, 7.56, -9.2)
+script = ExtResource("vs_ruin_prop")
+kind = 9
+variant = 2
+length = 2.2
+
+[node name="CableGalleryC" type="Node3D" parent="Dressing/Ages/EastWaiting"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 36.9, 7.56, -33)
+script = ExtResource("vs_ruin_prop")
+kind = 9
+variant = 3
+length = 2.6
+
+[node name="RootsEast" type="StaticBody3D" parent="Dressing/Ages/EastWaiting"]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 39.95, 0, -2.5)
+script = ExtResource("vs_station_relic")
+kind = 8
+variant = 2
+solid = false
+draw_distance = 45.0
+
+[node name="RootsEastWall" type="Decal" parent="Decals/Ages"]
+transform = Transform3D(0, -1, 0, 0, 0, 1, -1, 0, 0, 39.98, 1.4, -2.5)
+size = Vector3(2.6, 0.4, 2.8)
+texture_albedo = ExtResource("vs_decal_vs_roots")
+upper_fade = 0.0
+lower_fade = 0.3
+cull_mask = 1
+
+[node name="MossEast" type="Node3D" parent="Dressing/Ages/EastWaiting"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 38.6, 0, -2)
+script = ExtResource("vs_station_scatter")
+kind = 4
+extent = Vector2(2.4, 5)
+count = 30
+seed_value = 11
+clump = 0.6
+
+[node name="PuddleGallery-6" type="Decal" parent="Decals/Ages"]
+transform = Transform3D(0.96017027, 0, 0.2794155, 0, 1, 0, -0.2794155, 0, 0.96017027, 37.6, 0, -6)
+size = Vector3(2.2, 0.4, 1.8)
+texture_albedo = ExtResource("vs_decal_puddle")
+upper_fade = 0.0
+lower_fade = 0.3
+cull_mask = 1
+
+[node name="RustGallery-6" type="Decal" parent="Decals/Ages"]
+transform = Transform3D(-0.9899925, 0, -0.14112, 0, 1, 0, 0.14112, 0, -0.9899925, 37, 0, -4.7)
+size = Vector3(1.8, 0.4, 1.8)
+texture_albedo = ExtResource("vs_decal_vs_rust_bloom")
+upper_fade = 0.0
+lower_fade = 0.3
+cull_mask = 1
+
+[node name="PuddleGallery-15" type="Decal" parent="Decals/Ages"]
+transform = Transform3D(-0.97845346, 0, -0.20646748, 0, 1, 0, 0.20646748, 0, -0.97845346, 37.6, 0, -15.5)
+size = Vector3(2.2, 0.4, 1.8)
+texture_albedo = ExtResource("vs_decal_puddle")
+upper_fade = 0.0
+lower_fade = 0.3
+cull_mask = 1
+
+[node name="RustGallery-15" type="Decal" parent="Decals/Ages"]
+transform = Transform3D(0.10379436, 0, -0.9945988, 0, 1, 0, 0.9945988, 0, 0.10379436, 37, 0, -14.2)
+size = Vector3(1.8, 0.4, 1.8)
+texture_albedo = ExtResource("vs_decal_vs_rust_bloom")
+upper_fade = 0.0
+lower_fade = 0.3
+cull_mask = 1
+
+[node name="PuddleGallery12" type="Decal" parent="Decals/Ages"]
+transform = Transform3D(0.84385395, 0, -0.53657293, 0, 1, 0, 0.53657293, 0, 0.84385395, 37.6, 0, 12)
+size = Vector3(2.2, 0.4, 1.8)
+texture_albedo = ExtResource("vs_decal_puddle")
+upper_fade = 0.0
+lower_fade = 0.3
+cull_mask = 1
+
+[node name="RustGallery12" type="Decal" parent="Decals/Ages"]
+transform = Transform3D(0.96017027, 0, -0.2794155, 0, 1, 0, 0.2794155, 0, 0.96017027, 37, 0, 13.3)
+size = Vector3(1.8, 0.4, 1.8)
+texture_albedo = ExtResource("vs_decal_vs_rust_bloom")
+upper_fade = 0.0
+lower_fade = 0.3
+cull_mask = 1
+
+[node name="PosterEastWall" type="Decal" parent="Decals/Ages"]
+transform = Transform3D(0, -1, 0, 0, 0, 1, -1, 0, 0, 39.98, 2.3, 8.6)
+size = Vector3(1, 0.4, 1.35)
+texture_albedo = ExtResource("vs_decal_vs_poster_b")
+upper_fade = 0.0
+lower_fade = 0.3
+cull_mask = 1
+
+[node name="StencilEastWall" type="Decal" parent="Decals/Ages"]
+transform = Transform3D(0, -1, 0, 0, 0, 1, -1, 0, 0, 39.98, 4.6, -14.5)
+size = Vector3(5.2, 0.4, 1.3)
+texture_albedo = ExtResource("vs_decal_vs_stencil")
+upper_fade = 0.0
+lower_fade = 0.3
+cull_mask = 1
+
+[node name="GritCol28" type="Node3D" parent="Dressing/Ages/EastWaiting"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 28, 0, -30)
+script = ExtResource("vs_station_scatter")
+kind = 0
+extent = Vector2(4.5, 4.5)
+count = 40
+seed_value = 12
+clump = 0.4
+
+[node name="ShardsCol14" type="Node3D" parent="Dressing/Ages/EastWaiting"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.6, 0, 0.8)
+script = ExtResource("vs_station_scatter")
+kind = 1
+extent = Vector2(3.2, 3.6)
+count = 26
+seed_value = 13
+clump = 0.5
+
+[node name="Middle" type="Node3D" parent="Dressing/Ages"]
+
+[node name="DustLamp12" type="Node3D" parent="Dressing/Ages/Middle"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.6, 3, 12)
+script = ExtResource("vs_dust_motes")
+extent = Vector3(4, 5, 4)
+count = 50
+seed_value = 2
+
+[node name="DustLamp-16" type="Node3D" parent="Dressing/Ages/Middle"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.6, 3, -16)
+script = ExtResource("vs_dust_motes")
+extent = Vector3(4, 5, 4)
+count = 50
+seed_value = 3
+
+[node name="DustLamp-30" type="Node3D" parent="Dressing/Ages/Middle"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.6, 3, -30)
+script = ExtResource("vs_dust_motes")
+extent = Vector3(4, 5, 4)
+count = 50
+seed_value = 4
+
+[node name="DustRamp" type="Node3D" parent="Dressing/Ages/Middle"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.5, 3, -38.5)
+script = ExtResource("vs_dust_motes")
+extent = Vector3(4, 5, 4)
+count = 40
+seed_value = 5
+
+[node name="SignHangingCat" type="StaticBody3D" parent="Dressing/Ages/Middle"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 17.77, -16)
+script = ExtResource("vs_station_relic")
+kind = 6
+solid = false
+drop = 6.5
+
+[node name="SignHangingCatE" type="StaticBody3D" parent="Dressing/Ages/Middle"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24, 17.77, -16)
+script = ExtResource("vs_station_relic")
+kind = 6
+variant = 3
+solid = false
+drop = 5
+
+[node name="CracksMidA" type="Decal" parent="Decals/Ages"]
+transform = Transform3D(0.7648422, 0, 0.64421767, 0, 1, 0, -0.64421767, 0, 0.7648422, -4.2, 0, 3.5)
+size = Vector3(3.5, 0.4, 3.5)
+texture_albedo = ExtResource("vs_decal_cracks")
+upper_fade = 0.0
+lower_fade = 0.3
+cull_mask = 1
+
+[node name="CracksMidB" type="Decal" parent="Decals/Ages"]
+transform = Transform3D(-0.50484604, 0, 0.8632094, 0, 1, 0, -0.8632094, 0, -0.50484604, 4.3, 0, -21)
+size = Vector3(3.5, 0.4, 3.5)
+texture_albedo = ExtResource("vs_decal_cracks")
+upper_fade = 0.0
+lower_fade = 0.3
+cull_mask = 1
+
+[node name="RustMidA" type="Decal" parent="Decals/Ages"]
+transform = Transform3D(0.5403023, 0, 0.84147096, 0, 1, 0, -0.84147096, 0, 0.5403023, -4.6, 0, -11.5)
+size = Vector3(2.4, 0.4, 2.4)
+texture_albedo = ExtResource("vs_decal_vs_rust_bloom")
+upper_fade = 0.0
+lower_fade = 0.3
+cull_mask = 1
+
+[node name="TicketsMid" type="Decal" parent="Decals/Ages"]
+transform = Transform3D(0.9800666, 0, 0.19866933, 0, 1, 0, -0.19866933, 0, 0.9800666, 3.6, 0, 1.8)
+size = Vector3(1.6, 0.4, 1.6)
+texture_albedo = ExtResource("vs_decal_vs_tickets")
+upper_fade = 0.0
+lower_fade = 0.3
+cull_mask = 1
+
+[node name="PuddleMid" type="Decal" parent="Decals/Ages"]
+transform = Transform3D(0.9553365, 0, 0.29552022, 0, 1, 0, -0.29552022, 0, 0.9553365, -3.8, 0, -24.5)
+size = Vector3(2.6, 0.4, 2)
+texture_albedo = ExtResource("vs_decal_puddle")
+upper_fade = 0.0
+lower_fade = 0.3
+cull_mask = 1
+
+[node name="PaperMidW" type="Node3D" parent="Dressing/Ages/Middle"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.4, 0, 6)
+script = ExtResource("vs_station_scatter")
+kind = 2
+extent = Vector2(3, 4)
+count = 22
+seed_value = 14
+clump = 0.5
+
+[node name="PaperMidE" type="Node3D" parent="Dressing/Ages/Middle"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.2, 0, -6)
+script = ExtResource("vs_station_scatter")
+kind = 2
+extent = Vector2(2.6, 4)
+count = 20
+seed_value = 15
+clump = 0.5
+
+[node name="GritMid" type="Node3D" parent="Dressing/Ages/Middle"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.5, 0, -14)
+script = ExtResource("vs_station_scatter")
+kind = 0
+extent = Vector2(5, 7)
+count = 40
+seed_value = 16
+clump = 0.3
+
+[node name="CaseMid" type="StaticBody3D" parent="Dressing/Ages/Middle"]
+transform = Transform3D(0.62161, 0, 0.7833269, 0, 1, 0, -0.7833269, 0, 0.62161, -7.4, 0, -4.4)
+script = ExtResource("vs_station_relic")
+kind = 0
+variant = 1
+solid = false
+draw_distance = 45.0
+
+[node name="BenchBrokenW" type="StaticBody3D" parent="Dressing/Ages/Middle"]
+transform = Transform3D(0.9689124, 0, 0.24740396, 0, 1, 0, -0.24740396, 0, 0.9689124, -10.2, 0, -3.2)
+script = ExtResource("vs_station_relic")
+kind = 4
+variant = 1
+
+[node name="Ruin" type="Node3D" parent="Dressing/Ages"]
+
+[node name="Grit0" type="Node3D" parent="Dressing/Ages/Ruin"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -23, 0, 13)
+script = ExtResource("vs_station_scatter")
+kind = 0
+extent = Vector2(14.4, 12.6)
+count = 81
+seed_value = 20
+clump = 0.4
+
+[node name="Shards0" type="Node3D" parent="Dressing/Ages/Ruin"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20.3, 0, 10.75)
+script = ExtResource("vs_station_scatter")
+kind = 1
+extent = Vector2(9, 7.2)
+count = 36
+seed_value = 30
+clump = 0.3
+
+[node name="Grit1" type="Node3D" parent="Dressing/Ages/Ruin"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -31, 0, 0)
+script = ExtResource("vs_station_scatter")
+kind = 0
+extent = Vector2(14.4, 12.6)
+count = 81
+seed_value = 21
+clump = 0.4
+
+[node name="Shards1" type="Node3D" parent="Dressing/Ages/Ruin"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -28.3, 0, -2.25)
+script = ExtResource("vs_station_scatter")
+kind = 1
+extent = Vector2(9, 7.2)
+count = 36
+seed_value = 31
+clump = 0.3
+
+[node name="Grit2" type="Node3D" parent="Dressing/Ages/Ruin"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -21, 0, -26)
+script = ExtResource("vs_station_scatter")
+kind = 0
+extent = Vector2(12.8, 11.2)
+count = 72
+seed_value = 22
+clump = 0.4
+
+[node name="Shards2" type="Node3D" parent="Dressing/Ages/Ruin"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18.6, 0, -28)
+script = ExtResource("vs_station_scatter")
+kind = 1
+extent = Vector2(8, 6.4)
+count = 32
+seed_value = 32
+clump = 0.3
+
+[node name="Grit3" type="Node3D" parent="Dressing/Ages/Ruin"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.6, 0, 12)
+script = ExtResource("vs_station_scatter")
+kind = 0
+extent = Vector2(6.4, 5.6)
+count = 36
+seed_value = 23
+clump = 0.4
+
+[node name="Shards3" type="Node3D" parent="Dressing/Ages/Ruin"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.400001, 0, 11)
+script = ExtResource("vs_station_scatter")
+kind = 1
+extent = Vector2(4, 3.2)
+count = 16
+seed_value = 33
+clump = 0.3
+
+[node name="Grit4" type="Node3D" parent="Dressing/Ages/Ruin"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.2, 0, -34)
+script = ExtResource("vs_station_scatter")
+kind = 0
+extent = Vector2(6.4, 5.6)
+count = 36
+seed_value = 24
+clump = 0.4
+
+[node name="Shards4" type="Node3D" parent="Dressing/Ages/Ruin"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11, 0, -35)
+script = ExtResource("vs_station_scatter")
+kind = 1
+extent = Vector2(4, 3.2)
+count = 16
+seed_value = 34
+clump = 0.3
+
+[node name="Grit5" type="Node3D" parent="Dressing/Ages/Ruin"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -26, 0, -12)
+script = ExtResource("vs_station_scatter")
+kind = 0
+extent = Vector2(11.2, 9.8)
+count = 63
+seed_value = 25
+clump = 0.4
+
+[node name="Shards5" type="Node3D" parent="Dressing/Ages/Ruin"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -23.9, 0, -13.75)
+script = ExtResource("vs_station_scatter")
+kind = 1
+extent = Vector2(7, 5.6)
+count = 28
+seed_value = 35
+clump = 0.3
+
+[node name="Moss6" type="Node3D" parent="Dressing/Ages/Ruin"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -27, 0, 8)
+script = ExtResource("vs_station_scatter")
+kind = 4
+extent = Vector2(6, 4.8)
+count = 42
+seed_value = 46
+clump = 0.5
+
+[node name="MossFloor6" type="Decal" parent="Decals/Ages"]
+transform = Transform3D(-0.490261, 0, -0.87157565, 0, 1, 0, 0.87157565, 0, -0.490261, -26.4, 0, 8.4)
+size = Vector3(4.2, 0.4, 4.2)
+texture_albedo = ExtResource("vs_decal_moss")
+upper_fade = 0.0
+lower_fade = 0.3
+cull_mask = 1
+
+[node name="Moss7" type="Node3D" parent="Dressing/Ages/Ruin"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -34, 0, -8)
+script = ExtResource("vs_station_scatter")
+kind = 4
+extent = Vector2(5, 4)
+count = 35
+seed_value = 47
+clump = 0.5
+
+[node name="MossFloor7" type="Decal" parent="Decals/Ages"]
+transform = Transform3D(0.18651247, 0, -0.9824526, 0, 1, 0, 0.9824526, 0, 0.18651247, -33.4, 0, -7.6)
+size = Vector3(3.5, 0.4, 3.5)
+texture_albedo = ExtResource("vs_decal_moss")
+upper_fade = 0.0
+lower_fade = 0.3
+cull_mask = 1
+
+[node name="Moss8" type="Node3D" parent="Dressing/Ages/Ruin"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -25, 0, -20)
+script = ExtResource("vs_station_scatter")
+kind = 4
+extent = Vector2(5, 4)
+count = 35
+seed_value = 48
+clump = 0.5
+
+[node name="MossFloor8" type="Decal" parent="Decals/Ages"]
+transform = Transform3D(0.7755658, 0, -0.6312667, 0, 1, 0, 0.6312667, 0, 0.7755658, -24.4, 0, -19.6)
+size = Vector3(3.5, 0.4, 3.5)
+texture_albedo = ExtResource("vs_decal_moss")
+upper_fade = 0.0
+lower_fade = 0.3
+cull_mask = 1
+
+[node name="Moss9" type="Node3D" parent="Dressing/Ages/Ruin"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -33, 0, 20)
+script = ExtResource("vs_station_scatter")
+kind = 4
+extent = Vector2(4, 3.2)
+count = 28
+seed_value = 49
+clump = 0.5
+
+[node name="MossFloor9" type="Decal" parent="Decals/Ages"]
+transform = Transform3D(0.9998586, 0, 0.01681409, 0, 1, 0, -0.01681409, 0, 0.9998586, -32.4, 0, 20.4)
+size = Vector3(2.8, 0.4, 2.8)
+texture_albedo = ExtResource("vs_decal_moss")
+upper_fade = 0.0
+lower_fade = 0.3
+cull_mask = 1
+
+[node name="PuddleRuin10" type="Decal" parent="Decals/Ages"]
+transform = Transform3D(-0.6536436, 0, -0.7568025, 0, 1, 0, 0.7568025, 0, -0.6536436, -29, 0, 4)
+size = Vector3(3, 0.4, 2.4)
+texture_albedo = ExtResource("vs_decal_puddle")
+upper_fade = 0.0
+lower_fade = 0.3
+cull_mask = 1
+
+[node name="PuddleRuin11" type="Decal" parent="Decals/Ages"]
+transform = Transform3D(-0.9576595, 0, 0.2879033, 0, 1, 0, -0.2879033, 0, -0.9576595, -19.5, 0, -16)
+size = Vector3(3, 0.4, 2.4)
+texture_albedo = ExtResource("vs_decal_puddle")
+upper_fade = 0.0
+lower_fade = 0.3
+cull_mask = 1
+
+[node name="PuddleRuin12" type="Decal" parent="Decals/Ages"]
+transform = Transform3D(0.40808207, 0, -0.9129453, 0, 1, 0, 0.9129453, 0, 0.40808207, -35, 0, -20)
+size = Vector3(3, 0.4, 2.4)
+texture_albedo = ExtResource("vs_decal_puddle")
+upper_fade = 0.0
+lower_fade = 0.3
+cull_mask = 1
+
+[node name="RootsWallW" type="StaticBody3D" parent="Dressing/Ages/Ruin"]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -39.95, 0, 6)
+script = ExtResource("vs_station_relic")
+kind = 8
+variant = 3
+solid = false
+draw_distance = 45.0
+
+[node name="RootsWallWDecal" type="Decal" parent="Decals/Ages"]
+transform = Transform3D(0, 1, 0, 0, 0, 1, 1, 0, 0, -39.98, 1.6, 6)
+size = Vector3(2.8, 0.4, 3.2)
+texture_albedo = ExtResource("vs_decal_vs_roots")
+upper_fade = 0.0
+lower_fade = 0.3
+cull_mask = 1
+
+[node name="RootsWallWHigh" type="Decal" parent="Decals/Ages"]
+transform = Transform3D(0, 1, 0, 0, 0, 1, 1, 0, 0, -39.98, 9.5, -14)
+size = Vector3(4, 0.4, 4.5)
+texture_albedo = ExtResource("vs_decal_vs_roots")
+upper_fade = 0.0
+lower_fade = 0.3
+cull_mask = 1
+
+[node name="RootsWallSW" type="Decal" parent="Decals/Ages"]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, -33, 6.5, 39.98)
+size = Vector3(4, 0.4, 4.5)
+texture_albedo = ExtResource("vs_decal_vs_roots")
+upper_fade = 0.0
+lower_fade = 0.3
+cull_mask = 1
+
+[node name="CableEdge26" type="Node3D" parent="Dressing/Ages/Ruin"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14.8, 29.95, 26)
+script = ExtResource("vs_ruin_prop")
+kind = 9
+variant = 2
+length = 11.6
+
+[node name="CableEdge-2" type="Node3D" parent="Dressing/Ages/Ruin"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14.8, 29.95, -2)
+script = ExtResource("vs_ruin_prop")
+kind = 9
+variant = 2
+length = 9.2
+
+[node name="CableEdge-38" type="Node3D" parent="Dressing/Ages/Ruin"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14.8, 29.95, -38)
+script = ExtResource("vs_ruin_prop")
+kind = 9
+variant = 2
+length = 12.8
+
+[node name="DustHole" type="Node3D" parent="Dressing/Ages/Ruin"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -26, 5, 5)
+script = ExtResource("vs_dust_motes")
+extent = Vector3(14, 8, 14)
+count = 140
+seed_value = 6
+
+[node name="DustHoleN" type="Node3D" parent="Dressing/Ages/Ruin"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -26, 5, -30)
+script = ExtResource("vs_dust_motes")
+extent = Vector3(12, 7, 12)
+count = 110
+seed_value = 7
+
+[node name="CaseRuin" type="StaticBody3D" parent="Dressing/Ages/Ruin"]
+transform = Transform3D(0.7648422, 0, -0.64421767, 0, 1, 0, 0.64421767, 0, 0.7648422, -17.8, 0, -6.6)
+script = ExtResource("vs_station_relic")
+kind = 0
+variant = 2
+solid = false
+draw_distance = 45.0
+
+[node name="Walls" type="Node3D" parent="Dressing/Ages"]
+
+[node name="Plate0" type="StaticBody3D" parent="Dressing/Ages/Walls"]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 38.95, 4.38, 15.5)
+script = ExtResource("vs_station_relic")
+kind = 6
+solid = false
+drop = 0.6
+width = 2.4
+
+[node name="Plate1" type="StaticBody3D" parent="Dressing/Ages/Walls"]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 38.95, 4.38, -21.6)
+script = ExtResource("vs_station_relic")
+kind = 6
+variant = 3
+solid = false
+drop = 0.6
+width = 2.4
+
+[node name="Plate2" type="StaticBody3D" parent="Dressing/Ages/Walls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 20.25, -69)
+script = ExtResource("vs_station_relic")
+kind = 6
+variant = 1
+solid = false
+drop = 8.0
+width = 5.0
+
+[node name="Plate3" type="StaticBody3D" parent="Dressing/Ages/Walls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 20.25, -69)
+script = ExtResource("vs_station_relic")
+kind = 6
+variant = 2
+solid = false
+drop = 8.0
+width = 5.0
+
+[node name="Plate4" type="StaticBody3D" parent="Dressing/Ages/Walls"]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -17.6, 4.2, 39.95)
+script = ExtResource("vs_station_relic")
+kind = 6
+solid = false
+drop = 0.0
+width = 3.0
+
+[node name="PosterCol5" type="Decal" parent="Decals/Ages"]
+transform = Transform3D(0, 1, 0, 0, 0, 1, 1, 0, 0, -12.98, 2.3, 0)
+size = Vector3(0.9, 0.4, 1.2)
+texture_albedo = ExtResource("vs_decal_vs_poster")
+upper_fade = 0.0
+lower_fade = 0.3
+cull_mask = 1
+
+[node name="PosterCol6" type="Decal" parent="Decals/Ages"]
+transform = Transform3D(0, -1, 0, 0, 0, 1, -1, 0, 0, 12.98, 2.3, 24)
+size = Vector3(0.9, 0.4, 1.2)
+texture_albedo = ExtResource("vs_decal_vs_poster_b")
+upper_fade = 0.0
+lower_fade = 0.3
+cull_mask = 1
+
+[node name="PosterCol7" type="Decal" parent="Decals/Ages"]
+transform = Transform3D(0, -1, 0, 0, 0, 1, -1, 0, 0, 12.98, 2.4, -30)
+size = Vector3(0.9, 0.4, 1.2)
+texture_albedo = ExtResource("vs_decal_vs_poster")
+upper_fade = 0.0
+lower_fade = 0.3
+cull_mask = 1
+
+[node name="PosterCol8" type="Decal" parent="Decals/Ages"]
+transform = Transform3D(0, 1, 0, 0, 0, 1, 1, 0, 0, -12.98, 2.2, 24)
+size = Vector3(0.9, 0.4, 1.2)
+texture_albedo = ExtResource("vs_decal_vs_poster_b")
+upper_fade = 0.0
+lower_fade = 0.3
+cull_mask = 1
+
+[node name="StencilColW" type="Decal" parent="Decals/Ages"]
+transform = Transform3D(0, 1, 0, 0, 0, 1, 1, 0, 0, -12.98, 5.6, -30)
+size = Vector3(1.9, 0.4, 0.5)
+texture_albedo = ExtResource("vs_decal_vs_stencil")
+upper_fade = 0.0
+lower_fade = 0.3
+cull_mask = 1
+
+[node name="StencilColE" type="Decal" parent="Decals/Ages"]
+transform = Transform3D(0, -1, 0, 0, 0, 1, -1, 0, 0, 12.98, 5.6, 0)
+size = Vector3(1.9, 0.4, 0.5)
+texture_albedo = ExtResource("vs_decal_vs_stencil")
+upper_fade = 0.0
+lower_fade = 0.3
+cull_mask = 1
+
+[node name="CableCols-30" type="Node3D" parent="Dressing/Ages/Walls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13, 9, -29.6)
+script = ExtResource("vs_cable_run")
+points = PackedVector3Array(0, 0, 0, 26, 0.6000004, 0)
+sag = 2.6
+thickness = 0.06
+
+[node name="CableColsE-30" type="Node3D" parent="Dressing/Ages/Walls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 9.6, -29.6)
+script = ExtResource("vs_cable_run")
+points = PackedVector3Array(0, 0, 0, 12, -0.40000057, 0, 21, -0.8000002, 0)
+sag = 1.4
+thickness = 0.05
+
+[node name="CableCatwalk" type="Node3D" parent="Dressing/Ages/Walls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 17.75, -15.2)
+script = ExtResource("vs_cable_run")
+points = PackedVector3Array(0, 0, 0, 11, -5.75, 14.2)
+sag = 1.8
+thickness = 0.05
+
+[node name="CaseTrail9" type="StaticBody3D" parent="Dressing/Ages/Walls"]
+transform = Transform3D(0.921061, 0, 0.38941833, 0, 1, 0, -0.38941833, 0, 0.921061, -2.6, 0, 21.2)
+script = ExtResource("vs_station_relic")
+kind = 0
+variant = 1
+solid = false
+draw_distance = 45.0
+
+[node name="CaseTrail10" type="StaticBody3D" parent="Dressing/Ages/Walls"]
+transform = Transform3D(0.62161, 0, -0.7833269, 0, 1, 0, 0.7833269, 0, 0.62161, 2.7, 0, -8.6)
+script = ExtResource("vs_station_relic")
+kind = 0
+solid = false
+draw_distance = 45.0
+
+[node name="CaseTrail11" type="StaticBody3D" parent="Dressing/Ages/Walls"]
+transform = Transform3D(-0.32328954, 0, 0.9463001, 0, 1, 0, -0.9463001, 0, -0.32328954, 3.2, 0, -26.6)
+script = ExtResource("vs_station_relic")
+kind = 0
+variant = 1
+solid = false
+draw_distance = 45.0
+
+[node name="CaseTrail12" type="StaticBody3D" parent="Dressing/Ages/Walls"]
+transform = Transform3D(0.7648422, 0, 0.64421767, 0, 1, 0, -0.64421767, 0, 0.7648422, 6.4, 0, -36.8)
+script = ExtResource("vs_station_relic")
+kind = 0
+variant = 2
+solid = false
+draw_distance = 45.0
+
+[node name="CaseTrail13" type="StaticBody3D" parent="Dressing/Ages/Walls"]
+transform = Transform3D(0.9553365, 0, -0.29552022, 0, 1, 0, 0.29552022, 0, 0.9553365, 31.5, 1.2, -47.4)
+script = ExtResource("vs_station_relic")
+kind = 0
+solid = false
+draw_distance = 45.0
+
+[node name="GritDeckFoot-24" type="Node3D" parent="Dressing/Ages/Walls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -24, 0, -44.9)
+script = ExtResource("vs_station_scatter")
+kind = 0
+extent = Vector2(6, 1.6)
+count = 26
+seed_value = 74
+clump = 0.2
+
+[node name="GritDeckFoot-9" type="Node3D" parent="Dressing/Ages/Walls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 0, -44.9)
+script = ExtResource("vs_station_scatter")
+kind = 0
+extent = Vector2(6, 1.6)
+count = 26
+seed_value = 75
+clump = 0.2
+
+[node name="GritDeckFoot9" type="Node3D" parent="Dressing/Ages/Walls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9, 0, -44.9)
+script = ExtResource("vs_station_scatter")
+kind = 0
+extent = Vector2(6, 1.6)
+count = 26
+seed_value = 76
+clump = 0.2
+
+[node name="GritDeckFoot27" type="Node3D" parent="Dressing/Ages/Walls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 27, 0, -44.9)
+script = ExtResource("vs_station_scatter")
+kind = 0
+extent = Vector2(6, 1.6)
+count = 26
+seed_value = 77
+clump = 0.2
+
+[node name="RustStreakE30" type="Decal" parent="Decals/Ages"]
+transform = Transform3D(0, -1, 0, 0, 0, 1, -1, 0, 0, 39.98, 6, 30)
+size = Vector3(0.9, 0.4, 2.6)
+texture_albedo = ExtResource("vs_decal_rust_streak")
+upper_fade = 0.0
+lower_fade = 0.3
+cull_mask = 1
+
+[node name="WaterStreakW30" type="Decal" parent="Decals/Ages"]
+transform = Transform3D(0, 1, 0, 0, 0, 1, 1, 0, 0, -39.98, 12, 27)
+size = Vector3(2.2, 0.4, 6)
+texture_albedo = ExtResource("vs_decal_water_streak")
+upper_fade = 0.0
+lower_fade = 0.3
+cull_mask = 1
+
+[node name="RustStreakE2" type="Decal" parent="Decals/Ages"]
+transform = Transform3D(0, -1, 0, 0, 0, 1, -1, 0, 0, 39.98, 6, 2)
+size = Vector3(0.9, 0.4, 2.6)
+texture_albedo = ExtResource("vs_decal_rust_streak")
+upper_fade = 0.0
+lower_fade = 0.3
+cull_mask = 1
+
+[node name="WaterStreakW2" type="Decal" parent="Decals/Ages"]
+transform = Transform3D(0, 1, 0, 0, 0, 1, 1, 0, 0, -39.98, 12, -1)
+size = Vector3(2.2, 0.4, 6)
+texture_albedo = ExtResource("vs_decal_water_streak")
+upper_fade = 0.0
+lower_fade = 0.3
+cull_mask = 1
+
+[node name="RustStreakE-26" type="Decal" parent="Decals/Ages"]
+transform = Transform3D(0, -1, 0, 0, 0, 1, -1, 0, 0, 39.98, 6, -26)
+size = Vector3(0.9, 0.4, 2.6)
+texture_albedo = ExtResource("vs_decal_rust_streak")
+upper_fade = 0.0
+lower_fade = 0.3
+cull_mask = 1
+
+[node name="WaterStreakW-26" type="Decal" parent="Decals/Ages"]
+transform = Transform3D(0, 1, 0, 0, 0, 1, 1, 0, 0, -39.98, 12, -29)
+size = Vector3(2.2, 0.4, 6)
+texture_albedo = ExtResource("vs_decal_water_streak")
+upper_fade = 0.0
+lower_fade = 0.3
+cull_mask = 1
+
+[node name="BarrierDown18" type="StaticBody3D" parent="Dressing/Ages/Walls"]
+transform = Transform3D(0.921061, 0.38941833, -1.7022016e-08, 0, -4.371139e-08, -1, -0.38941833, 0.921061, -4.0260854e-08, 15.8, 0.18, 28.4)
+script = ExtResource("vs_station_prop")
+kind = 4
+solid = false
+
+[node name="BarrierDown19" type="StaticBody3D" parent="Dressing/Ages/Walls"]
+transform = Transform3D(0.9553365, -0.29552022, 1.29175985e-08, 0, -4.371139e-08, -1, 0.29552022, 0.9553365, -4.1759087e-08, -15.4, 0.18, 27.6)
+script = ExtResource("vs_station_prop")
+kind = 4
+solid = false
+
+[node name="TicketsBoothW" type="Decal" parent="Decals/Ages"]
+transform = Transform3D(-0.41614684, 0, 0.9092974, 0, 1, 0, -0.9092974, 0, -0.41614684, -16.4, 0, 36.6)
+size = Vector3(1.8, 0.4, 1.8)
+texture_albedo = ExtResource("vs_decal_vs_tickets")
+upper_fade = 0.0
+lower_fade = 0.3
+cull_mask = 1
+
+[node name="TicketsBoothE" type="Decal" parent="Decals/Ages"]
+transform = Transform3D(0.921061, 0, 0.38941833, 0, 1, 0, -0.38941833, 0, 0.921061, 16.2, 0, 32.2)
+size = Vector3(1.8, 0.4, 1.8)
+texture_albedo = ExtResource("vs_decal_vs_tickets")
+upper_fade = 0.0
+lower_fade = 0.3
+cull_mask = 1
+
+[node name="Platform" type="Node3D" parent="Dressing/Ages"]
+
+[node name="EmitterWest" type="StaticBody3D" parent="Dressing/Ages/Platform"]
+transform = Transform3D(0.921061, 0, 0.38941833, 0, 1, 0, -0.38941833, 0, 0.921061, -12, 1.2, -50.6)
+script = ExtResource("vs_station_relic")
+kind = 5
+variant = 1
+
+[node name="BenchDeckW" type="StaticBody3D" parent="Dressing/Ages/Platform"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -34.5, 1.2, -49.6)
+script = ExtResource("vs_station_prop")
+kind = 3
+variant = 2
+
+[node name="BenchDeckWBroken" type="StaticBody3D" parent="Dressing/Ages/Platform"]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -31.4, 1.2, -49.6)
+script = ExtResource("vs_station_relic")
+kind = 4
+variant = 2
+
+[node name="HeapDeckW" type="StaticBody3D" parent="Dressing/Ages/Platform"]
+transform = Transform3D(0.26749888, 0, 0.9635582, 0, 1, 0, -0.9635582, 0, 0.26749888, -9.2, 1.2, -56.6)
+script = ExtResource("vs_station_relic")
+kind = 2
+variant = 2
+
+[node name="CaseDeckW" type="StaticBody3D" parent="Dressing/Ages/Platform"]
+transform = Transform3D(0.9800666, 0, 0.19866933, 0, 1, 0, -0.19866933, 0, 0.9800666, -10.6, 1.2, -54)
+script = ExtResource("vs_station_relic")
+kind = 0
+variant = 1
+solid = false
+draw_distance = 45.0
+
+[node name="CaseDeckW2" type="StaticBody3D" parent="Dressing/Ages/Platform"]
+transform = Transform3D(-0.58850116, 0, 0.80849636, 0, 1, 0, -0.80849636, 0, -0.58850116, -33.2, 1.2, -51.2)
+script = ExtResource("vs_station_relic")
+kind = 0
+variant = 2
+solid = false
+draw_distance = 45.0
+
+[node name="RootsDeckW" type="StaticBody3D" parent="Dressing/Ages/Platform"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -34, 1.2, -69.92)
+script = ExtResource("vs_station_relic")
+kind = 8
+variant = 4
+solid = false
+draw_distance = 45.0
+
+[node name="RootsDeckWWall" type="Decal" parent="Decals/Ages"]
+transform = Transform3D(-1, 0, 0, 0, 0, 1, 0, 1, 0, -34, 2.6, -69.98)
+size = Vector3(2.6, 0.4, 2.8)
+texture_albedo = ExtResource("vs_decal_vs_roots")
+upper_fade = 0.0
+lower_fade = 0.3
+cull_mask = 1
+
+[node name="PosterDeckW" type="Decal" parent="Decals/Ages"]
+transform = Transform3D(-1, 0, 0, 0, 0, 1, 0, 1, 0, -12, 3.1, -69.98)
+size = Vector3(1, 0.4, 1.35)
+texture_albedo = ExtResource("vs_decal_vs_poster")
+upper_fade = 0.0
+lower_fade = 0.3
+cull_mask = 1
+
+[node name="PosterDeckW2" type="Decal" parent="Decals/Ages"]
+transform = Transform3D(-1, 0, 0, 0, 0, 1, 0, 1, 0, -37.5, 3, -69.98)
+size = Vector3(1, 0.4, 1.35)
+texture_albedo = ExtResource("vs_decal_vs_poster_b")
+upper_fade = 0.0
+lower_fade = 0.3
+cull_mask = 1
+
+[node name="StencilDeckW" type="Decal" parent="Decals/Ages"]
+transform = Transform3D(-1, 0, 0, 0, 0, 1, 0, 1, 0, -12, 5.8, -69.98)
+size = Vector3(4, 0.4, 1)
+texture_albedo = ExtResource("vs_decal_vs_stencil")
+upper_fade = 0.0
+lower_fade = 0.3
+cull_mask = 1
+
+[node name="PaperDeckW" type="Node3D" parent="Dressing/Ages/Platform"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.4, 1.2, -52.2)
+script = ExtResource("vs_station_scatter")
+kind = 2
+extent = Vector2(4, 4)
+count = 30
+seed_value = 50
+clump = 0.5
+
+[node name="GritDeckW" type="Node3D" parent="Dressing/Ages/Platform"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -30.5, 1.2, -56)
+script = ExtResource("vs_station_scatter")
+kind = 0
+extent = Vector2(9, 7)
+count = 70
+seed_value = 51
+clump = 0.3
+
+[node name="ShardsDeckW" type="Node3D" parent="Dressing/Ages/Platform"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -21, 1.2, -51)
+script = ExtResource("vs_station_scatter")
+kind = 1
+extent = Vector2(3, 3)
+count = 22
+seed_value = 52
+clump = 0.7
+
+[node name="MossDeckW" type="Node3D" parent="Dressing/Ages/Platform"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -35, 1.2, -67.5)
+script = ExtResource("vs_station_scatter")
+kind = 4
+extent = Vector2(5, 3)
+count = 30
+seed_value = 53
+clump = 0.6
+
+[node name="TicketsDeckW" type="Decal" parent="Decals/Ages"]
+transform = Transform3D(0.62161, 0, 0.7833269, 0, 1, 0, -0.7833269, 0, 0.62161, -14.6, 1.2, -48.6)
+size = Vector3(1.6, 0.4, 1.6)
+texture_albedo = ExtResource("vs_decal_vs_tickets")
+upper_fade = 0.0
+lower_fade = 0.3
+cull_mask = 1
+
+[node name="RustDeckW" type="Decal" parent="Decals/Ages"]
+transform = Transform3D(0.921061, 0, 0.38941833, 0, 1, 0, -0.38941833, 0, 0.921061, -28.5, 1.2, -48.2)
+size = Vector3(2.2, 0.4, 2.2)
+texture_albedo = ExtResource("vs_decal_vs_rust_bloom")
+upper_fade = 0.0
+lower_fade = 0.3
+cull_mask = 1
+
+[node name="BenchDeckE" type="StaticBody3D" parent="Dressing/Ages/Platform"]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 35.6, 1.2, -49.8)
+script = ExtResource("vs_station_prop")
+kind = 3
+variant = 1
+
+[node name="BenchDeckEBroken" type="StaticBody3D" parent="Dressing/Ages/Platform"]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 35.6, 1.2, -53.4)
+script = ExtResource("vs_station_relic")
+kind = 4
+variant = 3
+
+[node name="TrunkDeckE" type="StaticBody3D" parent="Dressing/Ages/Platform"]
+transform = Transform3D(0.16996716, 0, 0.98544973, 0, 1, 0, -0.98544973, 0, 0.16996716, 35.4, 1.2, -62.4)
+script = ExtResource("vs_station_relic")
+kind = 1
+variant = 2
+
+[node name="CaseDeckE" type="StaticBody3D" parent="Dressing/Ages/Platform"]
+transform = Transform3D(0.8253356, 0, -0.5646425, 0, 1, 0, 0.5646425, 0, 0.8253356, 33.6, 1.2, -57)
+script = ExtResource("vs_station_relic")
+kind = 0
+solid = false
+draw_distance = 45.0
+
+[node name="RootsDeckE" type="StaticBody3D" parent="Dressing/Ages/Platform"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 37.7, 1.2, -69.92)
+script = ExtResource("vs_station_relic")
+kind = 8
+variant = 5
+solid = false
+draw_distance = 45.0
+
+[node name="RootsDeckEWall" type="Decal" parent="Decals/Ages"]
+transform = Transform3D(-1, 0, 0, 0, 0, 1, 0, 1, 0, 37.7, 2.6, -69.98)
+size = Vector3(2.6, 0.4, 2.8)
+texture_albedo = ExtResource("vs_decal_vs_roots")
+upper_fade = 0.0
+lower_fade = 0.3
+cull_mask = 1
+
+[node name="PosterDeckE" type="Decal" parent="Decals/Ages"]
+transform = Transform3D(-1, 0, 0, 0, 0, 1, 0, 1, 0, 12, 3.1, -69.98)
+size = Vector3(1, 0.4, 1.35)
+texture_albedo = ExtResource("vs_decal_vs_poster_b")
+upper_fade = 0.0
+lower_fade = 0.3
+cull_mask = 1
+
+[node name="PosterDeckE2" type="Decal" parent="Decals/Ages"]
+transform = Transform3D(-1, 0, 0, 0, 0, 1, 0, 1, 0, 35.6, 3.1, -69.98)
+size = Vector3(1, 0.4, 1.35)
+texture_albedo = ExtResource("vs_decal_vs_poster")
+upper_fade = 0.0
+lower_fade = 0.3
+cull_mask = 1
+
+[node name="PaperDeckE" type="Node3D" parent="Dressing/Ages/Platform"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32.4, 1.2, -58.4)
+script = ExtResource("vs_station_scatter")
+kind = 2
+extent = Vector2(4, 5)
+count = 30
+seed_value = 54
+clump = 0.5
+
+[node name="GritDeckE" type="Node3D" parent="Dressing/Ages/Platform"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.6, 1.2, -62.6)
+script = ExtResource("vs_station_scatter")
+kind = 0
+extent = Vector2(4, 4)
+count = 34
+seed_value = 55
+clump = 0.5
+
+[node name="RustDeckE" type="Node3D" parent="Dressing/Ages/Platform"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 29.6, 1.2, -55)
+script = ExtResource("vs_station_scatter")
+kind = 3
+extent = Vector2(2.6, 2.2)
+count = 24
+seed_value = 56
+clump = 0.6
+
+[node name="RustDeckE" type="Decal" parent="Decals/Ages"]
+transform = Transform3D(-0.12884454, 0, 0.9916648, 0, 1, 0, -0.9916648, 0, -0.12884454, 34, 1.2, -65)
+size = Vector3(2.6, 0.4, 2.6)
+texture_albedo = ExtResource("vs_decal_vs_rust_bloom")
+upper_fade = 0.0
+lower_fade = 0.3
+cull_mask = 1
+
+[node name="Ages" type="Node3D" parent="Dressing/House"]
+
+[node name="Locker" type="StaticBody3D" parent="Dressing/House/Ages"]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 3, 1.22, -57.45)
+script = ExtResource("vs_station_relic")
+kind = 10
+
+[node name="Mats" type="StaticBody3D" parent="Dressing/House/Ages"]
+transform = Transform3D(0.9887711, 0, 0.14943814, 0, 1, 0, -0.14943814, 0, 0.9887711, 3.15, 1.245, -64.6)
+script = ExtResource("vs_station_relic")
+kind = 11
+solid = false
+draw_distance = 45.0
+
+[node name="Drum" type="StaticBody3D" parent="Dressing/House/Ages"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.9, 1.245, -64.9)
+script = ExtResource("vs_station_relic")
+kind = 12
+draw_distance = 45.0
+
+[node name="TallyTraining" type="Decal" parent="Decals/Ages"]
+transform = Transform3D(0, 1, 0, 0, 0, 1, 1, 0, 0, -4.66, 2.25, -60.6)
+size = Vector3(0.9, 0.4, 0.45)
+texture_albedo = ExtResource("vs_decal_vs_tally")
+upper_fade = 0.0
+lower_fade = 0.3
+cull_mask = 1
+
+[node name="MapLiving" type="Decal" parent="Decals/Ages"]
+transform = Transform3D(-1, 0, 0, 0, 0, 1, 0, 1, 0, -2.9, 4.6, -56.79)
+size = Vector3(0.8, 0.4, 1.06)
+texture_albedo = ExtResource("vs_decal_vs_poster_b")
+upper_fade = 0.0
+lower_fade = 0.3
+cull_mask = 1
+
+[node name="DripGalleryE-6" type="Node3D" parent="Life"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 37.6, 7.5, -6)
+script = ExtResource("vs_drip")
+
+[node name="DripGalleryE-15" type="Node3D" parent="Life"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 37.6, 7.5, -15.5)
+script = ExtResource("vs_drip")
+
+[node name="DripGalleryE12" type="Node3D" parent="Life"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 37.6, 7.5, 12)
+script = ExtResource("vs_drip")
+
+[node name="DripCatwalk" type="Node3D" parent="Life"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.2, 10.2, -16)
+script = ExtResource("vs_drip")
+
+[node name="PuddleCatwalk" type="Decal" parent="Decals/Ages"]
+transform = Transform3D(0.6967067, 0, 0.7173561, 0, 1, 0, -0.7173561, 0, 0.6967067, -15.2, 0, -16)
+size = Vector3(2, 0.4, 1.6)
+texture_albedo = ExtResource("vs_decal_puddle")
+upper_fade = 0.0
+lower_fade = 0.3
+cull_mask = 1
+
+[node name="WindHole" type="AudioStreamPlayer3D" parent="Sound"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -27, 14, -4)
+stream = ExtResource("vs_vacuum_station_tube_breath")
+pitch_scale = 0.55
+volume_db = -8.0
+unit_size = 10.0
+autoplay = true
+max_distance = 70.0
+
+[node name="TrickleGallery" type="AudioStreamPlayer3D" parent="Sound"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 37.6, 1, -6)
+stream = ExtResource("vs_running_water")
+pitch_scale = 0.7
+volume_db = -20.0
+unit_size = 3.0
+autoplay = true
+max_distance = 18.0
+
+[node name="Inspect" type="Node3D" parent="."]
+
+[node name="TicketBooth" type="Area3D" parent="Inspect"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16.6, 1.2, 34.5)
+collision_layer = 0
+collision_mask = 2
+monitorable = false
+script = ExtResource("vs_interactable")
+label = "Look at the booth"
+file = "res://data/inspect/vacuum_station.txt"
+reach = 2.5
+
+[node name="Zone" type="CollisionShape3D" parent="Inspect/TicketBooth"]
+shape = SubResource("BoxShape3D_o2look")
+
+[node name="Luggage" type="Area3D" parent="Inspect"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.2, 0.8, 35.6)
+collision_layer = 0
+collision_mask = 2
+monitorable = false
+script = ExtResource("vs_interactable")
+label = "Look at the cases"
+file = "res://data/inspect/vacuum_station.txt"
+reach = 2.5
+
+[node name="Zone" type="CollisionShape3D" parent="Inspect/Luggage"]
+shape = SubResource("BoxShape3D_o2look")
+
+[node name="OldPoster" type="Area3D" parent="Inspect"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.4, 1.6, 39.3)
+collision_layer = 0
+collision_mask = 2
+monitorable = false
+script = ExtResource("vs_interactable")
+label = "Look at the poster"
+file = "res://data/inspect/vacuum_station.txt"
+reach = 2.5
+
+[node name="Zone" type="CollisionShape3D" parent="Inspect/OldPoster"]
+shape = SubResource("BoxShape3D_o2look")
+
+[node name="FallenSign" type="Area3D" parent="Inspect"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.2, 0.6, 15.6)
+collision_layer = 0
+collision_mask = 2
+monitorable = false
+script = ExtResource("vs_interactable")
+label = "Look at the sign"
+file = "res://data/inspect/vacuum_station.txt"
+reach = 3.0
+
+[node name="Zone" type="CollisionShape3D" parent="Inspect/FallenSign"]
+shape = SubResource("BoxShape3D_o2look")
+
+[node name="DeadEmitter" type="Area3D" parent="Inspect"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22, 1, -12)
+collision_layer = 0
+collision_mask = 2
+monitorable = false
+script = ExtResource("vs_interactable")
+label = "Look at the emitter"
+file = "res://data/inspect/vacuum_station.txt"
+reach = 2.5
+
+[node name="Zone" type="CollisionShape3D" parent="Inspect/DeadEmitter"]
+shape = SubResource("BoxShape3D_o2look")
+
+[node name="Roots" type="Area3D" parent="Inspect"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 39.3, 1, -2.5)
+collision_layer = 0
+collision_mask = 2
+monitorable = false
+script = ExtResource("vs_interactable")
+label = "Look at the roots"
+file = "res://data/inspect/vacuum_station.txt"
+reach = 2.5
+
+[node name="Zone" type="CollisionShape3D" parent="Inspect/Roots"]
+shape = SubResource("BoxShape3D_o2look")
+
+[node name="OldPod" type="Area3D" parent="Inspect"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21, 2.2, -51)
+collision_layer = 0
+collision_mask = 2
+monitorable = false
+script = ExtResource("vs_interactable")
+label = "Look at the capsule"
+file = "res://data/inspect/vacuum_station.txt"
+reach = 3.0
+
+[node name="Zone" type="CollisionShape3D" parent="Inspect/OldPod"]
+shape = SubResource("BoxShape3D_o2look")
+
+[node name="Tally" type="Area3D" parent="Inspect"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.2, 2.1, -60.6)
+collision_layer = 0
+collision_mask = 2
+monitorable = false
+script = ExtResource("vs_interactable")
+label = "Look at the marks"
+file = "res://data/inspect/vacuum_station.txt"
+reach = 2.0
+
+[node name="Zone" type="CollisionShape3D" parent="Inspect/Tally"]
+shape = SubResource("BoxShape3D_o2look")

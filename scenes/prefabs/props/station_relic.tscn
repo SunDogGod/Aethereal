@@ -1,0 +1,6 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/props_vacuum_station/station_relic.gd" id="1_station_relic"]
+
+[node name="StationRelic" type="StaticBody3D"]
+script = ExtResource("1_station_relic")

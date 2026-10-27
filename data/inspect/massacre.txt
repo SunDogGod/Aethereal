@@ -1,0 +1,10 @@
+# THE MASSACRE: what Aeneas sees when he looks at things (E / D-pad up). He is four.
+#
+# DRAFT. Placeholder lines so the prompts work; rewrite them in your voice.
+#
+# One entry per line:  NodeName|first line|second line|third line
+
+Drum|The big drum. It is taller than he is.|Nobody is playing it yet.
+Shrine|Candles, and little white rice cakes nobody is allowed to eat.
+FoodStall|Something sweet is cooking. The steam smells of the festival.
+Paddy|Water, standing still under the lamps. Small green shoots in rows.

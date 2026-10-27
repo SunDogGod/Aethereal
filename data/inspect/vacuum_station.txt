@@ -1,0 +1,16 @@
+# THE VACUUM STATION: what Aeneas sees when he looks at things (E / D-pad up).
+#
+# DRAFT. Placeholder lines so the prompts work; rewrite them in your voice.
+#
+# One entry per line:  NodeName|first line|second line|third line
+# The name is the Interactable node's name in the level (under Inspect). Lines are shown one
+# after another as narration; keep them short. Lines starting with # are notes.
+
+TicketBooth|A ticket booth. One pane is gone; the other is grey with age.|The slot in the counter is worn smooth. A great many hands went through it.
+Luggage|Cases, a trunk, a bag, left in a heap by the gates.|Nobody came back for them.
+OldPoster|A poster, faded almost to the colour of the wall. A tube mouth, and a capsule leaving it.|The writing is older than anything Aeneas can read.
+FallenSign|A sign in the old script, come down from the roof. Its twin still hangs up there.|The chains rusted through. It must have been loud, once.
+DeadEmitter|An emitter like the one on the platform. This one stayed dark.|The lens is cracked through.
+Roots|Roots, this far in. They came through the wall and kept going.|Something above all this is still alive.
+OldPod|The old capsule, rusted to the colour of sand, its hatch torn off and lying below it.|Two seats inside. One of them small.
+Tally|Chalk marks on the wall, in rows of five.|Someone is counting.

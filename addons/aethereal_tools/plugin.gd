@@ -12,6 +12,7 @@ const NavBaker := preload("res://addons/aethereal_tools/nav_baker.gd")
 const NewLevel := preload("res://addons/aethereal_tools/new_level.gd")
 const GuideWindow := preload("res://addons/aethereal_tools/guide_window.gd")
 const RouteGizmo := preload("res://addons/aethereal_tools/route_gizmo.gd")
+const EditsBaker := preload("res://addons/aethereal_tools/edits_baker.gd")
 
 var _dock_frame: EditorDock
 var _dock: Dock
@@ -32,6 +33,7 @@ func _enter_tree() -> void:
 	_dock.bake_requested.connect(_on_bake)
 	_dock.guide_requested.connect(_on_guide)
 	_dock.new_level_requested.connect(_on_new_level)
+	_dock.bake_edits_requested.connect(_on_bake_edits)
 	var scroll := ScrollContainer.new()
 	scroll.name = "Aethereal"
 	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
@@ -130,6 +132,12 @@ func _on_bake() -> void:
 	ur.add_undo_method(NavBaker, "restore", region, result.before)
 	ur.commit_action(false)  # already baked
 	_dock.say(result.message)
+
+
+## Moves the game's Build Mode edits (data/edits/*.json) into their scene files.
+func _on_bake_edits() -> void:
+	_dock.say(EditsBaker.bake_all())
+	EditorInterface.get_resource_filesystem().scan()
 
 
 func _on_guide() -> void:

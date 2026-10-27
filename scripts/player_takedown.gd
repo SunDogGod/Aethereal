@@ -52,9 +52,17 @@ func _take_down(target: Guard, partner: Guard) -> void:
 	# Anyone still standing who saw it raises the alarm.
 	for guard in _witnesses_of(target):
 		guard.witness()
-	await get_tree().create_timer(FREEZE_TIME).timeout
-	player.controls_enabled = true
+	await get_tree().create_timer(FREEZE_TIME, false).timeout  # false: a pause holds it too
+	# A witness's restart (or a story scene) took him meanwhile: they hand control back.
+	if not player.in_cutscene and not _restart_under_way():
+		player.controls_enabled = true
 	_busy = false
+
+
+func _restart_under_way() -> bool:
+	var scene := get_tree().current_scene
+	var director := scene.find_child("StealthDirector", true, false) if scene else null
+	return director != null and director.has_method("is_resetting") and director.is_resetting()
 
 
 ## The nearest guard in reach who isn't looking at Aeneas.

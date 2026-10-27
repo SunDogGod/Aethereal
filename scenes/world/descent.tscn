@@ -11,6 +11,7 @@
 [ext_resource type="Material" path="res://materials/lamp_cool.tres" id="9_uu5lh"]
 [ext_resource type="Script" path="res://scripts/props_black_sand/black_sand_town_wall.gd" id="10_pvl64"]
 [ext_resource type="Material" path="res://materials/grating.tres" id="11_563mx"]
+[ext_resource type="Material" path="res://materials/trim_rail_worn.tres" id="12_trmrl"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_41ros"]
 size = Vector3(94.3, 90, 2)
@@ -353,46 +354,54 @@ material = ExtResource("11_563mx")
 transform = Transform3D(1, 0, 0, 0, 0.86602545, 0.5, 0, -0.5, 0.86602545, 30.28, -41.206516, -46.25)
 script = ExtResource("2_6hfcy")
 size = Vector3(0.1, 1, 23.09401)
-material = ExtResource("8_ec4cp")
+material = ExtResource("12_trmrl")
+trim = true
 
 [node name="WorldGangwayRailE" type="StaticBody3D" parent="InB" unique_id=1692785349]
 transform = Transform3D(1, 0, 0, 0, 0.86602545, 0.5, 0, -0.5, 0.86602545, 32.72, -41.206516, -46.25)
 script = ExtResource("2_6hfcy")
 size = Vector3(0.1, 1, 23.09401)
-material = ExtResource("8_ec4cp")
+material = ExtResource("12_trmrl")
+trim = true
 
 [node name="WorldGangwayPost0W" type="StaticBody3D" parent="InB" unique_id=1188436849]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30.5, -41.420727, -40)
 script = ExtResource("2_6hfcy")
 size = Vector3(0.20000076, 6, 0.19999695)
-material = ExtResource("8_ec4cp")
+material = ExtResource("12_trmrl")
+trim = true
 
 [node name="WorldGangwayPost0E" type="StaticBody3D" parent="InB" unique_id=190867429]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32.5, -41.420727, -40)
 script = ExtResource("2_6hfcy")
 size = Vector3(0.19999695, 6, 0.19999695)
-material = ExtResource("8_ec4cp")
+material = ExtResource("12_trmrl")
+trim = true
 
 [node name="WorldGangwayPost1W" type="StaticBody3D" parent="InB" unique_id=472603866]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30.5, -43.730125, -44)
 script = ExtResource("2_6hfcy")
 size = Vector3(0.20000076, 6, 0.19999695)
-material = ExtResource("8_ec4cp")
+material = ExtResource("12_trmrl")
+trim = true
 
 [node name="WorldGangwayPost1E" type="StaticBody3D" parent="InB" unique_id=956142584]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32.5, -43.730125, -44)
 script = ExtResource("2_6hfcy")
 size = Vector3(0.19999695, 6, 0.19999695)
-material = ExtResource("8_ec4cp")
+material = ExtResource("12_trmrl")
+trim = true
 
 [node name="WorldGangwayPost2W" type="StaticBody3D" parent="InB" unique_id=535576598]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30.5, -46.039528, -48)
 script = ExtResource("2_6hfcy")
 size = Vector3(0.20000076, 6, 0.19999695)
-material = ExtResource("8_ec4cp")
+material = ExtResource("12_trmrl")
+trim = true
 
 [node name="WorldGangwayPost2E" type="StaticBody3D" parent="InB" unique_id=1357383367]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32.5, -46.039528, -48)
 script = ExtResource("2_6hfcy")
 size = Vector3(0.19999695, 6, 0.19999695)
-material = ExtResource("8_ec4cp")
+material = ExtResource("12_trmrl")
+trim = true

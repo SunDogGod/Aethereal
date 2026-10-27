@@ -156,6 +156,11 @@ func _run(steps: Array, scene: String, path := "") -> void:
 				var node := _find(step.name)
 				if node is Node3D:
 					node.visible = step.type == "show"
+			"music":  # until the level changes (music.gd); a fight's music still plays over it
+				if step.name == "" or step.name.to_lower() == "off":
+					MusicBus.stop()
+				else:
+					MusicBus.play(step.name)
 			"fade":
 				_box.close()
 				await fade(step.how)
