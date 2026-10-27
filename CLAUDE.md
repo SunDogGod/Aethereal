@@ -203,4 +203,4 @@
 - Ability behavior must match the Aether system as written. Ask if unclear.
 
 ## Skills and tests
-The full test battery lives in `tests/` (`bash tests/run_battery.sh`). Project skills in `.claude/skills/`: aethereal-test-battery, aethereal-level-audit, aethereal-performance.
+The full test battery lives in `tests/` (`bash tests/run_battery.sh`). Project skills in `.claude/skills/`: aethereal-round, aethereal-test-battery, aethereal-level-audit, aethereal-performance, aethereal-characters, aethereal-story-scene.
