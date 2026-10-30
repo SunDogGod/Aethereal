@@ -154,7 +154,8 @@ func _pick_side() -> Vector3:
 	return Vector3.ZERO
 
 
-## How far she can step sideways from her anchor: not into a wall, and not off an edge.
+## How far she can step sideways from her anchor: not into a wall, not off an edge, and not up
+## onto something (a bed, a crate) her waist-high wall check passes over.
 func _room_towards(dir: Vector3) -> float:
 	var space := get_world_3d().direct_space_state
 	var waist := _anchor + Vector3.UP
@@ -164,7 +165,7 @@ func _room_towards(dir: Vector3) -> float:
 		room = minf(room, waist.distance_to(wall.position) - 0.3)
 	var foot := _anchor + dir * room + Vector3.UP * 0.5
 	var ground := space.intersect_ray(PhysicsRayQueryParameters3D.create(foot, foot + Vector3.DOWN * 1.5, 1))
-	if ground.is_empty():
+	if ground.is_empty() or ground.position.y - _anchor.y > 0.35:
 		return 0.0
 	return maxf(room, 0.0)
 

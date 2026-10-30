@@ -43,6 +43,7 @@ run test_world_story 300 "$S/world/test_world_story.gd"
 run walk_town 590 "$S/walk_level.gd" WALK_PEACEFUL=1 WALK_LEVEL=res://scenes/levels/empty_town.tscn "WALK_ROUTE=$(cat "$S/route_town.json")"
 run walk_bs 590 "$S/walk_level.gd" WALK_PEACEFUL=1 WALK_LEVEL=res://scenes/levels/black_sand.tscn "WALK_ROUTE=$(cat "$S/route_black_sand.json")"
 run walk_vs 590 "$S/walk_level.gd" WALK_PEACEFUL=1 WALK_LEVEL=res://scenes/levels/vacuum_station.tscn "WALK_ROUTE=$(cat "$S/route_vacuum_station.json")"
+run walk_mas 590 "$S/walk_level.gd" WALK_PEACEFUL=1 WALK_LEVEL=res://scenes/levels/massacre.tscn "WALK_ROUTE=$(cat "$S/route_massacre.json")"
 run walk_world 590 "$S/world/walk_world.gd" WALK_PEACEFUL=1 WALK_LEVEL=res://scenes/world/world.tscn WALK_SPOT=res://scenes/levels/black_sand.tscn WALK_START=0,24,104 "WALK_ROUTE=$(cat "$S/world/route_world.json")"
 run test_save_file 300 "$S/overnight/saving_impl/test_save_file.gd"
 # test_save_town (overnight/saving_impl) dropped: stale expectations; story26/test_save_town covers it

@@ -100,6 +100,9 @@ backface_collision = true
 [sub_resource type="BoxShape3D" id="BoxShape3D_ahluw"]
 size = Vector3(184, 90, 2)
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_nbarrier"]
+size = Vector3(87, 90, 2)
+
 [sub_resource type="BoxMesh" id="BoxMesh_5qv6c"]
 size = Vector3(10, 0.5, 10)
 
@@ -494,6 +497,18 @@ shape = SubResource("ConcavePolygonShape3D_cbv4b")
 [node name="Shape" type="CollisionShape3D" parent="Dunes/SouthBarrier" unique_id=1174896086]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 34, 101)
 shape = SubResource("BoxShape3D_ahluw")
+
+[node name="NorthBarrierW" type="StaticBody3D" parent="Dunes"]
+
+[node name="Shape" type="CollisionShape3D" parent="Dunes/NorthBarrierW"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -47.5, 34, -91)
+shape = SubResource("BoxShape3D_nbarrier")
+
+[node name="NorthBarrierE" type="StaticBody3D" parent="Dunes"]
+
+[node name="Shape" type="CollisionShape3D" parent="Dunes/NorthBarrierE"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 47.5, 34, -91)
+shape = SubResource("BoxShape3D_nbarrier")
 
 [node name="Hall" type="Node3D" parent="." unique_id=788282901]
 
@@ -1020,19 +1035,19 @@ light_energy = 1.7
 omni_range = 12.0
 
 [node name="Pack" type="StaticBody3D" parent="Camp" unique_id=89975616]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 26.4, 3.3, 1.4)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 26.4, 3.62, 1.4)
 script = ExtResource("2_0bg6e")
 size = Vector3(0.79999924, 0.5999999, 0.79999995)
 material = ExtResource("9_n8wat")
 
 [node name="TheCube" type="StaticBody3D" parent="Camp" unique_id=1809278285]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22, 3.3, 1.5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22, 3.88, 1.5)
 script = ExtResource("2_0bg6e")
 size = Vector3(0.5999985, 0.5999999, 0.5999999)
 material = ExtResource("10_ddp0p")
 
 [node name="Rifle" type="StaticBody3D" parent="Camp" unique_id=57604295]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 26.95, 3.04, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 26.95, 3.34, 0)
 script = ExtResource("2_0bg6e")
 size = Vector3(0.10000038, 0.07999992, 1)
 material = ExtResource("11_3lonk")

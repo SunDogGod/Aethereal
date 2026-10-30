@@ -55,7 +55,7 @@ KAEL: It's a house. We'll live in it.
 === launch ===
 The door seals. The tube goes dark, then the dark starts to move.
 [fade out]
-[teleport TrainingMark]
+[teleport BedMark]
 [fade in]
 # DRAFT
 KAEL: Sleep. We start in the morning.
@@ -109,7 +109,7 @@ KAEL: You hold it like it owes you money. Again.
 # DRAFT
 Day after day of it, until the blade stops fighting him.
 [show TrainingCube]
-[frame TrainingCube]
+[camera CubeShot]
 # DRAFT
 Kael sets the black cube on the mat between them.
 # DRAFT

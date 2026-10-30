@@ -55,6 +55,8 @@
 
 [ext_resource type="Script" path="res://scripts/props_massacre/crowd_figure.gd" id="mas_crowd_figure"]
 
+[ext_resource type="Script" path="res://scripts/props_massacre/hidden_solids.gd" id="mas_hidden_solids"]
+
 [sub_resource type="CapsuleShape3D" id="mas_child_capsule"]
 radius = 0.25
 height = 1.05
@@ -96,7 +98,7 @@ size = Vector3(6, 3, 6)
 size = Vector3(8, 3, 3)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_yfmpl"]
-size = Vector3(10, 3, 4)
+size = Vector3(14, 3, 9)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_62u7i"]
 size = Vector3(3, 2, 3)
@@ -3184,9 +3186,9 @@ size = Vector3(10, 0.5, 5)
 material = ExtResource("10_0f1rt")
 
 [node name="DaisStep" type="StaticBody3D" parent="Estates/GreatEstate" unique_id=965756581]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.125, -36.5)
+transform = Transform3D(1, 0, 0, 0, 0.9701425, -0.24253562, 0, 0.24253562, 0.9701425, 0, 0.1045, -36.036)
 script = ExtResource("1_kyrj4")
-size = Vector3(12, 0.25, 1)
+size = Vector3(12, 0.3, 2.3)
 material = ExtResource("10_0f1rt")
 
 [node name="FireBasin" type="StaticBody3D" parent="Estates/GreatEstate" unique_id=230158523]
@@ -3522,7 +3524,7 @@ material = ExtResource("4_tnwom")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14, 0.02, -78)
 script = ExtResource("1_kyrj4")
 size = Vector3(0.39999962, 0.08, 12)
-material = ExtResource("9_8kpgg")
+material = ExtResource("16_x46a0")
 
 [node name="DrainLight" type="OmniLight3D" parent="Drain" unique_id=1878100791]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14, 1.5, -82)
@@ -3595,7 +3597,7 @@ transform = Transform3D(-0.9933506, 0, -0.1151288, 0, 1, 0, 0.1151288, 0, -0.993
 script = ExtResource("mas_crowd_figure")
 
 [node name="Villager12" type="Node3D" parent="Figures/Crowd" unique_id=969508868]
-transform = Transform3D(-0.9785094, 0, -0.2062024, 0, 1, 0, 0.2062024, 0, -0.9785094, 7.2, 0, -31.4)
+transform = Transform3D(-0.9785094, 0, -0.2062024, 0, 1, 0, 0.2062024, 0, -0.9785094, 6, 0, -30.3)
 script = ExtResource("mas_crowd_figure")
 kind = 1
 variant = 5
@@ -3688,6 +3690,7 @@ height = 1.9
 
 [node name="Raiders" type="Node3D" parent="Figures" unique_id=1942685353]
 visible = false
+script = ExtResource("mas_hidden_solids")
 
 [node name="Raider0" type="Node3D" parent="Figures/Raiders" unique_id=593973424]
 transform = Transform3D(-0.9998151, 0, 0.0192296, 0, 1, 0, -0.0192296, 0, -0.9998151, 0, 0, 74)
@@ -3749,7 +3752,7 @@ kind = 3
 variant = 9
 
 [node name="Raider10" type="Node3D" parent="Figures/Raiders" unique_id=1195853639]
-transform = Transform3D(-0.9689124, 0, 0.247404, 0, 1, 0, -0.247404, 0, -0.9689124, 27, 0, 46)
+transform = Transform3D(-0.9689124, 0, 0.247404, 0, 1, 0, -0.247404, 0, -0.9689124, 25.2, 0, 48)
 script = ExtResource("mas_crowd_figure")
 kind = 3
 variant = 10
@@ -3879,7 +3882,7 @@ dialogue_file = "res://data/dialogue/massacre.txt"
 scene = "the_drain"
 
 [node name="Zone" type="CollisionShape3D" parent="StoryTriggers/BehindTheHouse" unique_id=1138552869]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, -2.5)
 shape = SubResource("BoxShape3D_yfmpl")
 
 [node name="Drain" type="Area3D" parent="StoryTriggers" unique_id=410311495]

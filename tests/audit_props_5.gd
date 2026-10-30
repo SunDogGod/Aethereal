@@ -7,7 +7,7 @@ const NAMES := ["SouthDistrict/Tower2", "SouthDistrict/Tower3", "SouthDistrict/T
 	"EastDistrict/Tower5", "EastDistrict/Tower6", "EastDistrict/Tower6b", "WestDistrict/Tower7", "WestDistrict/Tower8",
 	"WestDistrict/Tower9", "WestDistrict/Tower10", "WestDistrict/AlleyCrate2", "WestDistrict/SignTower7",
 	"SouthDistrict/SignRimAmber", "Courtyard/RampDown", "NorthDistrict/HallRoof", "WestDistrict/Foundation",
-	"EastDistrict/Foundation", "SouthDistrict/Foundation", "SouthDistrict/Rim", "EastDistrict/Deck"]
+	"EastDistrict/Foundation", "SouthDistrict/Foundation"]  # the old Rim and Deck blocks are gone
 const PROBES := [["AlleyAC2 centre", Vector3(-20.15, 13.0, 0.5)], ["RimSign", Vector3(10, 28, 13.9)],
 	["RimPhone", Vector3(23.4, 25, 14.15)], ["DeckBarrels", Vector3(13.3, 16.5, 7.2)]]
 

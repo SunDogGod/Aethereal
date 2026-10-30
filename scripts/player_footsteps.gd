@@ -21,7 +21,7 @@ func _physics_process(delta: float) -> void:
 		_step(volume_db + 2.0)  # landing
 	_was_on_floor = on_floor
 	var flat := Vector2(player.velocity.x, player.velocity.z).length()
-	if not on_floor or flat < 0.5:
+	if not on_floor or flat < 0.5 or player.is_sliding():  # a slide scrapes, it doesn't step
 		_step_distance = stride_run * 0.4  # so the first step after a pause comes quickly
 		return
 	_step_distance += flat * delta

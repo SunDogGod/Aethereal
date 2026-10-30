@@ -225,6 +225,10 @@ func respawn_at(point: Vector3) -> void:
 	respawned.emit()
 
 
+func is_sliding() -> bool:
+	return _slide != null and _slide.active
+
+
 func face(point: Vector3) -> void:
 	var look := point - global_position
 	model.rotation.y = atan2(-look.x, -look.z)

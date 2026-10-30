@@ -20,6 +20,7 @@ extends Node3D
 @export var ease_in := 14.0  ## how quickly it glides in ahead of a wall (higher = faster)
 @export var ease_out := 3.0  ## how quickly it eases back out (higher = faster)
 @export var small_prop := 2.6  ## metres: anything smaller than this every way is ignored
+@export var inside_length := 0.7  ## metres: pulled in closer than this, his model hides
 
 @onready var spring_arm: SpringArm3D = $SpringArm3D
 
@@ -85,6 +86,17 @@ func _physics_process(delta: float) -> void:
 	else:
 		_length = minf(want, lerpf(_length, want, 1.0 - exp(-ease_out * delta)))
 	spring_arm.spring_length = maxf(_length, 0.05)
+	_hide_if_inside()
+
+
+## Backed into a wall, the camera can end up inside Aeneas's head: hide his model then, so the
+## view is the world and not the inside of his face. Only while this camera is the one showing
+## (a story shot always sees him).
+func _hide_if_inside() -> void:
+	var model := get_parent().get_node_or_null("Model") as Node3D
+	var camera := spring_arm.get_node_or_null("Camera3D") as Camera3D
+	if model and camera:
+		model.visible = _length > inside_length or not camera.current
 
 
 func _turn(yaw: float, pitch: float) -> void:
