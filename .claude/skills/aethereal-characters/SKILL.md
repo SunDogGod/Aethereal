@@ -5,8 +5,8 @@ description: Change or add Aethereal characters, outfits, faces, hair and animat
 
 # Characters
 
-Read `tools/blender/README.md` first (file table, face tuning). Never use the author's Pictures folder
-for character reference unless they say so (old pre-alpha designs).
+Read `tools/blender/README.md` first (file table, face tuning). The author's picture folder
+(`OneDrive - Ucio IT Services/Pictures/Aethereal`) is a big inspiration for looks, but never copy its old pixel-art designs of the main crew.
 
 - Looks: `tools/blender/<name>.py` (+ `_gear`, `_parts`, `_hair`), faces via `face.py` / `face_paint.py`
   (`FACE = face.look(...)`), Agency heads in `agency_heads.py`.

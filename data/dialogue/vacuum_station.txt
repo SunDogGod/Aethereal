@@ -1,6 +1,14 @@
 # 0.4 THE VACUUM STATION. DRAFT lines, from the Notion beats:
 # a dead Precursor vacuum-tube station; a house-sized capsule; neither can work the panel;
 # a hologram AI offers takeoff, one destination remaining, ETA one month; Kael begins training.
+#
+# The trip is lived in the capsule (2026-10-30). After the launch Kael trains him on the mat;
+# then the bed moves the story on, one sleep at a time: Aeneas's bunk offers "E / Up: Rest"
+# (RestBed in the level, under Inspect). Its first sleep after training is first_sleep (the
+# first dream), the next is month_passes, the next end_of_act. Any other time, and once those
+# are used up, resting plays "rest". Every rest heals him ([heal]) and the game saves when the
+# scene ends.
+# A line with "# DRAFT" just above it was written for the bed; rewrite it in your voice.
 
 === arrival ===
 [camera HallShot]
@@ -27,7 +35,6 @@ KAEL: It's a house. We'll live in it.
 === launch ===
 The door seals. The tube goes dark, then the dark starts to move.
 [fade out]
-[title ONE MONTH LATER]
 [teleport TrainingMark]
 [fade in]
 
@@ -36,8 +43,64 @@ The door seals. The tube goes dark, then the dark starts to move.
 KAEL: Again.
 Aeneas picks the practice blade up off the mat.
 KAEL: You hold it like it owes you money. Again.
+# DRAFT
+Then Kael has him jump, and jump again at the top of it, off nothing at all.
+# DRAFT
+It takes the rest of the day before his feet believe it.
+[unlock double_jump]
+# DRAFT
+By night his arms won't lift. The bunks are made up.
 [camera]
+
+# The first night in the capsule: the first dream. DRAFT, all of it. Fragments only, no faces and
+# no story facts: his Third Eye only properly opens later, at Temek. The bright lights at the edge
+# of sight are the first hint of the Mantids. The set is the Dream node under the level.
+=== first_sleep ===
+[fade out]
+[heal]
+# DRAFT
+He sleeps.
+[show Dream]
+[camera DreamShot]
+[fade in]
+[wait 2]
+# DRAFT
+Dark. Heat, close as a breath.
+# DRAFT
+A hand.
+# DRAFT
+A corridor that goes on further than it should.
+[show DreamOrbs]
+# DRAFT
+At the edge of sight, lights. Bright, round, drifting.
+# DRAFT
+They are watching him.
+[fade out]
+[hide DreamOrbs]
+[hide Dream]
+[camera]
+[fade in]
+# DRAFT
+He wakes. The capsule hums around him. Outside the window the dark is still moving.
+
+=== month_passes ===
+[fade out]
+[heal]
+# DRAFT
+The days run together. Train, eat, sleep. The tube runs on.
+[title ONE MONTH LATER]
+[fade in]
 
 === end_of_act ===
 [fade out]
+# DRAFT
+Some time in the night, the capsule begins to slow.
 [level res://scenes/ui/title_screen.tscn]
+
+# Any other rest: before training, and once the nights above are used up. DRAFT.
+=== rest ===
+[fade out]
+[heal]
+# DRAFT
+He sleeps a while.
+[fade in]

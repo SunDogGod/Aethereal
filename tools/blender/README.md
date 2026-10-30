@@ -75,6 +75,11 @@ the model's Animator (`story_pose("kneel_draw")`, `story_clear()`; `scripts/char
   the eyes sit), `brow_ridge`, `cheek`, `hollow`, `lip_up` / `lip_lo`, `chin`, `jaw`; paint: `eye_w` /
   `eye_h` (eye size), `iris_r`, `eye_tilt`, `lash`, `wing`, the brows (`brow_z0` inner end, `brow_z1`
   outer, `brow_arch`, `brow_thick`), `smile` / `smirk`, `blush`, `age`, `stubble`. Rebuild to see it.
+- **The anime eyes** (everyone at once): `BASE` in `face.py` scales every character's eye numbers
+  (`face.eyes()`): `eye_size` (the whole opening), `eye_open` (taller still), `iris_size`, `iris_tall`
+  (the iris an upright oval), `lash_size` (the upper lash line). The highlights are in `face_paint._eye`.
+  The officers' eyepiece grows with `eye_size`. Rebuild all six faces after changing them:
+  `.\tools\blender\rebuild.ps1 aeneas,isabella,valentina,kael,lieutenant,captain`.
 - **The haircut**: `aeneas_hair.py`. `LEDGE` / `LEDGE_BACK` is where the buzzed sides stop,
   `volume()` how proud the long top stands, and each lock is a path you can push about.
 - **The quick draw**: `DRAW_HIT` in `aeneas_anims.py` is when the drawn blade crosses his front

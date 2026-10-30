@@ -24,6 +24,8 @@ signal fell                              ## he dropped below fall_limit; a check
 @export var jump_cut := 0.5                 ## let go of jump early and he keeps this much upward speed
 @export var coyote_time := 0.1              ## seconds after running off a ledge when jump still works
 @export var jump_buffer_time := 0.12        ## seconds a jump press is remembered before landing
+@export var double_jump_unlocked := false   ## Kael teaches it in the station's training ([unlock double_jump])
+@export var double_jump_velocity := 7.5     ## the second jump's push; it replaces whatever fall speed he had
 
 @export_group("Crouching")
 @export var crouch_speed := 2.8   ## metres per second while crouched
@@ -31,7 +33,12 @@ signal fell                              ## he dropped below fall_limit; a check
 
 @export_group("Falling")
 @export var fall_limit := -15.0  ## fall below this height and he's put back on the last ground he stood on
-@export var fall_death_height := 6.0  ## a drop longer than this (metres) is a fall too: back to the checkpoint
+## Landings are judged by speed (metres per second, downward). With his gravity, 15 is about a 3.4 m
+## drop and 20 about 6 m. A double jump just above the ground slows him down.
+@export var safe_landing_speed := 15.0   ## landing slower than this does nothing
+@export var fatal_landing_speed := 20.0  ## landing this fast is a fall: back to the checkpoint
+@export var landing_damage_min := 5.0    ## damage just above the safe speed...
+@export var landing_damage_max := 50.0   ## ...growing to this just under the fatal speed
 
 @onready var model: Node3D = $Model
 @onready var animator: CharacterAnimator = get_node_or_null("Model/Animator")  ## plays his animations
@@ -48,7 +55,7 @@ var rooted := false           ## his feet stay planted (Combat sets it while he 
 var _coyote_timer := 0.0
 var _jump_buffer_timer := 0.0
 var _last_ground := Vector3.ZERO
-var _fall_from := 0.0  # the height he last stood at: how far a drop went when he lands
+var _air: PlayerAir  # the double jump and how hard a landing is (player_air.gd)
 var _capsule: CapsuleShape3D
 var _stand_height := 0.0
 var _pivot_height := 0.0
@@ -59,7 +66,7 @@ func _enter_tree() -> void:
 
 func _ready() -> void:
 	_last_ground = global_position
-	_fall_from = global_position.y
+	_air = PlayerAir.new(self)
 	_ensure_sprint_action()
 	# Our own copy of the collision capsule, so crouching can shrink it.
 	_capsule = body_shape.shape.duplicate()
@@ -77,6 +84,7 @@ func _physics_process(delta: float) -> void:
 	_handle_crouch()
 	_handle_jump(delta)
 	_handle_run(delta)
+	_air.before_move()
 	move_and_slide()
 	_handle_falling()
 
@@ -112,6 +120,9 @@ func _handle_jump(delta: float) -> void:
 			velocity.y = jump_velocity
 		_jump_buffer_timer = 0.0
 		_coyote_timer = 0.0
+	elif controls_enabled and Input.is_action_just_pressed("jump") and _air.try_double_jump():
+		velocity.y = double_jump_velocity
+		_jump_buffer_timer = 0.0  # spent: it must not jump again on landing
 	if Input.is_action_just_released("jump") and velocity.y > 0.0:
 		velocity.y *= jump_cut
 
@@ -201,7 +212,6 @@ func respawn_at(point: Vector3) -> void:
 	global_position = point
 	velocity = Vector3.ZERO
 	_last_ground = point
-	_fall_from = point.y
 	falling_back = false
 	respawned.emit()
 
@@ -300,11 +310,15 @@ func flash(color: Color) -> void:
 
 func _handle_falling() -> void:
 	if is_on_floor():
-		if _fall_from - global_position.y > fall_death_height and not fell.get_connections().is_empty():
+		var damage := _air.landing_damage()
+		if is_inf(damage) and not fell.get_connections().is_empty():
 			velocity = Vector3.ZERO
 			falling_back = true
 			fell.emit()  # nobody walks away from a drop like that (or skips the level with one)
-		_fall_from = global_position.y
+		elif damage > 0.0:
+			var combat: PlayerCombat = get_node_or_null("Combat")
+			if combat:
+				combat.hurt(minf(damage, landing_damage_max))
 		_last_ground = global_position
 	elif global_position.y < fall_limit:
 		if fell.get_connections().is_empty():

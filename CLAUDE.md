@@ -9,6 +9,8 @@
   hardware ("we might even go PS2"). The environment stays simpler and chunky; characters are more
   detailed, "cool but stylized", like Lorn's Lure's characters, never FF7-field low. Aeneas is
   inspired by Jim Hawkins (Treasure Planet); Kael wears a long black coat; his hair is white.
+  Characters have big, anime-style eyes (2026-10-30). Another inspiration (2026-10-30): Metal Garden
+  (Tinerasoft, 2025), a grey, overgrown megastructure with a PS2-era look and double-jump movement.
 - Pipes follow walls and corners with purpose (`_duct` polylines in the dressing scripts: a box per
   run, an elbow cube per bend, straps every 3 m). Square ducts or round pipes, both fine (ruled 2026-10-24).
 - The older 2D metroidvania prototype is a separate project in
@@ -110,8 +112,11 @@
 - A look pauses the world (it plays as a scene), so prompts are not offered during a fight. Story
   hands control back two physics ticks after a scene ends, so the closing press is not also a swing.
 - Checkpoints and StoryTriggers wait for `player.land_safely()`: a zone he passes through on the way
-  down a fatal drop (over `fall_death_height`, 6 m) doesn't count, or a fall restart would put him past
-  the section he skipped.
+  down a fatal drop (landing faster than `fatal_landing_speed`, about 6 m) doesn't count, or a fall
+  restart would put him past the section he skipped.
+- Landings are judged by speed (`scripts/player_air.gd`): under `safe_landing_speed` (~3.4 m) nothing,
+  then damage up to the fatal speed. The double jump (unlocked by `[unlock double_jump]` in the
+  station's training) resets his fall speed, so one used just above the floor saves him.
 - Checkpoints only move forward: the StealthDirector ranks them by their order under the level's
   `Checkpoints` node (and, in the big world, by zone order first), so keep that list in route order.
   A lost fight waits for the director's `restarted` signal before it starts again (pause-safe).

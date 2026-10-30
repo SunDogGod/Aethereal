@@ -145,12 +145,13 @@ def eyepiece(ch, head, look, r_lens, r_frame):
                   "cap_len": 0.0} for d in (d0, d1)]
         rings[-1]["cap_len"] = 0.0012 * hs
         mesh.loft(part, rings, 10, uv, cap0="pole", cap1="pole")
-    disc(P, -0.004, 0.0015, 0.0128, {"Head": 1.0}, r_frame.uv)
+    k = look["eye_size"]                                 # the lens grows with the anime eye (face.eyes)
+    disc(P, -0.004, 0.0015, 0.0128 * k, {"Head": 1.0}, r_frame.uv)
     lens = ch.prop("Visor", "Head", "HeadGear")
-    disc(lens, 0.0012, 0.0026, 0.0104, {}, r_lens.uv)
+    disc(lens, 0.0012, 0.0026, 0.0104 * k, {}, r_lens.uv)
     mesh.transform_part(lens, ch.arm.data.bones["Head"].matrix_local.inverted())
     ear = head.surface(180.0 - look["ear_a"], look["ear_z"] + 0.022, 0.004)
-    side = c + x * 0.0115 * hs
+    side = c + x * 0.0115 * k * hs
     pts = [side, side.lerp(ear, 0.5) + n * 0.002 * hs, ear]
     body.strand(P, pts, [0.0022 * hs, 0.002 * hs, 0.0015 * hs], 0.8, r_frame.uv, {"Head": 1.0},
                 up=Vector((0, 0, 1)), sides=4)

@@ -196,7 +196,8 @@ func _on_leader_respawned() -> void:
 
 
 ## A spot about a metre beside him (as the camera sees it, so she isn't blocking the view),
-## with floor under it and no wall in between. Behind him only if both sides are blocked.
+## with floor under it at his own level (not a bed or crate top) and no wall in between.
+## Behind him only if both sides are blocked.
 func _free_spot_near(point: Vector3) -> Vector3:
 	var right := leader.camera_pivot.global_basis.x
 	right.y = 0.0
@@ -207,6 +208,6 @@ func _free_spot_near(point: Vector3) -> Vector3:
 		var spot: Vector3 = point + dir * 1.2
 		var wall := space.intersect_ray(PhysicsRayQueryParameters3D.create(point + Vector3.UP, spot + Vector3.UP, 1))
 		var ground := space.intersect_ray(PhysicsRayQueryParameters3D.create(spot + Vector3.UP * 0.5, spot + Vector3.DOWN * 4.0, 1))
-		if wall.is_empty() and not ground.is_empty():
+		if wall.is_empty() and not ground.is_empty() and absf(ground.position.y - point.y) < 0.3:
 			return Vector3(spot.x, ground.position.y, spot.z)
 	return point

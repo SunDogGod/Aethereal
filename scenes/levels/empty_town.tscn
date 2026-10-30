@@ -1965,6 +1965,16 @@ transform = Transform3D(0.731055, -0.066195, 0.6791, 0, 0.995283, 0.097014, -0.6
 fov = 48.0
 far = 320.0
 
+[node name="AgentsRampShot" type="Camera3D" parent="Shots"]
+transform = Transform3D(-0.9941724, 0.03205398, 0.10292598, 0, 0.95477104, -0.29734197, -0.107801735, -0.29560918, -0.949207, -6.6, 1, -8.3)
+fov = 50.0
+far = 320.0
+
+[node name="AgentsSneakShot" type="Camera3D" parent="Shots"]
+transform = Transform3D(0.7456561, -0.063142724, 0.66333246, 0, 0.99549997, 0.094761804, -0.666331, -0.07065971, 0.74230057, 7, 1.5, -0.5)
+fov = 48.0
+far = 320.0
+
 [node name="FireShot" type="Camera3D" parent="Shots"]
 transform = Transform3D(0.50620073, -0.0804907, 0.85865134, 0, 0.9956351, 0.09333167, -0.86241573, -0.04724456, 0.5039912, 5.2, 1.5, -12.9)
 fov = 55.0
@@ -2191,6 +2201,30 @@ transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 0.5, 0, -11)
 
 [node name="HeaveMark" type="Marker3D" parent="StoryMarks"]
 transform = Transform3D(0.78369343, 0, 0.62114775, 0, 1, 0, -0.62114775, 0, 0.78369343, 1.9, 0, -14.2)
+
+[node name="LieutenantRampMark" type="Marker3D" parent="StoryMarks"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.9, 5.6, 3.8)
+
+[node name="CaptorRampMark" type="Marker3D" parent="StoryMarks"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7, 6.172, 4.8)
+
+[node name="LieutenantRampEndMark" type="Marker3D" parent="StoryMarks"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.9, 2.515, -1.6)
+
+[node name="CaptorRampEndMark" type="Marker3D" parent="StoryMarks"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7, 3.086, -0.6)
+
+[node name="LieutenantSneakMark" type="Marker3D" parent="StoryMarks"]
+transform = Transform3D(0.7172794, 0, -0.6967857, 0, 1, 0, 0.6967857, 0, 0.7172794, 0.8, 0, -1)
+
+[node name="CaptorSneakMark" type="Marker3D" parent="StoryMarks"]
+transform = Transform3D(0.68290514, 0, -0.7305071, 0, 1, 0, 0.7305071, 0, 0.68290514, -1.6, 0, -1.2)
+
+[node name="LieutenantBehindMark" type="Marker3D" parent="StoryMarks"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.2, 0, -3.95)
+
+[node name="CaptorBehindMark" type="Marker3D" parent="StoryMarks"]
+transform = Transform3D(0.72140926, 0, -0.692509, 0, 1, 0, 0.692509, 0, 0.72140926, 1.211, 0, -3.787)
 
 [node name="ValentinaFight" type="Node3D" parent="." unique_id=108673783 node_paths=PackedStringArray("unlock_on_win")]
 script = ExtResource("25_pw4ii")

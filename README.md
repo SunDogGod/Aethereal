@@ -26,7 +26,7 @@ put together: `docs/customizing.md`, "The big world".
 | --- | --- | --- |
 | Move | WASD or arrow keys | Left stick (tilt a little to walk) |
 | Camera | Mouse | Right stick |
-| Jump | Space (tap = hop, hold = full jump) | A |
+| Jump | Space (tap = hop, hold = full jump; again in the air = double jump, once Kael teaches it) | A |
 | Sprint (hold) | Shift | Click the left stick |
 | Crouch (press to toggle) | C or Ctrl | B |
 | Take down (from behind) | F or left click | X |
@@ -52,7 +52,7 @@ put together: `docs/customizing.md`, "The big world".
 | Characters | `tools/blender/` builds every model and its animations (see the README there); `scripts/character_animator.gd` plays them, and `character_story.gd` holds the story poses a scene calls by name (`story_pose("hostage")`, `story_clear()`) and their props (the agents' knife, Kael's Lamento, the captain's arm) |
 | `scenes/` | `test_yard.tscn` (movement test level), `player.tscn` (Aeneas + camera), `isabella.tscn` (his mother, follows him), `ps1_screen.tscn` (the full-screen color filter) |
 | `scenes/` (sneaking) | `guard.tscn` (an Agency agent), `stealth_director.tscn` (spotted → fade → back to checkpoint) |
-| `scripts/` | `player.gd` (running, jumping, crouching, fall respawn), `player_footsteps.gd` (step sounds by floor), `player_takedown.gd` (knife takedowns + prompt), `swing_assist.gd` (swings aim at the enemy ahead without lock-on), `choreography.gd` + `choreography_file.gd` (the captain's authored fight, from `data/fights/`), `player_camera.gd` (the camera), `companion.gd` (following, hiding, ink binds) + `ink_stroke.gd` (her brush stroke in the air), `guard.gd` + `guard_data.gd` (agents), `stealth_director.gd`, `checkpoint.gd`, `hud.gd`, `block.gd` (gray-box blocks) + `building_faces.gd` (building fronts) + `mesh_build.gd` (code-built meshes are built once, in the scene), `flicker_light.gd` / `tv_window.gd` / `steam_vent.gd` / `drip.gd` (life signs), `interactable.gd` (look-at prompts), `sfx.gd` (the "Sfx" autoload) + `sfx_bus.gd` (how scripts reach it) |
+| `scripts/` | `player.gd` (running, jumping, crouching, fall respawn) + `player_air.gd` (double jump, landing damage), `player_footsteps.gd` (step sounds by floor), `player_takedown.gd` (knife takedowns + prompt), `swing_assist.gd` (swings aim at the enemy ahead without lock-on), `choreography.gd` + `choreography_file.gd` (the captain's authored fight, from `data/fights/`), `player_camera.gd` (the camera), `companion.gd` (following, hiding, ink binds) + `ink_stroke.gd` (her brush stroke in the air), `guard.gd` + `guard_data.gd` (agents), `stealth_director.gd`, `checkpoint.gd`, `hud.gd`, `block.gd` (gray-box blocks) + `building_faces.gd` (building fronts) + `mesh_build.gd` (code-built meshes are built once, in the scene), `flicker_light.gd` / `tv_window.gd` / `steam_vent.gd` / `drip.gd` (life signs), `interactable.gd` (look-at prompts), `sfx.gd` (the "Sfx" autoload) + `sfx_bus.gd` (how scripts reach it) |
 | `data/enemies/` | Guard kinds (GuardData files) |
 | `data/dialogue/` | Every level's spoken scenes, as plain text |
 | `data/inspect/` | What Aeneas says when he looks at things (`NodeName|line|line`), one file per level |
@@ -86,8 +86,10 @@ Inspector set **Leader** to the Player.
   you back, and during a story fight they do nothing. Agents you took down before it stay down. After the capture,
   restarts happen in the hall, and agents from fights you already won stay down. A level
   without a StealthDirector just puts you back on the last ground you stood on.
-- **Drops**: jumping off a deck into the light well (any drop over 6 m) counts as a fall too: FELL,
-  back to the last checkpoint. The height is **Fall Death Height** on the Player (Falling group).
+- **Drops**: landings are judged by how fast he hits the ground. Under about 3.4 m nothing happens,
+  a bit more hurts, and landing as fast as a 6 m drop is a fall: FELL, back to the last checkpoint
+  (jumping into the light well, say). A double jump just above the ground slows him and saves him.
+  The speeds and damage are in the Player's Falling group (Safe / Fatal Landing Speed).
 
 To add an agent, drag `scenes/guard.tscn` into a level and turn him to face his post. To give him a
 patrol, add a Node3D called **Route** under him with Marker3D points in it. He walks them in order.

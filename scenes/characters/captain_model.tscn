@@ -7,7 +7,7 @@
 [sub_resource type="ArrayMesh" id="ArrayMesh_60bb5"]
 resource_name = "captain_props_Visor"
 _surfaces = [{
-"aabb": AABB(0.030182045, 0.10735283, -0.13267267, 0.022796825, 0.010090135, 0.02499628),
+"aabb": AABB(0.026852962, 0.10607492, -0.13642216, 0.029454991, 0.01264596, 0.03249526),
 "attribute_data": PackedByteArray("v4s/Pn+Mvzp/jD8+H4w/Pr+LvzofjL86P42/Ot+Mvzo/jT8+34w/Pv+Nvzqfjb86/40/Pp+NPz6/jr86X46/Or+OPz5fjj8+f4+/Oh+Pvzp/jz8+H48/Pj+Qvzrfj786P5A/Pt+PPz7/kL86n5C/Ov+QPz6fkD8+v5G/Ol+Rvzq/kT8+X5E/Pn+Svzofkr86f5I/Ph+SPz4/k78635K/Oj+TPz7fkj8+"),
 "format": 34896613399,
 "index_count": 120,
@@ -17,24 +17,24 @@ _surfaces = [{
 "primitive": 3,
 "uv_scale": Vector4(0, 0, 0, 0),
 "vertex_count": 42,
-"vertex_data": PackedByteArray("nHwSbP///dJl0CFRjOfE8qDJRymM5x7hnHwSbP9/k/Fig+yT//9B3i+JFLb/f2H5///ZJ42nxf8viRS2/39h+Tn5AACNp5fwnHwSbP9/k/H//9kncVgn/S+JFLb/f2H5OfkAAHFYkv+cfBJs/3+T8WXQIVFyGDzpL4kUtv9/YfmgyUcpchh79Zx8Emz/f5PxYoPskwAAvekviRS2/39h+Zx8EmwAAHTsnHwSbP9/k/FeNrfWchi7+i+JFLb/f2H5mS/drnIY3d6cfBJs/3+T8cUG//9xWP7xL4kUtv9/YfkAACXYcVi9zZx8Emz/f5PxxQb//42n1N0viRS2/39h+QAAJdiNp/e6nHwSbP9/k/FeNrfWjOfG1C+JFLb/f2H5mS/droznq6WcfBJs/3+T8WKD7JP//0HeL4kUtv9/YfmcfBJs///90px8Emz/f5PxbWP0axGjiY10eJtWw8Lt+IqWqpUSOGoODbAtjxI4ag5ijBtNw8Lt+B6+CJASOGoO3DTm48PC7fgO1CJyEjhqDrA7/9vDwu340b4VMBI4ag71Slbgw8Lt+IC/oB4SOGoOpF0W8cPC7fgXcE6/EjhqDtub0P/Dwu341ICGvBI4ag4lWYf7w8Lt+I6MSagSOGoORU2ZvMPC7fiKlqqVEjhqDm1j9GvDwu34")
+"vertex_data": PackedByteArray("YH0ZcP///dIb0J1KjOco893K0SqM5x7hYH0ZcP9/k/GeguWP//8A3xyHJqv/f2H5///LH42n2f8chyar/39h+cH6AACNp5fwYH0ZcP9/k/H//8sfcVg2/RyHJqv/f2H5wfoAAHFYkv9gfRlw/3+T8RvQnUpyGBfpHIcmq/9/YfndytEqchh79WB9GXD/f5PxnoLljwAAgukchyar/39h+WB9GXAAAHTsYH0ZcP9/k/EhNS3Vchh4+hyHJqv/f2H54y9htXIY3d5gfRlw/3+T8T0F//9xWHnyHIcmq/9/YfkAADPgcVi9zWB9GXD/f5PxPQX//42nnN4chyar/39h+QAAM+CNp/e6YH0ZcP9/k/EhNS3VjOem1RyHJqv/f2H54y9htYznq6VgfRlw/3+T8Z6C5Y///wDfHIcmq/9/YflgfRlw///90mB9GXD/f5PxbWP0a++iIY50eJtWw8Lt+IyWEJYSOGoOxK+8jxI4ag5ijBtNw8Lt+Ja9tpASOGoO3DTm48PC7fiU1BhzEjhqDrA7/9vDwu34ib5bLxI4ag71Slbgw8Lt+G+/Uh4SOGoOpF0W8cPC7fgtcDe/EjhqDtub0P/Dwu34v4BmvBI4ag4lWYf7w8Lt+I2MVqgSOGoORU2ZvMPC7fiMlhCWEjhqDm1j9GvDwu34")
 }]
 blend_shape_mode = 0
 
-[node name="CaptainModel" type="Node3D" unique_id=1217238687]
+[node name="CaptainModel" type="Node3D" unique_id=1459826326]
 
-[node name="captain" type="Node3D" parent="." unique_id=475367700 instance=ExtResource("1_0ckwo")]
+[node name="captain" type="Node3D" parent="." unique_id=981694088 instance=ExtResource("1_0ckwo")]
 
-[node name="HeadGear" type="BoneAttachment3D" parent="." unique_id=157433659]
+[node name="HeadGear" type="BoneAttachment3D" parent="." unique_id=748677472]
 bone_name = "Head"
 bone_idx = 8
 use_external_skeleton = true
 external_skeleton = NodePath("../captain/Armature/Skeleton3D")
 
-[node name="Visor" type="MeshInstance3D" parent="HeadGear" unique_id=176180370]
+[node name="Visor" type="MeshInstance3D" parent="HeadGear" unique_id=2060689587]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0)
 layers = 2
 mesh = SubResource("ArrayMesh_60bb5")
 
-[node name="Animator" type="Node" parent="." unique_id=759140828]
+[node name="Animator" type="Node" parent="." unique_id=119546084]
 script = ExtResource("3_28jj5")

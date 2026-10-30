@@ -186,6 +186,19 @@ func take_hit(damage: float, from: Vector3, unblockable := false) -> bool:
 	return true
 
 
+## Harm that isn't a blow (a hard landing): no block, parry or knockback.
+func hurt(damage: float) -> void:
+	if health <= 0.0 or invulnerable:
+		return
+	health = maxf(0.0, health - damage)
+	health_changed.emit(health, max_health)
+	player.show_hit()
+	player.flash(Color(1, 0.3, 0.2))
+	SfxBus.play("hit_thud", player.global_position, -4.0)
+	if health <= 0.0:
+		died.emit()
+
+
 ## The eruption: he can't be hurt, and every press slams the ground around him.
 func set_erupting(on: bool) -> void:
 	erupting = on

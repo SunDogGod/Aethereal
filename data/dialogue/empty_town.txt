@@ -107,6 +107,23 @@ Aeneas breaks cover.
 Only the one holding Valentina is left. He backs into the wall.
 # DRAFT
 AENEAS: Let her go.
+# Wordless: two more agents come down the ramp from the town (the way the villagers were taken),
+# then cross the courtyard and walk up behind Aeneas and Isabella. They are put on their starting
+# markers on each cut, so nobody is seen popping in; their walks stop a step short, and the [stand]s below close
+# that last step on the next cut, as the knives come up.
+[call HallFx clear_text]
+[place Lieutenant LieutenantRampMark]
+[place IsabellaCaptor CaptorRampMark]
+[camera AgentsRampShot]
+[move Lieutenant LieutenantRampEndMark 2.6]
+[move IsabellaCaptor CaptorRampEndMark 2.6]
+[wait 2.4]
+[place Lieutenant LieutenantSneakMark]
+[place IsabellaCaptor CaptorSneakMark]
+[camera AgentsSneakShot]
+[move Lieutenant LieutenantBehindMark 2.4]
+[move IsabellaCaptor CaptorBehindMark 2.2]
+[wait 2.6]
 [stand Lieutenant Player -0.3]
 [pose Lieutenant captor_knife]
 [pose Player hostage]

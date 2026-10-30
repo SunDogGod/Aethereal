@@ -43,6 +43,8 @@ BASE = dict(
     # paint (face_paint.py): colours are filled in by each character
     eye_w=8.6, eye_h=0.0074, eye_lo=0.0050, eye_tilt=0.0008, iris_r=0.0068, iris_look=-0.06,
     lash=0.0019, wing=0.0, lower_lash=0.35, crease=0.6,
+    # the anime eye (eyes()): every character's eye numbers above are scaled by these
+    eye_size=1.3, eye_open=1.25, iris_size=1.45, iris_tall=1.12, lash_size=1.55,
     brow_in=8.5, brow_out=33.0, brow_z0=0.1205, brow_z1=0.1215, brow_arch=0.0028, brow_thick=0.0034,
     lip_h_up=0.0030, lip_h_lo=0.0038, lip_sat=0.45, smile=0.0, smirk=0.0,
     blush=0.0, age=0.0, stubble=0.0, shade=1.0,
@@ -69,6 +71,17 @@ def look(base, **changes):
     return out
 
 
+def eyes(L):
+    """The look with its painted eye numbers scaled up to the anime eye (the author, 2026-10-30:
+    "bigger eyes like anime characters"): eye_size widens and heightens the opening, eye_open makes
+    it taller still, iris_size the iris, lash_size the upper lash line. One place for every face."""
+    s, o = L["eye_size"], L["eye_open"]
+    out = dict(L)
+    out.update(eye_w=L["eye_w"] * s, eye_h=L["eye_h"] * s * o, eye_lo=L["eye_lo"] * s * o * 0.92,
+               iris_r=L["iris_r"] * L["iris_size"], lash=L["lash"] * L["lash_size"])
+    return out
+
+
 def _g(a, z, a0, z0, sa, sz):
     return np.exp(-((a - a0) / sa) ** 2 - ((z - z0) / sz) ** 2)
 
@@ -85,7 +98,7 @@ def relief(L, a, z):
     d = prof * np.exp(-(a / w) ** 3)
     d = d + L["nostril"] * _g(a, z, L["nose_w"] * 1.45, t - 0.006, 3.2, 0.0055)
     d = d - L["socket"] * _g(a, z, L["eye_a"] - 2.0, ez + 0.003, 11.0, 0.013)
-    d = d + L["eyeball"] * _g(a, z, L["eye_a"], ez, 7.0, 0.0065)
+    d = d + L["eyeball"] * _g(a, z, L["eye_a"], ez, 7.0 * L["eye_size"], 0.0065 * L["eye_size"])
     d = d + L["brow_ridge"] * _g(a, z, 17.0, L["brow_z"], 18.0, 0.008)
     d = d - L["temple"] * _g(a, z, 60.0, L["brow_z"], 10.0, 0.02)
     d = d + L["cheek"] * _g(a, z, L["cheek_a"], L["cheek_z"], 14.0, 0.016)

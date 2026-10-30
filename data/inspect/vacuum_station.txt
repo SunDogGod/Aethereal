@@ -14,3 +14,5 @@ DeadEmitter|An emitter like the one on the platform. This one stayed dark.|The l
 Roots|Roots, this far in. They came through the wall and kept going.|Something above all this is still alive.
 OldPod|The old capsule, rusted to the colour of sand, its hatch torn off and lying below it.|Two seats inside. One of them small.
 Tally|Chalk marks on the wall, in rows of five.|Someone is counting.
+# RestBed (Aeneas's bunk in the capsule, "E / Up: Rest") is not read from here: it plays scenes
+# from data/dialogue/vacuum_station.txt (the nights of the trip, then "rest").

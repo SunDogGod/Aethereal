@@ -30,6 +30,7 @@ def _inv(pts, values):
 
 
 def paint(head, L, hairline):
+    L = face.eyes(L)
     r = head.rect
     W, H = r.w * SS, r.h * SS
     u = (np.arange(W) + 0.5) / W
@@ -80,8 +81,12 @@ def _skin_shading(img, L, A, Z):
 
 
 def _eye(img, L, x, y, sd):
-    """One eye: x outward from its centre, y up, in metres. Almond shaped, the upper lid fuller
-    toward the nose, the outer corner lifted by eye_tilt."""
+    """One eye: x outward from its centre, y up, in metres; sd = 1 his left eye, -1 his right.
+    Almond shaped, the upper lid fuller toward the nose, the outer corner lifted by eye_tilt.
+    The anime eye (face.eyes() has already scaled the numbers): a tall oval iris tucked under the
+    upper lid, dark at the top where the lid shades it and lighter toward the bottom, a big pupil,
+    and two highlights on the same side of both eyes (as if lit from his left): a large one up
+    high, a small one low on the other side."""
     ew = L["eye_w"] * face.MDEG
     t = x / ew
     inside_t = np.clip(1.0 - t * t, 0.0, 1.0)
@@ -90,19 +95,26 @@ def _eye(img, L, x, y, sd):
     low = yc - L["eye_lo"] * inside_t ** 0.85 * (1.0 + 0.12 * t)
     open_ = ((np.abs(t) < 1.0) & (y < up) & (y > low)).astype(np.float32)
     sclera = np.ones_like(img) * L["sclera"]
-    shadow = np.clip(1.0 - (up - y) / 0.0018, 0.0, 1.0)            # the lid's shadow on the white
+    shadow = np.clip(1.0 - (up - y) / 0.0024, 0.0, 1.0)            # the lid's shadow on the white
     sclera *= (1.0 - 0.35 * shadow)[..., None]
-    xi, yi = L["iris_look"] * ew, yc + 0.0004
-    dist = np.sqrt((x - xi) ** 2 + (y - yi) ** 2)
     rr = L["iris_r"]
+    ry = rr * L["iris_tall"]
+    xi, yi = L["iris_look"] * ew, yc + 0.0008
+    dist = np.sqrt(((x - xi) / rr) ** 2 + ((y - yi) / ry) ** 2)    # 1 at the iris's edge
+    yy = (y - yi) / ry                                               # -1 bottom .. 1 top
     iris = np.ones_like(img) * L["iris"]
-    iris *= (1.0 + 0.30 * np.clip((yi - y) / rr, 0.0, 1.0) - 0.30 * np.clip((y - yi) / rr, 0.0, 1.0))[..., None]
-    iris *= (1.0 - 0.45 * np.clip((dist / rr - 0.78) / 0.22, 0.0, 1.0))[..., None]       # the dark rim
-    iris[dist < rr * 0.42] = L["pupil"]
-    glint = np.sqrt((x - (xi + 0.30 * rr)) ** 2 + (y - (yi + 0.38 * rr)) ** 2) < rr * 0.24
-    iris[glint] = rgb("#fbfaf6")
+    iris *= (1.0 + 0.65 * np.clip(-yy, 0.0, 1.0) ** 1.4 - 0.45 * np.clip(yy + 0.1, 0.0, 1.0))[..., None]
+    iris *= (1.0 - 0.55 * np.clip((dist - 0.80) / 0.20, 0.0, 1.0))[..., None]       # the dark rim
+    iris[dist < 0.42] = L["pupil"]
+    lite = rgb("#fbfaf6")
+
+    def spot(dx, dy, rad):
+        return np.sqrt(((x - xi - dx * sd * rr) / rr) ** 2 + ((y - yi - dy * ry) / ry) ** 2) < rad
     iris *= (1.0 - 0.3 * shadow)[..., None]
-    eye = np.where((dist < rr)[..., None], iris, sclera)
+    iris[spot(0.30, 0.36, 0.27)] = lite                              # the big highlight
+    small = spot(-0.34, -0.42, 0.13)
+    iris[small] = iris[small] * 0.25 + lite * 0.75                   # the small one, a touch softer
+    eye = np.where((dist < 1.0)[..., None], iris, sclera)
     m = open_[..., None]
     img *= 1.0 - m
     img += m * eye
@@ -116,7 +128,8 @@ def _eye(img, L, x, y, sd):
     _mix(img, lash, L["lash_col"], 1.0)
     lower = ((y <= low + 0.0001) & (y > low - 0.0006) & (np.abs(t) < 0.92)).astype(np.float32)
     _mix(img, lower, L["lash_col"], L["lower_lash"])
-    crease = ((y - up > 0.0026) & (y - up < 0.0034) & (np.abs(t) < 0.85)).astype(np.float32)
+    c0 = L["lash"] + 0.0010                                          # the lid crease sits above the lash
+    crease = ((y - up > c0) & (y - up < c0 + 0.0008) & (np.abs(t) < 0.85)).astype(np.float32)
     _mix(img, crease, L["skin"] * 0.72, 0.5 * L["crease"])
     _mix(img, ((np.abs(t + 1.0) < 0.07) & (np.abs(y - yc) < 0.0012)).astype(np.float32), rgb("#c98a86"), 0.6)
 
