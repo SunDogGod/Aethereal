@@ -12,3 +12,4 @@ __pycache__/
 /tests/logs/
 /tests/**/saves/
 /tests/**/shots/
+/tools/generators/out/
