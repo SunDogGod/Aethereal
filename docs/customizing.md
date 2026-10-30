@@ -347,6 +347,7 @@ Commands, one per line, in square brackets:
 | `[empower GuardName]` | That agent can't be beaten (hits land but don't count) |
 | `[kill GuardName]` | That agent drops (sacrificed), no blood |
 | `[heal]` | Aeneas back to full health |
+| `[unlock double_jump]` | Aeneas learns a move for good (kept by Continue and skip) |
 | `[place Name MarkName]` | That character stands on a Marker3D (the town's are under `StoryMarks`), facing its way |
 | `[move Name MarkName 2.5]` | That character walks to the marker in 2.5 seconds; the scene carries on meanwhile |
 | `[stand Name Other 0.62]` | Stands 0.62 m in front of Other, face to face. A minus number: that far *behind* Other, facing the same way (a hostage taker). `Player` is Aeneas |

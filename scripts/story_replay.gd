@@ -1,7 +1,7 @@
 class_name StoryReplay
 extends RefCounted
 ## Continue's fast-forward: replays a finished story scene without playing it. Only the commands
-## that change the level for good run: [hide] [show] [collapse] [kill] [empower] [erupt], and the
+## that change the level for good run: [hide] [show] [collapse] [kill] [empower] [erupt] [unlock], and the
 ## stage directions' end states ([place] [stand] [move] [face] [pose] [ink], story_stage.gd).
 ## Lines, cameras, waits, fades, titles, teleports, [heal], [call] and [level] are skipped, and a
 ## [fight] is handed back (unless already won) so Continue can start it once the screen is up.
@@ -57,6 +57,9 @@ static func apply(step: Dictionary, find: Callable, player: Player) -> void:
 		"erupt":
 			if player:
 				player.get_node("Combat").set_erupting(step.on)
+		"unlock":
+			if player:
+				player.unlock(step.ability)
 
 
 static func _find(root: Node, path: String, node_name: String) -> Node:

@@ -18,6 +18,7 @@ extends RefCounted
 ##                                    Not replayed by Continue: follow it with a [hide] / [place]
 ##                                    that leaves the same result if it matters later.
 ##   [erupt on|off] [empower Name] [kill Name] [collapse Name] [heal] (older commands, same as before)
+##   [unlock double_jump]  Aeneas learns a move for good (Continue and skip keep it)
 
 ## Agents taken off the enemies' physics layer by a close [stand] (Aeneas's body would push them
 ## away), with the layer they had: put back when the scene ends.
@@ -46,6 +47,9 @@ static func play(step: Dictionary, find: Callable, player: Player) -> void:
 		"heal":
 			if player:
 				player.get_node("Combat").heal_full()
+		"unlock":
+			if player:
+				player.unlock(step.ability)
 		"pose":
 			var anim := animator_of(node)
 			if anim and args.size() > 0:

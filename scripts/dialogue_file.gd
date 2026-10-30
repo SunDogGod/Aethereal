@@ -53,6 +53,9 @@ static func parse(source: String) -> Dictionary:
 					steps.append({"type": "collapse", "name": arg})  # a character falls and stays down (plays its death)
 				"heal":
 					steps.append({"type": "heal"})
+				"unlock":
+					steps.append({"type": "unlock", "ability": arg})  # Aeneas learns a move for good
+
 				"music":
 					steps.append({"type": "music", "name": arg})  # a track from audio/music; [music off] = silence
 				"pose", "place", "stand", "move", "face", "ink", "call":

@@ -216,6 +216,15 @@ func respawn_at(point: Vector3) -> void:
 	respawned.emit()
 
 
+## A move learned for good, from a story scene ([unlock double_jump]).
+func unlock(ability: String) -> void:
+	match ability:
+		"double_jump":
+			double_jump_unlocked = true
+		_:
+			push_warning("Player: no ability '%s' to unlock" % ability)
+
+
 func face(point: Vector3) -> void:
 	var look := point - global_position
 	model.rotation.y = atan2(-look.x, -look.z)

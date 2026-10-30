@@ -19,6 +19,7 @@ description: How to run a round of changes from the author's feedback list on Ae
    for design-heavy work (characters, cutscene staging, new systems).
 5. **Tie off loose ends** the builders flag (docs, README controls table, CLAUDE.md, the author's
    story docs: their words are drafts, update them and say so).
-6. **Battery, look at the screenshots, commit** (`git add -A`, one commit per verified round).
+6. **Battery, look at the screenshots, commit and push** (`git add -A`, one commit per verified round,
+   then `git push`: the private GitHub repo SunDogGod/Aethereal is the only backup).
 7. **Report in plain words**: what plays now, what's a draft or proposal for them to judge, what you
    couldn't see/hear/feel. No internal code rules (line limits etc.). Send 2-3 key screenshots.
