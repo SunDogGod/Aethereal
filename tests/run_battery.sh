@@ -28,6 +28,7 @@ run test_stealth 300 "$S/test_stealth.gd"
 run test_fall 300 "$S/test_fall.gd"
 run test_drop 300 "$S/test_drop.gd"
 run test_air 300 "$S/test_air.gd"
+run test_bed 300 "$S/test_bed.gd"
 run test_story 300 "$S/test_story.gd"
 run test_inspect 300 "$S/test_inspect.gd" TEST_SCENE=res://scenes/levels/empty_town.tscn
 run chase_captain 300 "$S/test_stage_chase.gd" CHASE_FIGHT=CaptainFight

@@ -13,3 +13,4 @@ __pycache__/
 /tests/**/saves/
 /tests/**/shots/
 /tools/generators/out/
+/tests/**/savegame*.json
