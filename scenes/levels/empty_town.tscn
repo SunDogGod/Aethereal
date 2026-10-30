@@ -102,6 +102,8 @@
 [ext_resource type="Script" path="res://scripts/vfx/hall_fx.gd" id="b9_hall_fx"]
 [ext_resource type="Script" path="res://scripts/vfx/memory_fade.gd" id="b9_memory_fade"]
 [ext_resource type="Script" path="res://scripts/props/balcony.gd" id="b9t_balcony"]
+[ext_resource type="Script" uid="uid://faud07fytxw8" path="res://scripts/cloud_layer.gd" id="cl_cloud_layer"]
+[ext_resource type="Material" path="res://materials/clouds_town.tres" id="cl_clouds_town"]
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_r8sky"]
 shader = ExtResource("r8_sky_shader")
 shader_parameter/faces = ExtResource("r8_backdrop_tex")
@@ -6424,6 +6426,12 @@ material = ExtResource("r3_pipe_rust")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.86, 16.3, 8.86)
 script = ExtResource("r3_pipe_run")
 points = PackedVector3Array(0, 0, 0, 0, -16.3, 0)
+
+[node name="Clouds" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 40, 58, -60)
+script = ExtResource("cl_cloud_layer")
+size = Vector2(640, 640)
+material = ExtResource("cl_clouds_town")
 
 [node name="Life" type="Node3D" parent="." unique_id=185977537]
 

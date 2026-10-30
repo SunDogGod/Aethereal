@@ -49,6 +49,10 @@
 - The Empty Town's sky is a prerendered far city (`textures/backdrop_city.png`, six cube faces, shown by
   `shaders/sky_backdrop.gdshader`; regenerate with tools/generators/render_backdrop.gd, windowed). Its haze
   is the fog colour, so the Environment keeps `fog_sky_affect = 0`; change both together.
+- Cloud decks (asked 2026-10-30, the town's "soft grey clouds at the tops of buildings"): a `Clouds`
+  node with `scripts/cloud_layer.gd` (stacked see-through sheets, `shaders/cloud_layer.gdshader`, its
+  own shader like the hall effects, snapping to the same wobble grid). Look and wind live in
+  `materials/clouds_*.tres`. Black Sand and the Massacre are under ceilings and have none.
 - A script that extends Block must be `@tool` too (tool mode is not inherited, so the editor would
   show nothing), and must guard its runtime behaviour with `Engine.is_editor_hint()`.
 - Scripts that change a Block's look while the game runs call `set_runtime_material(copy)`, never
