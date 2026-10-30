@@ -14,3 +14,4 @@ __pycache__/
 /tests/**/shots/
 /tools/generators/out/
 /tests/**/savegame*.json
+/tests/**/*.cfg.old
