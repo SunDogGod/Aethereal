@@ -26,9 +26,10 @@ put together: `docs/customizing.md`, "The big world".
 | --- | --- | --- |
 | Move | WASD or arrow keys | Left stick (tilt a little to walk) |
 | Camera | Mouse | Right stick |
-| Jump | Space (tap = hop, hold = full jump; again in the air = double jump, once Kael teaches it) | A |
+| Jump | Space (tap = hop, hold = full jump; again in the air = double jump, once bought in the pause menu's Skills page) | A |
 | Sprint (hold) | Shift | Click the left stick |
 | Crouch (press to toggle) | C or Ctrl | B |
+| Slide (while sprinting, hold crouch; let go or jump to break out) | Shift + C | L3 + B |
 | Take down (from behind) | F or left click | X |
 | Lock on / off | Q | Click the right stick |
 | Attack: with the sword sheathed, the first attack is a quick draw (tap = draw and cut at once; hold = the draw stance, feet planted, release = a harder cut); he puts it away about 4 s after a fight. With it drawn: tap = instant light swing; hold to wind up, release to swing (longer = harder, up to 0.6 s). Tap again as soon as a swing lands to chain the next; swings alternate sides | F or left click | X |
@@ -37,7 +38,7 @@ put together: `docs/customizing.md`, "The big world".
 | Dodge roll (with an agent fighting you close by, or while locked on) | Space | B |
 | Look at something (when a prompt like "E / Up: The well" shows) | E | D-pad up |
 | Flashlight on / off (in dark levels that have one: the Vacuum Station) | L | D-pad down |
-| Pause menu (resume, settings, title, quit) | Esc | Start (menu button) |
+| Pause menu (resume, skills, settings, title, quit) | Esc | Start (menu button) |
 | Skip a cutscene (hold) | Tab | Back / Select / View |
 | Developer menu (teleport, skip scene, fly, god mode; only while working on the game) | F1 | hold View/Back 1 s |
 

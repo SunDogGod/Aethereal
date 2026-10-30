@@ -7,7 +7,7 @@
 [sub_resource type="ArrayMesh" id="ArrayMesh_n8mnm"]
 resource_name = "lieutenant_props_Visor"
 _surfaces = [{
-"aabb": AABB(0.025552498, 0.10049399, -0.128304, 0.02770223, 0.011893429, 0.030561447),
+"aabb": AABB(0.0224737, 0.09931215, -0.13177156, 0.033859827, 0.014257111, 0.037496567),
 "attribute_data": PackedByteArray("vyE/Yn8iv15/Ij9iHyI/Yr8hv14fIr9ePyO/Xt8iv14/Iz9i3yI/Yv8jv16fI79e/yM/Yp8jP2K/JL9eXyS/Xr8kP2JfJD9ifyW/Xh8lv15/JT9iHyU/Yj8mv17fJb9ePyY/Yt8lP2L/Jr9enya/Xv8mP2KfJj9ivye/Xl8nv16/Jz9iXyc/Yn8ov14fKL9efyg/Yh8oP2I/Kb9e3yi/Xj8pP2LfKD9i"),
 "format": 34896613399,
 "index_count": 120,
@@ -17,7 +17,7 @@ _surfaces = [{
 "primitive": 3,
 "uv_scale": Vector4(0, 0, 0, 0),
 "vertex_count": 42,
-"vertex_data": PackedByteArray("YH0ZcP///dIb0J1KjOco893K0SqM5x7hYH0ZcP9/k/GeguWP//8A3xyHJqv/f2H5///LH42n2f8chyar/39h+cH6AACNp5fwYH0ZcP9/k/H//8sfcVg2/RyHJqv/f2H5wfoAAHFYkv9gfRlw/3+T8RvQnUpyGBfpHIcmq/9/YfndytEqchh79WB9GXD/f5PxnoLljwAAgukchyar/39h+WB9GXAAAHTsYH0ZcP9/k/EhNS3Vchh4+hyHJqv/f2H54y9htXIY3d5gfRlw/3+T8T0F//9xWHnyHIcmq/9/YfkAADPgcVi9zWB9GXD/f5PxPQX//42nnN4chyar/39h+QAAM+CNp/e6YH0ZcP9/k/EhNS3VjOem1RyHJqv/f2H54y9htYznq6VgfRlw/3+T8Z6C5Y///wDfHIcmq/9/YflgfRlw///90mB9GXD/f5PxbWP0a++iIY50eJtWw8Lt+IyWEJYSOGoOxK+8jxI4ag5ijBtNw8Lt+Ja9tpASOGoO3DTm48PC7fiU1BhzEjhqDrA7/9vDwu34ib5bLxI4ag71Slbgw8Lt+G+/Uh4SOGoOpF0W8cPC7fgtcDe/EjhqDtub0P/Dwu34v4BmvBI4ag4lWYf7w8Lt+I2MVqgSOGoORU2ZvMPC7fiMlhCWEjhqDm1j9GvDwu34")
+"vertex_data": PackedByteArray("2n28cv///dLsz1lGjedm86PL0yuN5x7h2n28cv9/k/EkgkKN//9339CF/qP/f2H5//+GGo2n5v/Qhf6j/39h+bX7AACNp5fw2n28cv9/k/H//4YacVhB/dCF/qP/f2H5tfsAAHFYkv/afbxy/3+T8ezPWUZxGAPp0IX+o/9/Yfmjy9MrcRh79dp9vHL/f5PxJIJCjQAAX+nQhf6j/39h+dp9vHIAAHTs2n28cv9/k/FbNCvUcRhO+tCF/qP/f2H5EjCluXEY3d7afbxy/3+T8UkE//9xWMTy0IX+o/9/YfkAAHjlcVi9zdp9vHL/f5PxSQT//42nF9/Qhf6j/39h+QAAeOWNp/e62n28cv9/k/FbNCvUjecy1tCF/qP/f2H5EjCluY3nq6Xafbxy/3+T8SSCQo3//3ff0IX+o/9/Yfnafbxy///90tp9vHL/f5PxbWP0a9mifo50eJtWw8Lt+IyWT5YSOGoOlq8UkBI4ag5ijBtNw8Lt+EG9IpESOGoO3DTm48PC7fjs1LtzEjhqDrA7/9vDwu34W77kLhI4ag71Slbgw8Lt+GO/IB4SOGoOpF0W8cPC7fg7cCq/EjhqDtub0P/Dwu34soBTvBI4ag4lWYf7w8Lt+IyMX6gSOGoORU2ZvMPC7fiMlk+WEjhqDm1j9GvDwu34")
 }]
 blend_shape_mode = 0
 
@@ -55,42 +55,42 @@ _surfaces = [{
 }]
 blend_shape_mode = 0
 
-[node name="LieutenantModel" type="Node3D" unique_id=977712205]
+[node name="LieutenantModel" type="Node3D" unique_id=2056806890]
 
-[node name="lieutenant" type="Node3D" parent="." unique_id=1460283633 instance=ExtResource("1_370gb")]
+[node name="lieutenant" type="Node3D" parent="." unique_id=1461214865 instance=ExtResource("1_370gb")]
 
-[node name="HeadGear" type="BoneAttachment3D" parent="." unique_id=846952893]
+[node name="HeadGear" type="BoneAttachment3D" parent="." unique_id=508908796]
 bone_name = "Head"
 bone_idx = 8
 use_external_skeleton = true
 external_skeleton = NodePath("../lieutenant/Armature/Skeleton3D")
 
-[node name="Visor" type="MeshInstance3D" parent="HeadGear" unique_id=2064106605]
+[node name="Visor" type="MeshInstance3D" parent="HeadGear" unique_id=1538821640]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0)
 layers = 2
 mesh = SubResource("ArrayMesh_n8mnm")
 
-[node name="Blade" type="BoneAttachment3D" parent="." unique_id=1363410720]
+[node name="Blade" type="BoneAttachment3D" parent="." unique_id=1137258264]
 bone_name = "Weapon_R"
 bone_idx = 18
 use_external_skeleton = true
 external_skeleton = NodePath("../lieutenant/Armature/Skeleton3D")
 
-[node name="BladeMesh" type="MeshInstance3D" parent="Blade" unique_id=1871747479]
+[node name="BladeMesh" type="MeshInstance3D" parent="Blade" unique_id=955756747]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0)
 layers = 2
 mesh = SubResource("ArrayMesh_qbngo")
 
-[node name="Knife" type="BoneAttachment3D" parent="." unique_id=171506307]
+[node name="Knife" type="BoneAttachment3D" parent="." unique_id=93062751]
 bone_name = "Knife"
 bone_idx = 1
 use_external_skeleton = true
 external_skeleton = NodePath("../lieutenant/Armature/Skeleton3D")
 
-[node name="KnifeMesh" type="MeshInstance3D" parent="Knife" unique_id=1797676877]
+[node name="KnifeMesh" type="MeshInstance3D" parent="Knife" unique_id=1296689377]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0)
 layers = 2
 mesh = SubResource("ArrayMesh_5mmre")
 
-[node name="Animator" type="Node" parent="." unique_id=1467014561]
+[node name="Animator" type="Node" parent="." unique_id=1061436845]
 script = ExtResource("3_u5mkp")

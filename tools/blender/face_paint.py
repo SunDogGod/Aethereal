@@ -103,9 +103,9 @@ def _eye(img, L, x, y, sd):
     dist = np.sqrt(((x - xi) / rr) ** 2 + ((y - yi) / ry) ** 2)    # 1 at the iris's edge
     yy = (y - yi) / ry                                               # -1 bottom .. 1 top
     iris = np.ones_like(img) * L["iris"]
-    iris *= (1.0 + 0.65 * np.clip(-yy, 0.0, 1.0) ** 1.4 - 0.45 * np.clip(yy + 0.1, 0.0, 1.0))[..., None]
-    iris *= (1.0 - 0.55 * np.clip((dist - 0.80) / 0.20, 0.0, 1.0))[..., None]       # the dark rim
-    iris[dist < 0.42] = L["pupil"]
+    iris *= (1.0 + 0.65 * np.clip(-yy, 0.0, 1.0) ** 1.4 - 0.55 * np.clip(yy + 0.1, 0.0, 1.0))[..., None]
+    iris *= (1.0 - 0.65 * np.clip((dist - 0.80) / 0.20, 0.0, 1.0))[..., None]       # the dark rim (reads at a distance)
+    iris[dist < 0.45] = L["pupil"]
     lite = rgb("#fbfaf6")
 
     def spot(dx, dy, rad):

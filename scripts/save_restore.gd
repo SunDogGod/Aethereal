@@ -105,6 +105,8 @@ static func apply(root: Node, data: Dictionary) -> void:
 		var combat := player.get_node_or_null("Combat")
 		if combat and not combat.erupting:
 			combat.heal_full()
+		if data.has("progress"):
+			player.skills.restore(data.progress)  # Aether, skills bought, the skill tree
 	# 9. The flashlight, as he left it.
 	for light in tree.get_nodes_in_group("flashlights"):
 		if light.has_method("set_on"):

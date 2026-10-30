@@ -1,6 +1,7 @@
 extends CanvasLayer
 ## The pause menu (autoload "PauseMenu"). In a level, Esc or Start (the gamepad's menu
-## button) pauses the game: Resume, Settings, Return to Title, Quit Game.
+## button) pauses the game: Resume, Skills (once the story opens the skill tree), Settings,
+## Return to Title, Quit Game.
 ## It keeps running while the game is paused (process mode Always), so a story scene, a
 ## fade or a fight just freezes behind it and carries on when you resume.
 ## It only opens in a level with a Player, never over the title screen.
@@ -28,6 +29,8 @@ var _busy := false             # on the way back to the title
 var _return_to: Control        # the line that opened a page or a question
 var _on_yes := Callable()      # what "Yes" does in the question box
 var _no: MenuItem
+var _skills_item: MenuItem
+var _skills_page := SkillsPanel.new()  # built in code, placed like the Settings page
 
 
 func _ready() -> void:
@@ -36,6 +39,8 @@ func _ready() -> void:
 	MenuFx.paused_player = $Blip
 	root_control.visible = false
 	items.add_child(MenuItem.make("Resume", ITEM_WIDTH, resume))
+	_skills_item = MenuItem.make("Skills", ITEM_WIDTH, _open_skills)
+	items.add_child(_skills_item)
 	items.add_child(MenuItem.make("Settings", ITEM_WIDTH, _open_settings))
 	items.add_child(MenuItem.make("Return to Title", ITEM_WIDTH, _ask.bind(
 			"Return to the title screen?", "", _return_to_title)))
@@ -45,6 +50,14 @@ func _ready() -> void:
 	answers.add_child(_no)
 	answers.add_child(MenuItem.make("Yes", 96.0, func() -> void: _on_yes.call()))
 	settings.closed.connect(_show_main)
+	_skills_page.visible = false
+	root_control.add_child(_skills_page)
+	root_control.move_child(_skills_page, settings.get_index() + 1)
+	for side in [SIDE_LEFT, SIDE_TOP, SIDE_RIGHT, SIDE_BOTTOM]:
+		_skills_page.set_anchor(side, settings.get_anchor(side))
+		_skills_page.set_offset(side, settings.get_offset(side))
+	_skills_page.grow_vertical = settings.grow_vertical
+	_skills_page.closed.connect(_show_main)
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -84,6 +97,8 @@ func open() -> void:
 	_set_mouse(Input.MOUSE_MODE_VISIBLE)
 	where.text = Chapters.label_of(get_tree().current_scene.scene_file_path)
 	where.visible = where.text != ""
+	var player := get_tree().get_first_node_in_group("player") as Player
+	_skills_item.visible = player != null and player.skills != null and player.skills.tree_open
 	root_control.visible = true
 	root_control.modulate.a = 0.0
 	create_tween().tween_property(root_control, "modulate:a", 1.0, 0.12)
@@ -99,6 +114,7 @@ func resume() -> void:
 	is_open = false
 	root_control.visible = false
 	settings.visible = false
+	_skills_page.visible = false
 	confirm.visible = false
 	get_viewport().gui_release_focus()
 	get_tree().paused = false
@@ -110,6 +126,8 @@ func _back() -> void:
 		_show_main()
 	elif settings.visible:
 		settings.close()  # its closed signal brings the main list back
+	elif _skills_page.visible:
+		_skills_page.close()
 	else:
 		resume()
 
@@ -117,6 +135,7 @@ func _back() -> void:
 func _show_main() -> void:
 	confirm.visible = false
 	settings.visible = false
+	_skills_page.visible = false
 	main_box.visible = true
 	MenuFx.focus_quietly(_return_to if is_instance_valid(_return_to) else items.get_child(0))
 	hints.text = "Enter / A   select        Esc / Start   resume"
@@ -127,6 +146,16 @@ func _open_settings() -> void:
 	main_box.visible = false
 	settings.open()
 	hints.text = "Left / Right   change        Esc / B   back"
+
+
+func _open_skills() -> void:
+	var player := get_tree().get_first_node_in_group("player") as Player
+	if player == null:
+		return
+	_return_to = get_viewport().gui_get_focus_owner()
+	main_box.visible = false
+	_skills_page.open(player.skills)
+	hints.text = "Enter / A   buy        Esc / B   back"
 
 
 ## A yes/no question; "No" has the focus, so a stray press never quits. With no small print it
@@ -153,6 +182,8 @@ func _refocus() -> void:
 		MenuFx.focus_quietly(_no)
 	elif settings.visible:
 		settings.focus_first()
+	elif _skills_page.visible:
+		_skills_page.focus_first()
 	else:
 		MenuFx.focus_quietly(items.get_child(0))
 

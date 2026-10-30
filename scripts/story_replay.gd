@@ -3,12 +3,13 @@ extends RefCounted
 ## Continue's fast-forward: replays a finished story scene without playing it. Only the commands
 ## that change the level for good run: [hide] [show] [collapse] [kill] [empower] [erupt] [unlock], and the
 ## stage directions' end states ([place] [stand] [move] [face] [pose] [ink], story_stage.gd).
-## Lines, cameras, waits, fades, titles, teleports, [heal], [call] and [level] are skipped, and a
+## Lines, cameras, waits, fades, titles, teleports, [heal], [call], [level] and [aether] (the save
+## keeps his Aether itself, so replaying would pay it twice) are skipped, and a
 ## [fight] is handed back (unless already won) so Continue can start it once the screen is up.
 ## If you add a dialogue command that changes the level, handle it here too, or Continue
 ## will forget it. Skipping a scene (story_skip.gd) uses apply() too.
 
-const SKIPPED := ["line", "camera", "wait", "fade", "title", "frame", "teleport", "heal", "level", "call", "music"]
+const SKIPPED := ["line", "camera", "wait", "fade", "title", "frame", "teleport", "heal", "level", "call", "music", "aether"]
 const STAGE := ["place", "stand", "move", "face", "pose", "ink"]
 
 
@@ -59,7 +60,7 @@ static func apply(step: Dictionary, find: Callable, player: Player) -> void:
 				player.get_node("Combat").set_erupting(step.on)
 		"unlock":
 			if player:
-				player.unlock(step.ability)
+				player.skills.unlock(step.ability)
 
 
 static func _find(root: Node, path: String, node_name: String) -> Node:

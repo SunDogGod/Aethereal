@@ -73,54 +73,54 @@ _surfaces = [{
 }]
 blend_shape_mode = 0
 
-[node name="AeneasModel" type="Node3D" unique_id=1890089004]
+[node name="AeneasModel" type="Node3D" unique_id=687594556]
 script = ExtResource("1_ktja4")
 
-[node name="aeneas" type="Node3D" parent="." unique_id=1722919687 instance=ExtResource("2_fcfcp")]
+[node name="aeneas" type="Node3D" parent="." unique_id=2120106638 instance=ExtResource("2_fcfcp")]
 
-[node name="Sword" type="BoneAttachment3D" parent="." unique_id=518964501]
+[node name="Sword" type="BoneAttachment3D" parent="." unique_id=1486974322]
 bone_name = "Weapon_R"
 bone_idx = 18
 use_external_skeleton = true
 external_skeleton = NodePath("../aeneas/Armature/Skeleton3D")
 
-[node name="Rocinante" type="MeshInstance3D" parent="Sword" unique_id=1966246213]
+[node name="Rocinante" type="MeshInstance3D" parent="Sword" unique_id=562618249]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0)
 layers = 2
 mesh = SubResource("ArrayMesh_roglf")
 
-[node name="Scabbard" type="BoneAttachment3D" parent="." unique_id=2007883037]
+[node name="Scabbard" type="BoneAttachment3D" parent="." unique_id=962093692]
 bone_name = "Scabbard"
 bone_idx = 2
 use_external_skeleton = true
 external_skeleton = NodePath("../aeneas/Armature/Skeleton3D")
 
-[node name="ScabbardMesh" type="MeshInstance3D" parent="Scabbard" unique_id=1548540833]
+[node name="ScabbardMesh" type="MeshInstance3D" parent="Scabbard" unique_id=2135981271]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0)
 layers = 2
 mesh = SubResource("ArrayMesh_53a5c")
 
-[node name="Knife" type="BoneAttachment3D" parent="." unique_id=982989076]
+[node name="Knife" type="BoneAttachment3D" parent="." unique_id=808839453]
 bone_name = "Knife"
 bone_idx = 1
 use_external_skeleton = true
 external_skeleton = NodePath("../aeneas/Armature/Skeleton3D")
 
-[node name="KnifeMesh" type="MeshInstance3D" parent="Knife" unique_id=864219420]
+[node name="KnifeMesh" type="MeshInstance3D" parent="Knife" unique_id=1873629696]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0)
 layers = 2
 mesh = SubResource("ArrayMesh_0xsei")
 
-[node name="Rifle" type="BoneAttachment3D" parent="." unique_id=1978539441]
+[node name="Rifle" type="BoneAttachment3D" parent="." unique_id=182288053]
 bone_name = "Back"
 bone_idx = 6
 use_external_skeleton = true
 external_skeleton = NodePath("../aeneas/Armature/Skeleton3D")
 
-[node name="RifleMesh" type="MeshInstance3D" parent="Rifle" unique_id=247369093]
+[node name="RifleMesh" type="MeshInstance3D" parent="Rifle" unique_id=1426841131]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0)
 layers = 2
 mesh = SubResource("ArrayMesh_0roku")
 
-[node name="Animator" type="Node" parent="." unique_id=1890660732]
+[node name="Animator" type="Node" parent="." unique_id=2071832924]
 script = ExtResource("4_y86gm")

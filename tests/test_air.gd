@@ -69,6 +69,19 @@ func _run() -> void:
 	print("AIR: 8 m drop with a late double jump -> lost %.0f, fell %s" % [saved_lost, fell])
 	ok = ok and not fell
 
+	# The slide: sprint, then hold crouch. Held: it runs out and he stays crouched.
+	var slide := await _slide(-1)
+	print("AIR: slide held -> started %s, top speed %.1f, crouched after %s" % [slide[0], slide[1], slide[2]])
+	ok = ok and slide[0] and slide[1] > player.sprint_speed and slide[2]
+	# Let go early: he is up, not crouched.
+	slide = await _slide(15)
+	print("AIR: slide let go -> started %s, crouched after %s" % [slide[0], slide[2]])
+	ok = ok and slide[0] and not slide[2]
+	# Jump out of it.
+	slide = await _slide(10, true)
+	print("AIR: slide jumped out -> airborne %s, sliding %s" % [slide[3], player._slide.active])
+	ok = ok and slide[3] and not player._slide.active
+
 	print("AIR %s" % ("PASS" if ok else "FAIL"))
 	quit()
 
@@ -103,6 +116,43 @@ func _settle() -> void:
 		await physics_frame
 	for i in 3:
 		await physics_frame
+
+
+## Sprints, slides, and lets go after `release_at` frames (-1: holds it). Returns
+## [started, top speed, crouched at the end, left the floor].
+func _slide(release_at: int, jump := false) -> Array:
+	player.respawn_at(Vector3(0, 0, 15))
+	player.camera_pivot.rotation.y = 0.0
+	await _settle()
+	Input.action_press("move_forward")
+	Input.action_press("sprint")
+	for i in 60:
+		await physics_frame
+	Input.action_press("crouch")
+	await physics_frame
+	await physics_frame  # physics_frame comes before the bodies move
+	var started: bool = player._slide.active
+	var top := 0.0
+	var airborne := false
+	for i in 70:
+		await physics_frame
+		top = maxf(top, Vector2(player.velocity.x, player.velocity.z).length())
+		if i == release_at:
+			if jump:
+				Input.action_press("jump")
+			else:
+				Input.action_release("crouch")
+		if not player.is_on_floor():
+			airborne = true
+	Input.action_release("jump")
+	Input.action_release("crouch")
+	Input.action_release("sprint")
+	Input.action_release("move_forward")
+	var crouched := player.is_crouched
+	await _settle()
+	if player.is_crouched:
+		player._set_crouched(false)
+	return [started, top, crouched, airborne]
 
 
 ## Dropped in from a respawn he never touched the floor, so give him his air jump by hand.

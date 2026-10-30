@@ -23,6 +23,12 @@ const HINTS := {
 		["E / Up", "Look at what the prompt names"]]},
 	"sprint": {"title": "SPRINT", "time": 5.0, "rows": [
 		["Shift / L3", "Hold to sprint"]]},
+	"slide": {"title": "SLIDE", "time": 6.0, "rows": [
+		["C / B while sprinting", "Slide. Jump or let go to break out"]]},
+	"skills": {"title": "SKILLS", "time": 8.0, "rows": [
+		["Esc / Start", "Pause, then Skills: spend your Aether"]]},
+	"double_jump": {"title": "DOUBLE JUMP", "time": 6.0, "rows": [
+		["Space / A in the air", "Jump again. Just above the ground, it breaks a fall"]]},
 }
 const POLL := 0.2              ## seconds between looks at the game
 const SPRINT_AFTER := 1.5      ## seconds of running flat out before the sprint hint
@@ -150,6 +156,14 @@ func _watch(step: float) -> void:
 			trigger("sprint")
 	else:
 		_running = 0.0
+	# Sprinting flat out for a moment: the slide.
+	if not fight and body and body.is_on_floor() and flat > run * 1.2:
+		trigger("slide")
+	var skills: Variant = player.get("skills")
+	if skills != null and skills.tree_open:
+		trigger("skills")
+	if player.get("double_jump_unlocked") == true:
+		trigger("double_jump")
 
 
 ## True while Aeneas is locked on or an agent is fighting him.

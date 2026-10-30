@@ -6,19 +6,26 @@ extends CharacterAnimLayers
 ## anims_agency.py, isabella_anims.py, captain_anims.py / captain_story.py, kael_anims.py).
 ##   story_pose("hostage")       play a pose; it holds its last frame (or keeps looping) until
 ##   story_clear()               ...this lets him go back to standing and walking
+## Grabs: captor_grab(_low) and hostage_grabbed play once and go on by themselves into captor_knife(_low)
+## and hostage (CHAIN), so [pose Lieutenant captor_grab] alone ends in the held loop.
 ## Props: the agents' knife is in hand during captor_knife; Kael's Lamento leaves his back during
 ## draw_lamento (set_lamento for a cut straight to it drawn or bloody); the captain loses his arm
 ## with set_arm_severed(true); attach() / detach() carry a body (or Valentina) in a hand.
 
 ## Whole-body poses. Loops: hostage, captive, held_by_throat, captor_knife(_low), hold_throat.
-const STORY := ["hostage", "drop_to_knees", "captive", "limp", "lifted_by_throat", "held_by_throat",
-		"captor_knife", "captor_knife_low", "heave_body",
+## captor_grab, captor_grab_low and hostage_grabbed run into their loops (CHAIN).
+const STORY := ["hostage", "hostage_grabbed", "drop_to_knees", "captive", "limp", "lifted_by_throat", "held_by_throat",
+		"captor_knife", "captor_knife_low", "captor_grab", "captor_grab_low", "heave_body",
 		"break_free", "lunge", "stabbed", "stagger_back", "kneel_draw", "collapse",
 		"spear_hand", "lift_throat", "hold_throat", "arm_severed", "throw_one_arm",
-		"draw_lamento", "sever_cut", "behead_cut", "bloody_stand"]
+		"draw_lamento", "sever_cut", "behead_cut", "bloody_stand",
+		"lean_look", "reach"]  ## The Grey (dream): lean_look, reach (tools/blender/grey_alien_anims.py)
 ## Upper-body poses: the legs keep walking under them while the scene moves the body.
 const STORY_UPPER := ["dragged", "drag_by_arm"]
 const KNIFE_POSES := ["captor_knife", "captor_knife_low"]
+## A pose that plays once and goes straight on into another (held) when it ends.
+const CHAIN := {"captor_grab": "captor_knife", "captor_grab_low": "captor_knife_low", "hostage_grabbed": "hostage"}
+const GRAB_DRAW := 0.30      ## captor_grab: the knife leaves its sheath for his left hand (anims_agency.py)
 ## A pose this character lacks, played as another: [pose Player collapse] = his death fall.
 const FALLBACK := {"collapse": "death"}
 const HIDE_DURING := {"heave_body": ["Blade"], "throw_one_arm": []}
@@ -137,13 +144,19 @@ func detach(node: Node3D, parent: Node = null) -> void:
 
 
 func _knife_in_hand() -> bool:
-	return super() or playing("full") in KNIFE_POSES
+	var l: Dictionary = _layers.full
+	if l.anim == "captor_grab" or l.anim == "captor_grab_low":
+		return l.time * _tree.get("parameters/full_rate/scale") >= GRAB_DRAW
+	return super() or l.anim in KNIFE_POSES
 
 
 func _step_story_props() -> void:
 	if not _hidden.is_empty() and story_playing() == "":
 		_show_hidden()  # a pose that ended by itself (not held)
 	var l: Dictionary = _layers.full
+	if CHAIN.has(l.anim) and l.hold and l.target > 0.0 and l.time >= l.length:
+		story_pose(CHAIN[l.anim], true, 0.0)  # a grab ends on the held loop's first frame
+		return
 	if l.anim == "draw_lamento" and l.target > 0.0 and not _lamento_drawn and l.time >= LAMENTO_SWAP:
 		set_lamento(true)
 

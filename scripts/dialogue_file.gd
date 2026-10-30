@@ -54,7 +54,9 @@ static func parse(source: String) -> Dictionary:
 				"heal":
 					steps.append({"type": "heal"})
 				"unlock":
-					steps.append({"type": "unlock", "ability": arg})  # Aeneas learns a move for good
+					steps.append({"type": "unlock", "ability": arg})  # a skill, or the skill tree, for good
+				"aether":
+					steps.append({"type": "aether", "amount": arg.to_int()})  # Aether to spend in the skill tree
 
 				"music":
 					steps.append({"type": "music", "name": arg})  # a track from audio/music; [music off] = silence

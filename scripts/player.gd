@@ -24,8 +24,12 @@ signal fell                              ## he dropped below fall_limit; a check
 @export var jump_cut := 0.5                 ## let go of jump early and he keeps this much upward speed
 @export var coyote_time := 0.1              ## seconds after running off a ledge when jump still works
 @export var jump_buffer_time := 0.12        ## seconds a jump press is remembered before landing
-@export var double_jump_unlocked := false   ## Kael teaches it in the station's training ([unlock double_jump])
+@export var double_jump_unlocked := false   ## bought with Aether in the skill tree (or tick it here to test)
 @export var double_jump_velocity := 7.5     ## the second jump's push; it replaces whatever fall speed he had
+
+@export_group("Sliding")
+@export var slide_speed := 12.0  ## metres per second as the slide starts (sprint, then hold crouch)
+@export var slide_time := 0.8    ## seconds a slide lasts; it slows to the crouch speed by the end
 
 @export_group("Crouching")
 @export var crouch_speed := 2.8   ## metres per second while crouched
@@ -55,7 +59,9 @@ var rooted := false           ## his feet stay planted (Combat sets it while he 
 var _coyote_timer := 0.0
 var _jump_buffer_timer := 0.0
 var _last_ground := Vector3.ZERO
+var skills: PlayerSkills  ## his Aether, the skills bought with it, the skill tree (player_skills.gd)
 var _air: PlayerAir  # the double jump and how hard a landing is (player_air.gd)
+var _slide: PlayerSlide  # sprint, then hold crouch (player_slide.gd)
 var _capsule: CapsuleShape3D
 var _stand_height := 0.0
 var _pivot_height := 0.0
@@ -67,6 +73,8 @@ func _enter_tree() -> void:
 func _ready() -> void:
 	_last_ground = global_position
 	_air = PlayerAir.new(self)
+	_slide = PlayerSlide.new(self)
+	skills = PlayerSkills.new(self)
 	_ensure_sprint_action()
 	# Our own copy of the collision capsule, so crouching can shrink it.
 	_capsule = body_shape.shape.duplicate()
@@ -83,7 +91,8 @@ func _physics_process(delta: float) -> void:
 	_apply_gravity(delta)
 	_handle_crouch()
 	_handle_jump(delta)
-	_handle_run(delta)
+	if not _slide.move(delta):
+		_handle_run(delta)
 	_air.before_move()
 	move_and_slide()
 	_handle_falling()
@@ -101,7 +110,7 @@ func _apply_gravity(delta: float) -> void:
 
 
 func _handle_crouch() -> void:
-	if controls_enabled and Input.is_action_just_pressed("crouch") and is_on_floor():
+	if controls_enabled and Input.is_action_just_pressed("crouch") and is_on_floor() and not _slide.try_start():
 		_set_crouched(not is_crouched)
 
 
@@ -214,15 +223,6 @@ func respawn_at(point: Vector3) -> void:
 	_last_ground = point
 	falling_back = false
 	respawned.emit()
-
-
-## A move learned for good, from a story scene ([unlock double_jump]).
-func unlock(ability: String) -> void:
-	match ability:
-		"double_jump":
-			double_jump_unlocked = true
-		_:
-			push_warning("Player: no ability '%s' to unlock" % ability)
 
 
 func face(point: Vector3) -> void:

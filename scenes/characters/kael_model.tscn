@@ -55,36 +55,36 @@ _surfaces = [{
 }]
 blend_shape_mode = 0
 
-[node name="KaelModel" type="Node3D" unique_id=1127769921]
+[node name="KaelModel" type="Node3D" unique_id=42474938]
 
-[node name="kael" type="Node3D" parent="." unique_id=607362463 instance=ExtResource("1_dqjmd")]
+[node name="kael" type="Node3D" parent="." unique_id=2074054544 instance=ExtResource("1_dqjmd")]
 
-[node name="Lamento" type="BoneAttachment3D" parent="." unique_id=66661242]
+[node name="Lamento" type="BoneAttachment3D" parent="." unique_id=1091761219]
 bone_name = "Back"
 bone_idx = 6
 use_external_skeleton = true
 external_skeleton = NodePath("../kael/Armature/Skeleton3D")
 
-[node name="LamentoMesh" type="MeshInstance3D" parent="Lamento" unique_id=1920329318]
+[node name="LamentoMesh" type="MeshInstance3D" parent="Lamento" unique_id=1977458557]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0)
 layers = 2
 mesh = SubResource("ArrayMesh_pkscn")
 
-[node name="LamentoDrawn" type="BoneAttachment3D" parent="." unique_id=1663455650]
+[node name="LamentoDrawn" type="BoneAttachment3D" parent="." unique_id=1914015905]
 bone_name = "Weapon_R"
 bone_idx = 18
 use_external_skeleton = true
 external_skeleton = NodePath("../kael/Armature/Skeleton3D")
 
-[node name="LamentoHand" type="MeshInstance3D" parent="LamentoDrawn" unique_id=428548629]
+[node name="LamentoHand" type="MeshInstance3D" parent="LamentoDrawn" unique_id=314088001]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0)
 layers = 2
 mesh = SubResource("ArrayMesh_04swu")
 
-[node name="LamentoBlood" type="MeshInstance3D" parent="LamentoDrawn" unique_id=213257121]
+[node name="LamentoBlood" type="MeshInstance3D" parent="LamentoDrawn" unique_id=155875807]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0)
 layers = 2
 mesh = SubResource("ArrayMesh_u2ieu")
 
-[node name="Animator" type="Node" parent="." unique_id=1713042526]
+[node name="Animator" type="Node" parent="." unique_id=172100590]
 script = ExtResource("3_jwagc")

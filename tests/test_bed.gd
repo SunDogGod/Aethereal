@@ -1,7 +1,8 @@
 extends SceneTree
 # Headless check of the capsule bed (rest_bed.gd) in the Vacuum Station:
-# prompt offered / not in a fight, rest heals and saves, beats in order (training gates them),
-# the dream shows and hides, Continue restores the bed's progress.
+# prompt offered / not in a fight, rest heals and saves, beats in order (the launch gates them),
+# the Grey night, the cube (Aether, the skill tree), buying the double jump in the pause menu,
+# and Continue restoring all of it.
 
 const LEVEL := "res://scenes/levels/vacuum_station.tscn"
 const FILE := "res://data/dialogue/vacuum_station.txt"
@@ -34,10 +35,9 @@ func _run() -> void:
 	await _load({})
 	bed = level.find_child("RestBed", true, false)
 	check("RestBed exists", bed != null)
-	check("EndOfAct walk-in trigger is gone", level.find_child("EndOfAct", true, false) == null)
-	check("Dream set hidden at start", not level.find_child("Dream", true, false).visible)
-	check("before training the bed plays rest (got %s)" % bed.next_scene(), bed.next_scene() == "rest")
-	check("no double jump before training", not player.double_jump_unlocked)
+	check("Grey hidden at start", level.find_child("Grey", true, false) != null and not level.find_child("Grey", true, false).visible)
+	check("before the launch the bed plays rest (got %s)" % bed.next_scene(), bed.next_scene() == "rest")
+	check("no skill tree yet", not player.skills.tree_open)
 
 	# Prompt at the bunk.
 	await _stand_at_bed()
@@ -68,59 +68,77 @@ func _run() -> void:
 	check("rest saved (reason %s, log %s)" % [data.get("reason"), data.get("story", {}).get(FILE, [])],
 			data.get("reason", "") == "story" and data.get("story", {}).get(FILE, []).has("rest"))
 
-	# Training (a trigger plays it), then the bed moves the story on.
-	story.play(FILE, "training")
-	await _read_all("training")
-	check("after training the bed plays first_sleep (got %s)" % bed.next_scene(), bed.next_scene() == "first_sleep")
-	check("training taught the double jump", player.double_jump_unlocked)
+	# The launch (a trigger plays it), then the bed moves the story on.
+	story.play(FILE, "launch")
+	await _read_all("launch")
+	check("after the launch the bed plays first_night (got %s)" % bed.next_scene(), bed.next_scene() == "first_night")
 	await _stand_at_bed()
 	combat.health = 40.0
 	Input.action_press("interact")
 	await _frames(2)
 	Input.action_release("interact")
-	check("first_sleep started", story.playing)
-	var dream := level.find_child("Dream", true, false) as Node3D
-	var orb := level.find_child("Orb0", true, false) as Node3D
-	var saw_dream := false
+	check("first_night started", story.playing)
+	var grey := level.find_child("Grey", true, false) as Node3D
+	var saw_grey := false
 	var saw_camera := false
-	var orb_start := orb.position
-	var orb_moved := false
+	var saw_cube := false
 	var presses := 0
-	while story.playing and presses < 60:
+	while story.playing and presses < 400:
 		await _frames(20)
-		if dream.visible:
-			saw_dream = true
-			if orb.position.distance_to(orb_start) > 0.01:
-				orb_moved = true
+		if grey and grey.visible:
+			saw_grey = true
+		if level.find_child("TrainingCube", true, false).visible:
+			saw_cube = true
 		var cam := root.get_viewport().get_camera_3d()
-		if cam and cam.name == "DreamShot":
+		if cam and cam.name == "GreyShot":
 			saw_camera = true
 		await _press()
-		print("   | %s" % story.get("_box").words.text)
 		await _press()
 		presses += 2
-	check("the dream set showed", saw_dream)
-	check("the camera cut to DreamShot", saw_camera)
-	check("the orbs drift", orb_moved)
-	check("dream hidden after waking", not dream.visible)
-	check("orbs hidden after waking", not orb.get_parent().visible)
+	check("the Grey showed", saw_grey)
+	check("the camera was his eyes (GreyShot)", saw_camera)
+	check("Grey hidden after", grey != null and not grey.visible)
+	check("Aeneas and Kael shown again", player.visible and level.find_child("Kael", true, false).visible)
+	check("the cube showed at the training", saw_cube)
+	check("cube hidden after", not level.find_child("TrainingCube", true, false).visible)
 	check("camera back on Aeneas", root.get_viewport().get_camera_3d() == player.get_node("CameraPivot/SpringArm3D/Camera3D"))
-	check("first_sleep healed him", combat.health >= combat.max_health)
-	check("next is month_passes (got %s)" % bed.next_scene(), bed.next_scene() == "month_passes")
-	await _frames(90)
-	data = SaveGame.load_save()
-	print("   save after first_sleep: %s" % data.get("story", {}))
+	check("first_night healed him", combat.health >= combat.max_health)
+	check("the sacrifice gave 3 Aether (got %d)" % player.skills.aether, player.skills.aether == 3)
+	check("the skill tree is open", player.skills.tree_open)
+	check("no double jump until bought", not player.double_jump_unlocked)
+	check("next is end_of_act (got %s)" % bed.next_scene(), bed.next_scene() == "end_of_act")
 
-	# Continue from that save: a fresh station, the bed remembers.
+	# The pause menu's Skills page buys the double jump.
+	var pause := root.get_node("PauseMenu")
+	pause.open()
+	await process_frame
+	check("pause menu offers Skills", pause._skills_item.visible)
+	pause._open_skills()
+	await _frames(3)
+	var page: SkillsPanel = pause._skills_page
+	check("Skills page shows %s" % page._aether.text, page.visible and page._aether.text == "Aether  3")
+	page._rows[0].emit_signal("pressed")
+	await process_frame
+	check("bought: double jump on, 0 Aether left", player.double_jump_unlocked and player.skills.aether == 0)
+	check("row says owned", page._rows[0].detail == "owned")
+	pause.resume()
+	await _frames(3)
+
+	# A save now keeps all of it.
+	var save := SaveState.capture(level, {FILE: ["arrival", "the_ai", "launch", "first_night"]}, "story",
+			player.global_transform, level)
+	check("save has the progress %s" % save.get("progress"), save.get("progress", {}).get("owned", []).has("double_jump"))
+	data = SaveGame._clean(JSON.parse_string(JSON.stringify(save)))
+
+	# Continue from that save: a fresh station, everything remembered.
 	await _load(data)
 	bed = level.find_child("RestBed", true, false)
-	check("Continue: bed's next is month_passes (got %s)" % bed.next_scene(), bed.next_scene() == "month_passes")
-	check("Continue: Dream hidden", not level.find_child("Dream", true, false).visible)
-	check("Continue: he still has the double jump", player.double_jump_unlocked)
+	check("Continue: bed's next is end_of_act (got %s)" % bed.next_scene(), bed.next_scene() == "end_of_act")
+	check("Continue: Grey hidden", not level.find_child("Grey", true, false).visible)
+	check("Continue: double jump, tree open, 0 Aether", player.double_jump_unlocked and player.skills.tree_open \
+			and player.skills.aether == 0)
 
-	# month_passes, then end_of_act.
-	await _use_bed("month_passes")
-	check("next is end_of_act (got %s)" % bed.next_scene(), bed.next_scene() == "end_of_act")
+	# end_of_act.
 	await _stand_at_bed()
 	Input.action_press("interact")
 	await _frames(2)

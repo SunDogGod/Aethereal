@@ -3,7 +3,10 @@
     hostage            held from behind with a knife at the throat: chin up, both hands on the
                        captor's forearm, a small struggle (loop). The captor ("captor_knife",
                        anims_agency.py) stands HOSTAGE_GAP metres behind, facing the same way.
-    drop_to_knees      the legs give and he drops onto both knees, slumped (held)
+    hostage_grabbed    the moment he is seized (GRAB_LEN seconds, alongside the captor's
+                       "captor_grab"): yanked back by the shoulder, a struggle, frozen by the knife;
+                       it ends on hostage's first frame and the game goes on into "hostage"
+    drop_to_knees     the legs give and he drops onto both knees, slumped (held)
     captive            wrists bound behind the back, head bowed (loop)
     dragged            pulled along by the right wrist, leaning back (loop, upper body: the legs
                        keep walking while the scene moves her). The agent's "drag_by_arm" leads
@@ -24,6 +27,8 @@ THROAT_Z = 1.385            # where the captor's knife sits on Aeneas (1.72 m); 
 LIFT = 0.40                 # how far the captain lifts Aeneas off the floor
 THROAT_GAP = 0.62           # the captain's root this far in front of Aeneas's, facing him
 DRAG_OFFSET = (0.26, 0.78)  # the agent's root from hers: metres to her right, metres ahead
+GRAB_LEN = 1.5              # hostage_grabbed / captor_grab: seconds from the grab to the held poses
+GRAB_KNIFE_AT = 0.92        # ...when the knife reaches the throat
 
 
 def feet(s, w=0.12, front=0.02, turn=7):
@@ -37,20 +42,50 @@ def hang(s, dx=0.0, dy=0.0, dz=0.0):
             "arm_R": {"ikr": _v((0.03 + dx, 0.05 + dy, -0.52 + dz), s), "pole": (0.3, -1, -0.2), "hand": (6, 0, 8)}}
 
 
+def hostage_key(s, tw=0.0, tug=0.0, lift=0.0):
+    """A key of the hostage loop: stiff and on his toes, leaning back from the blade, chin up; his
+    hands claw at the forearm across his throat (it comes round his left shoulder)."""
+    z = THROAT_Z * s / 1.0
+    return P(torso(tw, 7, 0, (0, -0.035, -0.008 + lift), s, hips_share=0.3),
+             {"Neck": (12, 0, -tw * 0.5), "Head": (14, 0, -4 - tw)},
+             {"leg_L": {"ankle": _v((-0.12, 0.03, 0.085 + lift), s), "pole": (-0.2, 1, 0), "foot": (-8 - lift * 120, 6)},
+              "leg_R": {"ankle": _v((0.12, -0.03, 0.085 + lift), s), "pole": (0.2, 1, 0), "foot": (-8 - lift * 120, -6)}},
+             {"arm_L": {"ik": (-0.10 * s, (0.15 + tug) * s, z - 0.02 * s), "pole": (-0.9, -0.1, -0.5),
+                        "hand": (-30, 0, 20)},
+              "arm_R": {"ik": (0.02 * s, (0.18 + tug) * s, z - 0.035 * s), "pole": (0.9, -0.2, -0.5),
+                        "hand": (-20, 0, -40)}})
+
+
 def hostage(s):
-    """Stiff and on his toes, leaning back from the blade, chin up; his hands claw at the forearm
-    across his throat (it comes round his left shoulder)."""
-    def key(tw, tug, lift):
-        z = THROAT_Z * s / 1.0
-        return P(torso(tw, 7, 0, (0, -0.035, -0.008 + lift), s, hips_share=0.3),
-                 {"Neck": (12, 0, -tw * 0.5), "Head": (14, 0, -4 - tw)},
-                 {"leg_L": {"ankle": _v((-0.12, 0.03, 0.085 + lift), s), "pole": (-0.2, 1, 0), "foot": (-8 - lift * 120, 6)},
-                  "leg_R": {"ankle": _v((0.12, -0.03, 0.085 + lift), s), "pole": (0.2, 1, 0), "foot": (-8 - lift * 120, -6)}},
-                 {"arm_L": {"ik": (-0.10 * s, (0.15 + tug) * s, z - 0.02 * s), "pole": (-0.9, -0.1, -0.5),
-                            "hand": (-30, 0, 20)},
-                  "arm_R": {"ik": (0.02 * s, (0.18 + tug) * s, z - 0.035 * s), "pole": (0.9, -0.2, -0.5),
-                            "hand": (-20, 0, -40)}})
-    return keyed([(0.0, key(0, 0.0, 0.0)), (0.7, key(-4, 0.02, 0.012)), (1.4, key(3, -0.01, 0.006))], loop_len=2.1)
+    """The held loop (it starts on hostage_key(s), where hostage_grabbed ends)."""
+    return keyed([(0.0, hostage_key(s)), (0.7, hostage_key(s, -4, 0.02, 0.012)), (1.4, hostage_key(s, 3, -0.01, 0.006))],
+                 loop_len=2.1)
+
+
+def hostage_grabbed(s):
+    """Seized from behind (the captor's "captor_grab", anims_agency.py, plays alongside): a hand
+    clamps his right shoulder and yanks him back, his head whips round; his left hand claws at the
+    hand on his shoulder and he wrenches one way, then the other; the knife comes over his left
+    shoulder to his throat (GRAB_KNIFE_AT) and he freezes, hands flying up to the forearm, chin
+    up: the first frame of "hostage"."""
+    stand = P(torso(0, -2, 0, (0, 0, -0.02), s), feet(s), hang(s))
+    shoulder = (0.11 * s, -0.02 * s, 1.40 * s)        # the captor's hand on his right shoulder
+    jolt = P(torso(-12, 8, 0, (0, -0.03, -0.035), s, look=0.2), {"Neck": (-6, 0, -10), "Head": (-4, 0, -22)},
+             {"leg_L": {"ankle": _v((-0.12, 0.09, 0.10), s), "pole": (-0.2, 1, 0), "foot": (-14, 6)},
+              "leg_R": {"ankle": _v((0.13, -0.09, 0.085), s), "pole": (0.2, 1, 0), "foot": (0, -10)}},
+             {"arm_L": {"ikr": _v((-0.22, 0.20, -0.24), s), "pole": (-0.6, -1, -0.1), "hand": (10, 0, -30)},
+              "arm_R": {"ikr": _v((0.10, -0.13, -0.44), s), "pole": (0.3, -1, 0.2), "hand": (6, 0, 8)}})
+    planted = {"leg_L": {"ankle": _v((-0.13, 0.07, 0.085), s), "pole": (-0.2, 1, 0), "foot": (0, 8)},
+               "leg_R": {"ankle": _v((0.13, -0.08, 0.085), s), "pole": (0.2, 1, 0), "foot": (0, -10)}}
+    claw = P(torso(10, -4, 0, (0, -0.01, -0.04), s, look=0.6), {"Neck": (-4, 0, -6), "Head": (-2, 0, -14)}, planted,
+             {"arm_L": {"ik": shoulder, "pole": (-0.3, 1, -0.6), "hand": (-40, 0, 40)},
+              "arm_R": {"ikr": _v((0.12, -0.10, -0.44), s), "pole": (0.3, -1, 0.2), "hand": (6, 0, 8)}})
+    wrench = P(torso(-12, 5, 3, (0, -0.03, -0.045), s, look=0.5), {"Neck": (2, 0, 4), "Head": (4, 0, 6)}, planted,
+               {"arm_L": {"ik": (0.10 * s, -0.01 * s, 1.39 * s), "pole": (-0.3, 1, -0.6), "hand": (-40, 0, 40)},
+                "arm_R": {"ikr": _v((0.14, 0.12, -0.38), s), "pole": (0.4, -1, -0.2), "hand": (0, 0, 10)}})
+    freeze = P(hostage_key(s, -3, 0.05, 0.004), {"Neck": (16, 0, 2), "Head": (16, 0, -2)})
+    return keyed([(0.0, stand, "snap"), (0.20, jolt, "io"), (0.46, claw, "io"), (0.72, wrench, "in"),
+                  (GRAB_KNIFE_AT + 0.08, freeze, "io"), (GRAB_LEN, hostage_key(s))])
 
 
 def drop_to_knees(s):
@@ -136,6 +171,7 @@ def held_by_throat(s):
 def add_all(rig, make_action):
     s = rig.head("Hips").z / 0.93
     make_action(rig, "hostage", hostage(s), 2.1, loop=True)
+    make_action(rig, "hostage_grabbed", hostage_grabbed(s), GRAB_LEN)
     make_action(rig, "drop_to_knees", drop_to_knees(s), 0.95)
     make_action(rig, "captive", captive(s), 4.5, loop=True)
     make_action(rig, "dragged", dragged(s), 1.0, loop=True)

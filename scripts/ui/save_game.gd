@@ -170,6 +170,10 @@ static func _clean(raw: Dictionary) -> Dictionary:
 				out.guards_down.append({"key": g.key, "pos": g.pos, "yaw": _num(g.get("yaw"), 0.0),
 						"killed": g.get("killed", false) == true})
 	out.flashlight = raw.get("flashlight", false) == true
+	var progress: Variant = raw.get("progress")  # older saves have none: no Aether, no skills
+	if progress is Dictionary:
+		out.progress = {"aether": maxi(0, int(_num(progress.get("aether"), 0.0))),
+				"owned": _strings(progress.get("owned")), "tree_open": progress.get("tree_open", false) == true}
 	return out
 
 

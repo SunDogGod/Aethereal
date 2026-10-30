@@ -11,7 +11,7 @@ const UPPER_BONES := ["Spine", "Chest", "Neck", "Head", "Shoulder_L", "Shoulder_
 		"UpperArm_R", "LowerArm_L", "LowerArm_R", "Hand_L", "Hand_R", "Weapon_L", "Weapon_R", "Back", "Scabbard"]
 const UPPER := ["windup_L", "windup_R", "block", "telegraph", "telegraph_hook", "telegraph_heavy", "cast", "sheathe"]
 const FULL := ["sweep_LR", "sweep_RL", "dodge_roll", "dodge_back", "hit", "stab", "death", "strike", "strike_hook",
-		"strike_heavy", "stagger", "iai", "draw_cut"]
+		"strike_heavy", "stagger", "iai", "draw_cut", "slide", "slide_getup"]
 const LOOPS := ["idle", "walk", "run", "sprint", "crouch_idle", "crouch_walk", "fall"]
 const STAB_DRAW := 0.13     ## in the stab, the knife leaves its sheath for the left hand...
 const STAB_SHEATHE := 0.64  ## ...and goes back

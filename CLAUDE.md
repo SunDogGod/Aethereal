@@ -115,8 +115,12 @@
   down a fatal drop (landing faster than `fatal_landing_speed`, about 6 m) doesn't count, or a fall
   restart would put him past the section he skipped.
 - Landings are judged by speed (`scripts/player_air.gd`): under `safe_landing_speed` (~3.4 m) nothing,
-  then damage up to the fatal speed. The double jump (unlocked by `[unlock double_jump]` in the
-  station's training) resets his fall speed, so one used just above the floor saves him.
+  then damage up to the fatal speed. The double jump resets his fall speed, so one used just above
+  the floor saves him. Sliding: sprint, then hold crouch (`scripts/player_slide.gd`).
+- Aether and skills (`scripts/player_skills.gd`): a sacrifice gives Aether (`[aether 3]`), Kael opens
+  the pause menu's Skills page (`[unlock skill_tree]`), skills are `data/skills/*.tres` (SkillData)
+  bought there. The save keeps them as "progress"; Continue's replay skips `[aether]` so it never
+  pays twice. A skill that changes play needs a line in `PlayerSkills.unlock()`.
 - Checkpoints only move forward: the StealthDirector ranks them by their order under the level's
   `Checkpoints` node (and, in the big world, by zone order first), so keep that list in route order.
   A lost fight waits for the director's `restarted` signal before it starts again (pause-safe).

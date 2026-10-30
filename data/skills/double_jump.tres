@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="SkillData" format=3]
+
+[ext_resource type="Script" path="res://scripts/skill_data.gd" id="1_skill"]
+
+[resource]
+script = ExtResource("1_skill")
+id = "double_jump"
+title = "Double Jump"
+description = "Jump again at the top of a jump. Used just above the ground, it breaks a long fall."
+cost = 3
+order = 0

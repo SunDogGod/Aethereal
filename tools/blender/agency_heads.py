@@ -145,7 +145,7 @@ def eyepiece(ch, head, look, r_lens, r_frame):
                   "cap_len": 0.0} for d in (d0, d1)]
         rings[-1]["cap_len"] = 0.0012 * hs
         mesh.loft(part, rings, 10, uv, cap0="pole", cap1="pole")
-    k = look["eye_size"]                                 # the lens grows with the anime eye (face.eyes)
+    k = look["eye_size"] * 1.1                           # the lens grows with the anime eye (face.eyes) and covers it
     disc(P, -0.004, 0.0015, 0.0128 * k, {"Head": 1.0}, r_frame.uv)
     lens = ch.prop("Visor", "Head", "HeadGear")
     disc(lens, 0.0012, 0.0026, 0.0104 * k, {}, r_lens.uv)

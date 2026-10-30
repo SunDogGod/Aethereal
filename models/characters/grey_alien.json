@@ -1,0 +1,9 @@
+{
+ "name": "grey_alien",
+ "root": "GreyAlienModel",
+ "glb": "res://models/characters/grey_alien.glb",
+ "props_glb": "",
+ "scene": "res://scenes/characters/grey_alien_model.tscn",
+ "attach": [],
+ "root_script": ""
+}

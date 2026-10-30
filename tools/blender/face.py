@@ -44,7 +44,7 @@ BASE = dict(
     eye_w=8.6, eye_h=0.0074, eye_lo=0.0050, eye_tilt=0.0008, iris_r=0.0068, iris_look=-0.06,
     lash=0.0019, wing=0.0, lower_lash=0.35, crease=0.6,
     # the anime eye (eyes()): every character's eye numbers above are scaled by these
-    eye_size=1.3, eye_open=1.25, iris_size=1.45, iris_tall=1.12, lash_size=1.55,
+    eye_size=1.45, eye_open=1.32, iris_size=1.68, iris_tall=1.12, lash_size=1.75,
     brow_in=8.5, brow_out=33.0, brow_z0=0.1205, brow_z1=0.1215, brow_arch=0.0028, brow_thick=0.0034,
     lip_h_up=0.0030, lip_h_lo=0.0038, lip_sat=0.45, smile=0.0, smirk=0.0,
     blush=0.0, age=0.0, stubble=0.0, shade=1.0,

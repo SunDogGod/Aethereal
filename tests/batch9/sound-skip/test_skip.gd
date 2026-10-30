@@ -158,6 +158,8 @@ func _snapshot(scene: String) -> Dictionary:
 			continue
 		var key := n
 		s[key + ".visible"] = node.is_visible_in_tree()
+		if not node.is_visible_in_tree():
+			continue  # hidden (thrown on the fire, say): where it lies can't be seen
 		s[key + ".pos"] = _v(node.global_position)
 		var anim := StoryStage.animator_of(node)
 		if anim:
@@ -177,7 +179,12 @@ func _compare(label: String, a: Dictionary, b: Dictionary) -> void:
 			continue
 		var same: bool = str(a[k]) == str(b.get(k))
 		if a[k] is Vector3 and b.get(k) is Vector3:
-			same = a[k].distance_to(b[k]) < 0.15
+			# An agent (it has a .state) drifts a little on his own: nudged apart by the others
+			# (Guard._separate), or already fighting. Others must land where the scene put them.
+			var tolerance := 0.6 if a.has(k.trim_suffix(".pos") + ".state") else 0.15
+			same = a[k].distance_to(b[k]) < tolerance
+		if k.ends_with(".yaw") and b.get(k) is float:
+			same = absf(angle_difference(a[k], b[k])) < 0.15  # 3.1 and -3.1 face the same way
 		if k == "fade_a" and b.get(k) is float:
 			same = absf(a[k] - b[k]) <= 0.1  # the next level's fade-in, caught a frame apart
 		if not same:

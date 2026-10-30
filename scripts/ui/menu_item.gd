@@ -71,6 +71,13 @@ func _ready() -> void:
 	pressed.connect(_on_pressed)
 
 
+## Changes the small text on the right (a price that became "owned", say).
+func set_detail(words: String) -> void:
+	detail = words
+	if _detail:
+		_detail.text = words
+
+
 func _make_label(words: String, size: int, color: Color) -> Label:
 	var label := Label.new()
 	label.text = words

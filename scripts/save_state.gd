@@ -51,6 +51,8 @@ static func capture(root: Node, story_log: Dictionary, reason: String, spot: Tra
 	for light in tree.get_nodes_in_group("flashlights"):
 		if light.has_method("is_on") and light.is_on():
 			data.flashlight = true
+	if player and player.skills:
+		data.progress = player.skills.to_save()  # Aether, skills bought, the skill tree
 	return data
 
 

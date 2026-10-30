@@ -2,18 +2,38 @@
 # a dead Precursor vacuum-tube station; a house-sized capsule; neither can work the panel;
 # a hologram AI offers takeoff, one destination remaining, ETA one month; Kael begins training.
 #
-# The trip is lived in the capsule (2026-10-30). After the launch Kael trains him on the mat;
-# then the bed moves the story on, one sleep at a time: Aeneas's bunk offers "E / Up: Rest"
-# (RestBed in the level, under Inspect). Its first sleep after training is first_sleep (the
-# first dream), the next is month_passes, the next end_of_act. Any other time, and once those
-# are used up, resting plays "rest". Every rest heals him ([heal]) and the game saves when the
-# scene ends.
-# A line with "# DRAFT" just above it was written for the bed; rewrite it in your voice.
+# The author's order (2026-10-30): on entering, Aeneas asks Kael what happened, what Aether is, and
+# Kael says he will train him. They board; Aeneas sleeps (his bunk: "E / Up: Rest", RestBed under
+# Inspect). The first sleep is first_night: a Grey stands over his bed (first person), he wakes,
+# ONE MONTH LATER, Kael trains him with the sword, then shows him the cube: Aeneas gives up
+# something he loves and gets Aether, and the pause menu's Skills page opens (spend it on the
+# double jump). The next sleep ends the act. Any other rest plays "rest". Every rest heals him
+# and the game saves when the scene ends.
+# A line with "# DRAFT" just above it is a draft from those beats; rewrite it in your voice.
 
 === arrival ===
 [camera HallShot]
 A hall built for crowds, and nobody has stood in it for an age.
 KAEL: Precursor transit. The tubes ran under everything, once.
+[frame Kael]
+# DRAFT
+AENEAS: What happened back there? In the hall.
+# DRAFT
+KAEL: A harvest. The Agency feeds people to the cube, and the cube pays them in power.
+# DRAFT
+KAEL: Your mother gave herself to it instead. So you would walk out.
+# DRAFT
+AENEAS: And what came out of me? The ground. The weight.
+# DRAFT
+KAEL: Aether. Everything vibrates. Thought becomes energy, and energy becomes Aether.
+# DRAFT
+KAEL: Most people make a trickle of it. A sacrifice tunes you, and then it pours.
+# DRAFT
+KAEL: The cube is the shortcut. It always takes more than it shows.
+# DRAFT
+AENEAS: Then teach me.
+# DRAFT
+KAEL: I will. To stand first, then the sword. Then the rest.
 [camera]
 
 === the_ai ===
@@ -37,59 +57,77 @@ The door seals. The tube goes dark, then the dark starts to move.
 [fade out]
 [teleport TrainingMark]
 [fade in]
+# DRAFT
+KAEL: Sleep. We start in the morning.
 
-=== training ===
+# The first night: a Grey over his bed, seen through his eyes (the author, 2026-10-30). Then the
+# month passes, the sword, and the cube. DRAFT, all of it.
+=== first_night ===
+[fade out]
+[heal]
+[hide LivingLight]
+[hide TrainingLight]
+[hide LampA]
+[hide LampB]
+[show NightLight]
+# Seen through his eyes: his own body and Kael's would stand in the shot.
+[hide Player]
+[hide Kael]
+[show Grey]
+[pose Grey lean_look]
+[camera GreyShot]
+[wait 1.5]
+[fade in]
+[wait 2.5]
+# DRAFT
+He can't move.
+[pose Grey reach]
+[wait 2.4]
+[fade out]
+[pose Grey]
+[hide Grey]
+[fade in]
+[wait 1.2]
+# DRAFT
+He wakes. Nothing there. The capsule hums, and the dark outside keeps moving.
+[fade out]
+[hide NightLight]
+[show LivingLight]
+[show TrainingLight]
+[show LampA]
+[show LampB]
+[camera]
+[title ONE MONTH LATER]
+[teleport TrainingMark]
+[show Player]
+[show Kael]
 [camera TrainingShot]
+[fade in]
 KAEL: Again.
 Aeneas picks the practice blade up off the mat.
 KAEL: You hold it like it owes you money. Again.
 # DRAFT
-Then Kael has him jump, and jump again at the top of it, off nothing at all.
+Day after day of it, until the blade stops fighting him.
+[show TrainingCube]
+[frame TrainingCube]
 # DRAFT
-It takes the rest of the day before his feet believe it.
-[unlock double_jump]
+Kael sets the black cube on the mat between them.
 # DRAFT
-By night his arms won't lift. The bunks are made up.
+KAEL: The other lesson. Something you love goes in. Something comes out.
+# DRAFT (the keepsake is a placeholder: the author picks what he gives up)
+Aeneas takes out his mother's keepsake. He holds it a long time.
+[show CubeGlow]
+# DRAFT
+He gives it to the cube.
+[aether 3]
+[unlock skill_tree]
+# DRAFT
+Something comes back: warm, humming in his chest. Aether, his to spend.
+# DRAFT
+KAEL: Spend it well. It cost you.
+[hide CubeGlow]
+[hide TrainingCube]
 [camera]
-
-# The first night in the capsule: the first dream. DRAFT, all of it. Fragments only, no faces and
-# no story facts: his Third Eye only properly opens later, at Temek. The bright lights at the edge
-# of sight are the first hint of the Mantids. The set is the Dream node under the level.
-=== first_sleep ===
-[fade out]
-[heal]
-# DRAFT
-He sleeps.
-[show Dream]
-[camera DreamShot]
-[fade in]
-[wait 2]
-# DRAFT
-Dark. Heat, close as a breath.
-# DRAFT
-A hand.
-# DRAFT
-A corridor that goes on further than it should.
-[show DreamOrbs]
-# DRAFT
-At the edge of sight, lights. Bright, round, drifting.
-# DRAFT
-They are watching him.
-[fade out]
-[hide DreamOrbs]
-[hide Dream]
-[camera]
-[fade in]
-# DRAFT
-He wakes. The capsule hums around him. Outside the window the dark is still moving.
-
-=== month_passes ===
-[fade out]
-[heal]
-# DRAFT
-The days run together. Train, eat, sleep. The tube runs on.
-[title ONE MONTH LATER]
-[fade in]
 
 === end_of_act ===
 [fade out]
@@ -97,7 +135,7 @@ The days run together. Train, eat, sleep. The tube runs on.
 Some time in the night, the capsule begins to slow.
 [level res://scenes/ui/title_screen.tscn]
 
-# Any other rest: before training, and once the nights above are used up. DRAFT.
+# Any other rest: before the launch, and once the nights above are used up. DRAFT.
 === rest ===
 [fade out]
 [heal]

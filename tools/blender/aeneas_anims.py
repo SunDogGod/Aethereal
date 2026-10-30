@@ -9,6 +9,9 @@
                the last part deepens for up to 0.6 s of charge
   draw_cut     the cross-body quick draw: out of the scabbard at his left hip and straight into a
                left-to-right cut; the blade crosses his front at DRAW_HIT seconds
+  slide        the sprint slide (whole body): down by 0.2 s, feet first, right leg out, left folded
+               under, left hand trailing; hold its last frame for as long as he slides
+  slide_getup  up out of the slide over the folded leg into a running lean
   sheathe      the blade back into the scabbard (an upper-body action, so he can walk meanwhile);
                it is home at SHEATHE_HOME seconds
 The game uses the same numbers: DRAW_HIT in scripts/character_animator.gd and SHEATHE_HOME in
@@ -184,6 +187,53 @@ def sheathe(rig, s):
                   (0.65, home)])
 
 
+# ---------------------------------------------------------------- the slide
+def slide_pose(s, skid=0.0):
+    """Feet first and low: his weight back on his left hip, the right leg out straight ahead with the
+    heel down and toes up, the left leg folded under it (knee out to the side), the left hand
+    trailing on the ground behind him, the right arm up and forward for balance; the head stays up,
+    watching where he goes. `skid` (-1..1) shakes it a little as he scrapes along."""
+    return K.P({"hips": {"loc": (0.02 * s, -0.05 * s, (-0.66 + 0.006 * skid) * s), "rot": (30, -10, -6)},
+                "Spine": (14 + skid, -4, -4), "Chest": (8, -3, -4), "Neck": (-24, 2, 4), "Head": (-20, 3, 6 + 2 * skid),
+                "Shoulder_L": (0, 0, 6), "Scabbard": (-58, 0, 8)},
+               {"leg_R": {"ankle": (0.11 * s, 0.78 * s, 0.10 * s), "pole": (0.1, 0.2, 1.0), "foot": (34, -4)},
+                "leg_L": {"ankle": (0.03 * s, 0.36 * s, 0.075 * s), "pole": (-1.0, 0.3, -0.1), "foot": (-10, -70)}},
+               {"arm_L": {"ik": ((-0.38 - 0.01 * skid) * s, -0.50 * s, 0.05 * s), "pole": (-0.5, 0.3, 0.6), "hand": (-30, 0, -10)},
+                "arm_R": {"ikr": (0.30 * s, 0.14 * s, -0.10 * s), "pole": (0.3, -0.6, -1.0), "blade": (-125, 15, 70)}})
+
+
+def slide(s):
+    """The drop from a sprint into the slide (by 0.2 s), then the slide itself, scraping along; the
+    last frame holds as long as the game keeps playing it (0.8 s is one pass)."""
+    drop = K.P(K.torso(0, 6, 0, (0, -0.02, -0.30), s), {"Scabbard": (-14, 0, 4)},
+               {"leg_R": {"ankle": (0.11 * s, 0.42 * s, 0.30 * s), "pole": (0.1, 1, 0.4), "foot": (10, -4)},
+                "leg_L": {"ankle": (-0.12 * s, -0.10 * s, 0.10 * s), "pole": (-0.4, 1, 0), "foot": (-30, 6)}},
+               {"arm_L": {"ikr": (-0.20 * s, -0.10 * s, -0.36 * s), "pole": (-0.6, -0.4, 0.2), "hand": (-10, 0, -10)},
+                "arm_R": {"ikr": (0.22 * s, 0.14 * s, -0.22 * s), "pole": (0.3, -0.6, -1.0), "blade": (-110, 0, 70)}})
+    land = slide_pose(s, 1.0)
+    land["hips"] = {"loc": (0.02 * s, -0.04 * s, -0.64 * s), "rot": (24, -8, -4)}
+    return keyed([(0.0, drop, "in"), (0.20, land, "out"), (0.32, slide_pose(s, -1.0), "io"),
+                  (0.48, slide_pose(s, 0.6), "io"), (0.64, slide_pose(s, -0.3), "io"), (0.8, slide_pose(s))])
+
+
+def slide_getup(s):
+    """Out of the slide onto the folded left leg: the left hand pushes off the ground, the body
+    comes forward over the left foot and he rises into a running lean (ends near the run's stride,
+    so the run can take over)."""
+    push = K.P({"hips": {"loc": (0.0, 0.18 * s, -0.48 * s), "rot": (-6, -6, -4)}, "Spine": (-12, -2, -2),
+                "Chest": (-8, 0, -2), "Neck": (6, 0, 2), "Head": (6, 0, 2), "Scabbard": (-20, 0, 6)},
+               {"leg_L": {"ankle": (-0.06 * s, 0.22 * s, 0.085 * s), "pole": (-0.6, 1, 0.2), "foot": (0, 20)},
+                "leg_R": {"ankle": (0.12 * s, 0.62 * s, 0.12 * s), "pole": (0.2, 0.5, 1.0), "foot": (10, -4)}},
+               {"arm_L": {"ik": (-0.30 * s, 0.10 * s, 0.10 * s), "pole": (-0.6, 0.4, 0.2), "hand": (-40, 0, -10)},
+                "arm_R": {"ikr": (0.26 * s, 0.20 * s, -0.14 * s), "pole": (0.3, -0.6, -1.0), "blade": (-110, 10, 70)}})
+    up = K.P(K.torso(4, -14, 0, (0, 0.04, -0.07), s), {"Scabbard": (0, 0, 0)},
+             {"leg_L": {"ankle": (-0.11 * s, 0.10 * s, 0.085 * s), "pole": (-0.2, 1, 0), "foot": (0, 6)},
+              "leg_R": {"ankle": (0.11 * s, -0.24 * s, 0.16 * s), "pole": (0.2, 1, 0), "foot": (-40, -4)}},
+             {"arm_L": {"ikr": (-0.06 * s, 0.22 * s, -0.36 * s), "pole": (-0.4, -1, -0.3), "hand": (10, 0, -10)},
+              "arm_R": {"ikr": (0.08 * s, -0.14 * s, -0.42 * s), "pole": (0.4, -1, -0.3), "blade": (-20, -20, 70)}})
+    return keyed([(0.0, slide_pose(s), "io"), (0.14, push, "out"), (0.38, up)])
+
+
 def add_all(rig):
     s = rig.head("Hips").z / 0.93
     add_loco(rig, s)
@@ -191,3 +241,5 @@ def add_all(rig):
     make_action(rig, "iai", iai(rig, s), 0.6)
     make_action(rig, "draw_cut", draw_cut(rig, s), 0.5)
     make_action(rig, "sheathe", sheathe(rig, s), 0.65)
+    make_action(rig, "slide", slide(s), 0.8)
+    make_action(rig, "slide_getup", slide_getup(s), 0.38)

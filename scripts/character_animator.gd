@@ -217,6 +217,22 @@ func roll(backwards := false) -> void:
 	_stop("upper", 0.05)
 
 
+## The slide (player_slide.gd): down and scraping along, held until slide_end().
+func slide() -> void:
+	_play("full", "slide", 1.0, true, 0.06)
+	_stop("upper", 0.05)
+
+
+## The slide is over: `getup` pushes him up into a run; otherwise he settles into the crouch.
+func slide_end(getup: bool) -> void:
+	if playing("full") != "slide":
+		return
+	if getup:
+		_play("full", "slide_getup", 1.0, false, 0.05)
+	else:
+		_stop("full", 0.15)
+
+
 func hit() -> void:
 	if dead or playing("full") in ["stab", "death", "dodge_roll"]:
 		return
