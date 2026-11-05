@@ -72,18 +72,39 @@ def legs(g, phase, s):
     return out
 
 
+def bob_at(g, phase):
+    """The body's rise and fall, -1..1, twice a cycle. A walk is highest over the straight standing
+    leg (mid-stance) and lowest with both feet down; a run is the other way round: lowest at
+    mid-stance, where the knee folds to take the landing, highest in the air between steps."""
+    if g.stance >= 0.5:
+        peak = g.stance / 2
+    else:
+        peak = g.stance + (0.5 - g.stance) / 2
+    return math.cos(2 * TAU * (phase - peak))
+
+
 def _cycle_pose(phase, s, g, hips_z, bob, lean, twist, roll, sway, arm_swing, arm_bend, sword):
+    """One frame of a cycle. hips_z is the hips' height (metres from rest, so a bend in the knees),
+    bob how far they rise and fall (bob_at), lean the forward lean of hips / spine / chest / neck /
+    head, twist how far the hips and chest counter-rotate with the stride, roll the hips' side
+    tilt, sway the sideways shift. The weight reads in what rides on top: the chest settles a
+    little forward as the body drops, the head nods against it, the shoulders dip with the arm
+    that swings forward."""
     c = math.cos(TAU * phase)
+    b = bob_at(g, phase)
     pose = legs(g, phase, s)
-    pose["hips"] = {"loc": (-sway * math.cos(TAU * (phase - g.stance / 2)) * s, 0.0,
-                            (hips_z + bob * math.cos(2 * TAU * (phase - g.stance / 2 - 0.25))) * s),
+    pose["hips"] = {"loc": (-sway * math.cos(TAU * (phase - g.stance / 2)) * s, 0.0, (hips_z + bob * b) * s),
                     "rot": (lean[0], roll * math.cos(TAU * (phase - g.stance / 2)), -twist * c)}
-    pose["Spine"] = (lean[1], 0, twist * 0.8 * c)
-    pose["Chest"] = (lean[2], 0, twist * 0.8 * c)
-    pose["Neck"] = (lean[3], 0, -twist * 0.3 * c)
-    pose["Head"] = (lean[4], 0, -twist * 0.3 * c)
+    settle = 60.0 * bob            # degrees of pitch per metre of drop: the torso folds with it
+    pose["Spine"] = (lean[1] - settle * (1 - b) * 0.5, 0, twist * 0.8 * c)
+    pose["Chest"] = (lean[2] - settle * (1 - b) * 0.5, 0, twist * 0.8 * c)
+    pose["Neck"] = (lean[3] + settle * (1 - b) * 0.6, 0, -twist * 0.3 * c)
+    pose["Head"] = (lean[4] + settle * (1 - b) * 0.6, 0, -twist * 0.3 * c)
     fwd_l = 0.5 - 0.5 * math.cos(TAU * (phase - 0.5))   # 1 when the left arm is forward
     fwd_r = 1.0 - fwd_l
+    dip = 2.5 + 20.0 * bob         # the shoulder of the forward arm comes forward and down
+    pose["Shoulder_L"] = (dip * (fwd_l - 0.5), 0, -dip * 0.6 * (fwd_l - 0.5))
+    pose["Shoulder_R"] = (dip * (fwd_r - 0.5), 0, dip * 0.6 * (fwd_r - 0.5))
     ay, az = arm_swing
     pose["arm_L"] = {"ikr": ((-0.05 + 0.02 * fwd_l) * s, (-ay + 2 * ay * fwd_l) * s, (-arm_bend + az * fwd_l) * s),
                      "pole": (-0.3, -1.0, -0.2), "hand": (10, 0, -15)}
@@ -93,30 +114,35 @@ def _cycle_pose(phase, s, g, hips_z, bob, lean, twist, roll, sway, arm_swing, ar
     return pose
 
 
-WALK = Gait(1.5, 0.62, 0.47, 0.06, 0.03, 0.095, 18, -32, -12, 0)
-RUN = Gait(3.4, 0.30, 0.32, 0.10, 0.22, 0.085, 8, -48, -65, 0)
-SPRINT = Gait(4.8, 0.26, 0.36, 0.13, 0.30, 0.08, 6, -55, -75, 0)
-CROUCH = Gait(1.9, 0.56, 0.52, 0.06, 0.04, 0.12, 10, -30, -20, 0)
+WALK = Gait(1.5, 0.62, 0.47, 0.06, 0.03, 0.075, 18, -32, -12, 0)
+RUN = Gait(3.4, 0.30, 0.32, 0.10, 0.22, 0.07, 8, -48, -65, 0)
+SPRINT = Gait(4.8, 0.26, 0.36, 0.13, 0.30, 0.065, 6, -55, -75, 0)
+CROUCH = Gait(1.9, 0.56, 0.52, 0.06, 0.04, 0.11, 10, -30, -20, 0)
+
+# The author (2026-11-05): "he waddles left to right like some penguin, he doesn't go up and down,
+# and he's stiff and weightless like a robot". So: the hips barely shift or tilt sideways, the
+# body rises and falls for real (3.5 cm walking, 5-6 cm running, knees bending to take it), and
+# the chest, head and shoulders move with the step.
 
 
 def walk(rig, s):
-    return lambda t: _cycle_pose(t, s, WALK, -0.02, 0.016, (-2, -2, 0, 1, 2), 6, 3, 0.018,
+    return lambda t: _cycle_pose(t, s, WALK, -0.05, 0.035, (-3, -3, 0, 2, 3), 6, 1.5, 0.005,
                                  (0.12, 0.05), 0.49, (0.06, 0.03, -5, -38))
 
 
 def run(rig, s):
-    return lambda t: _cycle_pose(t, s, RUN, -0.07, 0.025, (-10, -4, -1, 6, 6), 10, 4, 0.012,
+    return lambda t: _cycle_pose(t, s, RUN, -0.10, 0.05, (-10, -5, -1, 7, 7), 10, 2.0, 0.004,
                                  (0.22, 0.20), 0.33, (0.12, 0.08, -135, -26))
 
 
 def sprint(rig, s):
-    return lambda t: _cycle_pose(t, s, SPRINT, -0.09, 0.022, (-15, -6, -2, 9, 8), 12, 4, 0.01,
+    return lambda t: _cycle_pose(t, s, SPRINT, -0.12, 0.055, (-15, -7, -2, 10, 9), 12, 2.0, 0.003,
                                  (0.30, 0.26), 0.30, (0.10, 0.06, -142, -20))
 
 
 def crouch_walk(rig, s):
     def at(t):
-        p = _cycle_pose(t, s, CROUCH, -0.37, 0.012, (-24, -12, -4, 20, 12), 7, 2, 0.02,
+        p = _cycle_pose(t, s, CROUCH, -0.38, 0.02, (-24, -12, -4, 20, 12), 7, 1.5, 0.006,
                         (0.07, 0.04), 0.40, (0.05, 0.02, -28, -22))
         p["arm_L"]["ikr"] = (p["arm_L"]["ikr"][0] + 0.04 * s, p["arm_L"]["ikr"][1] + 0.16 * s, p["arm_L"]["ikr"][2] + 0.04 * s)
         return p

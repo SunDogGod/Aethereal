@@ -27,6 +27,7 @@ func _initialize() -> void:
 	_save("running_water", _running_water(), true)
 	_save("parry_clang", _parry_clang(), false)
 	_save("swing_whoosh", _swing_whoosh(), false)
+	_save("swing_heavy", _swing_heavy(), false)
 	_save("hit_thud", _hit_thud(), false)
 	_save("takedown_stab", _takedown_stab(), false)
 	_save("ui_blip", _ui_blip(), false)
@@ -38,45 +39,59 @@ func _initialize() -> void:
 
 # ---------------------------------------------------------------- the sounds
 
-## Boot on a steel plate: a click, a dull knock and a short metallic rattle. Noise, not a chime:
-## the earlier version rang four tuned partials and sounded like a xylophone.
+## Footsteps (remade 2026-11-05, the author: the old ones "stink"): every step is two touches,
+## the heel then, 70 ms later, the ball of the foot, both soft and low. No click at the front:
+## the heel eases in over 6 ms. A boot on each floor:
+##   plates: the heel knocks the plate (a low thump with a short metallic buzz), the toe scuffs it
+##   pavement: a dull heel thud and a gritty toe scuff
+##   concrete: softer still, more scuff than knock
+const TOE_AFTER := 0.07   # seconds from the heel touching to the ball of the foot
+
+
+func _touch(b: PackedFloat32Array, start: float, amp: float, decay: float, cutoff: float, ease: float) -> void:
+	var part := _buf(float(b.size()) / RATE)
+	_noise(part, 1.0, decay, cutoff, start)
+	_envelope_from(part, start, ease)
+	_mix(b, part, amp)
+
+
+## Eases a sound in from `start` over `ease` seconds (a scuff, not a click).
+func _envelope_from(b: PackedFloat32Array, start: float, ease: float) -> void:
+	var first := int(start * RATE)
+	var n := int(ease * RATE)
+	for i in range(first, mini(first + n, b.size())):
+		b[i] *= float(i - first) / n
+
+
 func _footstep_plates(variant: int) -> PackedFloat32Array:
 	var pitch: float = [0.94, 1.0, 1.07][variant]
-	var b := _buf(0.16)
-	_noise(b, 0.8, 0.008, 5000.0, 0.0)                 # the click (amp, decay s, lowpass Hz, start)
-	var rattle := _buf(0.16)
-	_noise(rattle, 1.0, 0.035, 2600.0 * pitch, 0.004)  # a loose plate: a short bright buzz
-	rattle = _highpass(rattle, 700.0)
-	_mix(b, rattle, 0.6)
-	_sine(b, 130.0 * pitch, 0.5, 0.025)                # the knock, gone in 25 ms
-	_sine(b, 840.0 * pitch, 0.1, 0.03)                 # the faintest hint of ring
-	return _finish(b, 0.45, CRUNCH_BITS)
+	var b := _buf(0.22)
+	_touch(b, 0.0, 1.0, 0.03, 420.0 * pitch, 0.006)              # the heel: a low knock
+	var buzz := _buf(0.22)
+	_noise(buzz, 1.0, 0.03, 2200.0 * pitch, 0.004)
+	buzz = _highpass(buzz, 900.0)
+	_envelope_from(buzz, 0.004, 0.006)
+	_mix(b, buzz, 0.25)                                            # the plate ringing, faint
+	_sine(b, 120.0 * pitch, 0.35, 0.03)
+	_touch(b, TOE_AFTER, 0.45, 0.035, 1400.0 * pitch, 0.01)        # the toe: a scuff
+	return _finish(b, 0.4, CRUNCH_BITS)
 
 
-## Boot on pavement: a dull tap with some weight behind it. No sine, so nothing to hum.
 func _footstep_pavement(variant: int) -> PackedFloat32Array:
 	var pitch: float = [0.92, 1.0, 1.09][variant]
-	var b := _buf(0.12)
-	_noise(b, 1.0, 0.014, 1200.0 * pitch, 0.0)         # the tap
-	var thud := _buf(0.12)
-	_noise(thud, 1.0, 0.03, 260.0 * pitch, 0.0)        # the weight
-	_mix(b, thud, 0.8)
-	return _finish(b, 0.4, 8)
+	var b := _buf(0.2)
+	_touch(b, 0.0, 1.0, 0.035, 300.0 * pitch, 0.006)              # the heel: dull, with weight
+	_touch(b, 0.0, 0.3, 0.012, 1100.0 * pitch, 0.004)             # a little grit on top
+	_touch(b, TOE_AFTER, 0.5, 0.04, 900.0 * pitch, 0.012)         # the toe: gritty scuff
+	return _finish(b, 0.36, 8)
 
 
-## Boot on concrete: a soft scuff, more hiss than knock.
 func _footstep_concrete(variant: int) -> PackedFloat32Array:
 	var pitch: float = [0.9, 1.0, 1.1][variant]
-	var b := _buf(0.16)
-	var hiss := _buf(0.16)
-	_noise(hiss, 1.0, 0.04, 2200.0 * pitch, 0.0)
-	hiss = _highpass(hiss, 300.0)
-	_envelope(hiss, 0.012, 0.0, 0.09)                  # eased in: a scuff, not a click
-	_mix(b, hiss, 1.0)
-	var thud := _buf(0.16)
-	_noise(thud, 1.0, 0.025, 220.0 * pitch, 0.0)
-	_mix(b, thud, 0.5)
-	return _finish(b, 0.35, 8)
+	var b := _buf(0.2)
+	_touch(b, 0.0, 0.8, 0.03, 260.0 * pitch, 0.008)               # the heel: soft
+	_touch(b, TOE_AFTER, 0.6, 0.05, 1600.0 * pitch, 0.015)        # the toe: a hiss of a scuff
+	return _finish(b, 0.3, 8)
 
 
 ## A neon sign: a 110 Hz buzz with its harmonics, flickering a little. Loops every 1.5 s
@@ -176,14 +191,29 @@ func _parry_clang() -> PackedFloat32Array:
 	return _finish(b, 0.85, CRUNCH_BITS)
 
 
-## The blade through the air: noise whose brightness sweeps up and back down.
+## The blade through the air: noise whose brightness sweeps up and back down. Deeper than it was
+## (2026-11-05): the cuts are low and heavy now, so it starts dark and the hold is longer.
 func _swing_whoosh() -> PackedFloat32Array:
-	var b := _buf(0.32)
+	var b := _buf(0.34)
 	_noise(b, 1.0, 0.0, 20000.0, 0.0)
-	b = _lowpass_sweep(b, 400.0, 2600.0, 600.0)        # cutoff: start, middle, end
-	b = _highpass(b, 250.0)
-	_envelope(b, 0.08, 0.04, 0.2)                      # attack, hold, release (s)
+	b = _lowpass_sweep(b, 250.0, 2000.0, 400.0)        # cutoff: start, middle, end
+	b = _highpass(b, 180.0)
+	_envelope(b, 0.07, 0.06, 0.18)                     # attack, hold, release (s)
 	return _finish(b, 0.6, 8)
+
+
+## The cleave: a longer, darker whoosh with a low body behind it, like a bigger blade moving.
+func _swing_heavy() -> PackedFloat32Array:
+	var b := _buf(0.5)
+	_noise(b, 1.0, 0.0, 20000.0, 0.0)
+	b = _lowpass_sweep(b, 180.0, 1500.0, 260.0)
+	b = _highpass(b, 120.0)
+	_envelope(b, 0.12, 0.08, 0.24)
+	var body := _buf(0.5)
+	_glide(body, 110.0, 60.0, 0.3, 1.0, 0.16)
+	_envelope(body, 0.1, 0.05, 0.2)
+	_mix(b, body, 0.35)
+	return _finish(b, 0.65, 8)
 
 
 ## A body blow: a low tone that drops in pitch, under a short dull burst.

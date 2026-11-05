@@ -161,14 +161,16 @@ def draw_cut(rig, s):
     arm reaching out as it crosses his front, and the follow-through rises over his right
     shoulder, the wrist turning over. The left hand keeps hold of the scabbard all through (it
     lets go as the cut blends out). natural_arm.tracked() keeps the right arm human."""
+    # Deep, like the sweeps (anims_swings.py): he sinks into his knees and drives forward as the
+    # blade comes free, and the cut passes low, at chest height, before the follow-through rises.
     k0 = _held(rig, s, iai_pose(s, 0.35), 0.0, 9, 50)
-    pull = K.P(iai_pose(s, 0.35), K.torso(20, -12, 0, (0.0, -0.01, -0.12), s, hips_share=0.25))
+    pull = K.P(iai_pose(s, 0.35), K.torso(20, -14, 0, (0.0, 0.0, -0.15), s, hips_share=0.25))
     k1 = _held(rig, s, pull, -0.22, 32, 50)
-    out = _swing(rig, s, 30, -10, (0, 0.0, -0.12), 70, 0.40, 1.02, 118, -4, -30, 26, shoulder=(0, 0, 18), tol=45)
-    hit = _swing(rig, s, -2, -12, (0, 0.07, -0.11), -12, 0.66, 1.12, 12, 3, 15, 10, shoulder=(0, -2, 16), tol=30)
-    c = _swing(rig, s, -24, -11, (0, 0.07, -0.10), -46, 0.57, 1.22, -64, 14, -30, 2, shoulder=(0, -6, 8), tol=45)
-    d = _swing(rig, s, -38, -8, (0, 0.05, -0.09), -66, 0.47, 1.36, -110, 32, -60, 0, shoulder=(0, -12, 2), tol=45)
-    e = _swing(rig, s, -42, -5, (0, 0.03, -0.08), -60, 0.34, 1.48, -150, 48, -80, 0, shoulder=(0, -16, 0), tol=45)
+    out = _swing(rig, s, 30, -14, (0, 0.04, -0.17), 70, 0.42, 0.98, 118, -6, -30, 26, shoulder=(0, 0, 18), tol=45)
+    hit = _swing(rig, s, -4, -22, (0, 0.15, -0.22), -12, 0.70, 1.00, 12, 0, 15, 10, shoulder=(0, -2, 18), tol=30)
+    c = _swing(rig, s, -26, -20, (0, 0.16, -0.21), -48, 0.60, 1.08, -64, 10, -30, 2, shoulder=(0, -6, 10), tol=45)
+    d = _swing(rig, s, -40, -14, (0, 0.13, -0.17), -68, 0.48, 1.24, -110, 30, -60, 0, shoulder=(0, -12, 2), tol=45)
+    e = _swing(rig, s, -44, -8, (0, 0.08, -0.12), -62, 0.36, 1.40, -150, 46, -80, 0, shoulder=(0, -16, 0), tol=45)
     return tracked(rig, keyed([(0.0, k0, "lin"), (0.035, k1, "lin"), (0.068, out, "lin"), (DRAW_HIT, hit, "lin"),
                                (0.135, c, "out"), (0.18, d, "out"), (0.26, e, "io"), (0.5, _guard(rig, s, -80))]), 0.5)
 

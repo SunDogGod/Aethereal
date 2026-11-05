@@ -55,42 +55,42 @@ _surfaces = [{
 }]
 blend_shape_mode = 0
 
-[node name="LieutenantModel" type="Node3D" unique_id=2056806890]
+[node name="LieutenantModel" type="Node3D" unique_id=162460031]
 
-[node name="lieutenant" type="Node3D" parent="." unique_id=1461214865 instance=ExtResource("1_370gb")]
+[node name="lieutenant" type="Node3D" parent="." unique_id=691503499 instance=ExtResource("1_370gb")]
 
-[node name="HeadGear" type="BoneAttachment3D" parent="." unique_id=508908796]
+[node name="HeadGear" type="BoneAttachment3D" parent="." unique_id=1367569833]
 bone_name = "Head"
 bone_idx = 8
 use_external_skeleton = true
 external_skeleton = NodePath("../lieutenant/Armature/Skeleton3D")
 
-[node name="Visor" type="MeshInstance3D" parent="HeadGear" unique_id=1538821640]
+[node name="Visor" type="MeshInstance3D" parent="HeadGear" unique_id=1124009089]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0)
 layers = 2
 mesh = SubResource("ArrayMesh_n8mnm")
 
-[node name="Blade" type="BoneAttachment3D" parent="." unique_id=1137258264]
+[node name="Blade" type="BoneAttachment3D" parent="." unique_id=415828599]
 bone_name = "Weapon_R"
 bone_idx = 18
 use_external_skeleton = true
 external_skeleton = NodePath("../lieutenant/Armature/Skeleton3D")
 
-[node name="BladeMesh" type="MeshInstance3D" parent="Blade" unique_id=955756747]
+[node name="BladeMesh" type="MeshInstance3D" parent="Blade" unique_id=2118664696]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0)
 layers = 2
 mesh = SubResource("ArrayMesh_qbngo")
 
-[node name="Knife" type="BoneAttachment3D" parent="." unique_id=93062751]
+[node name="Knife" type="BoneAttachment3D" parent="." unique_id=689369818]
 bone_name = "Knife"
 bone_idx = 1
 use_external_skeleton = true
 external_skeleton = NodePath("../lieutenant/Armature/Skeleton3D")
 
-[node name="KnifeMesh" type="MeshInstance3D" parent="Knife" unique_id=1296689377]
+[node name="KnifeMesh" type="MeshInstance3D" parent="Knife" unique_id=401354511]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0)
 layers = 2
 mesh = SubResource("ArrayMesh_5mmre")
 
-[node name="Animator" type="Node" parent="." unique_id=1061436845]
+[node name="Animator" type="Node" parent="." unique_id=1066225459]
 script = ExtResource("3_u5mkp")

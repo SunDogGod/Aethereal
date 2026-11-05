@@ -3,9 +3,9 @@
 [ext_resource type="PackedScene" path="res://models/characters/villager_body.glb" id="1_hebh6"]
 [ext_resource type="Script" path="res://scripts/character_animator.gd" id="2_qnc74"]
 
-[node name="Villager_bodyModel" type="Node3D" unique_id=668852560]
+[node name="Villager_bodyModel" type="Node3D" unique_id=878200565]
 
-[node name="villager_body" type="Node3D" parent="." unique_id=1391677419 instance=ExtResource("1_hebh6")]
+[node name="villager_body" type="Node3D" parent="." unique_id=165835362 instance=ExtResource("1_hebh6")]
 
-[node name="Animator" type="Node" parent="." unique_id=1175390291]
+[node name="Animator" type="Node" parent="." unique_id=1805370026]
 script = ExtResource("2_qnc74")

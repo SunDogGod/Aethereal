@@ -13,6 +13,7 @@ extends CharacterStory
 const STRIDE := {"walk": 1.5, "run": 3.4, "sprint": 4.8, "crouch_walk": 1.9}
 const SWEEP_HIT := 0.07     ## a sweep's blade crosses his front this long after it starts
 const DRAW_HIT := 0.105     ## the quick draw's blade crosses his front (tools/blender/aeneas_anims.py)
+const CLEAVE_HIT := 0.13    ## the heavy cleave's blade crosses his front (tools/blender/anims_swings.py)
 const CAST_HIT := 0.22      ## Isabella's slash: her brush finishes the stroke (tools/blender/anims_combat.py)
 
 @export var body_path: NodePath        ## the body to follow (empty: the model's parent)
@@ -138,12 +139,29 @@ func swing_windup(side: int) -> void:
 	_play("upper", "windup_L" if side > 0 else "windup_R", 1.0, true, 0.05)
 
 
-## The cut. Light swings (power 0) play a little faster than a full charge (power 1).
+## A full charge: the wound-up blade rises over his right shoulder (held), so the player can see
+## the heavy coming. Its release is the cleave.
+func swing_windup_high() -> void:
+	if dead or not _player.has_animation("windup_high"):
+		return
+	_play("upper", "windup_high", 1.0, true, 0.12)
+
+
+## The cut. Light swings (power 0) play a little faster than a full charge (power 1), and a full
+## charge (or the heavy button) is the cleave: down and across from over his right shoulder.
 func swing_release(side: int, power: float) -> void:
 	if dead:
 		return
-	_play("full", "sweep_LR" if side > 0 else "sweep_RL", sweep_rate(power), false, 0.035)
+	if is_cleave(power):
+		_play("full", "cleave", 1.0, false, 0.035)
+	else:
+		_play("full", "sweep_LR" if side > 0 else "sweep_RL", sweep_rate(power), false, 0.035)
 	_stop("upper", 0.1)
+
+
+## A full-power swing is the cleave, when this character has one.
+func is_cleave(power: float) -> bool:
+	return power >= 0.999 and _player != null and _player.has_animation("cleave")
 
 
 ## Lowers a wound-up blade, or rises out of the iai stance without drawing.
@@ -160,6 +178,8 @@ func sweep_rate(power: float) -> float:
 
 ## Seconds from release until the blade crosses his front (when the hit should land).
 func sweep_hit_time(power: float) -> float:
+	if is_cleave(power):
+		return CLEAVE_HIT
 	return SWEEP_HIT / sweep_rate(power)
 
 

@@ -134,7 +134,10 @@ func _tick(delta: float) -> void:
 		return
 	if _charging:
 		# Winding up (or in the iai stance): he keeps the pose until the button comes up, then cuts.
+		var was_full := _charge >= charge_time
 		_charge += delta
+		if _charge >= charge_time and not was_full and not _drawing:
+			player.wind_up_full()  # the blade rises over his shoulder: a cleave is coming
 		if not Input.is_action_pressed("attack"):
 			_charging = false
 			_swing(clampf(_charge / charge_time, 0.0, 1.0), _drawing)
@@ -259,7 +262,8 @@ func _swing(power: float, draw := false) -> void:
 		player.release_draw(power)
 	else:
 		player.release_swing(power)
-	SfxBus.play("swing_whoosh", player.global_position, lerpf(-8.0, 0.0, power), 0.12)  # harder = louder
+	var whoosh := "swing_heavy" if player.animator and player.animator.is_cleave(power) else "swing_whoosh"
+	SfxBus.play(whoosh, player.global_position, lerpf(-8.0, 0.0, power), 0.12)  # harder = louder
 
 
 func _start_dodge() -> void:

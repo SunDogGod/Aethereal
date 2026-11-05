@@ -256,6 +256,12 @@ func wind_up(chained := false) -> void:
 		animator.swing_windup(_swing_side)
 
 
+## A full charge: the wound-up blade rises over his shoulder for the cleave.
+func wind_up_full() -> void:
+	if animator:
+		animator.swing_windup_high()
+
+
 func release_swing(power: float) -> void:
 	if animator:
 		animator.swing_release(_swing_side, power)
