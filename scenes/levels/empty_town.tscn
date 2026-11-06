@@ -104,6 +104,13 @@
 [ext_resource type="Script" path="res://scripts/props/balcony.gd" id="b9t_balcony"]
 [ext_resource type="Script" uid="uid://faud07fytxw8" path="res://scripts/cloud_layer.gd" id="cl_cloud_layer"]
 [ext_resource type="Material" path="res://materials/clouds_town.tres" id="cl_clouds_town"]
+[ext_resource type="Script" uid="uid://cuv5q2o8agbs4" path="res://scripts/props_kit/drift_lights.gd" id="lk_drift"]
+[ext_resource type="Script" uid="uid://dahxfbhbebl86" path="res://scripts/props_kit/halo_lamp.gd" id="lk_halo"]
+[ext_resource type="Script" uid="uid://cwyj15qs2av82" path="res://scripts/props_kit/neon_sign.gd" id="lk_neon"]
+[ext_resource type="Script" uid="uid://bvm2imjatjnqm" path="res://scripts/props_kit/wall_lamp_sodium.gd" id="lk_sodium"]
+[ext_resource type="Script" uid="uid://c84upqd07vi1a" path="res://scripts/props_kit/giant_fan.gd" id="lk_fan"]
+[ext_resource type="Script" uid="uid://b7ehkmxfewl6d" path="res://scripts/props_kit/stain_strips.gd" id="lk_stain"]
+[ext_resource type="Material" path="res://materials/tex_pavement_wet.tres" id="lk_wet"]
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_r8sky"]
 shader = ExtResource("r8_sky_shader")
 shader_parameter/faces = ExtResource("r8_backdrop_tex")
@@ -844,7 +851,7 @@ trim = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 23.5, 7.5)
 script = ExtResource("1_jb07p")
 size = Vector3(6, 1, 3)
-material = ExtResource("12_jywo1")
+material = ExtResource("lk_wet")
 
 [node name="OverlookRailW" type="StaticBody3D" parent="SouthDistrict" unique_id=1259763590]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.85, 24.5, 7.5)
@@ -1151,7 +1158,7 @@ trim = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -110, 0)
 script = ExtResource("1_jb07p")
 size = Vector3(18, 220, 18)
-material = ExtResource("12_jywo1")
+material = ExtResource("lk_wet")
 
 [node name="RampLanding" type="StaticBody3D" parent="Courtyard" unique_id=73724526]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.5, -106, 8.5)
@@ -10656,3 +10663,120 @@ bracket_every = 2.5
 wall_side = Vector3(0, 0, -1)
 wall_gap = 0.1
 draw_distance = 160.0
+
+[node name="LookDressing" type="Node3D" parent="."]
+
+[node name="HaloLamp48" type="Node3D" parent="LookDressing"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.8, 25, 48)
+script = ExtResource("lk_halo")
+height = 3.0
+light_range = 8.0
+flicker = 1
+
+[node name="HaloLamp64" type="Node3D" parent="LookDressing"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.8, 25, 64)
+script = ExtResource("lk_halo")
+height = 3.0
+light_range = 8.0
+flicker = 1
+
+[node name="HaloLamp80" type="Node3D" parent="LookDressing"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.8, 25, 80)
+script = ExtResource("lk_halo")
+height = 3.0
+light_range = 8.0
+flicker = 3
+
+[node name="FanWest" type="Node3D" parent="LookDressing"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15, 12, 30.5)
+script = ExtResource("lk_fan")
+radius = 4.5
+speed = 0.35
+
+[node name="FanEast" type="Node3D" parent="LookDressing"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16, 4, 30.5)
+script = ExtResource("lk_fan")
+radius = 5.5
+speed = -0.25
+
+[node name="FanLow" type="Node3D" parent="LookDressing"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, -14, 30.5)
+script = ExtResource("lk_fan")
+radius = 6.0
+speed = 0.18
+light_energy = 1.0
+
+[node name="StainsWest" type="Node3D" parent="LookDressing"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16, 23.8, 30.55)
+script = ExtResource("lk_stain")
+length = 22.0
+random_seed = 3
+drop = 3.0
+
+[node name="StainsEast" type="Node3D" parent="LookDressing"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16, 23.8, 30.55)
+script = ExtResource("lk_stain")
+length = 22.0
+random_seed = 7
+drop = 3.0
+
+[node name="StainsTower1" type="Node3D" parent="LookDressing"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -22, 51.4, 30.55)
+script = ExtResource("lk_stain")
+length = 14.0
+random_seed = 11
+drop = 4.0
+
+[node name="StainsTower4" type="Node3D" parent="LookDressing"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 23, 59.4, 30.05)
+script = ExtResource("lk_stain")
+length = 12.0
+random_seed = 13
+drop = 4.0
+
+[node name="AlleyLampNorth" type="Node3D" parent="LookDressing"]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -20, 11.5, -6)
+script = ExtResource("lk_sodium")
+light_range = 6.0
+
+[node name="AlleyLampSouth" type="Node3D" parent="LookDressing"]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -17, 11.5, 6)
+script = ExtResource("lk_sodium")
+light_range = 6.0
+flicker = 2
+
+[node name="AlleyNeonPink" type="Node3D" parent="LookDressing"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -19, 15.5, 5)
+script = ExtResource("lk_neon")
+text = "KAI"
+glyph_height = 0.3
+double_sided = true
+bracket = 0.4
+flicker = 2
+
+[node name="AlleyNeonCyan" type="Node3D" parent="LookDressing"]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, -18, 14.5, -5)
+script = ExtResource("lk_neon")
+text = "SOL"
+tint = Color(0.3, 0.85, 1, 1)
+glyph_height = 0.3
+double_sided = true
+bracket = 0.4
+
+[node name="GulfLights" type="Node3D" parent="LookDressing"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 65)
+script = ExtResource("lk_drift")
+count = 4
+box_size = Vector3(70, 30, 50)
+size = 0.25
+brightness = 0.6
+cast_light = false
+
+[node name="HighLights" type="Node3D" parent="LookDressing"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 45, 0)
+script = ExtResource("lk_drift")
+count = 3
+box_size = Vector3(50, 15, 50)
+size = 0.3
+brightness = 0.5
+cast_light = false
