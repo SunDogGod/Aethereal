@@ -8,7 +8,7 @@
 resource_name = "agent_props_Visor"
 _surfaces = [{
 "aabb": AABB(-0.09458195, 0.084022164, -0.12917584, 0.18916388, 0.04204063, 0.015927203),
-"attribute_data": PackedByteArray("f6l/pv+rzqX/q3+mv6p/pn+pzqX/qxylf6kcpX+uzqX/q1Ckf6lQpH+uHKV/rlCk/6v/on+p/6J/rv+i/6uuoX+prqF/rq6h/6vhoH+p4aB/ruGg/6svoH+pL6B/ri+g/6t/n3+pf5+/qn+ff65/nz+tf5//sH+fv69/n/+wL6B/s3+fP7J/n/+w4aB/sy+g/7V/n7+0f59/s+Gg/7Cuof+1L6B/uH+fP7d/n3+4L6D/teGgf7jhoH+zrqH/ta6hf7iuof+w/6J/s/+i/7BQpP+1/6J/uP+if7NQpP+wHKX/tVCkf7hQpH+zHKX/sM6l/7UcpX+4HKV/s86lf65/pj+tf6b/sH+mv69/pv+1zqV/s3+mP7J/pn+4zqX/tX+mv7R/pn+4f6Y/t3+m"),
+"attribute_data": PackedByteArray("f81/vv/Pzr3/z3++v85/vn/Nzr3/zxy9f80cvX/Szr3/z1C8f81QvH/SHL1/0lC8/8//un/N/7p/0v+6/8+uuX/Nrrl/0q65/8/huH/N4bh/0uG4/88vuH/NL7h/0i+4/89/t3/Nf7e/zn+3f9J/tz/Rf7f/1H+3v9N/t//UL7h/13+3P9Z/t//U4bh/1y+4/9l/t7/Yf7d/1+G4/9Suuf/ZL7h/3H+3P9t/t3/cL7j/2eG4f9zhuH/Xrrn/2a65f9yuuf/U/7p/1/+6/9RQvP/Z/7p/3P+6f9dQvP/UHL3/2VC8f9xQvH/XHL3/1M69/9kcvX/cHL1/1869f9J/vj/Rf77/1H++v9N/vv/Zzr1/13++P9Z/vn/czr3/2X++v9h/vn/cf74/23++"),
 "format": 34896613399,
 "index_count": 324,
 "index_data": PackedByteArray("AAABAAIAAgADAAAAAAAEAAEABAAFAAEABAAGAAUAAgABAAcABgAIAAUABgAJAAgAAQAFAAoAAQAKAAcABQAIAAsABQALAAoACQAMAAgACQANAAwACAAOAAsACAAMAA4ADQAPAAwADQAQAA8ADAARAA4ADAAPABEAEAASAA8AEAATABIADwAUABEADwASABQAEwAVABIAEwAWABUAEgAXABQAEgAVABcAFgAYABUAFgAZABgAGQAaABgAFQAYABsAFQAbABcAGAAcABsAFwAbAB0AGwAeAB0AFwAdAB8AFAAXAB8AHwAdACAAHQAhACAAFAAfACIAEQAUACIAHwAgACMAIgAfACMAIwAgACQAIAAlACQAIgAjACYAEQAiACcAJwAiACYADgARACcAJgAjACgAIwAkACgAKAAkACkAJAAqACkAKAApACsALAAoACsAJgAoACwALAArAC0ALgAmACwAJwAmAC4ALwAsAC0ALgAsAC8ALwAtADAAMQAnAC4ADgAnADEACwAOADEAMQAuADIAMgAuAC8ACwAxADMAMwAxADIACgALADMANAAvADAAMgAvADQANAAwADUAMwAyADYANgAyADQACgAzADcANwAzADYABwAKADcAOAA0ADUANgA0ADgAOAA1ADkANwA2ADoAOgA2ADgABwA3ADsAOwA3ADoAPAA4ADkAOgA4ADwAPAA5AD0AOwA6AD4APgA6ADwAPwAHADsAAgAHAD8APwBAAAIAPwA7AEEAQQA7AD4AQQBCAD8APgA8AEMAQwA8AD0AQQA+AEQARAA+AEMARABFAEEAQwA9AEYARABDAEcARwBDAEYARwBIAEQARwBGAEkASQBKAEcA"),
@@ -25,7 +25,7 @@ blend_shape_mode = 0
 resource_name = "agent_props_BladeMesh"
 _surfaces = [{
 "aabb": AABB(-0.017, -0.055, -0.86999995, 0.034, 0.11, 1.0059999),
-"attribute_data": PackedByteArray("fwF/vD8Ndbs/DX+8fwF1uz8Nf7z/GHW7/xh/vD8Ndbv/GH+8vyR1u78kf7z/GHW7vyR/vH8wdbt/MH+8vyR1u38Bdbs/DY61Pw11u38BjrU/DXW7/xiOtf8Ydbs/DY61/xh1u78kjrW/JHW7/xiOtb8kdbt/MI61fzB1u78kjrV/AY61Pw2Nsj8NjrV/AY2yPw2Otf8YjbL/GI61Pw2Nsv8YjrW/JI2yvySOtf8YjbK/JI61fzCNsn8wjrW/JI2yfwGNsj8Nf7E/DY2yfwF/sT8NjbL/GH+x/xiNsj8Nf7H/GI2yvyR/sb8kjbL/GH+xvySNsn8wf7F/MI2yvyR/sX8Bf7FfB3+xPw1/sT8Nf7EfE3+x/xh/sf8Yf7HfHn+xvyR/sb8kf7GfKn+xfzB/sX8zf7z/NfS1/zV/vH8z9LX/NX+xfzN/sX84f7F/OPS1fzh/vP86f7H/OvS1/zp/vH89f7F/PfS1fz1/vP8/f7H/P/S1f0J/sf8/f7x/QvS1f0J/vH9Ff7h/TH+xf0x/uH9Ff7F/RX+4f0x/sX9Mf7h/RX+xf0V/uH9Mf7F/TH+4f0V/sX9Ff7h/TH+xf0x/uH9Ff7F/RX+4f0x/sX9Mf7h/RX+xf0V/uH9Mf7F/TH+4f0V/sX9Ff7h/TH+xf0x/uH9Ff7F/RX+4f0x/sX9Mf7h/RX+xf0V/uH9Mf7F/TH+4f0V/sX9Ff7h/TH+xf0x/uH9Ff7F/RX+4f0x/sX9Mf7h/RX+xf0V/uH9Mf7F/TH+4f0V/sQ=="),
+"attribute_data": PackedByteArray("fwF/3D8Ndds/DX/cfwF12z8Nf9z/GHXb/xh/3D8Nddv/GH/cvyR1278kf9z/GHXbvyR/3H8wddt/MH/cvyR1238Bdds/DY7VPw11238BjtU/DXXb/xiO1f8Ydds/DY7V/xh1278kjtW/JHXb/xiO1b8kddt/MI7VfzB1278kjtV/AY7VPw2M0j8NjtV/AYzSPw2O1f8YjNL/GI7VPw2M0v8YjtW/JIzSvySO1f8YjNK/JI7VfzCM0n8wjtW/JIzSfwGM0j8Nf9E/DYzSfwF/0T8NjNL/GH/R/xiM0j8Nf9H/GIzSvyR/0b8kjNL/GH/RvySM0n8wf9F/MIzSvyR/0X8Bf9FfB3/RPw1/0T8Nf9EfE3/R/xh/0f8Yf9HfHn/RvyR/0b8kf9GfKn/RfzB/0X8zf9z/NfTV/zV/3H8z9NX/NX/RfzN/0X84f9F/OPTVfzh/3P86f9H/OvTV/zp/3H89f9F/PfTVfz1/3P8/f9H/P/TVf0J/0f8/f9x/QvTVf0J/3H9Ff9h/TH/Rf0x/2H9Ff9F/RX/Yf0x/0X9Mf9h/RX/Rf0V/2H9Mf9F/TH/Yf0V/0X9Ff9h/TH/Rf0x/2H9Ff9F/RX/Yf0x/0X9Mf9h/RX/Rf0V/2H9Mf9F/TH/Yf0V/0X9Ff9h/TH/Rf0x/2H9Ff9F/RX/Yf0x/0X9Mf9h/RX/Rf0V/2H9Mf9F/TH/Yf0V/0X9Ff9h/TH/Rf0x/2H9Ff9F/RX/Yf0x/0X9Mf9h/RX/Rf0V/2H9Mf9F/TH/Yf0V/0Q=="),
 "format": 34896613399,
 "index_count": 252,
 "index_data": PackedByteArray("AAABAAIAAAADAAEABAAFAAYABAAHAAUACAAJAAoACAALAAkADAANAA4ADAAPAA0AEAARABIAEAATABEAFAAVABYAFAAXABUAGAAZABoAGAAbABkAHAAdAB4AHAAfAB0AIAAhACIAIAAjACEAJAAlACYAJAAnACUAKAApACoAKAArACkALAAtAC4ALAAvAC0AMAAxADIAMAAzADEANAA1ADYANAA3ADUAOAA5ADoAOAA7ADkAPAA9AD4APAA/AD0AQABBAEIAQwBEAEUARgBHAEgASQBKAEsATABNAE4ATABPAE0ATwBQAE0ATwBRAFAATQBQAFIATgBNAFMATQBSAFMATgBTAFQAUwBSAFUAVABTAFYAUwBVAFYAVABWAFcAVgBVAFgAVwBWAFkAVgBYAFkAVwBZAFoAWQBYAFsAWgBZAFwAWQBbAFwAXABbAF0AWgBcAF4AXABdAF8AXgBcAF8AXgBfAGAAYQBiAGMAYQBkAGIAZQBmAGcAZQBoAGYAaQBqAGsAaQBsAGoAbQBuAG8AbQBwAG4AcQByAHMAcQB0AHIAdQB2AHcAdQB4AHYAeQB6AHsAeQB8AHoAfQB+AH8AfQCAAH4AgQCCAIMAgQCEAIIAhQCGAIcAhQCIAIYAiQCKAIsAiQCMAIoAjQCOAI8AjQCQAI4A"),
@@ -42,7 +42,7 @@ blend_shape_mode = 0
 resource_name = "agent_props_KnifeMesh"
 _surfaces = [{
 "aabb": AABB(-0.013, -0.017320508, -0.205, 0.026, 0.034641016, 0.265),
-"attribute_data": PackedByteArray("f09/uD9VwrU/VX+4f0/CtT9Vf7j/WsK1/1p/uD9VwrX/Wn+4v2DCtb9gf7j/WsK1v2B/uH9mwrV/Zn+4v2DCtX9PwrU/VX+xP1XCtX9Pf7E/VcK1/1p/sf9awrU/VX+x/1rCtb9gf7G/YMK1/1p/sb9gwrV/Zn+xf2bCtb9gf7F/T3+xX1J/sT9Vf7E/VX+xH1h/sf9af7H/Wn+x311/sb9gf7G/YH+xn2N/sX9mf7F/aX+4/2v/tP9rf7i/an+4f2n/tP9rIrJ/aSKy/2t/sX9pf7G/an+xf25/sT9tf7F/biKyf27/tP9wf7G/b3+x/3Aisn9uf7g/bX+4/3D/tH9zf7E/cn+xf3Misv9wf7i/b3+4f3P/tP91f7G/dH+x/3Uisn94f7E/d3+xf3gisv91/7R/eP+0f3N/uD9yf7j/dX+4v3R/uH94f7g/d3+4"),
+"attribute_data": PackedByteArray("f09/2D9VwdU/VX/Yf0/B1T9Vf9j/WsHV/1p/2D9VwdX/Wn/Yv2DB1b9gf9j/WsHVv2B/2H9mwdV/Zn/Yv2DB1X9PwdU/VX/RP1XB1X9Pf9E/VcHV/1p/0f9awdU/VX/R/1rB1b9gf9G/YMHV/1p/0b9gwdV/Zn/Rf2bB1b9gf9F/T3/RX1J/0T9Vf9E/VX/RH1h/0f9af9H/Wn/R311/0b9gf9G/YH/Rn2N/0X9mf9F/aX/Y/2v/1P9rf9i/an/Yf2n/1P9rItJ/aSLS/2t/0X9pf9G/an/Rf25/0T9tf9F/biLSf27/1P9wf9G/b3/R/3Ai0n9uf9g/bX/Y/3D/1H9zf9E/cn/Rf3Mi0v9wf9i/b3/Yf3P/1P91f9G/dH/R/3Ui0n94f9E/d3/Rf3gi0v91/9R/eP/Uf3N/2D9yf9j/dX/Yv3R/2H94f9g/d3/Y"),
 "format": 34896613399,
 "index_count": 204,
 "index_data": PackedByteArray("AAABAAIAAAADAAEABAAFAAYABAAHAAUACAAJAAoACAALAAkADAANAA4ADAAPAA0AEAARABIAEAATABEAFAAVABYAFAAXABUAGAAZABoAGAAbABkAHAAdAB4AHAAfAB0AIAAhACIAIwAkACUAJgAnACgAKQAqACsALAAtAC4ALgAvACwALAAwAC0AMAAxAC0AMAAyADEAMgAzADEAMgA0ADMANAA1ADMAMQAzADYAMwA3ADYALQAxADgAMQA2ADgALQA4ADkALgAtADkAOAA2ADoANgA7ADoAOQA4ADwAOAA6ADwALgA5AD0APQA+AC4AOQA8AD8APQA5AD8APAA6AEAAOgBBAEAAPwA8AEIAPABAAEIAPQA/AEMAQwBEAD0APwBCAEUAQwA/AEUAQgBAAEYAQABHAEYARQBCAEgAQgBGAEgASABGAEkARgBKAEkASABJAEsATABIAEsARQBIAEwATABLAE0AQwBFAE4ATgBFAEwATgBPAEMAUABMAE0ATgBMAFAAUABRAE4AUABNAFIAUgBTAFAA"),
@@ -55,42 +55,42 @@ _surfaces = [{
 }]
 blend_shape_mode = 0
 
-[node name="AgentModel" type="Node3D" unique_id=1403974508]
+[node name="AgentModel" type="Node3D" unique_id=1065832641]
 
-[node name="agent" type="Node3D" parent="." unique_id=994968966 instance=ExtResource("1_srapr")]
+[node name="agent" type="Node3D" parent="." unique_id=609543889 instance=ExtResource("1_srapr")]
 
-[node name="HeadGear" type="BoneAttachment3D" parent="." unique_id=1222013332]
+[node name="HeadGear" type="BoneAttachment3D" parent="." unique_id=675156797]
 bone_name = "Head"
 bone_idx = 8
 use_external_skeleton = true
 external_skeleton = NodePath("../agent/Armature/Skeleton3D")
 
-[node name="Visor" type="MeshInstance3D" parent="HeadGear" unique_id=2132614279]
+[node name="Visor" type="MeshInstance3D" parent="HeadGear" unique_id=1839755468]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0)
 layers = 2
 mesh = SubResource("ArrayMesh_r0bac")
 
-[node name="Blade" type="BoneAttachment3D" parent="." unique_id=1774024679]
+[node name="Blade" type="BoneAttachment3D" parent="." unique_id=611326295]
 bone_name = "Weapon_R"
 bone_idx = 18
 use_external_skeleton = true
 external_skeleton = NodePath("../agent/Armature/Skeleton3D")
 
-[node name="BladeMesh" type="MeshInstance3D" parent="Blade" unique_id=808591929]
+[node name="BladeMesh" type="MeshInstance3D" parent="Blade" unique_id=418233576]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0)
 layers = 2
 mesh = SubResource("ArrayMesh_k4axd")
 
-[node name="Knife" type="BoneAttachment3D" parent="." unique_id=179279650]
+[node name="Knife" type="BoneAttachment3D" parent="." unique_id=615975244]
 bone_name = "Knife"
 bone_idx = 1
 use_external_skeleton = true
 external_skeleton = NodePath("../agent/Armature/Skeleton3D")
 
-[node name="KnifeMesh" type="MeshInstance3D" parent="Knife" unique_id=605423331]
+[node name="KnifeMesh" type="MeshInstance3D" parent="Knife" unique_id=1247008945]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0)
 layers = 2
 mesh = SubResource("ArrayMesh_8ms0a")
 
-[node name="Animator" type="Node" parent="." unique_id=804875017]
+[node name="Animator" type="Node" parent="." unique_id=137562658]
 script = ExtResource("3_kb33u")

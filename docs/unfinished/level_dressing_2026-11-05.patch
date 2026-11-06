@@ -1,0 +1,2363 @@
+diff --git a/materials/black_sand_arch.tres b/materials/black_sand_arch.tres
+index 647b909..943d562 100644
+--- a/materials/black_sand_arch.tres
++++ b/materials/black_sand_arch.tres
+@@ -11,5 +11,5 @@ shader_parameter/world_uv = true
+ shader_parameter/texture_world_size = 8.0
+ shader_parameter/use_vertex_color = true
+ shader_parameter/emission_texture = ExtResource("3_glow")
+-shader_parameter/emission_tint = Color(0.45, 0.85, 1, 1)
+-shader_parameter/emission_energy = 0.55
++shader_parameter/emission_tint = Color(0.62, 0.42, 1, 1)
++shader_parameter/emission_energy = 0.65
+diff --git a/materials/black_sand_arch_worn.tres b/materials/black_sand_arch_worn.tres
+index 2a8c4d4..37f5541 100644
+--- a/materials/black_sand_arch_worn.tres
++++ b/materials/black_sand_arch_worn.tres
+@@ -11,5 +11,5 @@ shader_parameter/world_uv = true
+ shader_parameter/texture_world_size = 8.0
+ shader_parameter/use_vertex_color = true
+ shader_parameter/emission_texture = ExtResource("3_glow")
+-shader_parameter/emission_tint = Color(0.45, 0.85, 1, 1)
+-shader_parameter/emission_energy = 0.55
++shader_parameter/emission_tint = Color(0.62, 0.42, 1, 1)
++shader_parameter/emission_energy = 0.65
+diff --git a/materials/black_sand_cold_edge.tres b/materials/black_sand_cold_edge.tres
+new file mode 100644
+index 0000000..9985203
+--- /dev/null
++++ b/materials/black_sand_cold_edge.tres
+@@ -0,0 +1,9 @@
++[gd_resource type="ShaderMaterial" format=3]
++
++[ext_resource type="Shader" path="res://shaders/ps1_surface.gdshader" id="1_ps1"]
++
++[resource]
++shader = ExtResource("1_ps1")
++shader_parameter/albedo_color = Color(0.75, 0.88, 1, 1)
++shader_parameter/emission_color = Color(0.7, 0.86, 1, 1)
++shader_parameter/emission_energy = 2.6
+diff --git a/materials/black_sand_monolith.tres b/materials/black_sand_monolith.tres
+new file mode 100644
+index 0000000..7e85c69
+--- /dev/null
++++ b/materials/black_sand_monolith.tres
+@@ -0,0 +1,7 @@
++[gd_resource type="ShaderMaterial" format=3]
++
++[ext_resource type="Shader" path="res://shaders/ps1_surface.gdshader" id="1_ps1"]
++
++[resource]
++shader = ExtResource("1_ps1")
++shader_parameter/albedo_color = Color(0.022, 0.022, 0.03, 1)
+diff --git a/materials/black_sand_shaft.tres b/materials/black_sand_shaft.tres
+new file mode 100644
+index 0000000..2d15774
+--- /dev/null
++++ b/materials/black_sand_shaft.tres
+@@ -0,0 +1,9 @@
++[gd_resource type="ShaderMaterial" format=3]
++
++[ext_resource type="Shader" path="res://shaders/kit_light_shaft.gdshader" id="1_kit"]
++
++[resource]
++render_priority = 2
++shader = ExtResource("1_kit")
++shader_parameter/far_fade = 150.0
++shader_parameter/near_fade = 3.0
+diff --git a/materials/black_sand_sky.tres b/materials/black_sand_sky.tres
+index 36803b9..980d938 100644
+--- a/materials/black_sand_sky.tres
++++ b/materials/black_sand_sky.tres
+@@ -4,6 +4,6 @@
+ 
+ [resource]
+ shader = ExtResource("1_ps1")
+-shader_parameter/albedo_color = Color(0.8, 0.75, 0.68, 1)
+-shader_parameter/emission_color = Color(1, 0.93, 0.8, 1)
+-shader_parameter/emission_energy = 1.15
++shader_parameter/albedo_color = Color(0.74, 0.7, 0.86, 1)
++shader_parameter/emission_color = Color(0.82, 0.74, 1, 1)
++shader_parameter/emission_energy = 1.05
+diff --git a/materials/black_sand_town_glow.tres b/materials/black_sand_town_glow.tres
+new file mode 100644
+index 0000000..74e6350
+--- /dev/null
++++ b/materials/black_sand_town_glow.tres
+@@ -0,0 +1,9 @@
++[gd_resource type="ShaderMaterial" format=3]
++
++[ext_resource type="Shader" path="res://shaders/ps1_surface.gdshader" id="1_ps1"]
++
++[resource]
++shader = ExtResource("1_ps1")
++shader_parameter/albedo_color = Color(0.9, 0.6, 0.3, 1)
++shader_parameter/emission_color = Color(1, 0.62, 0.28, 1)
++shader_parameter/emission_energy = 1.1
+diff --git a/materials/hologram.tres b/materials/hologram.tres
+index f96517e..8450e02 100644
+--- a/materials/hologram.tres
++++ b/materials/hologram.tres
+@@ -4,6 +4,6 @@
+ 
+ [resource]
+ shader = ExtResource("1_ps1")
+-shader_parameter/albedo_color = Color(0.3, 0.8, 1, 1)
+-shader_parameter/emission_color = Color(0.3, 0.85, 1, 1)
++shader_parameter/albedo_color = Color(0.6, 0.42, 1, 1)
++shader_parameter/emission_color = Color(0.65, 0.42, 1, 1)
+ shader_parameter/emission_energy = 2.5
+diff --git a/materials/massacre_char.tres b/materials/massacre_char.tres
+new file mode 100644
+index 0000000..8a94bc4
+--- /dev/null
++++ b/materials/massacre_char.tres
+@@ -0,0 +1,9 @@
++[gd_resource type="ShaderMaterial" format=3]
++
++[ext_resource type="Shader" path="res://shaders/ps1_surface.gdshader" id="1_ps1"]
++
++[resource]
++shader = ExtResource("1_ps1")
++shader_parameter/albedo_color = Color(0.09, 0.07, 0.06, 1)
++shader_parameter/emission_color = Color(1, 0.32, 0.05, 1)
++shader_parameter/emission_energy = 0.35
+diff --git a/materials/massacre_cloth_indigo.tres b/materials/massacre_cloth_indigo.tres
+index 09cb30c..bad2b32 100644
+--- a/materials/massacre_cloth_indigo.tres
++++ b/materials/massacre_cloth_indigo.tres
+@@ -4,4 +4,4 @@
+ 
+ [resource]
+ shader = ExtResource("1_ps1")
+-shader_parameter/albedo_color = Color(0.17, 0.22, 0.4, 1)
++shader_parameter/albedo_color = Color(0.16, 0.2, 0.34, 1)
+diff --git a/materials/massacre_cloth_ochre.tres b/materials/massacre_cloth_ochre.tres
+index 5c85975..858b17b 100644
+--- a/materials/massacre_cloth_ochre.tres
++++ b/materials/massacre_cloth_ochre.tres
+@@ -4,4 +4,4 @@
+ 
+ [resource]
+ shader = ExtResource("1_ps1")
+-shader_parameter/albedo_color = Color(0.74, 0.54, 0.22, 1)
++shader_parameter/albedo_color = Color(0.6, 0.45, 0.2, 1)
+diff --git a/materials/massacre_cloth_red.tres b/materials/massacre_cloth_red.tres
+index 3b13f2f..659bb3e 100644
+--- a/materials/massacre_cloth_red.tres
++++ b/materials/massacre_cloth_red.tres
+@@ -4,4 +4,4 @@
+ 
+ [resource]
+ shader = ExtResource("1_ps1")
+-shader_parameter/albedo_color = Color(0.62, 0.17, 0.13, 1)
++shader_parameter/albedo_color = Color(0.5, 0.16, 0.13, 1)
+diff --git a/materials/massacre_cloth_white.tres b/materials/massacre_cloth_white.tres
+index 5a7e98f..4e6ff8e 100644
+--- a/materials/massacre_cloth_white.tres
++++ b/materials/massacre_cloth_white.tres
+@@ -4,4 +4,4 @@
+ 
+ [resource]
+ shader = ExtResource("1_ps1")
+-shader_parameter/albedo_color = Color(0.86, 0.84, 0.78, 1)
++shader_parameter/albedo_color = Color(0.74, 0.71, 0.64, 1)
+diff --git a/materials/massacre_eye.tres b/materials/massacre_eye.tres
+new file mode 100644
+index 0000000..cd76621
+--- /dev/null
++++ b/materials/massacre_eye.tres
+@@ -0,0 +1,9 @@
++[gd_resource type="ShaderMaterial" format=3]
++
++[ext_resource type="Shader" path="res://shaders/ps1_surface.gdshader" id="1_ps1"]
++
++[resource]
++shader = ExtResource("1_ps1")
++shader_parameter/albedo_color = Color(0.06, 0.05, 0.07, 1)
++shader_parameter/emission_color = Color(0.4, 0.36, 0.5, 1)
++shader_parameter/emission_energy = 0.2
+diff --git a/materials/massacre_grass.tres b/materials/massacre_grass.tres
+new file mode 100644
+index 0000000..6259098
+--- /dev/null
++++ b/materials/massacre_grass.tres
+@@ -0,0 +1,11 @@
++[gd_resource type="ShaderMaterial" format=3]
++
++[ext_resource type="Shader" path="res://shaders/ps1_surface.gdshader" id="1_ps1"]
++[ext_resource type="Texture2D" path="res://textures/grass.png" id="2_tex"]
++
++[resource]
++shader = ExtResource("1_ps1")
++shader_parameter/albedo_color = Color(0.9, 0.62, 0.78, 1)
++shader_parameter/albedo_texture = ExtResource("2_tex")
++shader_parameter/world_uv = true
++shader_parameter/texture_world_size = 2.0
+diff --git a/materials/massacre_grow_lamp.tres b/materials/massacre_grow_lamp.tres
+index 662c934..5ea7677 100644
+--- a/materials/massacre_grow_lamp.tres
++++ b/materials/massacre_grow_lamp.tres
+@@ -4,6 +4,6 @@
+ 
+ [resource]
+ shader = ExtResource("1_ps1")
+-shader_parameter/albedo_color = Color(1, 0.93, 0.8, 1)
+-shader_parameter/emission_color = Color(1, 0.88, 0.68, 1)
+-shader_parameter/emission_energy = 1.7
++shader_parameter/albedo_color = Color(0.8, 0.84, 0.9, 1)
++shader_parameter/emission_color = Color(0.72, 0.78, 0.95, 1)
++shader_parameter/emission_energy = 0.9
+diff --git a/materials/massacre_haze.tres b/materials/massacre_haze.tres
+new file mode 100644
+index 0000000..65a09d5
+--- /dev/null
++++ b/materials/massacre_haze.tres
+@@ -0,0 +1,18 @@
++[gd_resource type="ShaderMaterial" format=3]
++
++[ext_resource type="Shader" path="res://shaders/cloud_layer.gdshader" id="1_cloud"]
++
++[resource]
++render_priority = 0
++shader = ExtResource("1_cloud")
++shader_parameter/light_color = Color(0.17, 0.16, 0.21, 1)
++shader_parameter/shade_color = Color(0.07, 0.065, 0.09, 1)
++shader_parameter/opacity = 0.55
++shader_parameter/cover = 0.6
++shader_parameter/softness = 0.4
++shader_parameter/cloud_size = 30.0
++shader_parameter/texel = 0.3
++shader_parameter/wind = Vector2(0.5, 0.2)
++shader_parameter/soft_contact = 4.0
++shader_parameter/near_fade = 8.0
++shader_parameter/edge_fade = 25.0
+diff --git a/materials/massacre_lantern_out.tres b/materials/massacre_lantern_out.tres
+new file mode 100644
+index 0000000..ba09d87
+--- /dev/null
++++ b/materials/massacre_lantern_out.tres
+@@ -0,0 +1,7 @@
++[gd_resource type="ShaderMaterial" format=3]
++
++[ext_resource type="Shader" path="res://shaders/ps1_surface.gdshader" id="1_ps1"]
++
++[resource]
++shader = ExtResource("1_ps1")
++shader_parameter/albedo_color = Color(0.5, 0.42, 0.32, 1)
+diff --git a/materials/massacre_lantern_paper.tres b/materials/massacre_lantern_paper.tres
+new file mode 100644
+index 0000000..ba8bee0
+--- /dev/null
++++ b/materials/massacre_lantern_paper.tres
+@@ -0,0 +1,9 @@
++[gd_resource type="ShaderMaterial" format=3]
++
++[ext_resource type="Shader" path="res://shaders/ps1_surface.gdshader" id="1_ps1"]
++
++[resource]
++shader = ExtResource("1_ps1")
++shader_parameter/albedo_color = Color(0.96, 0.82, 0.58, 1)
++shader_parameter/emission_color = Color(1, 0.68, 0.34, 1)
++shader_parameter/emission_energy = 0.95
+diff --git a/materials/massacre_lantern_red.tres b/materials/massacre_lantern_red.tres
+new file mode 100644
+index 0000000..f44efbc
+--- /dev/null
++++ b/materials/massacre_lantern_red.tres
+@@ -0,0 +1,9 @@
++[gd_resource type="ShaderMaterial" format=3]
++
++[ext_resource type="Shader" path="res://shaders/ps1_surface.gdshader" id="1_ps1"]
++
++[resource]
++shader = ExtResource("1_ps1")
++shader_parameter/albedo_color = Color(0.72, 0.22, 0.12, 1)
++shader_parameter/emission_color = Color(1, 0.3, 0.12, 1)
++shader_parameter/emission_energy = 0.75
+diff --git a/materials/massacre_leaf_light.tres b/materials/massacre_leaf_light.tres
+index 55577fe..3631a5d 100644
+--- a/materials/massacre_leaf_light.tres
++++ b/materials/massacre_leaf_light.tres
+@@ -4,4 +4,4 @@
+ 
+ [resource]
+ shader = ExtResource("1_ps1")
+-shader_parameter/albedo_color = Color(0.3, 0.46, 0.2, 1)
++shader_parameter/albedo_color = Color(0.3, 0.38, 0.2, 1)
+diff --git a/materials/massacre_mist.tres b/materials/massacre_mist.tres
+new file mode 100644
+index 0000000..06ed5b8
+--- /dev/null
++++ b/materials/massacre_mist.tres
+@@ -0,0 +1,18 @@
++[gd_resource type="ShaderMaterial" format=3]
++
++[ext_resource type="Shader" path="res://shaders/cloud_layer.gdshader" id="1_cloud"]
++
++[resource]
++render_priority = 0
++shader = ExtResource("1_cloud")
++shader_parameter/light_color = Color(0.2, 0.19, 0.25, 1)
++shader_parameter/shade_color = Color(0.1, 0.095, 0.13, 1)
++shader_parameter/opacity = 0.35
++shader_parameter/cover = 0.5
++shader_parameter/softness = 0.5
++shader_parameter/cloud_size = 18.0
++shader_parameter/texel = 0.3
++shader_parameter/wind = Vector2(0.3, 0.1)
++shader_parameter/soft_contact = 1.5
++shader_parameter/near_fade = 4.0
++shader_parameter/edge_fade = 20.0
+diff --git a/materials/massacre_paper.tres b/materials/massacre_paper.tres
+index 5760a96..7fc1b9d 100644
+--- a/materials/massacre_paper.tres
++++ b/materials/massacre_paper.tres
+@@ -4,6 +4,6 @@
+ 
+ [resource]
+ shader = ExtResource("1_ps1")
+-shader_parameter/albedo_color = Color(0.93, 0.87, 0.74, 1)
+-shader_parameter/emission_color = Color(1, 0.8, 0.52, 1)
+-shader_parameter/emission_energy = 0.5
++shader_parameter/albedo_color = Color(0.86, 0.8, 0.68, 1)
++shader_parameter/emission_color = Color(1, 0.78, 0.5, 1)
++shader_parameter/emission_energy = 0.3
+diff --git a/materials/massacre_paper_lit.tres b/materials/massacre_paper_lit.tres
+index f41237b..19fbb24 100644
+--- a/materials/massacre_paper_lit.tres
++++ b/materials/massacre_paper_lit.tres
+@@ -4,6 +4,6 @@
+ 
+ [resource]
+ shader = ExtResource("1_ps1")
+-shader_parameter/albedo_color = Color(1, 0.92, 0.75, 1)
+-shader_parameter/emission_color = Color(1, 0.78, 0.45, 1)
+-shader_parameter/emission_energy = 1.1
++shader_parameter/albedo_color = Color(0.95, 0.85, 0.66, 1)
++shader_parameter/emission_color = Color(1, 0.72, 0.4, 1)
++shader_parameter/emission_energy = 0.7
+diff --git a/materials/massacre_paper_red.tres b/materials/massacre_paper_red.tres
+index fa4815b..4d53647 100644
+--- a/materials/massacre_paper_red.tres
++++ b/materials/massacre_paper_red.tres
+@@ -4,6 +4,6 @@
+ 
+ [resource]
+ shader = ExtResource("1_ps1")
+-shader_parameter/albedo_color = Color(0.78, 0.24, 0.16, 1)
+-shader_parameter/emission_color = Color(1, 0.38, 0.2, 1)
+-shader_parameter/emission_energy = 1.1
++shader_parameter/albedo_color = Color(0.66, 0.2, 0.13, 1)
++shader_parameter/emission_color = Color(1, 0.34, 0.16, 1)
++shader_parameter/emission_energy = 0.7
+diff --git a/materials/massacre_robe_indigo.tres b/materials/massacre_robe_indigo.tres
+new file mode 100644
+index 0000000..a80bd37
+--- /dev/null
++++ b/materials/massacre_robe_indigo.tres
+@@ -0,0 +1,10 @@
++[gd_resource type="ShaderMaterial" format=3]
++
++[ext_resource type="Shader" path="res://shaders/ps1_surface.gdshader" id="1_ps1"]
++[ext_resource type="Texture2D" path="res://textures/awning_stripes.png" id="2_tex"]
++
++[resource]
++shader = ExtResource("1_ps1")
++shader_parameter/albedo_color = Color(0.24, 0.28, 0.46, 1)
++shader_parameter/albedo_texture = ExtResource("2_tex")
++shader_parameter/uv_scale = Vector2(1.5, 1)
+diff --git a/materials/massacre_robe_linen.tres b/materials/massacre_robe_linen.tres
+new file mode 100644
+index 0000000..9093492
+--- /dev/null
++++ b/materials/massacre_robe_linen.tres
+@@ -0,0 +1,10 @@
++[gd_resource type="ShaderMaterial" format=3]
++
++[ext_resource type="Shader" path="res://shaders/ps1_surface.gdshader" id="1_ps1"]
++[ext_resource type="Texture2D" path="res://textures/awning_stripes.png" id="2_tex"]
++
++[resource]
++shader = ExtResource("1_ps1")
++shader_parameter/albedo_color = Color(0.74, 0.7, 0.62, 1)
++shader_parameter/albedo_texture = ExtResource("2_tex")
++shader_parameter/uv_scale = Vector2(1.5, 1)
+diff --git a/materials/massacre_robe_moss.tres b/materials/massacre_robe_moss.tres
+new file mode 100644
+index 0000000..cd947ae
+--- /dev/null
++++ b/materials/massacre_robe_moss.tres
+@@ -0,0 +1,10 @@
++[gd_resource type="ShaderMaterial" format=3]
++
++[ext_resource type="Shader" path="res://shaders/ps1_surface.gdshader" id="1_ps1"]
++[ext_resource type="Texture2D" path="res://textures/awning_stripes.png" id="2_tex"]
++
++[resource]
++shader = ExtResource("1_ps1")
++shader_parameter/albedo_color = Color(0.36, 0.42, 0.26, 1)
++shader_parameter/albedo_texture = ExtResource("2_tex")
++shader_parameter/uv_scale = Vector2(1.5, 1)
+diff --git a/materials/massacre_robe_ochre.tres b/materials/massacre_robe_ochre.tres
+new file mode 100644
+index 0000000..a4577b3
+--- /dev/null
++++ b/materials/massacre_robe_ochre.tres
+@@ -0,0 +1,10 @@
++[gd_resource type="ShaderMaterial" format=3]
++
++[ext_resource type="Shader" path="res://shaders/ps1_surface.gdshader" id="1_ps1"]
++[ext_resource type="Texture2D" path="res://textures/awning_stripes.png" id="2_tex"]
++
++[resource]
++shader = ExtResource("1_ps1")
++shader_parameter/albedo_color = Color(0.66, 0.5, 0.24, 1)
++shader_parameter/albedo_texture = ExtResource("2_tex")
++shader_parameter/uv_scale = Vector2(1.5, 1)
+diff --git a/materials/massacre_robe_plum.tres b/materials/massacre_robe_plum.tres
+new file mode 100644
+index 0000000..0a86d17
+--- /dev/null
++++ b/materials/massacre_robe_plum.tres
+@@ -0,0 +1,10 @@
++[gd_resource type="ShaderMaterial" format=3]
++
++[ext_resource type="Shader" path="res://shaders/ps1_surface.gdshader" id="1_ps1"]
++[ext_resource type="Texture2D" path="res://textures/awning_stripes.png" id="2_tex"]
++
++[resource]
++shader = ExtResource("1_ps1")
++shader_parameter/albedo_color = Color(0.42, 0.24, 0.38, 1)
++shader_parameter/albedo_texture = ExtResource("2_tex")
++shader_parameter/uv_scale = Vector2(1.5, 1)
+diff --git a/materials/massacre_robe_red.tres b/materials/massacre_robe_red.tres
+new file mode 100644
+index 0000000..e33c480
+--- /dev/null
++++ b/materials/massacre_robe_red.tres
+@@ -0,0 +1,10 @@
++[gd_resource type="ShaderMaterial" format=3]
++
++[ext_resource type="Shader" path="res://shaders/ps1_surface.gdshader" id="1_ps1"]
++[ext_resource type="Texture2D" path="res://textures/awning_stripes.png" id="2_tex"]
++
++[resource]
++shader = ExtResource("1_ps1")
++shader_parameter/albedo_color = Color(0.6, 0.2, 0.16, 1)
++shader_parameter/albedo_texture = ExtResource("2_tex")
++shader_parameter/uv_scale = Vector2(1.5, 1)
+diff --git a/materials/massacre_roof_clay.tres b/materials/massacre_roof_clay.tres
+new file mode 100644
+index 0000000..133b1af
+--- /dev/null
++++ b/materials/massacre_roof_clay.tres
+@@ -0,0 +1,11 @@
++[gd_resource type="ShaderMaterial" format=3]
++
++[ext_resource type="Shader" path="res://shaders/ps1_surface.gdshader" id="1_ps1"]
++[ext_resource type="Texture2D" path="res://textures/terracotta.png" id="2_tex"]
++
++[resource]
++shader = ExtResource("1_ps1")
++shader_parameter/albedo_color = Color(0.5, 0.62, 0.8, 1)
++shader_parameter/albedo_texture = ExtResource("2_tex")
++shader_parameter/world_uv = true
++shader_parameter/texture_world_size = 1.5
+diff --git a/materials/massacre_stucco.tres b/materials/massacre_stucco.tres
+new file mode 100644
+index 0000000..9973cdc
+--- /dev/null
++++ b/materials/massacre_stucco.tres
+@@ -0,0 +1,11 @@
++[gd_resource type="ShaderMaterial" format=3]
++
++[ext_resource type="Shader" path="res://shaders/ps1_surface.gdshader" id="1_ps1"]
++[ext_resource type="Texture2D" path="res://textures/white_plaster.png" id="2_tex"]
++
++[resource]
++shader = ExtResource("1_ps1")
++shader_parameter/albedo_color = Color(0.68, 0.62, 0.52, 1)
++shader_parameter/albedo_texture = ExtResource("2_tex")
++shader_parameter/world_uv = true
++shader_parameter/texture_world_size = 2.0
+diff --git a/materials/massacre_vermilion.tres b/materials/massacre_vermilion.tres
+index 89f4ecd..0b4b349 100644
+--- a/materials/massacre_vermilion.tres
++++ b/materials/massacre_vermilion.tres
+@@ -4,4 +4,4 @@
+ 
+ [resource]
+ shader = ExtResource("1_ps1")
+-shader_parameter/albedo_color = Color(0.78, 0.22, 0.12, 1)
++shader_parameter/albedo_color = Color(0.62, 0.2, 0.12, 1)
+diff --git a/materials/massacre_water.tres b/materials/massacre_water.tres
+index 3d590b8..9fb1843 100644
+--- a/materials/massacre_water.tres
++++ b/materials/massacre_water.tres
+@@ -4,6 +4,6 @@
+ 
+ [resource]
+ shader = ExtResource("1_ps1")
+-shader_parameter/albedo_color = Color(0.28, 0.42, 0.46, 1)
+-shader_parameter/emission_color = Color(0.3, 0.5, 0.55, 1)
+-shader_parameter/emission_energy = 0.3
++shader_parameter/albedo_color = Color(0.2, 0.28, 0.32, 1)
++shader_parameter/emission_color = Color(0.25, 0.38, 0.45, 1)
++shader_parameter/emission_energy = 0.2
+diff --git a/materials/vacuum_station_holo_beam.tres b/materials/vacuum_station_holo_beam.tres
+index 5c32d2a..c3be00e 100644
+--- a/materials/vacuum_station_holo_beam.tres
++++ b/materials/vacuum_station_holo_beam.tres
+@@ -4,6 +4,6 @@
+ 
+ [resource]
+ shader = ExtResource("1_ps1")
+-shader_parameter/albedo_color = Color(0.08, 0.25, 0.32, 1)
+-shader_parameter/emission_color = Color(0.3, 0.85, 1, 1)
++shader_parameter/albedo_color = Color(0.16, 0.09, 0.3, 1)
++shader_parameter/emission_color = Color(0.65, 0.42, 1, 1)
+ shader_parameter/emission_energy = 0.7
+diff --git a/scenes/levels/black_sand.tscn b/scenes/levels/black_sand.tscn
+index b5ceb44..030fcd8 100644
+--- a/scenes/levels/black_sand.tscn
++++ b/scenes/levels/black_sand.tscn
+@@ -61,6 +61,14 @@
+ [ext_resource type="Script" path="res://scripts/props_black_sand/black_sand_town_wall.gd" id="59_kd0v7"]
+ [ext_resource type="Material" path="res://materials/lamp_cool.tres" id="60_wl4tc"]
+ [ext_resource type="Script" path="res://scripts/interactable.gd" id="61_lg28e"]
++[ext_resource type="Script" path="res://scripts/props_kit/light_shaft.gd" id="62_shaft"]
++[ext_resource type="Script" path="res://scripts/props_kit/drift_lights.gd" id="63_drift"]
++[ext_resource type="Script" path="res://scripts/props_kit/rubble.gd" id="64_rubble"]
++[ext_resource type="Script" path="res://scripts/props_black_sand/beacon_light.gd" id="65_beacon"]
++[ext_resource type="Script" path="res://scripts/props_black_sand/sand_monolith.gd" id="66_mono"]
++[ext_resource type="Script" path="res://scripts/props_black_sand/sand_drift_tail.gd" id="67_tail"]
++[ext_resource type="Script" path="res://scripts/props_black_sand/dawn_shafts.gd" id="68_dawnsh"]
++[ext_resource type="Material" path="res://materials/black_sand_town_glow.tres" id="69_tglow"]
+ 
+ [sub_resource type="Environment" id="Environment_5cid2"]
+ background_mode = 1
+@@ -1262,7 +1270,7 @@ material = ExtResource("11_3lonk")
+ 
+ [node name="ArchLight" type="OmniLight3D" parent="Arch" unique_id=47653317]
+ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 13.5, -80)
+-light_color = Color(0.5, 0.85, 1, 1)
++light_color = Color(0.62, 0.46, 1, 1)
+ light_energy = 1.1
+ omni_range = 22.0
+ 
+@@ -1331,13 +1339,13 @@ sink_degrees = 10.0
+ 
+ [node name="FootLightW" type="OmniLight3D" parent="Arch" unique_id=1997817597]
+ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15, 3.6, -75.5)
+-light_color = Color(0.5, 0.85, 1, 1)
++light_color = Color(0.6, 0.48, 1, 1)
+ light_energy = 0.75
+ omni_range = 10.0
+ 
+ [node name="FootLightE" type="OmniLight3D" parent="Arch" unique_id=250712328]
+ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 3.6, -75.5)
+-light_color = Color(0.5, 0.85, 1, 1)
++light_color = Color(0.6, 0.48, 1, 1)
+ light_energy = 0.75
+ omni_range = 10.0
+ 
+diff --git a/scenes/levels/vacuum_station.tscn b/scenes/levels/vacuum_station.tscn
+index c3031b4..e77a7f2 100644
+--- a/scenes/levels/vacuum_station.tscn
++++ b/scenes/levels/vacuum_station.tscn
+@@ -88,6 +88,19 @@
+ [ext_resource type="Script" path="res://scripts/interactable.gd" id="vs_interactable"]
+ [ext_resource type="Script" path="res://scripts/rest_bed.gd" id="vs_rest_bed"]
+ [ext_resource type="PackedScene" path="res://scenes/characters/grey_alien_model.tscn" id="vs_grey_alien"]
++[ext_resource type="Script" path="res://scripts/props_kit/wall_lamp_sodium.gd" id="vs_kit_wall_lamp"]
++[ext_resource type="Script" path="res://scripts/props_kit/light_shaft.gd" id="vs_kit_light_shaft"]
++[ext_resource type="Script" path="res://scripts/props_kit/drift_lights.gd" id="vs_kit_drift"]
++[ext_resource type="Script" path="res://scripts/props_kit/megastructure_kit.gd" id="vs_kit_mega"]
++[ext_resource type="Script" path="res://scripts/props_kit/stain_strips.gd" id="vs_kit_stains"]
++[ext_resource type="Script" path="res://scripts/props_kit/rubble.gd" id="vs_kit_rubble"]
++[ext_resource type="Script" path="res://scripts/props_station/crt_terminal.gd" id="vs_crt"]
++[ext_resource type="Script" path="res://scripts/props_station/capsule_gear.gd" id="vs_capsule_gear"]
++[ext_resource type="Material" path="res://materials/tex_trim_glyphs_vent.tres" id="vs_trim_vent"]
++[ext_resource type="Material" path="res://materials/tex_trim_glyphs_grate.tres" id="vs_trim_grate"]
++[ext_resource type="Material" path="res://materials/tex_trim_glyphs_plaque_a.tres" id="vs_trim_plaque"]
++[ext_resource type="Material" path="res://materials/tex_trim_glyphs_plaque_b_lit.tres" id="vs_trim_plaque_lit"]
++[ext_resource type="Material" path="res://materials/vacuum_station_verdigris.tres" id="vs_verdigris"]
+ 
+ [sub_resource type="Environment" id="Environment_eil6x"]
+ background_mode = 1
+@@ -590,7 +603,7 @@ mesh = SubResource("TorusMesh_hbbmv")
+ [node name="HoloLight" type="OmniLight3D" parent="Console" unique_id=373070760]
+ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 3.7, -49)
+ visible = false
+-light_color = Color(0.3, 0.85, 1, 1)
++light_color = Color(0.7, 0.45, 1, 1)
+ light_energy = 1.3
+ omni_range = 7.0
+ 
+@@ -2359,8 +2372,9 @@ kind = 9
+ 
+ [node name="Bag" type="StaticBody3D" parent="Dressing/House"]
+ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.3, 1.22, -64)
+-script = ExtResource("vs_capsule_prop")
+-kind = 10
++script = ExtResource("vs_capsule_gear")
++kind = 0
++length = 6.6
+ 
+ [node name="Weights" type="StaticBody3D" parent="Dressing/House"]
+ transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -3.9, 1.22, -58.3)
+@@ -5933,8 +5947,8 @@ draw_distance = 45.0
+ 
+ [node name="Drum" type="StaticBody3D" parent="Dressing/House/Ages"]
+ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.9, 1.245, -64.9)
+-script = ExtResource("vs_station_relic")
+-kind = 12
++script = ExtResource("vs_capsule_gear")
++kind = 1
+ draw_distance = 45.0
+ 
+ [node name="TallyTraining" type="Decal" parent="Decals/Ages"]
+@@ -6117,3 +6131,494 @@ reach = 2.8
+ [node name="Zone" type="CollisionShape3D" parent="Inspect/RestBed"]
+ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.8, 0, 0)
+ shape = SubResource("BoxShape3D_restbed")
++
++[node name="Look" type="Node3D" parent="Dressing"]
++
++[node name="HallLamps" type="Node3D" parent="Dressing/Look"]
++
++[node name="LampW-30" type="Node3D" parent="Dressing/Look/HallLamps"]
++transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -13, 5.2, -30)
++script = ExtResource("vs_kit_wall_lamp")
++scale_factor = 2.5
++light_energy = 3.0
++light_range = 13.0
++flicker = 1
++random_seed = 31
++
++[node name="LampW0" type="Node3D" parent="Dressing/Look/HallLamps"]
++transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -13, 5.2, 0)
++script = ExtResource("vs_kit_wall_lamp")
++scale_factor = 2.5
++light_energy = 3.0
++light_range = 13.0
++
++[node name="LampW24" type="Node3D" parent="Dressing/Look/HallLamps"]
++transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -13, 5.2, 24)
++script = ExtResource("vs_kit_wall_lamp")
++scale_factor = 2.5
++light_energy = 3.0
++light_range = 13.0
++flicker = 3
++random_seed = 32
++
++[node name="LampE-30" type="Node3D" parent="Dressing/Look/HallLamps"]
++transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 13, 5.2, -30)
++script = ExtResource("vs_kit_wall_lamp")
++scale_factor = 2.5
++light_energy = 3.0
++light_range = 13.0
++
++[node name="LampE0" type="Node3D" parent="Dressing/Look/HallLamps"]
++transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 13, 5.2, 0)
++script = ExtResource("vs_kit_wall_lamp")
++scale_factor = 2.5
++light_energy = 3.0
++light_range = 13.0
++flicker = 2
++random_seed = 33
++
++[node name="LampE24" type="Node3D" parent="Dressing/Look/HallLamps"]
++transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 13, 5.2, 24)
++script = ExtResource("vs_kit_wall_lamp")
++scale_factor = 2.5
++light_energy = 3.0
++light_range = 13.0
++
++[node name="LampE28_0" type="Node3D" parent="Dressing/Look/HallLamps"]
++transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 27, 5.2, 0)
++script = ExtResource("vs_kit_wall_lamp")
++scale_factor = 2.5
++light_energy = 2.2
++light_range = 11.0
++flicker = 1
++random_seed = 34
++
++[node name="LampE28_24" type="Node3D" parent="Dressing/Look/HallLamps"]
++transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 27, 5.2, 24)
++script = ExtResource("vs_kit_wall_lamp")
++scale_factor = 2.5
++light_energy = 2.2
++light_range = 11.0
++
++[node name="LampW28_-30" type="Node3D" parent="Dressing/Look/HallLamps"]
++transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -27, 5.2, -30)
++script = ExtResource("vs_kit_wall_lamp")
++scale_factor = 2.5
++light_energy = 2.2
++light_range = 11.0
++flicker = 2
++random_seed = 35
++
++[node name="Skylight" type="Node3D" parent="Dressing/Look"]
++
++[node name="SkylightPanel" type="StaticBody3D" parent="Dressing/Look/Skylight"]
++transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 29.9, -3)
++script = ExtResource("1_doaf5")
++size = Vector3(3.2, 0.2, 3.2)
++material = ExtResource("vs_vacuum_station_lamp")
++grime = 0.0
++
++[node name="Shaft" type="Node3D" parent="Dressing/Look/Skylight"]
++transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 29.8, -3)
++script = ExtResource("vs_kit_light_shaft")
++length = 29.8
++radius_top = 1.4
++radius_bottom = 5.0
++color = Color(0.75, 0.7, 0.95, 1)
++strength = 0.3
++mote_count = 36
++mote_size = 0.07
++mote_speed = 0.15
++
++[node name="ShaftPool" type="OmniLight3D" parent="Dressing/Look/Skylight"]
++transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 2.5, -3)
++light_color = Color(0.75, 0.7, 0.95, 1)
++light_energy = 0.6
++omni_range = 9.0
++
++[node name="TubeDrift" type="Node3D" parent="Dressing/Look"]
++transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24, 5.5, -79)
++script = ExtResource("vs_kit_drift")
++count = 4
++box_size = Vector3(4.5, 4, 14)
++color = Color(0.72, 0.66, 1, 1)
++speed = 0.3
++size = 0.16
++brightness = 0.9
++light_energy = 0.8
++light_range = 7.0
++random_seed = 7
++
++[node name="Mega" type="Node3D" parent="Dressing/Look"]
++
++[node name="ButtressNW" type="Node3D" parent="Dressing/Look/Mega"]
++transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12, 1.2, -70)
++script = ExtResource("vs_kit_mega")
++kind = 0
++variant = 1
++length = 11.0
++height = 20.0
++radius = 1.4
++
++[node name="ButtressNE" type="Node3D" parent="Dressing/Look/Mega"]
++transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 1.2, -70)
++script = ExtResource("vs_kit_mega")
++kind = 0
++variant = 0
++length = 11.0
++height = 20.0
++radius = 1.4
++
++[node name="ButtressSE" type="Node3D" parent="Dressing/Look/Mega"]
++transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 29, 0, 40)
++script = ExtResource("vs_kit_mega")
++kind = 0
++variant = 1
++length = 11.0
++height = 18.0
++radius = 1.4
++
++[node name="ButtressSW" type="Node3D" parent="Dressing/Look/Mega"]
++transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 7.5, 0, 40)
++script = ExtResource("vs_kit_mega")
++kind = 0
++variant = 0
++length = 11.0
++height = 18.0
++radius = 1.4
++
++[node name="ChainsA" type="Node3D" parent="Dressing/Look/Mega"]
++transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 27.5, -42)
++script = ExtResource("vs_kit_mega")
++kind = 5
++variant = 1
++height = 13.0
++radius = 1.2
++solid = false
++
++[node name="ChainsB" type="Node3D" parent="Dressing/Look/Mega"]
++transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 27.5, 18)
++script = ExtResource("vs_kit_mega")
++kind = 5
++variant = 2
++height = 16.0
++radius = 1.0
++solid = false
++
++[node name="ChainsC" type="Node3D" parent="Dressing/Look/Mega"]
++transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 27.5, -30)
++script = ExtResource("vs_kit_mega")
++kind = 5
++variant = 0
++height = 10.0
++radius = 0.9
++solid = false
++
++[node name="Stains" type="Node3D" parent="Dressing/Look"]
++
++[node name="StainsBoard0" type="Node3D" parent="Dressing/Look/Stains"]
++transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, -20, 7.95, 39.95)
++script = ExtResource("vs_kit_stains")
++length = 11.0
++random_seed = 3
++spacing = 1.1
++drop = 4.5
++rust_share = 0.35
++
++[node name="StainsBoard40" type="Node3D" parent="Dressing/Look/Stains"]
++transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 20, 7.95, 39.95)
++script = ExtResource("vs_kit_stains")
++length = 11.0
++random_seed = 4
++spacing = 1.1
++drop = 4.5
++rust_share = 0.35
++
++[node name="StainsBooth" type="Node3D" parent="Dressing/Look/Stains"]
++transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 0, 8.55, 39.95)
++script = ExtResource("vs_kit_stains")
++length = 11.0
++random_seed = 5
++spacing = 1.3
++drop = 2.6
++rust_share = 0.2
++
++[node name="StainsGalleryW" type="Node3D" parent="Dressing/Look/Stains"]
++transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -39.99, 7.6, 25)
++script = ExtResource("vs_kit_stains")
++length = 24.0
++random_seed = 6
++spacing = 1.4
++drop = 4.0
++rust_share = 0.4
++
++[node name="StainsCorridorW" type="Node3D" parent="Dressing/Look/Stains"]
++transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -2.99, 4.55, 56)
++script = ExtResource("vs_kit_stains")
++length = 24.0
++random_seed = 11
++spacing = 1.3
++drop = 2.2
++width = 0.14
++rust_share = 0.5
++
++[node name="StainsCorridorE" type="Node3D" parent="Dressing/Look/Stains"]
++transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 2.99, 4.6, 56)
++script = ExtResource("vs_kit_stains")
++length = 24.0
++random_seed = 12
++spacing = 1.5
++drop = 2.0
++width = 0.14
++rust_share = 0.5
++
++[node name="CorridorWall" type="Node3D" parent="Dressing/Look"]
++
++[node name="VentPanelW" type="StaticBody3D" parent="Dressing/Look/CorridorWall"]
++transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -2.95, 3.4, 60)
++script = ExtResource("1_doaf5")
++size = Vector3(2, 0.5, 0.09)
++material = ExtResource("vs_trim_vent")
++grime = 0.0
++trim = true
++
++[node name="GratePanelE" type="StaticBody3D" parent="Dressing/Look/CorridorWall"]
++transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 2.95, 0.55, 63)
++script = ExtResource("1_doaf5")
++size = Vector3(2, 0.5, 0.09)
++material = ExtResource("vs_trim_grate")
++grime = 0.0
++trim = true
++
++[node name="PlaqueW" type="StaticBody3D" parent="Dressing/Look/CorridorWall"]
++transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -2.95, 3.4, 47)
++script = ExtResource("1_doaf5")
++size = Vector3(2, 0.5, 0.09)
++material = ExtResource("vs_trim_plaque")
++grime = 0.0
++trim = true
++
++[node name="ChainsCorridor" type="Node3D" parent="Dressing/Look/CorridorWall"]
++transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.6, 4.98, 64)
++script = ExtResource("vs_kit_mega")
++kind = 5
++variant = 0
++height = 1.6
++radius = 0.3
++solid = false
++
++[node name="RubbleCorridor" type="Node3D" parent="Dressing/Look/CorridorWall"]
++transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -2.95, 0, 46.5)
++script = ExtResource("vs_kit_rubble")
++kind = 0
++random_seed = 21
++length = 2.4
++depth = 0.9
++height = 0.7
++chunks = 14
++
++[node name="LampCorridorE" type="Node3D" parent="Dressing/Look/CorridorWall"]
++transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 2.99, 3.6, 62.5)
++script = ExtResource("vs_kit_wall_lamp")
++light_energy = 1.8
++light_range = 7.0
++flicker = 2
++random_seed = 5
++
++[node name="LampCorridorW" type="Node3D" parent="Dressing/Look/CorridorWall"]
++transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -2.99, 3.6, 49.5)
++script = ExtResource("vs_kit_wall_lamp")
++light_energy = 1.8
++light_range = 7.0
++flicker = 1
++random_seed = 6
++
++[node name="Terminals" type="Node3D" parent="Dressing/Look"]
++
++[node name="CabinetDeckA" type="StaticBody3D" parent="Dressing/Look/Terminals"]
++transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 1.2, -69.6)
++script = ExtResource("vs_crt")
++kind = 1
++variant = 1
++
++[node name="CabinetDeckB" type="StaticBody3D" parent="Dressing/Look/Terminals"]
++transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.9, 1.2, -69.6)
++script = ExtResource("vs_crt")
++kind = 1
++variant = 2
++lit = false
++
++[node name="CabinetDeckC" type="StaticBody3D" parent="Dressing/Look/Terminals"]
++transform = Transform3D(0.9848077, 0, -0.17364818, 0, 1, 0, 0.17364818, 0, 0.9848077, 18.6, 1.2, -69.4)
++script = ExtResource("vs_crt")
++kind = 1
++variant = 3
++
++[node name="CabinetHallE" type="StaticBody3D" parent="Dressing/Look/Terminals"]
++transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14.3, 0, -28.6)
++script = ExtResource("vs_crt")
++kind = 1
++variant = 4
++
++[node name="CabinetHallW1" type="StaticBody3D" parent="Dressing/Look/Terminals"]
++transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, -13.7, 0, 22.6)
++script = ExtResource("vs_crt")
++kind = 1
++variant = 5
++
++[node name="CabinetHallW2" type="StaticBody3D" parent="Dressing/Look/Terminals"]
++transform = Transform3D(-0.9925462, 0, -0.12186934, 0, 1, 0, 0.12186934, 0, -0.9925462, -14.6, 0, 22.55)
++script = ExtResource("vs_crt")
++kind = 1
++variant = 6
++lit = false
++
++[node name="WallUnitW" type="StaticBody3D" parent="Dressing/Look/Terminals"]
++transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -12.99, 1.5, 0.3)
++script = ExtResource("vs_crt")
++kind = 2
++variant = 7
++solid = false
++
++[node name="PlaqueConsole" type="StaticBody3D" parent="Dressing/Look/Terminals"]
++transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 12.99, 1.2, -29.5)
++script = ExtResource("1_doaf5")
++size = Vector3(2, 0.5, 0.09)
++material = ExtResource("vs_trim_plaque_lit")
++grime = 0.0
++trim = true
++
++[node name="CapsuleFittings" type="Node3D" parent="Dressing/Look"]
++
++[node name="HousingA" type="StaticBody3D" parent="Dressing/Look/CapsuleFittings"]
++transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 7.85, -52.6)
++script = ExtResource("vs_capsule_gear")
++kind = 2
++length = 3.0
++solid = false
++
++[node name="HousingB" type="StaticBody3D" parent="Dressing/Look/CapsuleFittings"]
++transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 7.85, -61)
++script = ExtResource("vs_capsule_gear")
++kind = 2
++length = 4.0
++solid = false
++
++[node name="DuctLiving" type="StaticBody3D" parent="Dressing/Look/CapsuleFittings"]
++transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.0, 7.85, -52.7)
++script = ExtResource("vs_capsule_gear")
++kind = 3
++length = 7.4
++solid = false
++
++[node name="DuctTraining" type="StaticBody3D" parent="Dressing/Look/CapsuleFittings"]
++transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.0, 7.85, -61.5)
++script = ExtResource("vs_capsule_gear")
++kind = 3
++length = 7.0
++solid = false
++
++[node name="VentLiving" type="StaticBody3D" parent="Dressing/Look/CapsuleFittings"]
++transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.2, 7.85, -50.5)
++script = ExtResource("vs_capsule_gear")
++kind = 4
++solid = false
++
++[node name="VentTraining" type="StaticBody3D" parent="Dressing/Look/CapsuleFittings"]
++transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.2, 7.85, -63)
++script = ExtResource("vs_capsule_gear")
++kind = 4
++solid = false
++
++[node name="GaugesTraining" type="StaticBody3D" parent="Dressing/Look/CapsuleFittings"]
++transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 4.68, 3.3, -58.6)
++script = ExtResource("vs_capsule_gear")
++kind = 5
++variant = 1
++solid = false
++
++[node name="HullStreaks" type="Node3D" parent="Dressing/Look"]
++
++[node name="SillE" type="Node3D" parent="Dressing/Look/HullStreaks"]
++transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 4.99, 4.1, -55)
++script = ExtResource("vs_kit_stains")
++length = 6.0
++random_seed = 41
++spacing = 0.7
++drop = 1.3
++width = 0.16
++rust_share = 0.3
++stain_material = ExtResource("vs_verdigris")
++
++[node name="SillW" type="Node3D" parent="Dressing/Look/HullStreaks"]
++transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -4.99, 4.1, -55)
++script = ExtResource("vs_kit_stains")
++length = 6.0
++random_seed = 42
++spacing = 0.7
++drop = 1.3
++width = 0.16
++rust_share = 0.3
++stain_material = ExtResource("vs_verdigris")
++
++[node name="RoofE" type="Node3D" parent="Dressing/Look/HullStreaks"]
++transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 4.99, 7.25, -50.5)
++script = ExtResource("vs_kit_stains")
++length = 3.0
++random_seed = 43
++spacing = 0.6
++drop = 1.8
++width = 0.16
++rust_share = 0.4
++stain_material = ExtResource("vs_verdigris")
++
++[node name="RoofE2" type="Node3D" parent="Dressing/Look/HullStreaks"]
++transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 4.99, 7.25, -63)
++script = ExtResource("vs_kit_stains")
++length = 3.0
++random_seed = 44
++spacing = 0.6
++drop = 1.8
++width = 0.16
++rust_share = 0.4
++stain_material = ExtResource("vs_verdigris")
++
++[node name="RoofW" type="Node3D" parent="Dressing/Look/HullStreaks"]
++transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -4.99, 7.25, -52)
++script = ExtResource("vs_kit_stains")
++length = 3.0
++random_seed = 45
++spacing = 0.6
++drop = 1.8
++width = 0.16
++rust_share = 0.4
++stain_material = ExtResource("vs_verdigris")
++
++[node name="RoofW2" type="Node3D" parent="Dressing/Look/HullStreaks"]
++transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -4.99, 7.25, -61)
++script = ExtResource("vs_kit_stains")
++length = 3.0
++random_seed = 46
++spacing = 0.6
++drop = 1.8
++width = 0.16
++rust_share = 0.4
++stain_material = ExtResource("vs_verdigris")
++
++[node name="LampButtressW" type="Node3D" parent="Dressing/Look/HallLamps"]
++transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12, 5.5, -68.99)
++script = ExtResource("vs_kit_wall_lamp")
++scale_factor = 2.0
++light_energy = 2.4
++light_range = 11.0
++flicker = 1
++random_seed = 36
++
++[node name="LampButtressE" type="Node3D" parent="Dressing/Look/HallLamps"]
++transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 5.5, -68.99)
++script = ExtResource("vs_kit_wall_lamp")
++scale_factor = 2.0
++light_energy = 2.4
++light_range = 11.0
++flicker = 2
++random_seed = 37
+diff --git a/scripts/props_massacre/crowd_figure.gd b/scripts/props_massacre/crowd_figure.gd
+index b96d9ac..89f484c 100644
+--- a/scripts/props_massacre/crowd_figure.gd
++++ b/scripts/props_massacre/crowd_figure.gd
+@@ -1,12 +1,14 @@
+ @tool
+ extends Node3D
+ ## One figure of the Massacre memory (the courtyard crowd, the elder, the raiders): a person in a
+-## robe, made of simple shapes. No faces: it is a four-year-old's fragment of a memory, seen
+-## through the haze. A stand-in until the village has real character models.
+-##   Villager: robe, sash, sleeves, hair or a straw hat (Variant picks colours and headwear).
+-##   Child: the same, smaller, with a bigger head.
++## striped robe, made of simple shapes, with a simple face: two big glossy eyes and nothing else.
++## A four-year-old's fragment of a memory, seen through the haze.
++##   Villager: a muted striped robe, one accent colour (the sash, the scarf or the hood lining),
++##     sleeves, hair, a straw hat, a headscarf or a hood (Variant picks), in one of the Poses.
++##   Child: the same, smaller, with a bigger head and bigger eyes.
+ ##   Elder: pale robe, white hair, a slight stoop and a staff.
+-##   Raider: a long black coat and hood, an iron blade held low.
++##   Raider: a long black coat and hood, an iron blade held low. No face.
++## Pose: Auto picks one from Variant; or set it. Kneeling figures sit on their heels.
+ ## Origin on the floor, facing +Z. Drawn on render layer 2 (characters: the blob shadow skips it).
+ ## Purely visual: no collision. Identical figures share one mesh while the game runs.
+ 
+@@ -15,20 +17,32 @@ const M := {
+ 	skin = preload("res://materials/massacre_skin.tres"), hair = preload("res://materials/massacre_fur_black.tres"),
+ 	white = preload("res://materials/massacre_fur_white.tres"), straw = preload("res://materials/massacre_straw.tres"),
+ 	timber = preload("res://materials/massacre_timber.tres"), iron = preload("res://materials/massacre_iron.tres"),
+-	coat = preload("res://materials/black_cube.tres"),
++	coat = preload("res://materials/black_cube.tres"), eye = preload("res://materials/massacre_eye.tres"),
++	shine = preload("res://materials/massacre_fur_white.tres"),
+ 	indigo = preload("res://materials/massacre_cloth_indigo.tres"), red = preload("res://materials/massacre_cloth_red.tres"),
+ 	ochre = preload("res://materials/massacre_cloth_ochre.tres"), linen = preload("res://materials/massacre_cloth_white.tres"),
+ }
++## The striped robes, and the accent each one gets (a plain, warmer cloth).
++const ROBES: Array[Material] = [
++	preload("res://materials/massacre_robe_indigo.tres"), preload("res://materials/massacre_robe_red.tres"),
++	preload("res://materials/massacre_robe_ochre.tres"), preload("res://materials/massacre_robe_linen.tres"),
++	preload("res://materials/massacre_robe_plum.tres"), preload("res://materials/massacre_robe_moss.tres"),
++]
++const POSES := 6  # how many a villager can take from Variant
+ 
+ @export_enum("Villager", "Child", "Elder", "Raider") var kind := 0:
+ 	set(value):
+ 		kind = value
+ 		_rebuild()
+-## Changes the colours and the headwear, so the crowd isn't all one person.
++## Changes the colours, the headwear and (with Pose on Auto) the pose, so the crowd isn't one person.
+ @export var variant := 0:
+ 	set(value):
+ 		variant = value
+ 		_rebuild()
++@export_enum("Auto", "Standing", "Arms up", "Carrying a child", "Kneeling", "Pointing", "Dancing") var pose := 0:
++	set(value):
++		pose = value
++		_rebuild()
+ ## Standing height in metres (0 = the kind's usual height).
+ @export var height := 0.0:
+ 	set(value):
+@@ -56,7 +70,7 @@ func _rebuild() -> void:
+ func _rebuild_now() -> void:
+ 	var usual: Array[float] = [1.75, 1.1, 1.6, 1.85]
+ 	var tall: float = height if height > 0.0 else usual[clampi(kind, 0, 3)]
+-	var key := [&"crowd_figure", kind, variant % 8, snappedf(tall, 0.01)]
++	var key := [&"crowd_figure", kind, variant % 12, _pose(), snappedf(tall, 0.01)]
+ 	var mesh := MeshBuild.shared(key)
+ 	if mesh == null:
+ 		s = tall / 1.75
+@@ -72,8 +86,21 @@ func _rebuild_now() -> void:
+ 	_mesh.mesh = mesh
+ 
+ 
+-func _cloth(k: int) -> Material:
+-	return [M.indigo, M.red, M.ochre, M.linen][posmod(k, 4)]
++## The pose this figure takes: 1..POSES (Auto spreads them over the variants; elders stand).
++func _pose() -> int:
++	if kind == 2 or kind == 3:
++		return 1
++	if pose > 0:
++		return pose
++	return 1 + (variant * 5 + kind) % POSES
++
++
++func _robe() -> Material:
++	return ROBES[posmod(variant, ROBES.size())]
++
++
++func _accent() -> Material:
++	return [M.red, M.ochre, M.indigo, M.linen][posmod(variant + 1, 4)]
+ 
+ 
+ # Shapes in a 1.75 m adult's measurements, scaled by `s`.
+@@ -93,27 +120,67 @@ func _box(mat: Material, size: Vector3, at: Vector3, b := Basis()) -> void:
+ 	pm.box(mat, size * s, Transform3D(b, at * s))
+ 
+ 
++## Where each hand goes, per pose, for the left (sx = -1) and right (sx = 1) arm.
++func _wrist(p: int, sx: float, stoop: float) -> Vector3:
++	match p:
++		2: return Vector3(sx * 0.36, 1.82, 0.12 + stoop)                       # arms up, cheering
++		3: return Vector3(sx * 0.15, 1.02, 0.3 + stoop)                        # wrapped under a child
++		4: return Vector3(sx * 0.2, 0.62, 0.28)                                # hands on the thighs
++		5: return Vector3(-0.3, 1.52, 0.5) if sx < 0.0 else Vector3(0.26, 1.0, 0.08)  # pointing
++		6: return Vector3(sx * 0.5, 1.45 - (sx + 1.0) * 0.15, 0.15 + stoop)   # arms out, dancing
++		_: return Vector3(sx * 0.25, 1.0, 0.08 + stoop)
++
++
+ ## The robed body every kind shares; `stoop` moves the shoulders and head forward (metres).
+-func _body(robe: Material, sash: Material, stoop := 0.0) -> void:
+-	_c(robe, 0.17, 0.25, 0.9, Vector3(0, 0.45, 0))                 # the robe's skirt
+-	_c(robe, 0.2, 0.17, 0.5, Vector3(0, 1.15, stoop * 0.5))         # chest
+-	_c(sash, 0.18, 0.18, 0.09, Vector3(0, 0.93, 0.0))              # the sash at the waist
++## Returns how far the body was lowered (a kneeling figure), so the head follows.
++func _body(robe: Material, sash: Material, stoop := 0.0) -> float:
++	var p := _pose()
++	var drop := 0.0
++	if p == 4:  # kneeling: on the heels, the skirt spread over the legs
++		drop = 0.55
++		_c(robe, 0.25, 0.3, 0.42, Vector3(0, 0.21, 0.05))
++		_box(robe, Vector3(0.4, 0.2, 0.3), Vector3(0, 0.1, 0.3))            # the knees under the cloth
++		_box(M.hair, Vector3(0.1, 0.06, 0.17), Vector3(0.1, 0.03, -0.18))    # the feet behind
++		_box(M.hair, Vector3(0.1, 0.06, 0.17), Vector3(-0.1, 0.03, -0.18))
++	else:
++		_c(robe, 0.17, 0.25, 0.9, Vector3(0, 0.45, 0))                       # the robe's skirt
++		for sx: float in [-1.0, 1.0]:
++			_box(M.hair, Vector3(0.1, 0.06, 0.17), Vector3(sx * 0.08, 0.03, 0.1))  # feet under the hem
++	var lift := Vector3(0, -drop, 0)
++	_c(robe, 0.2, 0.17, 0.5, Vector3(0, 1.15, stoop * 0.5) + lift)          # chest
++	_c(sash, 0.18, 0.18, 0.09, Vector3(0, 0.93, 0.0) + lift)                # the sash: the accent
+ 	for sx: float in [-1.0, 1.0]:
+ 		# The under-robe's collar, crossed at the chest.
+-		_box(M.linen, Vector3(0.035, 0.2, 0.02), Vector3(sx * 0.045, 1.27, 0.185 + stoop * 0.5), Basis(Vector3.FORWARD, sx * 0.45))
+-		_box(M.hair, Vector3(0.1, 0.06, 0.17), Vector3(sx * 0.08, 0.03, 0.1))  # feet under the hem
+-		var sh := Vector3(sx * 0.21, 1.37, stoop)
+-		var wrist := Vector3(sx * 0.25, 1.0, 0.08 + stoop)
++		_box(M.linen, Vector3(0.035, 0.2, 0.02), Vector3(sx * 0.045, 1.27, 0.185 + stoop * 0.5) + lift, Basis(Vector3.FORWARD, sx * 0.45))
++		var sh := Vector3(sx * 0.21, 1.37, stoop) + lift
++		var wrist := _wrist(p, sx, stoop) + lift
+ 		_stick(robe, sh, wrist, 0.1)                                          # the sleeve
+-		_c(robe, 0.05, 0.075, 0.12, wrist + Vector3(0, 0.02, 0), 6)           # its wide cuff
+-		_ball(M.skin, 0.045, 0.08, wrist + Vector3(0, -0.06, 0.01), 6, 3)     # the hand
+-	_ball(robe, 0.22, 0.14, Vector3(0, 1.38, stoop), 8, 3)          # shoulders
+-	_c(M.skin, 0.05, 0.055, 0.1, Vector3(0, 1.47, stoop))          # neck
++		var cuff_dir := (wrist - sh).normalized()
++		_c(robe, 0.05, 0.075, 0.12, wrist - cuff_dir * 0.02, 6)               # its wide cuff
++		_ball(M.skin, 0.045, 0.08, wrist + cuff_dir * 0.05, 6, 3)             # the hand
++	_ball(robe, 0.22, 0.14, Vector3(0, 1.38, stoop) + lift, 8, 3)           # shoulders
++	_c(M.skin, 0.05, 0.055, 0.1, Vector3(0, 1.47, stoop) + lift)           # neck
++	if p == 3:  # a small child carried against the chest
++		_c(_accent(), 0.08, 0.1, 0.36, Vector3(0.08, 1.12, 0.3) + lift, 6)
++		_ball(M.skin, 0.08, 0.16, Vector3(0.08, 1.38, 0.3) + lift, 8, 4)
++		_ball(M.hair, 0.085, 0.14, Vector3(0.08, 1.41, 0.28) + lift, 8, 4)
++		_eyes(Vector3(0.08, 1.38, 0.3) + lift, 0.08, 1.2)
++	return drop
++
++
++## Two big glossy eyes on the front of a head of radius r at `at`, each with a point of light.
++func _eyes(at: Vector3, r: float, big := 1.0) -> void:
++	var er := r * 0.26 * big
++	for sx: float in [-1.0, 1.0]:
++		var c := at + Vector3(sx * r * 0.42, r * 0.02, r * 0.82)
++		_ball(M.eye, er, er * 2.2, c, 6, 3)
++		_ball(M.shine, er * 0.32, er * 0.6, c + Vector3(sx * er * 0.3, er * 0.35, er * 0.75), 4, 2)
+ 
+ 
+ func _head(at: Vector3, scale_head: float, hair: Material, style: int) -> void:
+ 	var r := 0.105 * scale_head
+ 	_ball(M.skin, r, r * 2.3, at, 8, 4)
++	_eyes(at, r, 1.0 if scale_head < 1.2 else 1.15)
+ 	match style:
+ 		0:  # cropped hair
+ 			_ball(hair, r * 1.06, r * 1.9, at + Vector3(0, r * 0.25, -r * 0.12), 8, 4)
+@@ -123,21 +190,28 @@ func _head(at: Vector3, scale_head: float, hair: Material, style: int) -> void:
+ 		2:  # a wide straw hat
+ 			_ball(hair, r * 1.04, r * 1.8, at + Vector3(0, r * 0.2, -r * 0.1), 8, 4)
+ 			_c(M.straw, 0.0, r * 2.6, r * 1.3, at + Vector3(0, r * 1.2, 0), 10)
+-		_:  # a cloth headscarf
+-			_ball(_cloth(variant + 3), r * 1.12, r * 2.0, at + Vector3(0, r * 0.2, -r * 0.18), 8, 4)
++		3:  # a hood of the robe's cloth over the hair, open at the face, lined with the accent
++			_ball(hair, r * 1.04, r * 1.8, at + Vector3(0, r * 0.2, -r * 0.1), 8, 4)
++			_c(_robe(), r * 0.35, r * 1.3, r * 2.3, at + Vector3(0, r * 0.35, -r * 0.3), 8)
++			_c(_accent(), r * 1.3, r * 1.5, r * 0.35, at + Vector3(0, -r * 0.85, -r * 0.3), 8)
++		_:  # a cloth headscarf in the accent colour
++			_ball(_accent(), r * 1.12, r * 2.0, at + Vector3(0, r * 0.2, -r * 0.18), 8, 4)
+ 
+ 
+ func _person(scale_head: float) -> void:
+-	var robe := _cloth(variant)
+-	_body(robe, _cloth(variant + 2))
+-	var neck_top := 1.52
+-	_head(Vector3(0, neck_top + 0.105 * scale_head, 0), scale_head, M.hair, (variant >> 1) % 4)
++	var robe := _robe()
++	var drop := _body(robe, _accent())
++	var neck_top := 1.52 - drop
++	var style := (variant >> 1) % 5
++	if kind == 1 and style == 3:
++		style = 4  # children go bare-headed or in a scarf, never hooded
++	_head(Vector3(0, neck_top + 0.105 * scale_head, 0), scale_head, M.hair, style)
+ 
+ 
+ func _elder() -> void:
+ 	var stoop := 0.07
+-	_body(M.linen if variant % 2 == 0 else M.indigo, M.ochre, stoop)
+-	_head(Vector3(0, 1.6, stoop + 0.03), 1.0, M.white, 1)
++	var drop := _body(ROBES[3] if variant % 2 == 0 else ROBES[0], M.ochre, stoop)
++	_head(Vector3(0, 1.6 - drop, stoop + 0.03), 1.0, M.white, 1)
+ 	_stick(M.timber, Vector3(0.32, 0.0, 0.2), Vector3(0.3, 1.45, 0.14), 0.04)  # the staff
+ 
+ 
+diff --git a/scripts/props_massacre/grass_tufts.gd b/scripts/props_massacre/grass_tufts.gd
+index 782faa4..75539ff 100644
+--- a/scripts/props_massacre/grass_tufts.gd
++++ b/scripts/props_massacre/grass_tufts.gd
+@@ -11,9 +11,9 @@ extends Node3D
+ 
+ const PropMesh := preload("res://scripts/props/prop_mesh.gd")
+ const TUFT_MAT := preload("res://materials/massacre_tuft.tres")
+-const GRASS_SHADES: Array[Color] = [Color(0.1, 0.21, 0.05), Color(0.13, 0.26, 0.06), Color(0.17, 0.3, 0.07)]
+-const FLOWER_HEADS: Array[Color] = [Color(0.95, 0.9, 0.85), Color(0.95, 0.8, 0.3), Color(0.7, 0.55, 0.95), Color(0.95, 0.5, 0.45)]
+-const STEM := Color(0.15, 0.3, 0.07)  # times the flower colour: a darker green
++const GRASS_SHADES: Array[Color] = [Color(0.12, 0.16, 0.07), Color(0.16, 0.2, 0.09), Color(0.2, 0.23, 0.11)]
++const FLOWER_HEADS: Array[Color] = [Color(0.8, 0.76, 0.7), Color(0.8, 0.68, 0.3), Color(0.6, 0.5, 0.75), Color(0.75, 0.42, 0.38)]
++const STEM := Color(0.18, 0.24, 0.09)  # times the flower colour: a darker green
+ 
+ @export var areas: Array[Rect2] = []:
+ 	set(value):
+diff --git a/scripts/props_massacre/market_stall.gd b/scripts/props_massacre/market_stall.gd
+index bd09374..7b1deac 100644
+--- a/scripts/props_massacre/market_stall.gd
++++ b/scripts/props_massacre/market_stall.gd
+@@ -5,6 +5,8 @@ extends "res://scripts/props_massacre/village_prop_base.gd"
+ ## festival). Picked from Kind by what it sells. The counter faces +Z (the customer's side);
+ ## origin on the ground under the counter's middle. Solid: the counter and the space behind it.
+ ## Food: a pot on glowing coals (put a steam_vent.gd node over it at (0.5, 1.25, -0.05)).
++## Wrecked: the same stall knocked over in the massacre: the counter tipped on its face, the
++## front posts snapped, the awning down on the ground, the goods spilled round it.
+ 
+ const Roof := preload("res://scripts/props_massacre/roof_kit.gd")
+ const W := 2.4
+@@ -14,9 +16,16 @@ const D := 1.6
+ 	set(value):
+ 		kind = value
+ 		_rebuild()
++@export var wrecked := false:
++	set(value):
++		wrecked = value
++		_rebuild()
+ 
+ 
+ func _build() -> void:
++	if wrecked:
++		_wreck()
++		return
+ 	# The counter at the front, the back shelf, the posts.
+ 	pm.box(M.plank, Vector3(W, 0.06, 0.7), at(0, 0.9, 0))
+ 	pm.box(M.timber, Vector3(W - 0.1, 0.84, 0.06), at(0, 0.44, 0.3))
+@@ -99,3 +108,36 @@ func _lanterns() -> void:
+ 		pm.cyl(M.paper, 0.12, 0.12, 0.3, at(-0.7 + i * 0.45, 1.08, 0), 8)
+ 	for i in 3:
+ 		pm.box(M.paper, Vector3(0.3, 0.3, 0.3), at(-0.6 + i * 0.6, 1.37, -D + 0.3))
++
++
++## The stall after the raiders: everything down, nothing lit.
++func _wreck() -> void:
++	var cloth: Material = [M.red, M.indigo, M.ochre][(variant / 2) % 3]
++	# The counter on its face, one end still propped on a broken post.
++	pm.box(M.plank, Vector3(W, 0.06, 0.7), at(0.1, 0.36, 0.55, Basis(Vector3.RIGHT, 1.25) * Basis(Vector3.UP, 0.12)))
++	pm.box(M.timber, Vector3(W - 0.1, 0.84, 0.06), at(0.1, 0.5, 0.2, Basis(Vector3.RIGHT, 1.25)))
++	for sx: float in [-1.0, 1.0]:
++		pm.box(M.timber, Vector3(0.1, 0.9, 0.1), at(sx * W * 0.5, 0.42, 0.35, Basis(Vector3.FORWARD, sx * 0.35)))  # snapped
++		pm.box(M.timber, Vector3(0.1, 2.7, 0.1), at(sx * (W * 0.5 + 0.2), 0.08, -D + 1.3, Basis(Vector3.RIGHT, PI * 0.5 - 0.1)))
++	pm.box(M.plank, Vector3(W - 0.2, 0.05, 0.4), at(0.3, 0.2, -D + 0.5, Basis(Vector3.FORWARD, 0.4)))
++	pm.box(M.timber, Vector3(0.1, 2.28, 0.1), at(-0.3, 0.06, -0.4, Basis(Vector3.UP, 1.1) * Basis(Vector3.RIGHT, PI * 0.5)))
++	# The awning cloth crumpled over it all.
++	pm.box(cloth, Vector3(W + 0.2, 0.05, 1.4), at(-0.2, 0.16, -0.5, Basis(Vector3.UP, -0.2) * Basis(Vector3.RIGHT, 0.12)))
++	pm.box(cloth, Vector3(1.6, 0.04, 0.9), at(0.9, 0.3, 0.3, Basis(Vector3.UP, 0.6) * Basis(Vector3.FORWARD, -0.25)))
++	pm.cyl(M.timber, 0.16, 0.16, 0.45, at(-1.2, 0.16, 0.9, Basis(Vector3.FORWARD, PI * 0.5)), 8)  # the stool, rolled
++	# What it sold, spilled on the ground.
++	var goods: Array = [[M.fruit, M.leaf2, M.red, M.ochre], [M.indigo, M.red, M.linen, M.ochre],
++			[M.ceramic, M.clay, M.ceramic, M.clay], [M.ceramic, M.fruit, M.iron, M.straw], [M.paper, M.red_paper, M.paper, M.straw]][kind]
++	for i in 10:
++		var x := -1.4 + rnd(i) * 2.8
++		var z := -0.4 + rnd(i + 20) * 2.0
++		var g: Material = goods[i % 4]
++		if kind == 1:
++			pm.box(g, Vector3(0.5, 0.04, 0.4), at(x, 0.02, z, Basis(Vector3.UP, rnd(i + 40) * 3.0)))
++		elif kind == 2 and i % 2 == 0:
++			pm.cyl(g, 0.09, 0.07, 0.2, at(x, 0.08, z, Basis(Vector3.RIGHT, PI * 0.5 + 0.2)), 8)
++		else:
++			pm.sphere(g, 0.06, 0.1, at(x, 0.05, z), 5, 3)
++	for i in 2:  # a basket on its side, emptied
++		pm.cyl(M.straw, 0.24, 0.2, 0.16, at(-0.9 + i * 1.9, 0.2, 1.1 - i * 0.5, Basis(Vector3.FORWARD, PI * 0.5 - 0.3)), 8)
++	fp(Vector3(W + 0.2, 0.9, D), Vector3(0, 0.45, -D * 0.5 + 0.5))
+diff --git a/scripts/props_massacre/village_prop_base.gd b/scripts/props_massacre/village_prop_base.gd
+index 2f43b5c..139dd24 100644
+--- a/scripts/props_massacre/village_prop_base.gd
++++ b/scripts/props_massacre/village_prop_base.gd
+@@ -14,7 +14,7 @@ const PropMesh := preload("res://scripts/props/prop_mesh.gd")
+ const M := {
+ 	timber = preload("res://materials/massacre_timber.tres"), plank = preload("res://materials/massacre_timber_light.tres"),
+ 	ridge = preload("res://materials/massacre_tile_ridge.tres"),
+-	clay = preload("res://materials/terracotta.tres"), plaster = preload("res://materials/white_plaster.tres"),
++	clay = preload("res://materials/massacre_roof_clay.tres"), plaster = preload("res://materials/massacre_stucco.tres"),
+ 	paper = preload("res://materials/massacre_paper.tres"), lit = preload("res://materials/massacre_paper_lit.tres"),
+ 	red_paper = preload("res://materials/massacre_paper_red.tres"), stone = preload("res://materials/massacre_stone.tres"),
+ 	moss = preload("res://materials/massacre_stone_moss.tres"), soil = preload("res://materials/massacre_soil.tres"),
+diff --git a/scripts/props_station/capsule_gear.gd b/scripts/props_station/capsule_gear.gd
+new file mode 100644
+index 0000000..3182f90
+--- /dev/null
++++ b/scripts/props_station/capsule_gear.gd
+@@ -0,0 +1,163 @@
++@tool
++extends "res://scripts/props_vacuum_station/station_prop_base.gd"
++## The capsule's proper props, replacing the plain shapes: a leather heavy bag on a chain, a
++## ribbed water drum with a tap and a ladle, and the ceiling's fittings (a lamp housing with a
++## grille, a cable duct, a round vent fan) plus a gauge panel for a wall. Origin on the floor
++## (bag, drum), on the ceiling at the fitting's centre (ceiling kinds), or on the wall (gauges);
++## the front faces +Z. `length` is the lamp slot's or the duct's run along Z; for the bag it is
++## the ceiling height the chain reaches (0 = the capsule's 6.7 m).
++
++const M := {
++	leather = preload("res://materials/vacuum_station_leather.tres"),
++	cloth = preload("res://materials/vacuum_station_cloth.tres"),
++	dark = preload("res://materials/rubber.tres"),
++	iron = preload("res://materials/kit_iron.tres"),
++	rust = preload("res://materials/kitb_rust.tres"),
++	hull = preload("res://materials/vacuum_station_hull.tres"),
++	verdigris = preload("res://materials/vacuum_station_verdigris.tres"),
++	brass = preload("res://materials/brass.tres"),
++	metal = preload("res://materials/metal.tres"),
++	glass = preload("res://materials/vacuum_station_crt_black.tres"),
++	dot = preload("res://materials/vacuum_station_amber.tres"),
++}
++
++@export_enum("Heavy bag", "Water drum", "Ceiling lamp housing", "Ceiling duct", "Ceiling vent fan",
++		"Wall gauges") var kind := 0:
++	set(value):
++		kind = value
++		_rebuild()
++@export var length := 0.0:
++	set(value):
++		length = maxf(value, 0.0)
++		_rebuild()
++
++
++func _build() -> void:
++	match kind:
++		0: _bag()
++		1: _drum()
++		2: _lamp_housing()
++		3: _duct()
++		4: _vent_fan()
++		5: _gauges()
++
++
++## A chain of flat links from `top` down to `bottom`, like the kit's chain bundles.
++func _chain(top: Vector3, bottom: Vector3, link := 0.26) -> void:
++	var axis := PropMesh.along(top, bottom)
++	var links := maxi(2, int(top.distance_to(bottom) / (link * 0.75)))
++	for i in links:
++		var p := top.lerp(bottom, (i + 0.5) / links)
++		var twist := axis.basis * Basis(Vector3.UP, PI * 0.5 * (i % 2))
++		pm.box(M.iron, Vector3(0.05, link, 0.16), Transform3D(twist, p))
++
++
++## A leather bag, fatter in the middle, stitched bands, four straps up to a ring and a chain
++## to the ceiling; a dark scuff on the floor under it where feet drag.
++func _bag() -> void:
++	var top := 6.7 if length <= 0.0 else length
++	pm.cyl(M.leather, 0.23, 0.27, 0.6, at(0, 1.3, 0), 10)
++	pm.cyl(M.leather, 0.27, 0.24, 0.55, at(0, 0.725, 0), 10)
++	pm.cyl(M.dark, 0.25, 0.25, 0.08, at(0, 0.42, 0), 10)  # the bottom cap
++	for y in [0.7, 1.0, 1.3]:
++		pm.cyl(M.dark, 0.275, 0.275, 0.035, at(0, y, 0), 10)  # stitched bands
++	pm.cyl(M.dark, 0.24, 0.24, 0.08, at(0, 1.62, 0), 10)  # the top cap
++	for i in 4:
++		var a := TAU * i / 4.0 + 0.4
++		pm.stick(M.leather, Vector3(cos(a) * 0.2, 1.64, sin(a) * 0.2), Vector3(0, 1.95, 0), 0.03)
++	pm.ring(M.iron, 0.025, 0.08, Transform3D(Basis(Vector3.RIGHT, PI * 0.5), Vector3(0, 1.98, 0)), 8, 4)
++	_chain(Vector3(0, 2.1, 0), Vector3(0, top, 0))
++	pm.cyl(M.iron, 0.09, 0.09, 0.06, at(0, top - 0.03, 0), 8)  # ceiling mount
++	pm.cyl(M.dark, 0.4, 0.4, 0.012, at(0.05, 0.006, 0.1), 10)  # scuffed floor
++	fp(Vector3(0.56, 1.3, 0.56), Vector3(0, 1.1, 0))
++
++
++## A ribbed drum: hoops gone green, a tap with a tin cup under it, a ladle hooked on the rim,
++## a wet dark ring on the floor.
++func _drum() -> void:
++	pm.cyl(M.hull, 0.31, 0.31, 0.9, at(0, 0.45, 0), 12)
++	for y in [0.12, 0.45, 0.78]:
++		pm.cyl(M.verdigris, 0.33, 0.33, 0.05, at(0, y, 0), 12)  # hoops
++	for i in 12:  # ribs between the hoops
++		var a := TAU * i / 12.0
++		pm.box(M.hull, Vector3(0.03, 0.9, 0.03), at(cos(a) * 0.315, 0.45, sin(a) * 0.315, Basis(Vector3.UP, -a)))
++	pm.cyl(M.verdigris, 0.3, 0.3, 0.03, at(0, 0.915, 0), 12)  # lid
++	pm.cyl(M.dark, 0.1, 0.1, 0.04, at(0, 0.94, 0), 8)  # bung
++	pm.stick(M.brass, Vector3(0, 0.28, 0.3), Vector3(0, 0.28, 0.42), 0.025)  # the tap
++	pm.stick(M.brass, Vector3(0, 0.28, 0.42), Vector3(0, 0.2, 0.42), 0.02)
++	pm.box(M.brass, Vector3(0.06, 0.015, 0.03), at(0, 0.31, 0.4))
++	pm.cyl(M.metal, 0.05, 0.045, 0.09, at(0.0, 0.045, 0.46), 8)  # the cup under it
++	pm.stick(M.metal, Vector3(0.3, 0.93, 0.05), Vector3(0.36, 0.55, 0.1), 0.012)  # ladle
++	pm.sphere(M.metal, 0.06, 0.06, at(0.37, 0.52, 0.1), 6, 3)
++	pm.cyl(M.dark, 0.42, 0.42, 0.012, at(0.02, 0.006, 0.12), 12)  # the wet floor
++	fp(Vector3(0.68, 0.95, 0.68), Vector3(0, 0.47, 0))
++
++
++## Around a lamp slot in the ceiling (origin on the ceiling at the slot's centre, the slot
++## `length` long along Z, 0.6 wide): a hull-metal frame hanging below the ceiling, a grille of
++## bars across the slot, two conduits feeding it and a junction box.
++func _lamp_housing() -> void:
++	var l := 3.0 if length <= 0.0 else length
++	var hw := 0.42
++	var hl := l * 0.5 + 0.12
++	span(M.hull, Vector3(-hw, -0.22, -hl), Vector3(-hw + 0.1, 0.02, hl))
++	span(M.hull, Vector3(hw - 0.1, -0.22, -hl), Vector3(hw, 0.02, hl))
++	span(M.hull, Vector3(-hw, -0.22, -hl), Vector3(hw, 0.02, -hl + 0.1))
++	span(M.hull, Vector3(-hw, -0.22, hl - 0.1), Vector3(hw, 0.02, hl))
++	var bars := maxi(3, int(l / 0.45))
++	for i in bars:
++		var z: float = -l * 0.5 + l * (i + 0.5) / bars
++		pm.box(M.iron, Vector3(hw * 2 - 0.1, 0.03, 0.05), at(0, -0.2, z))
++	pm.box(M.iron, Vector3(0.2, 0.12, 0.2), at(hw + 0.2, -0.06, -hl + 0.3))  # junction box
++	pm.stick(M.iron, Vector3(hw + 0.2, -0.06, -hl + 0.4), Vector3(hw + 0.2, -0.06, hl * 0.9), 0.03)
++	pm.stick(M.iron, Vector3(hw + 0.3, -0.06, -hl + 0.3), Vector3(hw + 1.2, -0.06, -hl + 0.3), 0.03)
++	fp(Vector3.ZERO, Vector3.ZERO)
++
++
++## A square duct along the ceiling (origin on the ceiling at the run's centre, `length` long
++## along Z): the box, straps every metre, a damper box in the middle, grilles at both ends.
++func _duct() -> void:
++	var l := 4.0 if length <= 0.0 else length
++	pm.box(M.hull, Vector3(0.36, 0.3, l), at(0, -0.17, 0))
++	var straps := maxi(2, int(l / 1.0))
++	for i in straps:
++		var z: float = -l * 0.5 + l * (i + 0.5) / straps
++		pm.box(M.iron, Vector3(0.42, 0.34, 0.05), at(0, -0.17, z))
++	pm.box(M.iron, Vector3(0.44, 0.36, 0.4), at(0, -0.17, 0))
++	for e in [-1.0, 1.0]:
++		pm.box(M.dark, Vector3(0.3, 0.24, 0.02), at(0, -0.17, e * (l * 0.5 + 0.005)))
++		for i in 4:
++			pm.box(M.iron, Vector3(0.3, 0.02, 0.03), at(0, -0.07 - i * 0.065, e * (l * 0.5 + 0.015)))
++	fp(Vector3.ZERO, Vector3.ZERO)
++
++
++## A round vent in the ceiling (origin on the ceiling at its centre): a dark disc, a green-worn
++## ring, four spokes, a hub and three dark blades under it.
++func _vent_fan() -> void:
++	pm.cyl(M.dark, 0.5, 0.5, 0.02, at(0, -0.01, 0), 12)
++	pm.ring(M.verdigris, 0.46, 0.52, at(0, -0.03, 0), 12, 4)
++	for i in 4:
++		var a := TAU * i / 4.0
++		pm.box(M.iron, Vector3(0.05, 0.03, 1.0), at(0, -0.04, 0, Basis(Vector3.UP, a)))
++	pm.cyl(M.iron, 0.09, 0.09, 0.08, at(0, -0.08, 0), 8)
++	for i in 3:
++		var a := TAU * i / 3.0
++		pm.box(M.dark, Vector3(0.12, 0.02, 0.36), at(cos(a) * 0.22, -0.07, sin(a) * 0.22, Basis(Vector3.UP, -a + PI * 0.5) * Basis(Vector3.FORWARD, 0.4)))
++	fp(Vector3.ZERO, Vector3.ZERO)
++
++
++## A gauge panel on a wall (origin on the wall at its centre, facing +Z): a hull plate, three
++## round dials with needles, two pipes into the wall, one amber lamp.
++func _gauges() -> void:
++	span(M.hull, Vector3(-0.55, -0.3, 0), Vector3(0.55, 0.3, 0.06))
++	for i in 3:
++		var x := -0.33 + i * 0.33
++		pm.cyl(M.brass, 0.12, 0.12, 0.05, at(x, 0.05, 0.08, Basis(Vector3.RIGHT, PI * 0.5)), 10)
++		pm.cyl(M.glass, 0.095, 0.095, 0.02, at(x, 0.05, 0.11, Basis(Vector3.RIGHT, PI * 0.5)), 10)
++		var a := 0.6 + i * 0.9 + variant * 0.4
++		pm.stick(M.dot, Vector3(x, 0.05, 0.125), Vector3(x + cos(a) * 0.07, 0.05 + sin(a) * 0.07, 0.125), 0.012)
++	for x in [-0.4, 0.4]:
++		pm.stick(M.iron, Vector3(x, -0.3, 0.1), Vector3(x, -0.9, 0.1), 0.035)
++		pm.stick(M.iron, Vector3(x, -0.9, 0.1), Vector3(x, -0.9, 0.0), 0.035)
++	pm.box(M.dot, Vector3(0.08, 0.05, 0.03), at(0, -0.2, 0.07))
++	fp(Vector3.ZERO, Vector3.ZERO)
+diff --git a/scripts/props_station/crt_terminal.gd b/scripts/props_station/crt_terminal.gd
+new file mode 100644
+index 0000000..ff20576
+--- /dev/null
++++ b/scripts/props_station/crt_terminal.gd
+@@ -0,0 +1,104 @@
++@tool
++extends "res://scripts/props_vacuum_station/station_prop_base.gd"
++## Beige CRT terminals, the station's old computers: a fat bevelled monitor shell with a dark
++## glass face showing red bar graphs (thick emissive strokes, no fine lines), a keyboard slab,
++## cables. Kinds: a desk unit (origin on the desk top), a floor cabinet with the monitor on top
++## and tape reels in its door, a wall unit (origin on the wall, the screen looks along +Z).
++## `variant` reshuffles the bars; `lit` off gives a dead black screen.
++
++const M := {
++	beige = preload("res://materials/vacuum_station_beige.tres"),
++	glass = preload("res://materials/vacuum_station_crt_black.tres"),
++	bar = preload("res://materials/vacuum_station_red.tres"),
++	dot = preload("res://materials/vacuum_station_amber.tres"),
++	dark = preload("res://materials/rubber.tres"),
++	iron = preload("res://materials/kit_iron.tres"),
++	tape = preload("res://materials/metal.tres"),
++}
++
++@export_enum("Desk unit", "Floor cabinet", "Wall unit") var kind := 0:
++	set(value):
++		kind = value
++		_rebuild()
++## Off: a dead screen, no bars, no glow.
++@export var lit := true:
++	set(value):
++		lit = value
++		_rebuild()
++
++
++func _build() -> void:
++	match kind:
++		0: _desk()
++		1: _cabinet()
++		2: _wall()
++
++
++## The monitor: shell, bevel ring, the glass and its bars. `base` is the shell's bottom centre.
++func _monitor(base: Vector3, w: float, h: float, d: float, tilt := 0.0) -> void:
++	var b := Basis(Vector3.RIGHT, -tilt)
++	var xf := Transform3D(b, base)
++	pm.box(M.beige, Vector3(w, h, d), xf * at(0, h * 0.5, 0))
++	pm.box(M.beige, Vector3(w * 0.92, h * 0.9, 0.05), xf * at(0, h * 0.5, d * 0.5 + 0.02))  # bevel
++	pm.box(M.glass, Vector3(w * 0.74, h * 0.66, 0.02), xf * at(0, h * 0.52, d * 0.5 + 0.05))
++	pm.box(M.dark, Vector3(w * 0.74, h * 0.08, 0.025), xf * at(0, h * 0.12, d * 0.5 + 0.04))  # the lip
++	pm.box(M.dot if lit else M.dark, Vector3(0.03, 0.03, 0.02), xf * at(w * 0.36, h * 0.12, d * 0.5 + 0.055))
++	if not lit:
++		return
++	var rng := RandomNumberGenerator.new()
++	rng.seed = variant * 7919 + kind * 131 + 17
++	var bars := 5 + variant % 3
++	var span_w := w * 0.62
++	var bw := span_w / bars * 0.62
++	var max_h := h * 0.5
++	for i in bars:
++		var bh: float = max_h * rng.randf_range(0.2, 1.0)
++		var x: float = -span_w * 0.5 + span_w * (i + 0.5) / bars
++		pm.box(M.bar, Vector3(bw, bh, 0.012), xf * at(x, h * 0.22 + bh * 0.5, d * 0.5 + 0.066))
++	pm.box(M.bar, Vector3(span_w + bw, 0.012, 0.012), xf * at(0, h * 0.215, d * 0.5 + 0.066))  # baseline
++
++
++## A keyboard slab with a dark key field, in front of the monitor on a desk.
++func _keyboard(center: Vector3) -> void:
++	pm.box(M.beige, Vector3(0.5, 0.035, 0.19), at(center.x, center.y + 0.018, center.z, Basis(Vector3.RIGHT, 0.08)))
++	pm.box(M.dark, Vector3(0.44, 0.012, 0.12), at(center.x, center.y + 0.04, center.z - 0.01, Basis(Vector3.RIGHT, 0.08)))
++
++
++## On a desk top (origin on the desk, facing +Z): the monitor on a short plinth, a keyboard.
++func _desk() -> void:
++	pm.box(M.beige, Vector3(0.36, 0.05, 0.3), at(0, 0.025, -0.08))
++	_monitor(Vector3(0, 0.05, -0.08), 0.56, 0.46, 0.5, 0.1)
++	_keyboard(Vector3(0, 0, 0.3))
++	pm.stick(M.dark, Vector3(0.1, 0.2, -0.33), Vector3(0.12, 0.0, -0.45), 0.012)  # a cable off the back
++	fp(Vector3.ZERO, Vector3.ZERO)
++
++
++## A cabinet on the floor with the monitor on top: a door with two tape reels and a row of
++## amber dots, vent slits on the side, a cable up to the monitor.
++func _cabinet() -> void:
++	span(M.beige, Vector3(-0.4, 0.06, -0.35), Vector3(0.4, 1.35, 0.35))
++	span(M.dark, Vector3(-0.38, 0, -0.33), Vector3(0.38, 0.06, 0.33))  # plinth
++	span(M.dark, Vector3(-0.34, 0.3, 0.35), Vector3(0.34, 1.25, 0.36))  # the door's dark panel
++	for x in [-0.17, 0.17]:
++		pm.cyl(M.tape, 0.12, 0.12, 0.03, at(x, 0.95, 0.37, Basis(Vector3.RIGHT, PI * 0.5)), 10)
++		pm.cyl(M.dark, 0.04, 0.04, 0.04, at(x, 0.95, 0.38, Basis(Vector3.RIGHT, PI * 0.5)), 8)
++	for i in 4:
++		var on := lit and (i + variant) % 3 != 1
++		pm.box(M.dot if on else M.dark, Vector3(0.05, 0.04, 0.015), at(-0.22 + i * 0.147, 0.5, 0.365))
++	for i in 5:  # vent slits on both sides
++		for sx in [-1.0, 1.0]:
++			pm.box(M.dark, Vector3(0.012, 0.03, 0.4), at(sx * 0.403, 0.22 + i * 0.07, -0.05))
++	_monitor(Vector3(0, 1.35, -0.02), 0.6, 0.5, 0.56, 0.12)
++	pm.stick(M.dark, Vector3(-0.2, 1.3, -0.36), Vector3(-0.25, 0.06, -0.42), 0.014)
++	fp(Vector3(0.82, 1.9, 0.72), Vector3(0, 0.95, 0))
++
++
++## On a wall (origin on the wall at the unit's centre, the screen along +Z): a boxed monitor on
++## a bracket, a small keypad under it.
++func _wall() -> void:
++	span(M.iron, Vector3(-0.32, -0.3, 0), Vector3(0.32, 0.3, 0.06))
++	_monitor(Vector3(0, -0.22, 0.06 + 0.2), 0.56, 0.44, 0.4)
++	pm.box(M.beige, Vector3(0.3, 0.1, 0.05), at(0, -0.3, 0.1))
++	for i in 3:
++		pm.box(M.dark, Vector3(0.06, 0.05, 0.012), at(-0.08 + i * 0.08, -0.3, 0.13))
++	fp(Vector3.ZERO, Vector3.ZERO)
+diff --git a/materials/vacuum_station_beige.tres b/materials/vacuum_station_beige.tres
+new file mode 100644
+index 0000000..4263968
+--- /dev/null
++++ b/materials/vacuum_station_beige.tres
+@@ -0,0 +1,7 @@
++[gd_resource type="ShaderMaterial" format=3]
++
++[ext_resource type="Shader" path="res://shaders/ps1_surface.gdshader" id="1_ps1"]
++
++[resource]
++shader = ExtResource("1_ps1")
++shader_parameter/albedo_color = Color(0.74, 0.67, 0.52, 1)
+diff --git a/materials/vacuum_station_crt_black.tres b/materials/vacuum_station_crt_black.tres
+new file mode 100644
+index 0000000..7b74c6e
+--- /dev/null
++++ b/materials/vacuum_station_crt_black.tres
+@@ -0,0 +1,9 @@
++[gd_resource type="ShaderMaterial" format=3]
++
++[ext_resource type="Shader" path="res://shaders/ps1_surface.gdshader" id="1_ps1"]
++
++[resource]
++shader = ExtResource("1_ps1")
++shader_parameter/albedo_color = Color(0.05, 0.05, 0.06, 1)
++shader_parameter/emission_color = Color(0.5, 0.08, 0.05, 1)
++shader_parameter/emission_energy = 0.12
+diff --git a/materials/vacuum_station_verdigris.tres b/materials/vacuum_station_verdigris.tres
+new file mode 100644
+index 0000000..11c09f6
+--- /dev/null
++++ b/materials/vacuum_station_verdigris.tres
+@@ -0,0 +1,7 @@
++[gd_resource type="ShaderMaterial" format=3]
++
++[ext_resource type="Shader" path="res://shaders/ps1_surface.gdshader" id="1_ps1"]
++
++[resource]
++shader = ExtResource("1_ps1")
++shader_parameter/albedo_color = Color(0.3, 0.52, 0.44, 1)
+diff --git a/scripts/props_black_sand/beacon_light.gd b/scripts/props_black_sand/beacon_light.gd
+new file mode 100644
+index 0000000..ca3d242
+--- /dev/null
++++ b/scripts/props_black_sand/beacon_light.gd
+@@ -0,0 +1,84 @@
++@tool
++extends Node3D
++## A dull red warning beacon: a small glowing ball and an OmniLight that blink together, slowly,
++## the way a mast lamp reads through haze. For the rig masts, the support columns and the
++## ceiling crane. Origin at the ball's centre. Purely visual: no collision.
++## Period, Duty and Phase mean the same as in glow_pulse.gd's Blink, so a beacon put on a prop
++## that already has a blinking lamp (a mast, the crane) keeps time with it when both match.
++
++const PropMesh := preload("res://scripts/props/prop_mesh.gd")
++const BEACON := preload("res://materials/black_sand_beacon.tres")
++const GLOW := 2.5  ## the ball's emission when lit
++
++@export var color := Color(1.0, 0.18, 0.1):
++	set(value):
++		color = value
++		_rebuild()
++## The ball's radius in metres (0.35 reads as a dot from 60 m away).
++@export var size := 0.35:
++	set(value):
++		size = maxf(value, 0.05)
++		_rebuild()
++@export var period := 2.0
++@export_range(0.05, 0.95) var duty := 0.25  ## share of the period the beacon is lit
++@export var phase := 0.0  ## seconds, so neighbouring beacons don't blink together
++@export_range(0.0, 1.0) var low := 0.06  ## glow left between blinks
++@export var light_energy := 1.2:
++	set(value):
++		light_energy = value
++		_rebuild()
++@export var light_range := 14.0:
++	set(value):
++		light_range = value
++		_rebuild()
++
++var _mesh := MeshInstance3D.new()
++var _light := OmniLight3D.new()
++var _mat: ShaderMaterial
++var _t := 0.0
++var _lit := true
++var _build_pending := false  # waiting to be built once it is in a scene (mesh_build.gd)
++
++
++func _init() -> void:
++	add_child(_mesh, false, INTERNAL_MODE_FRONT)
++	add_child(_light, false, INTERNAL_MODE_FRONT)
++	_mesh.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
++	_light.shadow_enabled = false
++	_rebuild()
++
++
++func _ready() -> void:
++	_t = phase
++
++
++## Every setting calls this: the mesh is built once, when the prop is in a scene (mesh_build.gd).
++func _rebuild() -> void:
++	MeshBuild.request(self)
++
++
++func _rebuild_now() -> void:
++	_mat = BEACON.duplicate()
++	_mat.set_shader_parameter("albedo_color", Color(color.r * 0.5, color.g * 0.5, color.b * 0.5, 1.0))
++	_mat.set_shader_parameter("emission_color", color)
++	_mat.set_shader_parameter("emission_energy", GLOW)
++	var pm := PropMesh.new()
++	pm.sphere(_mat, size, size * 2.0, Transform3D(), 8, 4)
++	_mesh.mesh = pm.commit()
++	_light.light_color = color
++	_light.omni_range = light_range
++	_light.light_energy = light_energy
++	_lit = true
++
++
++func _process(delta: float) -> void:
++	if Engine.is_editor_hint() or _mat == null:
++		return
++	_t += delta
++	var lit := fposmod(_t, period) < period * duty
++	if lit == _lit:
++		return
++	_lit = lit
++	var k := 1.0 if lit else low
++	_mat.set_shader_parameter("emission_energy", GLOW * k)
++	_light.light_energy = light_energy * k
+diff --git a/scripts/props_black_sand/dawn_shafts.gd b/scripts/props_black_sand/dawn_shafts.gd
+new file mode 100644
+index 0000000..fb219ff
+--- /dev/null
++++ b/scripts/props_black_sand/dawn_shafts.gd
+@@ -0,0 +1,83 @@
++extends Node3D
++## Black Sand's skylight shafts at dawn. Each light_shaft.gd node under this one (with, if you
++## like, an OmniLight child named "Pool": its pale pool on the sand) stays dark until the ceiling
++## panel over it has lit, then comes up over Fade Time seconds, far shafts first, in step with the
++## ArtificialDawn node (its delay and wave time; the panels light by z, far to near). Timed in
++## _process like the dawn, so in the big world the frozen zone holds the shafts too.
++## Each shaft also gets this level's own shaft material (black_sand_shaft.tres), which stays
++## visible further off than the kit's: the ceiling is 76 m up.
++
++const SHAFT_MATERIAL := preload("res://materials/black_sand_shaft.tres")
++
++@export var dawn: NodePath  ## the ArtificialDawn node
++@export var fade_time := 6.0
++@export var far_z := -90.0  ## the first panel row to light
++@export var near_z := 90.0  ## the last
++
++var _shafts: Array[Node3D] = []
++var _meshes: Array = []   # per shaft: [MeshInstance3D cone, MultiMeshInstance3D motes, OmniLight3D or null]
++var _targets: Array = []  # per shaft: [strength, light energy]
++var _t := 0.0
++var _delay := 2.0
++var _wave := 18.0
++var _done := false
++
++
++func _ready() -> void:
++	var dawn_node := get_node_or_null(dawn)
++	if dawn_node:
++		_delay = float(dawn_node.get("delay"))
++		_wave = float(dawn_node.get("wave_time"))
++	for child in get_children():
++		if not (child is Node3D and "strength" in child):
++			continue
++		var cone: MeshInstance3D = null
++		var motes: MultiMeshInstance3D = null
++		for inner in child.get_children(true):
++			if inner is MeshInstance3D:
++				cone = inner
++			elif inner is MultiMeshInstance3D:
++				motes = inner
++		var pool := child.get_node_or_null("Pool") as OmniLight3D
++		_shafts.append(child)
++		_meshes.append([cone, motes, pool])
++		_targets.append([float(child.strength), pool.light_energy if pool else 0.0])
++		if cone:
++			cone.material_override = SHAFT_MATERIAL
++		child.visible = false
++		_set(_shafts.size() - 1, 0.0)
++
++
++func _process(delta: float) -> void:
++	if _done:
++		return
++	_t += delta
++	var all_up := true
++	for i in _shafts.size():
++		var shaft := _shafts[i]
++		var share := clampf((shaft.position.z - far_z) / maxf(0.001, near_z - far_z), 0.0, 1.0)
++		var start := _delay + _wave * share
++		var k := clampf((_t - start) / fade_time, 0.0, 1.0)
++		if k <= 0.0:
++			all_up = false
++			continue
++		if not shaft.visible:
++			shaft.visible = true
++		_set(i, smoothstep(0.0, 1.0, k))
++		if k < 1.0:
++			all_up = false
++	if all_up:
++		_done = true
++		set_process(false)
++
++
++## The shaft's brightness as a share of its own setting, without rebuilding its mesh.
++func _set(i: int, k: float) -> void:
++	var parts: Array = _meshes[i]
++	var target: Array = _targets[i]
++	if parts[0]:
++		parts[0].set_instance_shader_parameter("strength", target[0] * k)
++	if parts[1]:
++		parts[1].set_instance_shader_parameter("strength", (0.8 + target[0]) * k)
++	if parts[2]:
++		parts[2].light_energy = target[1] * k
+diff --git a/scripts/props_black_sand/sand_drift_tail.gd b/scripts/props_black_sand/sand_drift_tail.gd
+new file mode 100644
+index 0000000..be44aa9
+--- /dev/null
++++ b/scripts/props_black_sand/sand_drift_tail.gd
+@@ -0,0 +1,68 @@
++@tool
++extends Node3D
++## A drift tail: the ridge of sand the wind piles up in the lee of anything standing in the dunes,
++## tapering away downwind. A chain of low mounds of the dunes' own sand (world-mapped, so it melts
++## into them), highest at the origin, lower and narrower along local +X (Black Sand's wind blows
++## toward +X; turn the node for another wind). Origin on the sand at the prop's downwind foot.
++## Fall is how far the sand drops from the origin to the tail's end (negative: it climbs).
++## Purely visual: no collision, so it never makes a step where he walks.
++
++const PropMesh := preload("res://scripts/props/prop_mesh.gd")
++const SAND := preload("res://materials/black_sand_dunes.tres")
++
++@export var length := 8.0:
++	set(value):
++		length = maxf(value, 1.0)
++		_rebuild()
++@export var width := 3.0:
++	set(value):
++		width = maxf(value, 0.5)
++		_rebuild()
++@export var height := 1.0:
++	set(value):
++		height = maxf(value, 0.1)
++		_rebuild()
++@export var fall := 0.0:
++	set(value):
++		fall = value
++		_rebuild()
++@export var random_seed := 1:
++	set(value):
++		random_seed = value
++		_rebuild()
++## Not drawn beyond this many metres (0 = always drawn).
++@export var draw_distance := 90.0:
++	set(value):
++		draw_distance = value
++		_rebuild()
++
++var _mesh := MeshInstance3D.new()
++var _build_pending := false  # waiting to be built once it is in a scene (mesh_build.gd)
++
++
++func _init() -> void:
++	add_child(_mesh, false, INTERNAL_MODE_FRONT)
++	_mesh.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
++	_rebuild()
++
++
++## Every setting calls this: the mesh is built once, when the prop is in a scene (mesh_build.gd).
++func _rebuild() -> void:
++	MeshBuild.request(self)
++
++
++func _rebuild_now() -> void:
++	var pm := PropMesh.new()
++	var rng := RandomNumberGenerator.new()
++	rng.seed = random_seed
++	var n := maxi(3, int(ceil(length / 1.4)) + 1)
++	for i in n:
++		var t := float(i) / float(n - 1)
++		var h := height * pow(1.0 - t, 0.8) + 0.12
++		var w := width * (1.0 - 0.55 * t) * rng.randf_range(0.85, 1.15)
++		var step := length / float(n - 1)
++		var p := Vector3(t * length, -h * 0.45 - fall * t, rng.randf_range(-0.25, 0.25) * w)
++		var half := Vector3(step * 1.1, h, w * 0.5)
++		pm.sphere(SAND, 1.0, 2.0, Transform3D(Basis.from_scale(half), p), 10, 5)
++	_mesh.mesh = pm.commit()
++	_mesh.visibility_range_end = draw_distance
+diff --git a/scripts/props_black_sand/sand_monolith.gd b/scripts/props_black_sand/sand_monolith.gd
+new file mode 100644
+index 0000000..d68df04
+--- /dev/null
++++ b/scripts/props_black_sand/sand_monolith.gd
+@@ -0,0 +1,149 @@
++@tool
++extends Node3D
++## The black monolith: a plain matte cube, tilted a little as if it settled long ago, standing on
++## a stepped concrete plinth the sand is climbing, broken chunks and grit at its foot, and one
++## thin cold light along a single vertical edge (the only line on it). A landmark in the dune
++## field, off the route. Origin on the sand at the plinth's centre. The cube and the steps get box
++## collision when the game runs (never saved in the scene). Change Random Seed for other chunks.
++
++const PropMesh := preload("res://scripts/props/prop_mesh.gd")
++const CUBE := preload("res://materials/black_sand_monolith.tres")
++const EDGE := preload("res://materials/black_sand_cold_edge.tres")
++const STEP := preload("res://materials/kitb_concrete.tres")
++const GRIT := preload("res://materials/kitb_grit.tres")
++const SAND := preload("res://materials/black_sand_dunes.tres")
++
++@export var cube_size := 6.0:
++	set(value):
++		cube_size = maxf(value, 0.5)
++		_rebuild()
++## Degrees the cube leans (about two axes at once, so no face stays level).
++@export var tilt := 7.0:
++	set(value):
++		tilt = value
++		_rebuild()
++@export_range(1, 6) var steps := 3:
++	set(value):
++		steps = value
++		_rebuild()
++@export var step_height := 0.6:
++	set(value):
++		step_height = maxf(value, 0.1)
++		_rebuild()
++## How much narrower each step is than the one under it, per side.
++@export var step_inset := 1.2:
++	set(value):
++		step_inset = maxf(value, 0.1)
++		_rebuild()
++@export var random_seed := 1:
++	set(value):
++		random_seed = value
++		_rebuild()
++@export var light_color := Color(0.75, 0.88, 1.0):
++	set(value):
++		light_color = value
++		_rebuild()
++@export var light_energy := 1.4:
++	set(value):
++		light_energy = value
++		_rebuild()
++@export var light_range := 11.0:
++	set(value):
++		light_range = value
++		_rebuild()
++@export var solid := true:
++	set(value):
++		solid = value
++		_rebuild()
++
++var _mesh := MeshInstance3D.new()
++var _light := OmniLight3D.new()
++var _body: StaticBody3D
++var _boxes: Array = []  # [size, Transform3D] pairs for the collision
++var _build_pending := false  # waiting to be built once it is in a scene (mesh_build.gd)
++
++
++func _init() -> void:
++	add_child(_mesh, false, INTERNAL_MODE_FRONT)
++	add_child(_light, false, INTERNAL_MODE_FRONT)
++	_mesh.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
++	_light.shadow_enabled = false
++	_rebuild()
++
++
++func _ready() -> void:
++	_collide()
++
++
++## Every setting calls this: the mesh is built once, when the prop is in a scene (mesh_build.gd).
++func _rebuild() -> void:
++	MeshBuild.request(self)
++
++
++func _rebuild_now() -> void:
++	_boxes.clear()
++	var pm := PropMesh.new()
++	var rng := RandomNumberGenerator.new()
++	rng.seed = random_seed
++	var sink := 0.4  # the lowest step is this far into the sand
++	var top := steps * step_height - sink
++	for i in steps:
++		var half := cube_size * 0.5 + step_inset * (steps - i)
++		var size := Vector3(half * 2.0, step_height, half * 2.0)
++		var xf := Transform3D(Basis(), Vector3(0, step_height * (i + 0.5) - sink, 0))
++		pm.box(STEP, size, xf)
++		_boxes.append([size, xf])
++	# The cube: leaning about X and Z at once; one low corner settles into the top step.
++	var lean := Basis(Vector3.RIGHT, deg_to_rad(tilt)) * Basis(Vector3.BACK, deg_to_rad(tilt * 0.6))
++	var cube_xf := Transform3D(lean, Vector3(0, top + cube_size * 0.5 - 0.1, 0))
++	pm.box(CUBE, Vector3.ONE * cube_size, cube_xf)
++	_boxes.append([Vector3.ONE * cube_size, cube_xf])
++	# The cold edge: a thin strip up the front-right vertical edge, a hair proud of both faces.
++	var h := cube_size * 0.5
++	pm.box(EDGE, Vector3(0.1, cube_size * 0.94, 0.1), cube_xf * Transform3D(Basis(), Vector3(h, 0, h)))
++	_light.position = cube_xf * Vector3(h + 0.7, 0.1, h + 0.7)
++	_light.light_color = light_color
++	_light.light_energy = light_energy
++	_light.omni_range = light_range
++	# Grit and chunks at the foot: dark concrete spill on the lowest step, a few blocks tumbled off.
++	var foot := cube_size * 0.5 + step_inset * steps
++	for i in 7:
++		var a := rng.randf_range(0.0, TAU)
++		var r := foot + rng.randf_range(-0.6, 1.4)
++		var p := Vector3(cos(a) * r, -0.12, sin(a) * r)
++		var w := rng.randf_range(0.9, 1.8)
++		pm.sphere(GRIT, 1.0, 2.0, Transform3D(Basis.from_scale(Vector3(w, 0.22, w * 0.7)).rotated(Vector3.UP, a), p), 8, 4)
++	for i in 6:
++		var a := rng.randf_range(0.0, TAU)
++		var r := foot + rng.randf_range(0.2, 1.6)
++		var size := Vector3(rng.randf_range(0.4, 1.0), rng.randf_range(0.3, 0.6), rng.randf_range(0.4, 0.9))
++		var turn := Basis(Vector3.UP, rng.randf_range(0.0, TAU)) * Basis(Vector3.RIGHT, rng.randf_range(-0.3, 0.3))
++		pm.box(STEP, size, Transform3D(turn, Vector3(cos(a) * r, size.y * 0.3, sin(a) * r)))
++	# Sand climbing the plinth: low mounds of the dunes' own sand against the lowest step.
++	for i in 5:
++		var a := rng.randf_range(0.0, TAU)
++		var r := foot + rng.randf_range(-1.0, 0.6)
++		var w := rng.randf_range(2.0, 3.4)
++		pm.sphere(SAND, 1.0, 2.0, Transform3D(Basis.from_scale(Vector3(w, rng.randf_range(0.35, 0.7), w * 0.8)).rotated(Vector3.UP, a),
++				Vector3(cos(a) * r, -0.25, sin(a) * r)), 10, 5)
++	_mesh.mesh = pm.commit()
++	if is_inside_tree():
++		_collide()
++
++
++## One StaticBody3D (layer 1, like the Blocks) with a box per step and one for the cube.
++func _collide() -> void:
++	if _body:
++		_body.queue_free()
++		_body = null
++	if Engine.is_editor_hint() or not solid or _boxes.is_empty():
++		return
++	_body = StaticBody3D.new()
++	add_child(_body, false, INTERNAL_MODE_FRONT)
++	for pair in _boxes:
++		var shape := BoxShape3D.new()
++		shape.size = pair[0]
++		var col := CollisionShape3D.new()
++		col.shape = shape
++		col.transform = pair[1]
++		_body.add_child(col)
+diff --git a/scripts/props_massacre/blaze.gd b/scripts/props_massacre/blaze.gd
+new file mode 100644
+index 0000000..0ac815d
+--- /dev/null
++++ b/scripts/props_massacre/blaze.gd
+@@ -0,0 +1,41 @@
++extends Node3D
++## A fire of the massacre (and the festival's fire basin): the hall bonfire's flame tongues,
++## sparks and smoke (scripts/vfx/hall_fire_fx.gd) over a burning heap or a roof. Put the node
++## where the flames start (the top of the heap Block). `light` names the OmniLight3D that goes
++## with it: it flickers with the fire while the game runs. Hidden with its parent (the Raiders
++## group), so a blaze appears when the story shows them. Nothing here is saved in the scene.
++
++const FireFx := preload("res://scripts/vfx/hall_fire_fx.gd")
++const FLAME := preload("res://materials/hall_flame.tres")
++
++## Radius of the burning heap: 1 is a market stall, 2 a roof.
++@export var radius := 1.0
++## Height of the flames against the bonfire's (1 = the hall's).
++@export var size := 0.7
++@export var smoke_height := 9.0
++@export var light: NodePath
++
++var _light: OmniLight3D
++var _base := 1.0
++var _t := 0.0
++var _seed := 0.0
++
++
++func _ready() -> void:
++	var quads := FireFx.flames(self, radius, 0.0, FLAME)
++	for q in quads:
++		q.scale *= Vector3(size, size, 1.0)
++	FireFx.embers(self, radius, 0.1)
++	FireFx.smoke(self, radius, 0.2, smoke_height)
++	_light = get_node_or_null(light) as OmniLight3D
++	if _light:
++		_base = _light.light_energy
++	_seed = float(hash(name) % 100)
++
++
++func _process(delta: float) -> void:
++	if _light == null or not is_visible_in_tree():
++		return
++	_t += delta
++	var w := sin(_t * 7.3 + _seed) * 0.5 + sin(_t * 13.1 + _seed * 1.7) * 0.3 + sin(_t * 2.1) * 0.2
++	_light.light_energy = _base * (1.0 + w * 0.18)
+diff --git a/scripts/props_massacre/paper_lantern.gd b/scripts/props_massacre/paper_lantern.gd
+new file mode 100644
+index 0000000..2d28942
+--- /dev/null
++++ b/scripts/props_massacre/paper_lantern.gd
+@@ -0,0 +1,161 @@
++@tool
++extends Node3D
++## A paper lantern of the Massacre's village, in place of the old glowing cubes: a ribbed paper
++## body between two dark timber caps, a cord up to the string and a tassel below, and a soft
++## ball of glow round it (materials/kit_glow.tres) so the light seems to fall off gently.
++##   Hanging round: the festival string lantern (chochin), hung from the origin.
++##   Hanging long: a taller cylinder lantern, hung from the origin.
++##   Post box: a square timber-and-paper lantern on a post (origin at the box's centre).
++##   Fallen: a round one on its side on the ground, torn and out (origin on the floor).
++## Variant picks the paper: most are warm, every third is red. Purely visual: no collision and
++## no light of its own (the strings' OmniLights stay, with lantern_glow.gd breathing them).
++## Identical lanterns share one mesh while the game runs (mesh_build.gd).
++
++const PropMesh := preload("res://scripts/props/prop_mesh.gd")
++const GLOW := preload("res://materials/kit_glow.tres")
++const M := {
++	warm = preload("res://materials/massacre_lantern_paper.tres"), red = preload("res://materials/massacre_lantern_red.tres"),
++	out = preload("res://materials/massacre_lantern_out.tres"), timber = preload("res://materials/massacre_timber.tres"),
++	cord = preload("res://materials/massacre_straw.tres"), tassel = preload("res://materials/massacre_cloth_red.tres"),
++	rib = preload("res://materials/massacre_timber_light.tres"),
++}
++
++@export_enum("Hanging round", "Hanging long", "Post box", "Fallen") var kind := 0:
++	set(value):
++		kind = value
++		_rebuild()
++@export var variant := 0:
++	set(value):
++		variant = value
++		_rebuild()
++## Size against the usual lantern (1 = a 0.5 m string lantern).
++@export var scale_factor := 1.0:
++	set(value):
++		scale_factor = maxf(value, 0.2)
++		_rebuild()
++## How wide the soft glow round the paper is (0 = none).
++@export var halo := 1.0:
++	set(value):
++		halo = maxf(value, 0.0)
++		_rebuild()
++
++var _mesh := MeshInstance3D.new()
++var _halo := MultiMeshInstance3D.new()
++var _multi := MultiMesh.new()
++var _build_pending := false  # waiting to be built once it is in a scene (mesh_build.gd)
++
++
++func _init() -> void:
++	_mesh.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
++	_halo.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
++	_multi.transform_format = MultiMesh.TRANSFORM_3D
++	_multi.use_custom_data = true
++	_halo.multimesh = _multi
++	add_child(_mesh, false, INTERNAL_MODE_FRONT)
++	add_child(_halo, false, INTERNAL_MODE_FRONT)
++	_rebuild()
++
++
++## Every setting calls this: the mesh is built once, when the lantern is in a scene (mesh_build.gd).
++func _rebuild() -> void:
++	MeshBuild.request(self)
++
++
++func _rebuild_now() -> void:
++	var key := [&"paper_lantern", kind, variant % 3, snappedf(scale_factor, 0.01)]
++	var mesh := MeshBuild.shared(key)
++	if mesh == null:
++		var pm := PropMesh.new()
++		match kind:
++			1: _long(pm)
++			2: _box(pm)
++			3: _fallen(pm)
++			_: _round(pm)
++		mesh = pm.commit()
++		MeshBuild.share(key, mesh)
++	_mesh.mesh = mesh
++	_build_halo()
++
++
++func _paper() -> Material:
++	if kind == 3:
++		return M.out
++	return M.red if variant % 3 == 2 else M.warm
++
++
++func _at(p: Vector3, b := Basis()) -> Transform3D:
++	return Transform3D(b, p * scale_factor)
++
++
++## The round festival lantern: a squashed paper ball with horizontal ribs, caps above and below.
++func _round(pm: PropMesh) -> void:
++	var k := scale_factor
++	pm.stick(M.cord, Vector3.ZERO, Vector3(0, -0.12, 0) * k, 0.012 * k)
++	pm.cyl(M.timber, 0.1 * k, 0.1 * k, 0.05 * k, _at(Vector3(0, -0.14, 0)), 8)
++	pm.sphere(_paper(), 0.24 * k, 0.4 * k, _at(Vector3(0, -0.37, 0)), 10, 5)
++	for i in 4:  # the ribs: thin dark rings round the paper
++		var y := -0.22 - i * 0.1
++		var r := 0.245 * sqrt(1.0 - pow((y + 0.37) / 0.2, 2.0) * 0.96)
++		pm.ring(M.rib, r * k, (r + 0.012) * k, _at(Vector3(0, y, 0)), 10, 3)
++	pm.cyl(M.timber, 0.1 * k, 0.1 * k, 0.05 * k, _at(Vector3(0, -0.6, 0)), 8)
++	pm.stick(M.tassel, Vector3(0, -0.62, 0) * k, Vector3(0, -0.78, 0) * k, 0.03 * k)
++
++
++## The long lantern: a paper cylinder with rings, for verandas and gates.
++func _long(pm: PropMesh) -> void:
++	var k := scale_factor
++	pm.stick(M.cord, Vector3.ZERO, Vector3(0, -0.1, 0) * k, 0.012 * k)
++	pm.cyl(M.timber, 0.15 * k, 0.15 * k, 0.05 * k, _at(Vector3(0, -0.12, 0)), 8)
++	pm.cyl(_paper(), 0.16 * k, 0.16 * k, 0.5 * k, _at(Vector3(0, -0.4, 0)), 10)
++	for i in 5:
++		pm.ring(M.rib, 0.16 * k, 0.172 * k, _at(Vector3(0, -0.2 - i * 0.1, 0)), 10, 3)
++	pm.cyl(M.timber, 0.15 * k, 0.15 * k, 0.05 * k, _at(Vector3(0, -0.68, 0)), 8)
++	pm.stick(M.tassel, Vector3(0, -0.7, 0) * k, Vector3(0, -0.86, 0) * k, 0.03 * k)
++
++
++## The post lantern: a timber frame round four paper panels, a little tiled cap on top.
++func _box(pm: PropMesh) -> void:
++	var k := scale_factor
++	var s := 0.8 * k
++	var h := 0.6 * k
++	pm.box(_paper(), Vector3(s - 0.1 * k, h - 0.08 * k, s - 0.1 * k), _at(Vector3.ZERO))
++	for sx: float in [-1.0, 1.0]:
++		for sz: float in [-1.0, 1.0]:
++			pm.box(M.timber, Vector3(0.06, h, 0.06) * k, _at(Vector3(sx * 0.37, 0, sz * 0.37)))
++	for sy: float in [-1.0, 1.0]:
++		pm.box(M.timber, Vector3(s, 0.05 * k, s), _at(Vector3(0, sy * h * 0.5, 0)))
++	pm.box(M.timber, Vector3(s + 0.3 * k, 0.06 * k, s + 0.3 * k), _at(Vector3(0, h * 0.5 + 0.08 * k, 0)))
++	pm.cyl(M.timber, 0.02 * k, (s + 0.3 * k) * 0.72, 0.16 * k, _at(Vector3(0, h * 0.5 + 0.19 * k, 0)), 4)
++	pm.box(M.timber, Vector3(0.14, 0.2, 0.14) * k, _at(Vector3(0, -h * 0.5 - 0.1 * k, 0)))
++
++
++## A lantern knocked down in the massacre: on its side, torn open, the light out.
++func _fallen(pm: PropMesh) -> void:
++	var k := scale_factor
++	var lie := Basis(Vector3.FORWARD, PI * 0.5) * Basis(Vector3.UP, 0.4)
++	pm.sphere(M.out, 0.24 * k, 0.4 * k, _at(Vector3(0, 0.2, 0), lie), 10, 5)
++	pm.cyl(M.timber, 0.1 * k, 0.1 * k, 0.05 * k, _at(Vector3(0.22, 0.2, 0), lie), 8)
++	for i in 3:
++		pm.ring(M.rib, 0.2 * k, 0.212 * k, _at(Vector3(-0.1 + i * 0.1, 0.2, 0), lie), 10, 3)
++	pm.box(M.out, Vector3(0.3, 0.02, 0.2) * k, _at(Vector3(0.35, 0.01, 0.2), Basis(Vector3.UP, 0.7)))  # a torn scrap
++
++
++func _build_halo() -> void:
++	var ball := SphereMesh.new()
++	ball.radius = 0.55 * halo * scale_factor
++	ball.height = ball.radius * 2.0
++	ball.radial_segments = 8
++	ball.rings = 4
++	_multi.instance_count = 0
++	if halo <= 0.0 or kind == 3:
++		return
++	_multi.mesh = ball
++	_multi.instance_count = 1
++	var centre := Vector3(0, -0.4 * scale_factor, 0) if kind != 2 else Vector3.ZERO
++	_multi.set_instance_transform(0, Transform3D(Basis(), centre))
++	_multi.set_instance_custom_data(0, Color(0, 0, 0, 1))
++	_halo.material_override = GLOW
++	var c := Color(1.0, 0.62, 0.3) if variant % 3 != 2 else Color(1.0, 0.3, 0.12)
++	_halo.set_instance_shader_parameter("tint", Vector3(c.r, c.g, c.b))
++	_halo.set_instance_shader_parameter("strength", 0.28)
++	_halo.custom_aabb = AABB(centre - Vector3.ONE * ball.radius, Vector3.ONE * ball.radius * 2.0)

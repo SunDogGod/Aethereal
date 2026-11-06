@@ -356,6 +356,7 @@ Commands, one per line, in square brackets:
 | `[pose Name anim]` / `[pose Name]` | Plays a story pose (`hostage`, `kneel_draw`, `hold_throat`...; the list is in `scripts/character_story.gd`) / back to standing |
 | `[ink Name Agent 0.33]` | Name's brush (Isabella) binds that agent: the stroke lands 0.33 s from now and he drops for good |
 | `[call Name action values]` | Runs a node's own action, e.g. `[call Bonfire throw_in ValentinaHall]`, `[call Kael set_lamento true true]`. Continue doesn't replay it: add a `[hide]` or `[place]` after it if the result has to last |
+| `[call Quake shake 3.0]` / `[call Quake stop]` | The ground heaves: shakes whichever camera is showing (a Quake node with scripts/vfx/quake.gd in the level; the Horus road has one) |
 | `[level res://scenes/levels/name.tscn]` | Fade out and go to that level (in the big world: walk on to it, see "The big world") |
 
 Names are looked up anywhere in the level (in the big world, the scene's own level first), so give things unique names. The full, current list of

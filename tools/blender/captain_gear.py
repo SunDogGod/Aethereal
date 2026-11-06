@@ -25,6 +25,9 @@ FOLDS = (9.0, 0.03)                     # soft folds hanging from the shoulders:
 COLLAR = [(1.43, 0.118, 0.098, 0.108, 2.3, -0.008), (1.48, 0.135, 0.110, 0.130, 2.3, -0.018),
           (1.525, 0.158, 0.122, 0.152, 2.3, -0.030)]
 COLLAR_OPEN = 58                        # half-angle of the collar's opening at the front
+RIBS = (14, 0.05)                       # the collar's ribs: how many per circle, how proud they stand
+FRINGE = (6, 0.075)                     # an epaulette's fringe: strands, how far they hang
+TUNIC = None                            # set by captain.py: the uniform's torso profile (the cord sits on it)
 # The empty sleeves: where each hangs on the coat (angle round him) and how far down it reaches.
 SLEEVES = ((350, 1.35, 0.82), (233, 1.30, 0.82))
 STUMP_DIR = (0.40, -0.05, -1.0)       # the folded sleeve over his right shoulder points down and out
@@ -91,8 +94,30 @@ def cape_point(J, th, z, lift=0.0):
 
 
 def collar(T, J, rect, lining):
-    ap.shell(T, J, rect, COLLAR, segs=14, thickness=0.008 * J["height"] / 1.72, lining=lining,
-             arcs=[(90 + COLLAR_OPEN, 450 - COLLAR_OPEN)] * len(COLLAR))
+    """The stiff standing collar, ribbed: RIBS rolls round it, each a little proud of the cloth."""
+    n, depth = RIBS
+    ap.shell(T, J, rect, COLLAR, segs=32, thickness=0.008 * J["height"] / 1.72, lining=lining,
+             arcs=[(90 + COLLAR_OPEN, 450 - COLLAR_OPEN)] * len(COLLAR),
+             r=lambda th: 1.0 + depth * max(0.0, math.sin(math.radians(th) * n)))
+
+
+def cord(M, J, rect):
+    """The cord that keeps the coat on his shoulders: it runs from epaulette to epaulette, sagging
+    across the breastplate, with a knot at the middle (trim)."""
+    s = J["height"] / 1.72
+    pts, ws = [], []
+    for th in (18, 45, 70, 90, 110, 135, 162):
+        sn = math.sin(math.radians(th))
+        z = 1.415 - 0.115 * sn ** 1.5
+        rx, ryf, ryb, nn = ap.at_z(TUNIC, z)
+        ring = {"c": Vector((0, 0, z * s)), "x": Vector((1, 0, 0)), "y": body.FWD, "rx": (rx + 0.030) * s,
+                "ry": (ryf + 0.044) * s, "ryb": (ryb + 0.03) * s, "n": nn}
+        pts.append(mesh.ring_point(ring, th))
+        k = max(0.0, abs(math.cos(math.radians(th))) - 0.5) / 0.5 * 0.6
+        ws.append({"Chest": 1 - k, "Shoulder_R" if th < 90 else "Shoulder_L": k} if k > 0 else {"Chest": 1.0})
+    mesh.strand(M, pts, [0.007 * s] * len(pts), 1.0, rect.uv, lambda f: ws[min(len(ws) - 1, round(f * (len(ws) - 1)))],
+                up=(0, 0, 1), sides=4)
+    ap.box(M, pts[3], (0.012 * s, 0.010 * s, 0.014 * s), rect, {"Chest": 1.0})
 
 
 def empty_sleeves(T, M, J, rect, cuff_rect):
@@ -118,20 +143,33 @@ def empty_sleeves(T, M, J, rect, cuff_rect):
 
 
 def epaulettes(M, J, board, fringe):
-    """A stiff board on each of the coat's shoulders with a short fringe at its outer end (trim)."""
+    """A stiff board on each of the coat's shoulders, a rolled crescent at its outer end and a
+    fringe of cords hanging from the roll (trim: gold on the captain)."""
     s = J["height"] / 1.72
     ring_w = cape_weights(J, side_arm=0.0)
+    count, drop = FRINGE
     for side in (1, -1):
         th = 0 if side > 0 else 180
-        inner, outer = cape_point(J, th, 1.425, 0.004), cape_point(J, th, 1.37, 0.006)
+        inner, outer = cape_point(J, th, 1.428, 0.004), cape_point(J, th, 1.365, 0.008)
         along = (outer - inner).normalized()
         across = Vector((0, side, 0))                 # keeps the box's axes right-handed on both sides
         up = along.cross(across)
         w = ring_w(1.40, body.spine_w(J, 1.40 * s))(th)
-        mid = inner.lerp(outer, 0.5) + up * 0.006 * s
-        ap.box(M, mid, ((outer - inner).length * 0.55, 0.048 * s, 0.007 * s), board, w, (along, across, up))
-        tip = outer + along * 0.012 * s - up * 0.028 * s
-        ap.box(M, tip, (0.007 * s, 0.050 * s, 0.03 * s), fringe, w, (along, across, up))
+        mid = inner.lerp(outer, 0.5) + up * 0.008 * s
+        ap.box(M, mid, ((outer - inner).length * 0.58, 0.062 * s, 0.010 * s), board, w, (along, across, up))
+        # The roll: a short fat tube across the end of the board.
+        end = outer + along * 0.010 * s + up * 0.004 * s
+        x, y = mesh.frame_along(across, up)
+        rings = [{"c": end + across * d * s, "x": x, "y": y, "rx": r * s, "ry": r * s, "n": 2.0, "w": w,
+                  "cap_len": 0.004 * s} for d, r in ((-0.066, 0.010), (-0.05, 0.020), (0.05, 0.020), (0.066, 0.010))]
+        mesh.loft(M, rings, 8, board.uv, cap0="pole", cap1="pole")
+        # The fringe: cords from under the roll, falling with a little spread.
+        for k in range(count):
+            f = (k + 0.5) / count - 0.5
+            top = end + across * f * 0.11 * s - up * 0.012 * s
+            swing = along * 0.02 * s + across * f * 0.02 * s
+            pts = [top, top - up * drop * 0.5 * s + swing * 0.5, top - up * drop * s + swing]
+            mesh.strand(M, pts, [0.0055 * s, 0.0050 * s, 0.0], 0.8, fringe.uv, w, up=along, sides=4)
 
 
 def stump(P, J, rect):

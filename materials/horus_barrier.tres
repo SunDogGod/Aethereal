@@ -1,0 +1,13 @@
+[gd_resource type="ShaderMaterial" format=3]
+
+[ext_resource type="Shader" path="res://shaders/horus_barrier.gdshader" id="1_barrier"]
+
+[resource]
+render_priority = 1
+shader = ExtResource("1_barrier")
+shader_parameter/color = Color(0.45, 0.65, 1, 1)
+shader_parameter/strength = 0.02
+shader_parameter/band_height = 4.0
+shader_parameter/glyph_width = 3.0
+shader_parameter/speed = 0.35
+shader_parameter/edge_fade = 0.15

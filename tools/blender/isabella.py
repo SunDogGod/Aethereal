@@ -1,13 +1,14 @@
-"""Isabella, Aeneas's mother: calm, dignified, deliberate. A deep red wrapped robe (kimono-like,
-her left panel over her right) with a black obi sash, a gold cord and a flat knot at the back; a
-cream shawl over her shoulders with a point at the back, its ends slanting down the front to the
-sash, a few embroidered roses; wide sleeves; long dark hair parted in the middle and swept back
-into a low bun with a gold pin; dark boots. Her ink brush is in her right hand (prop "Brush") and
-her bell hangs from the sash at her left hip ("Bell").
+"""Isabella, Aeneas's mother: calm, dignified, deliberate, dressed for a long road. The Vermeer
+trio on near-black: an ULTRAMARINE headwrap (its two tails, one blue and one ochre, hang at her
+nape), an OCHRE sash (obi) with a dark cord, and everything else dark: a deep red wrapped robe
+(kimono-like, her left panel over her right, canon), a dark wool shawl with one ochre stripe, a
+leather strap across her chest to a satchel on her right hip, dark buckled boots. Worn: faded,
+frayed hems, patches stitched in ochre thread. One long braid down her back is her silhouette.
+Her ink brush is in her right hand (prop "Brush") and her bell hangs at her left hip ("Bell").
 
 Rebuild:  .\\tools\\blender\\rebuild.ps1 isabella    (from the project folder, Godot closed)
-Colours and shape tables are here; the shapes the shared helpers don't have (the skirt her legs
-carry, the shawl, collar bands, hair shell, bun, knot) are in isabella_parts.py; her face is FACE (face.py).
+Colours and shape tables are here; the shapes (skirt, shawl, collar bands, hair shell, headwrap,
+strap, satchel) are in isabella_parts.py, the paint in isabella_paint.py, her face is FACE (face.py).
 """
 import math
 import os
@@ -22,6 +23,7 @@ import body                   # noqa: E402
 import mesh                   # noqa: E402
 import props                  # noqa: E402
 import isabella_parts as ip   # noqa: E402
+import isabella_paint as pt   # noqa: E402
 import face                   # noqa: E402
 import face_paint             # noqa: E402
 import isabella_anims         # noqa: E402
@@ -31,9 +33,13 @@ from paint import rgb, shade  # noqa: E402
 C = {k: rgb(v) for k, v in {
     "skin": "#d9a785", "hair": "#2e211d", "hair_hi": "#4d3832", "eye": "#24170f", "iris": "#55372a",
     "lip": "#a8474c", "brow": "#2a1b16",
-    "robe": "#9c2630", "robe_dk": "#6e1720", "collar": "#5a1219", "lining": "#43101a", "inner": "#efe6d2",
-    "shawl": "#ebdfc4", "shawl_dk": "#cdbd98", "rose": "#a8343c", "leaf": "#6b7552",
-    "obi": "#1f1c24", "obi_hi": "#3b3644", "gold": "#cba650", "boot": "#34241f", "sole": "#1a1210",
+    "robe": "#8a1f27", "robe_dk": "#5c1319", "robe_fade": "#9e3a38", "worn": "#b0665a", "collar": "#4a0f15",
+    "lining": "#3a0d15", "inner": "#e6dcc4",
+    "shawl": "#2a2220", "shawl_dk": "#17120f",
+    "blue": "#2a3f9e", "blue_dk": "#1b2a6c", "blue_hi": "#4a62c0", "blue_fade": "#4d5ea6",
+    "ochre": "#c8912e", "ochre_dk": "#8a6120",
+    "leather": "#3a2a1e", "leather_dk": "#231810", "leather_hi": "#5c4330", "brass": "#b08a3e",
+    "boot": "#2c1f1b", "sole": "#15100e",
     "bamboo": "#c9ab66", "bamboo_dk": "#8f763e", "bristle": "#e6dcc4", "ink": "#121216",
     "bronze": "#c69c48", "bronze_dk": "#7c5d25", "cord": "#a82d31"}.items()}
 
@@ -69,13 +75,30 @@ SLEEVE = [(-0.05, 0.060, 0.062), (0.3, 0.064, 0.066), (0.8, 0.070, 0.072), (1.2,
           (1.6, 0.082, 0.085), (1.86, 0.085, 0.088), (1.92, 0.082, 0.085)]
 BOOT = [(1.12, 0.046, 0.049), (1.3, 0.048, 0.052, 0.056), (1.6, 0.044, 0.047), (1.85, 0.041, 0.043),
         (2.02, 0.043, 0.047, 0.044)]
-# Hair locks: (angle from the face, height, lift) points from behind the temple, over the ear, to
-# the bun, and their width. Mirrored for her left side.
+# Hair locks over the ears (kept for Valentina, who borrows them; Isabella's wrap covers hers) and
+# the loose strand by each side of her face: (angle from the face, height, lift) points and a width.
 LOCKS = [(((40, 0.168, 0.006), (70, 0.150, 0.011), (100, 0.126, 0.012), (130, 0.102, 0.011),
            (155, 0.086, 0.009), (175, 0.078, 0.004)), 0.042),
          (((62, 0.122, 0.004), (85, 0.104, 0.008), (110, 0.088, 0.009), (140, 0.076, 0.008),
            (162, 0.070, 0.006), (178, 0.070, 0.003)), 0.036)]
 FACE_STRAND = ((25, 0.160, 0.006), (34, 0.13, 0.010), (45, 0.092, 0.010), (54, 0.058, 0.008), (59, 0.028, 0.004))
+# The headwrap: rows (fraction from its edge to the crown, how far it stands off the head); its
+# edge sits high on her forehead (parted hair shows under it) and comes down low at the nape.
+WRAP = [(0.0, 0.015), (0.0, 0.026), (0.25, 0.029), (0.5, 0.030), (0.75, 0.028), (0.95, 0.025)]
+WRAP_TOP = 0.238
+# The braid: (back, height) points down her back for a 1.72 m body, from the nape to above the
+# obi's knot; it lies over the shawl.
+BRAID = ((-0.098, 1.47), (-0.126, 1.41), (-0.148, 1.34), (-0.155, 1.27), (-0.152, 1.21), (-0.147, 1.16),
+         (-0.144, 1.135))
+# The satchel strap: (angle round her: 0 = her right, 90 = front; height; the shape it lies on;
+# how far off it) from the bag on her right hip, across her chest, over her left shoulder and
+# down her back to the bag again. Over the shawl it rides on CAPE, elsewhere on the robe.
+STRAP = [(326, 1.085, "OBI", 0.028), (5, 1.12, "OBI", 0.030), (35, 1.165, "BODICE", 0.020),
+         (65, 1.20, "BODICE", 0.018), (90, 1.225, "BODICE", 0.018), (113, 1.265, "BODICE", 0.022),
+         (130, 1.33, "CAPE", 0.030), (150, 1.40, "CAPE", 0.026), (175, 1.445, "CAPE", 0.020),
+         (205, 1.43, "CAPE", 0.024), (235, 1.36, "CAPE", 0.028), (262, 1.27, "CAPE", 0.030),
+         (285, 1.18, "CAPE", 0.032), (300, 1.125, "OBI", 0.028), (312, 1.085, "OBI", 0.028)]
+SATCHEL_AT, SATCHEL_Z = 318.0, 1.005    # behind her right hip, out of the sleeve's swing
 
 
 def hair_line(theta):
@@ -91,6 +114,17 @@ def hair_line(theta):
     return 0.060 - 0.035 * (a - 96) / 84
 
 
+def wrap_line(theta):
+    """The headwrap's lower edge: high across the forehead, down past the temples to just above
+    the ears, lowest at the nape where it is knotted."""
+    a = abs(((theta - 90) + 180) % 360 - 180)
+    if a <= 30:
+        return 0.196 - 0.0002 * a
+    if a <= 90:
+        return 0.190 - 0.065 * (a - 30) / 60
+    return 0.125 - 0.040 * (a - 90) / 90
+
+
 def t_top(z):
     """Angle of the top panel's collar edge at height z: from the left of her neck to her right hip."""
     return 62 + (z - 1.06) * 135.0
@@ -102,34 +136,36 @@ def t_under(z):
 
 
 Z_CROSS = 1.06 + 28 / 135.0
+PROFILES = {"OBI": OBI, "BODICE": BODICE, "CAPE": CAPE}
 
 
 def build():
     ch = cb.Character("isabella", height=1.66, shoulders=0.9, hips=1.06, atlas_size=512)
     J, A, P = ch.J, ch.atlas, ch.part("Body")
+    s = J["height"] / 1.72
     # Blocks of the 512 px texture, in packing order (rows of the atlas fill left to right).
     R = {n: A.rect(n, w, h) for n, w, h in (
         ("head", face.HEAD_RECT[0], face.HEAD_RECT[1]), ("shawl", 96, 40), ("skin", 16, 16), ("lining", 8, 8),
         ("bodice", 128, 64), ("skirt", 120, 56),
-        ("sleeve", 64, 40), ("hair", 32, 32), ("boot", 40, 32), ("bun", 32, 16), ("knot", 24, 16),
-        ("hand", 24, 16), ("cuff", 16, 8), ("pin", 8, 8),
-        ("obi", 64, 16), ("foot", 32, 16), ("bead", 8, 8), ("shawl_in", 8, 8), ("hair_cap", 64, 32),
-        ("collar_band", 16, 8), ("inner_band", 8, 8))}
+        ("sleeve", 64, 40), ("hair", 32, 32), ("boot", 40, 32), ("wrap", 64, 32), ("knot", 24, 16),
+        ("hand", 24, 16), ("cuff", 16, 8), ("tail_b", 16, 16), ("tail_o", 16, 16),
+        ("obi", 64, 16), ("foot", 32, 16), ("braid", 16, 32), ("tie", 8, 8), ("shawl_in", 8, 8), ("hair_cap", 64, 32),
+        ("collar_band", 16, 8), ("inner_band", 8, 8), ("strap", 16, 48), ("bag", 48, 32), ("flap", 16, 24))}
     R["skin"].fill(C["skin"])
     R["lining"].fill(C["lining"])
-    R["shawl_in"].fill(shade(C["shawl"], 0.86))
-    # Head and face (face.py, face_paint.py), hair (it covers her ears).
+    R["shawl_in"].fill(shade(C["shawl"], 0.8))
+    # Head and face (face.py, face_paint.py), hair, the wrap and the braid.
     head = face.Head(J, FACE)
     head.build(P, R["head"])
     face_paint.paint(head, FACE, hair_line)
     body.neck(P, J, R["skin"], r=0.043)
-    _hair(P, head, R)
+    _hair(P, J, head, R, s)
     # Robe: bodice and its crossed collar, skirt, sleeves; the obi and its knot; the shawl.
     body.trunk(P, J, R["bodice"], BODICE, segs=18)
-    _paint_bodice(R["bodice"])
+    pt.bodice(R["bodice"], C, sys.modules[__name__])
     _collar(P, J, R)
     ip.skirt(P, J, SKIRT, R["skirt"], R["lining"])
-    _paint_skirt(R["skirt"])
+    pt.skirt(R["skirt"], C, sys.modules[__name__])
     arm = body.arm_joints(J)
     bb.mirrored(P, lambda: body.limb(P, J, arm, ("UpperArm_R", "LowerArm_R"), R["sleeve"], SLEEVE, segs=12,
                                      hand_bone="Hand_R"))
@@ -139,164 +175,82 @@ def build():
     bb.mirrored(P, lambda: body.limb(P, J, arm, ("UpperArm_R", "LowerArm_R"), R["skin"],
                                      [(1.78, 0.029, 0.031), (2.0, 0.026, 0.027)], segs=8, hand_bone="Hand_R"))
     bb.mirrored(P, lambda: body.fist(P, J, R["hand"], size=0.93))
-    _paint_sleeve(R["sleeve"], R["cuff"], R["hand"])
+    pt.sleeves(R["sleeve"], R["cuff"], R["hand"], C)
     body.trunk(P, J, R["obi"], OBI, segs=18)
     ip.knot(P, J, R["knot"])
-    _paint_obi(R["obi"], R["knot"])
+    pt.obi(R["obi"], R["knot"], C)
     ip.shawl(P, J, CAPE, R["shawl"], R["shawl_in"])
-    _paint_shawl(R["shawl"])
+    pt.shawl(R["shawl"], C)
+    # The strap over everything, and the satchel on her right hip.
+    pts = [body.trunk_point(J, PROFILES[prof], th, z, lift) for th, z, prof, lift in STRAP]
+    wts = [body.spine_w(J, z * s) for th, z, prof, lift in STRAP]
+    ip.strip(P, pts, wts, 0.03, 0.006, R["strap"].uv, s)
+    base = body.trunk_point(J, OBI, SATCHEL_AT, SATCHEL_Z, 0.004)
+    ip.satchel(P, base, SATCHEL_AT, (0.075, 0.065, 0.055), R["bag"].uv, R["flap"].uv, s)
+    pt.leather(R["strap"], R["bag"], R["flap"], C)
     # Boots (the thighs stay hidden under the skirt, so only the shins are built).
     legs = body.leg_joints(J)
     bb.mirrored(P, lambda: body.limb(P, J, legs, ("UpperLeg_R", "LowerLeg_R"), R["boot"], BOOT))
     bb.mirrored(P, lambda: body.foot(P, J, R["foot"], rows=[
         (-0.085, 0.031, 0.034, -0.034), (-0.06, 0.039, 0.05, -0.026), (0.0, 0.042, 0.054, -0.02),
         (0.065, 0.045, 0.037, -0.041), (0.12, 0.044, 0.028, -0.052), (0.17, 0.036, 0.021, -0.06)]))
-    _paint_boots(R["boot"], R["foot"])
+    pt.boots(R["boot"], R["foot"], C)
     # Props.
     _brush(ch.prop("BrushMesh", "Weapon_R", "Brush"), A)
     _bell(ch.prop("BellMesh", "Sheath", "Bell"), A)
     return ch
 
 
-def _hair(P, head, R):
-    """Sleek hair: the shell over her skull, two locks over each ear, a loose strand by each side
-    of her face, one down the back of her head, and the low bun with its gold pin."""
+def _hair(P, J, head, R, s):
+    """Sleek parted hair under the wrap (the shell shows at the forehead, over the ears and at the
+    nape), a loose strand by each side of her face, the wrap with its knot and two tails at the
+    nape, and the braid from under the knot down her back, tied with ochre thread."""
     ip.hair_shell(P, head, R["hair_cap"], hair_line, C["hair"], C["hair_hi"])
-    r = R["hair"]
-    r.fill(C["hair"])
-    r.vline(0.5, C["hair_hi"], 1, 0.15, 0.85)
-    r.vline(0.2, shade(C["hair"], 0.7), 1, 0.0, 1.0)
-    r.vline(0.8, shade(C["hair"], 0.7), 1, 0.0, 1.0)
+    pt.hair(R["hair"], C)
     for side in (1, -1):
-        for path, w in LOCKS:
-            pts = [(90 - side * a, z, l) for a, z, l in path]
-            body.lock(P, head, r, pts, [w * 0.6, w, w, w * 0.9, w * 0.7, 0.0], depth=0.34, sides=5)
         pts = [(90 - side * a, z, l) for a, z, l in FACE_STRAND]
-        body.lock(P, head, r, pts, [0.010, 0.012, 0.011, 0.008, 0.0], depth=0.5, sides=4)
-    body.lock(P, head, r, [(270, 0.200, 0.012), (270, 0.16, 0.020), (270, 0.12, 0.018), (270, 0.09, 0.006)],
-              [0.050, 0.056, 0.048, 0.0], depth=0.36, sides=5)
-    ip.bun_and_pin(P, head, R["bun"].uv, R["pin"].uv, R["bead"].uv)
-    b = R["bun"]
-    b.fill(C["hair"])
-    for k in range(4):                         # wrapped turns: diagonal stripes
-        for x in range(b.w):
-            b.atlas.img[b.y + (x // 2 + k * 4) % b.h, b.x + x] = shade(C["hair"], 0.68)
-    b.box(0, 0.0, 1, 0.15, shade(C["hair"], 0.8))
-    R["pin"].fill(C["gold"])
-    R["bead"].fill(C["cord"])
+        body.lock(P, head, R["hair"], pts, [0.010, 0.012, 0.011, 0.008, 0.0], depth=0.5, sides=4)
+    ip.cap(P, head, R["wrap"], wrap_line, WRAP, WRAP_TOP)
+    pt.wrap(R["wrap"], R["tail_b"], R["tail_o"], C)
+    hs = head.s
+    knot = [head.surface(th, 0.088, lift) for th, lift in ((252, 0.022), (270, 0.034), (288, 0.022))]
+    mesh.strand(P, knot, [0.012 * hs, 0.017 * hs, 0.012 * hs], 0.8, R["wrap"].uv, {"Head": 1.0}, sides=5)
+    for side, uv in ((1, R["tail_b"].uv), (-1, R["tail_o"].uv)):
+        p0 = head.surface(270 + side * 9, 0.078, 0.026)
+        pts = [p0, p0 + Vector((side * 0.018, -0.022, -0.05)) * hs, p0 + Vector((side * 0.034, -0.030, -0.105)) * hs]
+        mesh.strand(P, pts, [0.013 * hs, 0.016 * hs, 0.012 * hs], 0.25, uv, {"Head": 1.0},
+                    up=(side * 0.5, -1, 0), sides=4)
+    pts = [head.surface(270, 0.05, 0.012)] + [Vector((0.0, y * s, z * s)) for y, z in BRAID]
+    widths = [0.019 * s, 0.021 * s, 0.020 * s, 0.019 * s, 0.018 * s, 0.016 * s, 0.014 * s, 0.0]
+
+    def w(k):
+        if k < 0.12:
+            return {"Head": 1.0}
+        if k < 0.3:
+            t = (k - 0.12) / 0.18
+            return {"Head": 1 - t, "Neck": t}
+        if k < 0.5:
+            t = (k - 0.3) / 0.2
+            return {"Neck": 1 - t, "Chest": t}
+        return {"Chest": 1.0}
+    mesh.strand(P, pts, widths, 0.75, R["braid"].uv, w, up=(0, -1, 0), sides=6)
+    tie = pts[-2]
+    mesh.strand(P, [tie + Vector((0, -0.002, 0.012 * s)), tie + Vector((0, -0.004, 0.0)),
+                    tie + Vector((0, -0.006, -0.012 * s))], [0.016 * s, 0.017 * s, 0.014 * s], 0.75,
+                R["tie"].uv, {"Chest": 1.0}, up=(0, -1, 0), sides=6)
+    pt.braid(R["braid"], R["tie"], C)
 
 
 def _collar(P, J, R):
     """The crossed collar as raised bands on the bodice: a dark red band along each panel's edge
     (the under one stops where it slides beneath the top one) and a cream under-collar inside."""
     R["collar_band"].fill(C["collar"])
-    R["collar_band"].hline(0.5, shade(C["collar"], 1.3))
+    R["collar_band"].hline(0.5, shade(C["collar"], 1.4), 2)
     R["inner_band"].fill(C["inner"])
     top = [(t_top(z), z) for z in (1.448, 1.42, 1.38, 1.33, 1.28, 1.23, 1.18, 1.125)]
     under = [(t_under(z), z) for z in (1.448, 1.42, 1.38, 1.33, 1.29, Z_CROSS - 0.01)]
     ip.band(P, J, BODICE, top, 0.024, 0.006, R["collar_band"].uv, 0.004, inner=(-1, R["inner_band"].uv, Z_CROSS))
     ip.band(P, J, BODICE, under, 0.024, 0.005, R["collar_band"].uv, 0.002, inner=(1, R["inner_band"].uv, Z_CROSS))
-
-
-# ---------------------------------------------------------------- painting
-def _paint_bodice(r):
-    """Red robe, with skin inside the V of the collar (the raised bands cover its edges)."""
-    def px(th, z):
-        if z > Z_CROSS and t_under(z) - 3 < th < t_top(z) + 3:
-            return C["skin"]
-        if z > 1.425:
-            return C["collar"]
-        if abs(((th + 90) % 180) - 90) < 1.2 and abs(th - 90) > 30:
-            return shade(C["robe"], 0.8)       # side seams
-        return C["robe"]
-    ip.paint_tz(r, BODICE[0][0], BODICE[-1][0], px)
-
-
-def _paint_skirt(r):
-    def px(th, z):
-        edge = 62 - (1.06 - z) * 5.0          # the top panel's front edge, straight down
-        if z < 0.268:
-            return C["inner"]                  # the under-robe's hem peeking out
-        if z < 0.30:
-            return C["robe_dk"]
-        if z < 0.312:
-            return C["gold"] if (int(th // 6) % 2 == 0) else C["robe_dk"]
-        if edge - 3 <= th <= edge:
-            return C["collar"]
-        if edge < th <= edge + 1.5:
-            return C["inner"]
-        if abs(((th + 90) % 180) - 90) < 1.2:
-            return shade(C["robe"], 0.8)       # side seams
-        return C["robe"]
-    ip.paint_tz(r, SKIRT[0][0], SKIRT[-1][0], px)
-
-
-def _paint_sleeve(r, cuff, hand):
-    r.fill(C["robe"])
-    r.box(0, 0.90, 1, 1.0, C["robe_dk"])       # a darker band at the opening
-    r.hline(0.90, C["gold"])
-    r.hline(0.5, shade(C["robe"], 0.82))       # the elbow fold
-    r.vline(0.0, shade(C["robe"], 0.8), 1, 0.0, 0.9)
-    cuff.fill(C["inner"])                      # the cream under-sleeve inside the opening
-    cuff.box(0, 0.0, 1, 0.25, C["robe_dk"])
-    hand.fill(C["skin"])
-    hand.hline(0.6, shade(C["skin"], 0.86))
-
-
-def _paint_obi(r, knot):
-    r.fill(C["obi"])
-    for k in range(8):                         # a quiet diamond pattern
-        u = (k + 0.5) / 8
-        r.dot(u, 0.72, C["obi_hi"], 2)
-        r.dot(u + 1 / 16, 0.28, C["obi_hi"], 2)
-    r.hline(0.5, C["gold"], 2)                 # the gold cord round the middle
-    r.box(0.48, 0.38, 0.52, 0.62, C["gold"])   # its knot at the front
-    r.hline(0.97, C["robe"])                   # a red edge peeking out at the top
-    knot.fill(C["obi"])
-    knot.hline(0.5, C["gold"], 2)
-    knot.vline(0.25, C["obi_hi"])
-    knot.vline(0.75, C["obi_hi"])
-
-
-def _paint_shawl(r):
-    """Cream, a fringe along the hem, a thin red border, roses on the back and on the front ends
-    (u: 0 = inner edge of her left front end, 0.5 = the middle of her back; v: 0 hem, 1 neck)."""
-    img = r.atlas.img
-    r.fill(C["shawl"])
-    for x in range(r.w):                       # the fringe: short strands along the hem
-        img[r.y + r.h - 3:r.y + r.h, r.x + x] = C["shawl_dk"] if x % 2 else C["shawl"]
-    r.hline(0.16, C["rose"])
-    r.hline(0.93, C["shawl_dk"])
-    r.box(0.0, 0.0, 0.012, 1.0, C["shawl_dk"])
-    r.box(0.988, 0.0, 1.0, 1.0, C["shawl_dk"])
-    def rose(u, v, big):
-        cx, cy = r.px(u, v)
-        rr = 3 if big else 2
-        for dy in range(-rr - 2, rr + 3):
-            for dx in range(-rr - 3, rr + 4):
-                if abs(dx) > rr and abs(dy) <= 1 and abs(dx) <= rr + 3:
-                    img[cy + dy, cx + dx] = C["leaf"]          # leaves either side
-                elif dx * dx + dy * dy <= rr * rr + 1:
-                    img[cy + dy, cx + dx] = C["rose"]
-        img[cy, cx - 1:cx + 1] = shade(C["rose"], 0.7)        # the heart of the flower
-        img[cy - 1, cx] = shade(C["rose"], 0.7)
-    rose(0.5, 0.42, True)
-    for u in (0.36, 0.64):
-        rose(u, 0.5, False)
-    for u in (0.05, 0.95):
-        rose(u, 0.35, False)
-
-
-def _paint_boots(r, foot):
-    r.fill(C["boot"])
-    r.hline(0.30, C["cord"])                   # a red cord tied round the ankle
-    r.hline(0.26, C["cord"])
-    r.vline(0.5, shade(C["boot"], 0.7), 1, 0.0, 0.9)
-    r.vline(0.0, shade(C["boot"], 1.3), 1, 0.0, 0.9)
-    foot.fill(C["boot"])
-    foot.box(0.0, 0.0, 0.18, 1.0, C["sole"])
-    foot.box(0.82, 0.0, 1.0, 1.0, C["sole"])
-    foot.box(0.0, 0.0, 1.0, 0.08, shade(C["boot"], 0.7))
 
 
 # ---------------------------------------------------------------- props
@@ -312,7 +266,7 @@ def _brush(p, A):
         rb.box(0, v, 1, v + 0.04, C["bamboo_dk"])      # node rings (v runs along the rod)
     rb.box(0, 0.0, 1, 0.04, C["cord"])
     rf.fill(C["collar"])
-    rf.hline(0.5, C["gold"])
+    rf.hline(0.5, C["ochre"])
     rt.fill(C["bristle"])
     rt.box(0, 0.4, 1, 1.0, C["ink"])
 

@@ -148,8 +148,8 @@ def pauldron(P, J, rect, lining, shoulders, size):
 def crest(P, head, rect, tall=1.0):
     """A ridge from the brow over the crown to the nape, sitting half into the helmet
     (tall > 1 raises it into a fin: the captain's)."""
-    pts = [head.surface(th, z, 0.0) for th, z in ((90, 0.13), (90, 0.185), (90, 0.228), (270, 0.236), (270, 0.20),
-                                                  (270, 0.14))]
+    pts = [head.surface(th, z, 0.0) for th, z in ((90, 0.182), (90, 0.205), (90, 0.228), (270, 0.236), (270, 0.20),
+                                                  (270, 0.14))]   # starts above the brow: the cult's eye sits there
     widths = [0.4, 0.85, 1.0, 1.0, 0.85, 0.4]
     rings = []
     for i, p in enumerate(pts):
@@ -244,6 +244,16 @@ def paint_helm(R, head, crest_col=None):
         hbox(90 + side * 30 - 1, 90 + side * 30 + 1, 0.0, 0.006, C["rivet"])
     for th, z in ((128, 0.17), (232, 0.13), (300, 0.19), (20, 0.05)):   # old scratches
         hbox(th - 2.5, th + 2.5, z, z + 0.004, C["helm_edge"])
+    hbox(56, 124, 0.126, 0.129, C["helm_edge"])                    # the brow plate's lower seam
+    hbox(60, 120, 0.176, 0.179, C["helm_edge"])                    # and its upper seam
+    for th in (62, 118):
+        hbox(th - 1, th + 1, 0.150, 0.156, C["rivet"])
+    # The cult's eye on the brow plate, between the visor lip and the crest.
+    import agency_marks
+    u, v = head.uv(90, 0.152)
+    u1, v1 = head.uv(104, 0.178)
+    agency_marks.eye_mark(R["helm"], u, v, max(5, round((u1 - u) * R["helm"].w)), max(4, round((v1 - v) * R["helm"].h)),
+                          C["mark"], C["mark"], C["helm"])
     R["crest"].fill(crest_col if crest_col is not None else C["helm_hi"])
 
 

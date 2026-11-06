@@ -10,6 +10,9 @@ Three pieces, all on the Head bone (the tail follows the neck and chest):
             (FRINGE), the top swept back over the temples and down the back (SIDES, BACK), a
             cowlick at the crown (CROWN). They follow the hair's flow, so nothing stands up in spikes.
   tail()    the thin tail, tied near the root, ending in a small brush.
+  goggles() aviator goggles pushed up on his forehead, over the fringe: two round cups and a
+            bridge, on a strap that runs round the back of the head over the hair (GOGGLE_*).
+  earring() a small brass hoop on his left ear lobe.
 Each lock is a path of (angle round the head, height, lift) points, root first: angle 90 = his
 face, 0 = his right, 180 = his left, 270 = the back; height in metres above the head joint (the
 crown is 0.229, brows 0.12); lift = how far it stands above the shell there (the root is sunk in).
@@ -19,6 +22,7 @@ import math
 import numpy as np
 from mathutils import Vector
 import body
+import mesh
 from paint import shade
 
 LEDGE = 0.170      # height where the buzzed sides stop and the long top begins (at the temples)
@@ -56,6 +60,9 @@ BACK = [([(270 + s * 0.4, 0.229, -0.004), (270 + s * 0.75, 0.218, 0.003), (270 +
 # A cowlick at the crown, lying back.
 CROWN = [([(244, 0.229, 0.0), (258, 0.229, 0.007), (274, 0.224, 0.010), (284, 0.212, 0.007)],
           [0.030, 0.032, 0.024, 0.0])]
+# The goggles: height of the cups on the forehead, their angle either side of the middle of the
+# face, their radius, and how far the cups stand off the hair shell (over the fringe clumps).
+GOGGLE_Z, GOGGLE_A, CUP_R, CUP_OFF = 0.164, 14.5, 0.021, 0.019
 
 
 def ledge(theta):
@@ -203,12 +210,85 @@ def tail(P, sh, rect, C):
     rect.box(0.0, 0.85, 1.0, 1.0, shade(C["hair"], 1.15))  # the brush end, lighter
 
 
-def build(P, head, A, hairline, C):
-    """Adds the whole haircut to part P. A is the atlas (reserves its own blocks)."""
+def goggles(P, sh, r_cup, r_strap):
+    """Aviator goggles pushed up on his forehead, over the fringe: two round cups (a leather rim,
+    a dished lens) joined by a bridge, and the strap round the back of the head on the hair."""
+    s = sh.s
+    for a in (90 - GOGGLE_A, 90 + GOGGLE_A):
+        base = sh.on(a, GOGGLE_Z, CUP_OFF)
+        out = (base - sh.c0).normalized()
+        x, y = mesh.frame_along(out, Vector((0, 0, 1)))
+        rings = []
+        for d, rr in ((0.0, 0.80), (0.004, 1.0), (0.015, 1.0), (0.019, 0.82), (0.020, 0.52)):
+            rings.append({"c": base + out * d * s, "x": x, "y": y, "rx": CUP_R * rr * s, "ry": CUP_R * rr * s,
+                          "n": 2.0, "w": {"Head": 1.0}, "cap_len": 0.0})
+        rings[-1]["cap_len"] = -0.004 * s                          # the lens, dished in
+        mesh.loft(P, rings, 8, r_cup.uv, cap0="pole", cap1="pole")
+    pts = [sh.on(90 - GOGGLE_A * 0.5, GOGGLE_Z, CUP_OFF + 0.006), sh.on(90, GOGGLE_Z, CUP_OFF + 0.010),
+           sh.on(90 + GOGGLE_A * 0.5, GOGGLE_Z, CUP_OFF + 0.006)]
+    body.strand(P, pts, [0.007 * s] * 3, 1.0, r_strap.uv, {"Head": 1.0}, up=Vector((0, 0, 1)), sides=4)
+    # The strap: from beside the right cup, round the back of the head, to the left cup. It lies
+    # on the buzzed sides and the nape, and climbs onto the cups at the front.
+    rings = []
+    n = 26
+    for k in range(n + 1):
+        th = (90 - GOGGLE_A - 14) - (360 - 2 * (GOGGLE_A + 14)) * k / n
+        sn = math.sin(math.radians(th))
+        z = 0.150 + 0.014 * sn
+        lift = 0.004 + (CUP_OFF - 0.002) * max(0.0, sn) ** 4
+        p = sh.on(th, z, lift)
+        out = p - sh.c0
+        out.z = 0.0
+        out.normalize()
+        tang = Vector((out.y, -out.x, 0.0))                        # travelling clockwise seen from above
+        rings.append({"c": p, "x": out.cross(tang).normalized(), "y": out, "rx": 0.0095 * s, "ry": 0.0028 * s,
+                      "n": 3.0, "w": {"Head": 1.0}, "cap_len": 0.0})
+    mesh.loft(P, rings, 4, r_strap.uv, cap0="pole", cap1="pole")
+
+
+def paint_goggles(r_cup, r_strap, C):
+    """The cups: u runs round, v from the rim's root (0) to the lens (1): a leather rim, a brass
+    ring, then the smoked lens with one bright glint."""
+    r_cup.fill(C["goggle"])
+    r_cup.box(0, 0.0, 1, 0.22, shade(C["goggle"], 0.8))
+    r_cup.box(0, 0.50, 1, 0.74, C["brass"])
+    r_cup.box(0, 0.74, 1, 1.0, C["lens"])
+    r_cup.box(0.3, 0.86, 0.5, 1.0, shade(C["lens"], 1.5))        # the glint
+    r_strap.fill(C["goggle"])
+    r_strap.hline(0.5, shade(C["goggle"], 1.3))
+
+
+def earring(P, head, rect, L, C):
+    """A small brass hoop hanging from his left ear lobe."""
+    hs = head.s * head.k
+    c = head.surface(180.0 - L["ear_a"], L["ear_z"], -0.004)
+    up = Vector((0.0, -0.22, 1.0)).normalized()
+    n = Vector((-0.93, 0.36, 0.0)).normalized()                   # the left ear's facing
+    x = up.cross(n).normalized()
+    R, t = 0.0078 * hs, 0.0024 * hs
+    lobe = c - up * 0.022 * hs * L["ear_size"] - x * 0.003 * hs
+    rings = []
+    for k in range(9):
+        a = math.tau * k / 8
+        tang = -x * math.sin(a) + up * math.cos(a)
+        rings.append({"c": lobe + (x * math.cos(a) + up * math.sin(a)) * R - up * R, "x": n.cross(tang).normalized(),
+                      "y": n, "rx": t, "ry": t, "n": 2.0, "w": {"Head": 1.0}})
+    mesh.loft(P, rings, 4, rect.uv)
+    rect.fill(C["brass"])
+    rect.hline(0.5, shade(C["brass"], 1.3))
+
+
+def build(P, head, A, hairline, C, look):
+    """Adds the whole haircut, the goggles and the earring to part P. A is the atlas (reserves
+    its own blocks); look is his FACE (where the ear is)."""
     sh = Shape(head, hairline)
     r_cap, r_lock, r_tail = A.rect("hair_cap", 64, 32), A.rect("hair", 32, 32), A.rect("hair_tail", 8, 24)
+    r_cup, r_strap, r_ring = A.rect("goggle", 24, 16), A.rect("goggle_strap", 16, 8), A.rect("earring", 8, 8)
     v_of = cap(P, sh, r_cap)
     paint_cap(r_cap, v_of, C)
     locks(P, sh, r_lock)
     paint_lock(r_lock, C)
     tail(P, sh, r_tail, C)
+    goggles(P, sh, r_cup, r_strap)
+    paint_goggles(r_cup, r_strap, C)
+    earring(P, head, r_ring, look, C)

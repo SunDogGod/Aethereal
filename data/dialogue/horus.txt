@@ -1,0 +1,125 @@
+# 1.1 HORUS (TEMEK): the road to the city. DRAFT, all of it: every line below is mine, written
+# from the Notion beats (docs/act1_horus.md); rewrite them in your voice. The command list is in
+# the header of empty_town.txt.
+#
+# Beats (canon): the train's AI leaves them at the desert's edge; the centipede wrecks the water
+# pipe and breaks Rocinante; three days of desert, out of water, mirages; a farmer who farms
+# moisture shows them how to pull water from the air; the Barrier Obelisk with Sievert sealed in
+# it; Temek, beggars, a nobleman's hospitality. The rough cut stops at the city's first gate.
+
+=== arrival ===
+[camera PlatformShot]
+The capsule's doors open on heat. The dark of the tube ends here.
+STATION: Edge of service. The desert begins at the top of the ramp.
+STATION: One month of water on board. Take what you can carry.
+[camera KaelPlatformShot]
+# DRAFT
+KAEL: Temek is north. Follow the pipe. Where the water goes, the city is.
+[camera]
+
+=== the_pipe ===
+[camera PipeShot]
+# DRAFT
+The pipe runs north on its legs, as far as the haze lets you see. Somewhere in it, water moves.
+[wait 1.5]
+[camera PumpShot]
+# DRAFT
+Then the ground moves instead.
+[call Quake shake 3.0]
+[wait 1.2]
+[show PipeBroken]
+[hide PipeWhole]
+[show Spray]
+# DRAFT
+Something the length of a street comes up through the sand, wears the Agency's mark on its back, and takes the pipe in its jaws.
+[wait 2.0]
+[camera SwordShot]
+# DRAFT
+Aeneas gets the sword between them. It breaks the way a stick breaks.
+[wait 1.5]
+[fade out]
+[hide Spray]
+[call Quake stop]
+# DRAFT
+When the sand settles the pipe is open to the sky, the water already gone into the ground, and the thing with it.
+[fade in]
+# DRAFT
+KAEL: Keep the pieces. Walk.
+[camera]
+
+=== day_two ===
+[fade out]
+# DRAFT
+The second day. The water skins are light. The dunes don't change.
+[fade in]
+
+=== mirage ===
+[camera MirageShot]
+# DRAFT
+Water, a whole lake of it, lying flat between two dunes.
+[wait 1.5]
+[hide Mirage1]
+# DRAFT
+Then sand again.
+[camera]
+
+=== day_three ===
+[fade out]
+# DRAFT
+The third day. Nobody speaks. The haze has a smell now: oil, and something burning.
+[fade in]
+
+=== the_farmer ===
+[camera ShackShot]
+# DRAFT
+A real shack. Cloth stretched on frames, wet underneath. Someone lives here.
+[camera FarmerShot]
+# DRAFT
+FARMER: You walked from the pipe? Then you know what the city doesn't.
+# DRAFT
+FARMER: Water isn't gone. It's in the air. It always was. Watch.
+[show FarmerGlow]
+[wait 2.0]
+# DRAFT
+The air over his hand darkens, beads, and runs down his wrist into the bowl.
+[hide FarmerGlow]
+# DRAFT
+KAEL: Tuning. A nobody in a shack, and he does it like breathing.
+# DRAFT
+FARMER: Sleep inside. Tomorrow I'll show the boy.
+[camera]
+
+=== the_obelisk ===
+[camera ObeliskShot]
+# DRAFT
+The last ridge, and a black stone on it taller than any house, with no mark on it anywhere.
+# DRAFT
+KAEL: The Barrier. It turns back anything that means the city harm.
+[camera ObeliskFootShot]
+# DRAFT
+It lets them through.
+[camera]
+
+=== the_gate ===
+[camera LakeShot]
+# DRAFT
+Below the ridge the lake lies black and low in its bed, the pyramids black against it, and the derricks burning along the shore.
+[wait 2.0]
+[camera CausewayShot]
+# DRAFT
+At the first gate the beggars find them before the guards do.
+# DRAFT
+BEGGAR: Water, travellers. Water, for the children.
+# DRAFT
+A man in clean linen steps between. His master, he says, keeps a house with a roof.
+[fade out]
+# DRAFT
+Temek takes them in. (The rough cut ends here: the city is designed next.)
+[level res://scenes/ui/title_screen.tscn]
+
+=== rest ===
+[fade out]
+[heal]
+# DRAFT
+He sleeps in the farmer's shack. Underground, something green grows under a lamp.
+[fade in]

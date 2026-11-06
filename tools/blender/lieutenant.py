@@ -33,7 +33,7 @@ def hairline(theta):
 
 
 def build():
-    return agent.build("lieutenant", officer=(FACE, ah.CROPPED, hairline))
+    return agent.build("lieutenant", officer=(FACE, ah.CROPPED, hairline), rank=1)
 
 
 if __name__ == "__main__":

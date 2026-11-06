@@ -149,8 +149,8 @@ func _run() -> void:
 		t += 10
 		if story.playing:
 			await _press()
-	check("end_of_act went to the title screen (%s)" % (current_scene.scene_file_path if current_scene else "none"),
-			current_scene != null and current_scene.scene_file_path.ends_with("title_screen.tscn"))
+	check("end_of_act went on to the Horus road (%s)" % (current_scene.scene_file_path if current_scene else "none"),
+			current_scene != null and current_scene.scene_file_path.ends_with("horus_road.tscn"))
 	print("BED TEST %s (%d failures)" % ["PASS" if fails == 0 else "FAIL", fails])
 	quit()
 

@@ -1,7 +1,10 @@
 """The Agency captain: the boss of the Empty Town. Taller and broader than his agents, with only his
 LEFT arm (the right is gone at the shoulder: the uniform's sleeve is folded and pinned over the
 stump). He wears his white Agency coat draped around his shoulders like a cape, sleeves hanging
-empty, over a dark uniform and breastplate. Bare-headed (agency_heads.py): an older, hard face, grey
+empty, over a dark uniform and a breastplate more battered than his men's (a crack, old dents,
+three rank bars). The coat has a ribbed standing collar, gold epaulettes with a fringe, a gold cord
+across his chest that keeps it on, and the cult's eye big on its back (captain_gear.py,
+agency_marks.py). Bare-headed (agency_heads.py): an older, hard face, grey
 hair slicked back, and the officers' eyepiece over his left eye, its lens glowing like a visor.
 He fights with his one fist (captain_fists.py, mirrored onto his left by captain_anims.py); in
 the hall Kael cuts that arm off above the elbow: the arm below the cut is its own mesh,
@@ -29,6 +32,7 @@ import rig as rigmod          # noqa: E402
 import agency_parts as ap     # noqa: E402
 import agent                  # noqa: E402
 import agency_heads as ah     # noqa: E402
+import agency_marks as am     # noqa: E402
 import face                   # noqa: E402
 import captain_gear as gear   # noqa: E402
 import captain_anims          # noqa: E402
@@ -84,7 +88,7 @@ def build():
     P, T, M = ch.part("Body"), ch.part("Coat"), ch.part("Trim")
     s = J["height"] / 1.72
     R = {n: A.rect(n, w, h) for n, w, h in (
-        ("cape", 112, 72), ("cuirass", 96, 48), ("tskirt", 64, 32), ("sleeve", 48, 40),
+        ("cape", 128, 96), ("cuirass", 96, 64), ("tskirt", 64, 32), ("sleeve", 48, 40), ("cord", 8, 8),
         ("boot", 48, 40), ("tunic", 32, 32), ("trousers", 40, 32), ("foot", 40, 24), ("csleeve", 32, 40),
         ("gauntlet", 32, 24), ("collar", 48, 16), ("lame", 32, 12), ("hand", 24, 16), ("belt", 64, 8),
         ("stump", 24, 16), ("knee", 16, 16), ("pouch", 16, 12), ("neck", 16, 12), ("lining", 8, 8),
@@ -126,6 +130,8 @@ def build():
     gear.collar(T, J, R["collar"], R["lining"])
     gear.empty_sleeves(T, M, J, R["csleeve"], R["trim"])
     gear.epaulettes(M, J, R["board"], R["fringe"])
+    gear.TUNIC = TUNIC
+    gear.cord(M, J, R["cord"])
     paint(R)
     captain_story.split_arm(ch, R["cut"])   # the arm below the cut: its own mesh, and the stump cap
     captain_story.paint_stump(R["cut"], U["cloth"], K["lining_dk"])
@@ -133,7 +139,7 @@ def build():
 
 
 def paint(R):
-    agent.paint_armour(R)
+    agent.paint_armour(R, rank=3, worn=1.8)   # his plate has seen more: a crack, big dents
     agent.paint_lower(R)
     # The uniform.
     for n in ("tunic", "tskirt", "sleeve", "stump"):
@@ -160,12 +166,24 @@ def paint(R):
     c.box(0.0, 0.0, 0.025, 1.0, K["lining"])          # the crimson lining shows at both front edges
     c.box(0.975, 0.0, 1.0, 1.0, K["lining"])
     c.hline(0.93, K["seam"])                           # yoke seam across the shoulders
+    am.stitches(c, 0.0, 0.915, 1.0, 0.915, K["seam"])
+    am.stitches(c, 0.0, 0.09, 1.0, 0.09, K["seam"])
+    # The cult's eye, big on the back of the coat (the back is at angle 270: u = (270 - 226) / 212).
+    u_back = (270.0 - gear.CAPE[0][5]) / (gear.CAPE[0][6] - gear.CAPE[0][5])
+    am.eye_mark(c, u_back, 0.60, 13, 9, K["lining"], K["lining"], K["lining_dk"], stroke=3)
     ap.weather(c, 0.30, K["dust"], K["grime"], seed=11, waves=4)
+    am.ragged_hem(c, K["grime"], seed=12, notches=7)
     R["lining"].fill(K["lining"])
     R["lining"].hline(0.5, K["lining_dk"])
     co = R["collar"]
+    for k in range(gear.RIBS[0]):                     # the ribs: a lit roll and a shadow beside each
+        co.vline(k / gear.RIBS[0], K["fold"], 1, 0.0, 0.8)
+        co.vline(k / gear.RIBS[0] + 0.03, shade(K["cloth"], 1.04), 1, 0.0, 0.8)
     co.box(0, 0.82, 1, 1.0, K["fold"])
     co.hline(0.80, K["seam"])
+    R["cord"].fill(K["gold"])
+    R["cord"].hline(0.3, K["seam"])
+    R["cord"].hline(0.7, K["seam"])
     cs = R["csleeve"]
     cs.vline(0.5, K["seam"])
     cs.hline(0.5, K["fold"])

@@ -1,13 +1,15 @@
 """Kael, a wandering swordsman in his twenties: taller and leaner than Aeneas, all in black but for
-his silver-white hair (to the jaw). A long black coat (tall collar, charcoal piping, a crimson lining
-that only shows inside, a skirt split front and back to below the knee) cinched with a black
-leather sash, a charcoal scarf, a black undershirt, dark trousers, tall black boots, black gloves.
-Lamento, a long bone-white blade with a ring pommel and a red tassel, rides on his back with the
-grip over his right shoulder, on a black strap.
+his white hair, cut in a few big spiky wedges. A long black coat (a high stiff collar, a blood-red
+lining that shows at the open front, inside the collar and at the turned-back cuffs, a skirt split
+front and back to below the knee, the hem worn and dusty) cinched with a black leather sash, a black
+undershirt, dark trousers, tall black boots, black gloves. A black-metal talisman with thin silver
+rings hangs on a cord at his throat. Lamento, a long bone-white blade with a faint violet edge, a
+ring pommel and a red tassel, rides on his back with the grip over his right shoulder.
 
 Knobs: colours are the C table below; shapes are the profile tables (one row per ring, height
-first, then radii); hair is HAIR; where Lamento hangs is LAMENTO_GRIP / LAMENTO_DIR. The sword's
-own shape and the clothes paint are in kael_gear.py; his face is FACE (face.py).
+first, then radii); hair is HAIR (one row per wedge); where Lamento hangs is LAMENTO_GRIP /
+LAMENTO_DIR. The sword's own shape, the talisman and the clothes paint are in kael_gear.py; his
+face is FACE (face.py).
 Rebuild:  .\\tools\\blender\\rebuild.ps1 kael     (see tools/blender/README.md)
 """
 import math
@@ -28,13 +30,13 @@ import face_paint             # noqa: E402
 from paint import rgb, shade  # noqa: E402
 
 C = {k: rgb(v) for k, v in {
-    "skin": "#dfae8c", "hair": "#d9dbe2", "hair_dark": "#a3a7b6", "hair_light": "#f3f4f8",
-    "eye": "#25232b", "iris": "#7a8a9c", "lash": "#3a2f35", "lip": "#a8705f", "brow": "#8b8e9c",
-    "coat": "#1d1d23", "coat_line": "#3a3a44", "coat_edge": "#33333c", "lining": "#5a1520", "red": "#a9212e",
-    "sash": "#141317", "scarf": "#2c2c34",
-    "shirt": "#1d1c22", "trousers": "#2a2a31", "boot": "#1b1a1f", "boot_top": "#302f36", "sole": "#0e0e11",
-    "glove": "#232228", "strap": "#26201f", "silver": "#b8bcc6",
-    "bone": "#e6dcc3", "bone_edge": "#f7f2e6", "bone_dark": "#bfb291", "iron": "#5c5e68",
+    "skin": "#dcab88", "hair": "#e4e6ec", "hair_dark": "#9a9eae", "hair_light": "#f8f8fb",
+    "eye": "#25232b", "iris": "#7a7e96", "lash": "#2e262c", "lip": "#a8705f", "brow": "#8b8e9c",
+    "coat": "#1b1b21", "coat_line": "#35353f", "coat_edge": "#2f2f38", "lining": "#8e1a25", "red": "#a9212e",
+    "dust": "#3a3733", "dust_light": "#4a4641",
+    "sash": "#141317", "shirt": "#17161b", "trousers": "#26262d", "boot": "#1a191e", "boot_top": "#2c2b32",
+    "sole": "#0e0e11", "glove": "#1c1b20", "strap": "#26201f", "silver": "#c3c7d1", "metal": "#15151a",
+    "bone": "#ebe7dd", "bone_edge": "#d4c4f2", "bone_dark": "#c6bfc8", "iron": "#5c5e68",
     "wrap": "#8a1a24", "wrap_dark": "#2e0b10"}.items()}
 
 # Profiles are rows for a 1.72 m body (Character scales them to his 1.82 m).
@@ -44,23 +46,24 @@ TORSO = [(0.86, 0.12, 0.075, 0.080, 2.2), (0.92, 0.150, 0.088, 0.094, 2.5), (0.9
          (1.31, 0.180, 0.100, 0.097, 2.7), (1.36, 0.196, 0.086, 0.090, 2.8), (1.395, 0.160, 0.070, 0.076, 2.6),
          (1.425, 0.092, 0.058, 0.060, 2.2), (1.44, 0.058, 0.050, 0.052, 2.0)]
 # The coat above the sash: (height, half width, front, back, squareness, forward shift, V half-angle).
+# The V opens from the chest up, so the red lining shows down his front.
 COAT = [(0.94, 0.152, 0.098, 0.102, 2.5, 0.0, 0), (0.99, 0.150, 0.098, 0.100, 2.5, 0.0, 0),
-        (1.06, 0.142, 0.098, 0.096, 2.5, 0.0, 1), (1.15, 0.158, 0.110, 0.101, 2.6, 0.0, 9),
-        (1.24, 0.175, 0.118, 0.107, 2.7, 0.0, 17), (1.31, 0.193, 0.112, 0.108, 2.8, 0.0, 23),
-        (1.36, 0.212, 0.098, 0.103, 2.9, 0.0, 28), (1.395, 0.176, 0.083, 0.090, 2.7, 0.0, 33),
-        (1.425, 0.112, 0.071, 0.075, 2.3, 0.0, 40)]
-# Tall stand collar, open at the front (last number), white inside and out with a red edge.
-COLLAR = [(1.40, 0.114, 0.084, 0.088, 2.2, -0.004, 46), (1.45, 0.092, 0.074, 0.079, 2.0, -0.006, 48),
-          (1.495, 0.092, 0.078, 0.083, 2.0, -0.009, 52), (1.525, 0.097, 0.085, 0.089, 2.0, -0.011, 56)]
+        (1.06, 0.142, 0.098, 0.096, 2.5, 0.0, 2), (1.15, 0.158, 0.110, 0.101, 2.6, 0.0, 10),
+        (1.24, 0.177, 0.118, 0.107, 2.7, 0.0, 18), (1.31, 0.200, 0.112, 0.108, 2.8, 0.0, 24),
+        (1.36, 0.222, 0.098, 0.103, 2.9, 0.0, 30), (1.395, 0.180, 0.083, 0.090, 2.7, 0.0, 36),
+        (1.425, 0.116, 0.072, 0.076, 2.3, 0.0, 42)]
+# The high stiff collar: straight walls up past his chin, a little flare at the top, its two front
+# corners standing by the jaw (last number: the opening's half-angle), blood-red inside.
+COLLAR = [(1.40, 0.118, 0.090, 0.092, 2.2, -0.004, 40), (1.46, 0.106, 0.084, 0.088, 2.0, -0.006, 42),
+          (1.52, 0.106, 0.086, 0.090, 2.0, -0.009, 48), (1.56, 0.112, 0.092, 0.094, 2.0, -0.012, 58)]
 # The skirt, hem first: (height, half width, front, back, squareness, front split, back slit) in degrees.
-SKIRT = [(0.41, 0.244, 0.162, 0.178, 2.2, 10, 5), (0.52, 0.233, 0.153, 0.168, 2.2, 8, 3),
-         (0.70, 0.222, 0.142, 0.155, 2.25, 5, 2), (0.82, 0.212, 0.132, 0.142, 2.3, 3, 1),
+SKIRT = [(0.38, 0.262, 0.172, 0.190, 2.2, 18, 8), (0.50, 0.246, 0.160, 0.176, 2.2, 14, 5),
+         (0.68, 0.230, 0.146, 0.160, 2.25, 9, 3), (0.82, 0.214, 0.133, 0.143, 2.3, 4, 1),
          (0.92, 0.196, 0.118, 0.126, 2.4, 1, 1), (1.00, 0.160, 0.102, 0.106, 2.5, 1, 1)]
 SASH = [(0.928, 0.204, 0.125, 0.132, 2.5), (0.975, 0.186, 0.116, 0.121, 2.5), (1.025, 0.165, 0.107, 0.109, 2.5)]
-SCARF = [(1.375, 0.100, 0.095, 0.080, 2.2, 0.012), (1.405, 0.090, 0.091, 0.072, 2.1, 0.012),
-         (1.435, 0.078, 0.083, 0.066, 2.0, 0.008), (1.462, 0.068, 0.073, 0.060, 2.0, 0.004)]
+# The sleeve flares into a turned-back cuff at the wrist.
 SLEEVE = [(0.0, 0.064, 0.066), (0.25, 0.060, 0.062), (0.7, 0.053, 0.055), (1.0, 0.050, 0.051), (1.3, 0.051, 0.053),
-          (1.72, 0.047, 0.049), (1.80, 0.054, 0.056), (2.0, 0.056, 0.058)]
+          (1.70, 0.047, 0.049), (1.76, 0.057, 0.059), (2.0, 0.061, 0.063)]
 TROUSERS = [(-0.15, 0.080, 0.086), (0.0, 0.082, 0.088), (0.3, 0.074, 0.079), (0.7, 0.062, 0.066),
             (1.0, 0.054, 0.057), (1.2, 0.054, 0.058, 0.062), (1.6, 0.047, 0.050), (2.0, 0.043, 0.045)]
 BOOT = [(1.16, 0.065, 0.067, 0.071), (1.20, 0.066, 0.068, 0.072), (1.23, 0.060, 0.063, 0.067),
@@ -73,33 +76,42 @@ HEAD = [(0.000, 0.046, 0.033, 0.030, 0.028, 2.4), (0.016, 0.030, 0.055, 0.062, 0
         (0.103, 0.004, 0.076, 0.089, 0.097, 2.4), (0.135, 0.0, 0.077, 0.090, 0.101, 2.4),
         (0.170, -0.005, 0.074, 0.084, 0.100, 2.3), (0.203, -0.010, 0.063, 0.067, 0.084, 2.2),
         (0.229, -0.015, 0.039, 0.041, 0.050, 2.0)]
-# His face (face.py): lean and sharp, level grey eyes a little narrowed, straight low brows, a
-# long nose, a defined jaw, a half smile (one corner up).
-FACE = face.look(face.MAN, rows=HEAD, scale=1.06, eye_h=0.0062, eye_lo=0.0040, eye_tilt=0.0011, iris_r=0.0062,
-                 brow_z0=0.1185, brow_z1=0.1205, brow_arch=0.0010, brow_thick=0.0034, nose=0.020, nose_w=5.0,
-                 cheek=0.0042, hollow=0.0025, jaw=0.004, chin_w=12.5, smirk=0.0007, lip_sat=0.3,
-                 skin=C["skin"], hair=shade(C["hair"], 0.86), brow=C["brow"], lash_col=C["lash"], iris=C["iris"],
-                 lip=C["lip"])
-W5 = [0.042, 0.048, 0.042, 0.028, 0.0]
-W4 = [0.042, 0.046, 0.034, 0.0]
-# Hair locks: (angle round the head, height, lift) from root to tip; 90 = the face, 0 = his right.
+# His face (face.py): lean and sharp, heavy-lidded grey-violet eyes (a lower upper lid, a thick
+# lash line, a deep crease) under straight low brows, a long nose, a defined jaw, a half smile.
+FACE = face.look(face.MAN, rows=HEAD, scale=1.06, eye_h=0.0042, eye_lo=0.0042, eye_tilt=0.0006, iris_r=0.0062,
+                 lash=0.0026, crease=1.0, brow_z0=0.1165, brow_z1=0.1185, brow_arch=0.0010, brow_thick=0.0038,
+                 nose=0.020, nose_w=5.0, cheek=0.0042, hollow=0.0028, jaw=0.004, chin_w=12.5, smirk=0.0007,
+                 lip_sat=0.3, skin=C["skin"], hair=shade(C["hair"], 0.88), brow=C["brow"], lash_col=C["lash"],
+                 iris=C["iris"], lip=C["lip"])
+# Hair: a few big spiky wedges. Each row is one wedge: a path of (angle round the head, height,
+# lift) from root to tip (90 = the face, 0 = his right, 270 = the back; heights above the crown,
+# 0.229, stand up off it) and its widths along the way (the last 0 is the point). The tips lift
+# away from the head, so they jut instead of hugging it.
+WEDGE = [0.064, 0.070, 0.054, 0.034, 0.0]
+W4 = [0.068, 0.058, 0.036, 0.0]
+SPIKE = [0.050, 0.042, 0.0]
 HAIR = [
-    ([(60, 0.228, 0), (80, 0.212, 0.024), (102, 0.170, 0.026), (117, 0.128, 0.018), (124, 0.100, 0.010)], W5),
-    ([(90, 0.234, 0), (106, 0.212, 0.026), (126, 0.168, 0.026), (139, 0.128, 0.018), (146, 0.098, 0.010)], W5),
-    ([(42, 0.224, 0), (55, 0.204, 0.022), (68, 0.166, 0.020), (75, 0.130, 0.010)], W4),
-    ([(26, 0.214, 0), (20, 0.170, 0.018), (17, 0.110, 0.020), (19, 0.060, 0.020), (23, 0.030, 0.012)], W5),
-    ([(154, 0.214, 0), (160, 0.170, 0.018), (163, 0.110, 0.022), (161, 0.060, 0.022), (157, 0.025, 0.012)], W5),
-    ([(4, 0.222, 0), (-4, 0.180, 0.020), (-8, 0.120, 0.022), (-8, 0.070, 0.018)], W4),
-    ([(176, 0.222, 0), (184, 0.180, 0.020), (188, 0.120, 0.022), (188, 0.070, 0.018)], W4),
-    ([(300, 0.228, 0), (305, 0.180, 0.022), (310, 0.110, 0.022), (314, 0.050, 0.024), (317, 0.025, 0.022)], W5),
-    ([(270, 0.226, 0), (270, 0.170, 0.022), (271, 0.100, 0.022), (270, 0.040, 0.024), (270, 0.015, 0.022)], W5),
-    ([(240, 0.228, 0), (235, 0.180, 0.022), (230, 0.110, 0.022), (226, 0.050, 0.024), (223, 0.025, 0.022)], W5),
-    ([(332, 0.222, 0), (338, 0.170, 0.020), (342, 0.100, 0.022), (344, 0.050, 0.020)], W4),
-    ([(208, 0.222, 0), (202, 0.170, 0.020), (198, 0.100, 0.022), (196, 0.050, 0.020)], W4),
-    ([(250, 0.236, 0), (262, 0.232, 0.022), (280, 0.205, 0.028), (290, 0.170, 0.022)], W4),
-    ([(130, 0.236, 0), (150, 0.226, 0.024), (170, 0.196, 0.024), (180, 0.165, 0.014)], W4),
-    ([(20, 0.232, 0), (6, 0.222, 0.022), (352, 0.196, 0.022), (346, 0.165, 0.012)], W4),
-    ([(200, 0.238, 0), (214, 0.244, 0.030), (230, 0.228, 0.045)], [0.040, 0.034, 0.0]),
+    # the fringe: two wedges crossing from the crown down over the brows, each tip out past a
+    # temple, and a shorter one between them lying over the middle of his brow
+    ([(110, 0.236, 0), (94, 0.212, 0.030), (76, 0.170, 0.044), (64, 0.134, 0.044), (58, 0.108, 0.036)], WEDGE),
+    ([(72, 0.238, 0), (88, 0.210, 0.030), (104, 0.168, 0.044), (116, 0.132, 0.042), (124, 0.106, 0.034)], WEDGE),
+    ([(90, 0.232, 0), (92, 0.200, 0.040), (94, 0.160, 0.052), (96, 0.128, 0.046)], [0.056, 0.060, 0.044, 0.0]),
+    # a spike standing up and forward from the front of the crown
+    ([(90, 0.224, 0), (90, 0.252, 0.030), (88, 0.284, 0.070)], SPIKE),
+    # the temples: swept back over the ears, tips jutting out behind them
+    ([(46, 0.226, 0), (28, 0.204, 0.032), (10, 0.160, 0.052), (358, 0.116, 0.064)], W4),
+    ([(134, 0.226, 0), (152, 0.204, 0.032), (170, 0.160, 0.052), (182, 0.116, 0.064)], W4),
+    # the sides of the back, jutting out and back
+    ([(18, 0.232, 0), (352, 0.206, 0.030), (338, 0.160, 0.052), (330, 0.112, 0.066)], W4),
+    ([(162, 0.232, 0), (188, 0.206, 0.030), (202, 0.160, 0.052), (210, 0.112, 0.066)], W4),
+    ([(330, 0.232, 0), (322, 0.200, 0.032), (314, 0.150, 0.052), (308, 0.100, 0.070)], W4),
+    ([(210, 0.232, 0), (218, 0.200, 0.032), (226, 0.150, 0.052), (232, 0.100, 0.070)], W4),
+    # the nape: one wide wedge straight down, its tip off the collar
+    ([(270, 0.234, 0), (270, 0.192, 0.030), (270, 0.140, 0.046), (270, 0.095, 0.060)], [0.076, 0.080, 0.060, 0.0]),
+    # three spikes rising off the back of the crown
+    ([(250, 0.228, 0), (242, 0.256, 0.036), (232, 0.282, 0.076)], SPIKE),
+    ([(290, 0.228, 0), (298, 0.256, 0.036), (308, 0.282, 0.076)], SPIKE),
+    ([(270, 0.226, 0), (270, 0.258, 0.030), (270, 0.288, 0.066)], SPIKE),
 ]
 # Lamento on his back: grip centre, and the way the blade points (down, a little left and out).
 LAMENTO_GRIP = (0.140, -0.150, 1.42)
@@ -114,22 +126,23 @@ def build():
         ("head", face.HEAD_RECT[0], face.HEAD_RECT[1]), ("coat", 96, 56), ("skirt", 64, 48), ("sleeve", 64, 40),
         ("shirt", 48, 32), ("ear", 16, 16),
         ("trousers", 48, 40), ("boot", 48, 32), ("foot", 40, 24), ("hair", 32, 32), ("collar", 48, 16),
-        ("scarf", 48, 16), ("sash", 48, 8), ("sash_tail", 16, 24), ("hand", 24, 16), ("neck", 16, 12),
-        ("lining", 8, 8), ("collar_in", 8, 8), ("strap", 8, 32))}
+        ("sash", 48, 8), ("sash_tail", 16, 24), ("hand", 24, 16), ("neck", 16, 12),
+        ("lining", 8, 8), ("collar_in", 8, 8), ("strap", 8, 32), ("talisman", 24, 12), ("cord", 8, 8))}
     body.trunk(P, J, r["shirt"], TORSO, cap0="pole")
     body.neck(P, J, r["neck"])
     head = face.Head(J, FACE)
     head.build(P, r["head"])
     face.ears(P, head, r["ear"], FACE, C["skin"], shade(C["skin"], 0.8))
     face_paint.paint(head, FACE, gear.hairline)
+    gear.fringe_shadow(head, r["head"], FACE)
     for path, widths in HAIR:
         _lock(P, head, r["hair"], path, widths)
     body.trunk(P, J, r["coat"], COAT, segs=18, arc=(90, 450), thickness=0.008, lining=r["lining"])
-    body.trunk(P, J, r["collar"], COLLAR, segs=12, arc=(142, 398), thickness=0.007, lining=r["collar_in"])
+    body.trunk(P, J, r["collar"], COLLAR, segs=12, arc=(130, 410), thickness=0.008, lining=r["collar_in"])
     bb.mirrored(P, lambda: _skirt_panel(P, J, r["skirt"], r["lining"]))
     body.trunk(P, J, r["sash"], SASH, segs=16)
     _sash_knot(P, J, r["sash_tail"])
-    _scarf(P, J, r["scarf"])
+    gear.talisman(P, J, r["cord"], r["talisman"], TORSO)
     bb.mirrored(P, lambda: body.limb(P, J, body.arm_joints(J), ("UpperArm_R", "LowerArm_R"), r["sleeve"],
                                      SLEEVE, hand_bone="Hand_R", cap0="pole", cap1="pole"))
     bb.mirrored(P, lambda: body.fist(P, J, r["hand"]))
@@ -155,8 +168,9 @@ def build():
     return ch
 
 
-def _lock(P, head, r, path, widths, depth=0.52, sides=5):
-    """A clump of hair. Points below the cheekbones hang straight down instead of hugging the jaw."""
+def _lock(P, head, r, path, widths, depth=0.55, sides=5):
+    """A wedge of hair. Points below the cheekbones hang straight down instead of hugging the jaw;
+    points above the crown stand up off it."""
     pts = []
     for th, z, lift in path:
         p = head.surface(th, max(z, 0.10), lift)
@@ -212,36 +226,6 @@ def _sash_knot(P, J, r):
         body.strand(P, pts, [wid * s] * (len(pts) - 1) + [0.0], 0.22, r.uv,
                     lambda k, zs=zs, th=path[0][0]: _left_skirt_w(zs[0] + (zs[-1] - zs[0]) * k, th),
                     up=Vector((-0.5, 0.86, 0)), sides=4)
-
-
-def _scarf(P, J, r):
-    """A red scarf wrapped round his neck inside the collar, the knot's ends down his left chest."""
-    s = J["height"] / 1.72
-    rings = []
-    for z, rx, ryf, ryb, n, dy in SCARF:
-        rings.append({"c": Vector((0, dy * s, z * s)), "x": Vector((1, 0, 0)), "y": body.FWD, "rx": rx * s,
-                      "ry": ryf * s, "ryb": ryb * s, "n": n, "w": body.spine_w(J, z * s)})
-    mesh.loft(P, rings, 14, r.uv)
-    for path, wid in (([(-0.045, 1.41, 0.016), (-0.062, 1.34, 0.012), (-0.068, 1.27, 0.012), (-0.07, 1.20, 0.010)],
-                       (0.026, 0.030, 0.032)),
-                      ([(-0.07, 1.405, 0.012), (-0.082, 1.345, 0.010), (-0.086, 1.29, 0.008)], (0.022, 0.026))):
-        pts = [_front(J, SCARF if z > 1.40 else COAT, x, z, lift) for x, z, lift in path]
-        zs = [p[1] for p in path]
-        body.strand(P, pts, [x * s for x in wid] + [0.0], 0.18, r.uv,
-                    lambda k, zs=zs: body.spine_w(J, (zs[0] + (zs[-1] - zs[0]) * k) * s), up=Vector((0, 1, 0)), sides=4)
-
-
-def _front(J, profile, x, z, lift):
-    """The point on the front of a trunk profile at sideways offset x and height z, pushed out by lift."""
-    s = J["height"] / 1.72
-    zs = [row[0] for row in profile]
-    i = max([k for k in range(len(zs) - 1) if zs[k] <= z] or [0])
-    t = min(1.0, max(0.0, (z - zs[i]) / (zs[i + 1] - zs[i])))
-    a, b = profile[i], profile[i + 1]
-    rx, ry, n = (a[1] + (b[1] - a[1]) * t, a[2] + (b[2] - a[2]) * t, a[4] + (b[4] - a[4]) * t)
-    dy = (a[5] + (b[5] - a[5]) * t) if profile is SCARF else 0.0
-    y = dy + ry * max(0.0, 1.0 - min(1.0, abs(x) / rx) ** (n / 2)) ** (2 / n)
-    return Vector((x * s, (y + lift) * s, z * s))
 
 
 def _strap(P, J, r):

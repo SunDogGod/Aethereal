@@ -1,0 +1,12 @@
+[gd_resource type="ShaderMaterial" format=3]
+
+[ext_resource type="Shader" path="res://shaders/ps1_surface.gdshader" id="1_ps1"]
+[ext_resource type="Texture2D" path="res://textures/black_sand_ripples.png" id="2_tex"]
+
+[resource]
+shader = ExtResource("1_ps1")
+shader_parameter/albedo_texture = ExtResource("2_tex")
+shader_parameter/albedo_color = Color(0.14, 0.16, 0.18, 1)
+shader_parameter/uv_scale = Vector2(40, 32)
+shader_parameter/emission_color = Color(0.14, 0.22, 0.3, 1)
+shader_parameter/emission_energy = 0.35

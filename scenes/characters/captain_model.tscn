@@ -8,7 +8,7 @@
 resource_name = "captain_props_Visor"
 _surfaces = [{
 "aabb": AABB(0.023579363, 0.10481831, -0.14010906, 0.03600219, 0.01515919, 0.03986907),
-"attribute_data": PackedByteArray("v4s/Pn+Mvzp/jD8+H4w/Pr+LvzofjL86P42/Ot+Mvzo/jT8+34w/Pv+Nvzqfjb86/40/Pp+NPz6/jr86X46/Or+OPz5fjj8+f4+/Oh+Pvzp/jz8+H48/Pj+Qvzrfj786P5A/Pt+PPz7/kL86n5C/Ov+QPz6fkD8+v5G/Ol+Rvzq/kT8+X5E/Pn+Svzofkr86f5I/Ph+SPz4/k78635K/Oj+TPz7fkj8+"),
+"attribute_data": PackedByteArray("v4s/Sn+Mv0Z/jD9KH4w/Sr+Lv0YfjL9GP42/Rt+Mv0Y/jT9K34w/Sv+Nv0afjb9G/40/Sp+NP0q/jr9GX46/Rr+OP0pfjj9Kf4+/Rh+Pv0Z/jz9KH48/Sj+Qv0bfj79GP5A/St+PP0r/kL9Gn5C/Rv+QP0qfkD9Kv5G/Rl+Rv0a/kT9KX5E/Sn+Sv0Yfkr9Gf5I/Sh+SP0o/k79G35K/Rj+TP0rfkj9K"),
 "format": 34896613399,
 "index_count": 120,
 "index_data": PackedByteArray("AAABAAIAAgADAAAAAAAEAAEABAAFAAEAAgABAAYAAQAHAAYAAgAGAAgACAAJAAIACAAGAAoABgALAAoACAAKAAwADAANAAgADAAKAA4ACgAPAA4ADAAOABAAEAARAAwAEAAOABIADgATABIAEAASABQAFAAVABAAFAASABYAEgAXABYAFAAWABgAGAAZABQAGAAWABoAFgAbABoAGAAaABwAHAAdABgAHAAaAB4AGgAfAB4AHAAeACAAIAAhABwAIAAeACIAHgAjACIAIAAiACQAJAAlACAAJAAiACYAIgAnACYAJAAmACgAKAApACQA"),
@@ -21,20 +21,20 @@ _surfaces = [{
 }]
 blend_shape_mode = 0
 
-[node name="CaptainModel" type="Node3D" unique_id=571446227]
+[node name="CaptainModel" type="Node3D" unique_id=391128915]
 
-[node name="captain" type="Node3D" parent="." unique_id=79430094 instance=ExtResource("1_0ckwo")]
+[node name="captain" type="Node3D" parent="." unique_id=1705437142 instance=ExtResource("1_0ckwo")]
 
-[node name="HeadGear" type="BoneAttachment3D" parent="." unique_id=880936274]
+[node name="HeadGear" type="BoneAttachment3D" parent="." unique_id=105739063]
 bone_name = "Head"
 bone_idx = 8
 use_external_skeleton = true
 external_skeleton = NodePath("../captain/Armature/Skeleton3D")
 
-[node name="Visor" type="MeshInstance3D" parent="HeadGear" unique_id=1575458773]
+[node name="Visor" type="MeshInstance3D" parent="HeadGear" unique_id=74239104]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0)
 layers = 2
 mesh = SubResource("ArrayMesh_60bb5")
 
-[node name="Animator" type="Node" parent="." unique_id=2078397554]
+[node name="Animator" type="Node" parent="." unique_id=396708439]
 script = ExtResource("3_28jj5")

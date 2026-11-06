@@ -3,8 +3,10 @@ his GuardData colours; the captain has his own model, captain.py). A faceless en
 long coat: a black helmet with a glowing visor slit (agency_heads.py), a dark breastplate and
 shoulder domes, black gauntlets, tall boots with knee plates, a heavy single-edged blade in his
 right hand and a knife across the small of his back (drawn for the hostage poses,
-anims_agency.py). The coat is old and dusty at the hem, the armour chipped: this world is
-thousands of years old.
+anims_agency.py). The coat is old and dusty at the hem, torn and stitched up, the armour chipped
+and dented: this world is thousands of years old. The cult's mark, a single eye in a ring, sits on
+the helmet's brow plate and the left breast of the plate (agency_marks.py, which also hangs the
+belt straps and hip plates); the shared armour and leather paint is in agency_paint.py.
 
 Rebuild:  .\\tools\\blender\\rebuild.ps1 agent   (or blender -b --factory-startup -P tools/blender/agent.py)
 
@@ -29,6 +31,8 @@ import anims_loco             # noqa: E402
 import anims_combat           # noqa: E402
 import agency_parts as ap     # noqa: E402
 import agency_heads as ah     # noqa: E402
+import agency_marks as am     # noqa: E402
+from agency_paint import paint_armour, paint_lower  # noqa: E402,F401  (captain.py uses them through agent)
 import anims_agency           # noqa: E402
 import props                  # noqa: E402
 from agency_parts import C, at_z, shell, limb_shell, box  # noqa: E402
@@ -68,19 +72,20 @@ FOOT = [(-0.095, 0.036, 0.040, -0.034), (-0.07, 0.048, 0.058, -0.024), (0.0, 0.0
 KNEE = [(0.84, 0.068, 0.074), (0.97, 0.074, 0.084), (1.10, 0.066, 0.074)]
 
 
-def build(name="agent", officer=None):
+def build(name="agent", officer=None, rank=0):
     """officer: (face look, hair style, hairline) for a bare-headed officer (lieutenant.py) in
-    place of the helmet (agency_heads.py)."""
+    place of the helmet (agency_heads.py); rank: bars on the right breast of the plate."""
     ch = cb.Character(name, height=HEIGHT, shoulders=SHOULDERS, atlas_size=512 if officer else 256)
     J, A = ch.J, ch.atlas
     P, T, M = ch.part("Body"), ch.part("Coat"), ch.part("Trim")
     s = J["height"] / 1.72
-    R = {n: A.rect(n, w, h) for n, w, h in (() if officer else (("helm", 128, 72),)) + (
-        ("cuirass", 96, 48), ("skirt", 64, 56), ("sleeve", 48, 40), ("ctorso", 32, 32),
+    R = {n: A.rect(n, w, h) for n, w, h in (() if officer else (("helm", 128, 96),)) + (
+        ("cuirass", 96, 64), ("skirt", 64, 56), ("sleeve", 48, 40), ("ctorso", 32, 32),
         ("boot", 48, 40), ("trousers", 40, 32), ("foot", 40, 24), ("pauldron", 48, 24), ("lame", 32, 12),
         ("gauntlet", 32, 24), ("collar", 48, 16), ("hand", 24, 16), ("belt", 64, 8), ("knee", 16, 16),
         ("pouch", 16, 12), ("neck", 16, 12), ("lining", 8, 8), ("plate_in", 8, 8), ("buckle", 8, 8),
-        ("trim", 16, 8)) + (() if officer else (("visor", 16, 8), ("crest", 16, 8), ("disc", 8, 8)))}
+        ("trim", 16, 8), ("strap", 8, 24), ("tasset", 24, 16)) + (
+        () if officer else (("visor", 16, 8), ("crest", 16, 8), ("disc", 8, 8)))}
     arm = (body.arm_joints(J), ("UpperArm_R", "LowerArm_R"))
 
     # --- The coat (tinted in game): torso, skirt halves that follow the thighs, sleeves.
@@ -112,6 +117,7 @@ def build(name="agent", officer=None):
         bb.mirrored(P, lambda t0=t0: limb_shell(P, J, *arm, R["lame"], [(t0, 0.071, 0.072), (t0 + 0.15, 0.078, 0.079)],
                                                 (55, 305), lining=R["plate_in"]))
     belt(P, J, R, COAT_TORSO, SKIRT)
+    hangings(P, J, R)
     # --- The helmet with its visor slit, or an officer's bare head and eyepiece; neck under the collar.
     if officer:
         ah.officer_head(ch, P, *officer)
@@ -121,7 +127,7 @@ def build(name="agent", officer=None):
     bb.mirrored(P, lambda: body.limb(P, J, *arm, R["gauntlet"], GAUNTLET, hand_bone="Hand_R"))
     bb.mirrored(P, lambda: body.fist(P, J, R["hand"], size=1.1))
     lower(P, J, R)
-    paint(R)
+    paint(R, rank)
     ap.blade(ch.prop("BladeMesh", "Weapon_R", "Blade"), A)
     props.knife(ch.prop("KnifeMesh", "Knife", "Knife"), A)
     return ch
@@ -144,6 +150,15 @@ def belt(P, J, R, torso, skirt, pouches=(32, 148, 222)):
             R["pouch"], {"Hips": 1.0}, (Vector((d, -c, 0)), Vector((c, d, 0)), Vector((0, 0, 1))))
 
 
+def hangings(P, J, R):
+    """What hangs off the belt: a plate over each hip (tassets) and two loose straps down the
+    left side of the skirt, one with a buckle swinging at its end."""
+    skirt = [r[:5] for r in SKIRT]
+    bb.mirrored(P, lambda: am.tassets(P, J, R["tasset"], R["plate_in"], skirt))
+    am.hanging_strap(P, J, R["strap"], skirt, 142, 0.955, 0.66, buckle=R["buckle"], sway=6.0)
+    am.hanging_strap(P, J, R["strap"], skirt, 222, 0.955, 0.76, width=0.016, sway=-4.0)
+
+
 def lower(P, J, R):
     """Trousers, boots with knee plates, and feet."""
     legs = (body.leg_joints(J), ("UpperLeg_R", "LowerLeg_R"))
@@ -153,78 +168,9 @@ def lower(P, J, R):
     bb.mirrored(P, lambda: body.foot(P, J, R["foot"], rows=FOOT))
 
 
-def paint_armour(R, chipped=True):
-    """Breastplate, shoulders, lames, knee plates: dark steel with a lit lower bevel, the keel,
-    abdomen lames, side straps, rivets, the red Agency mark, and old chips along the edges."""
-    plate = [R[n] for n in ("cuirass", "pauldron", "lame", "knee") if n in R]
-    for r in plate:
-        r.fill(C["plate"])
-        r.box(0, 0.0, 1, 0.12, C["plate_hi"])        # light bevel along the lower edge
-        r.hline(0.13, C["plate_dk"])
-        if chipped:
-            ap.chips(r, shade(C["plate_hi"], 1.15), count=max(3, r.w // 10), seed=r.w + r.h, v_range=(0.0, 0.2))
-    c = R["cuirass"]
-    c.box(0, 0.93, 1, 1.0, C["plate_hi"])            # neck edge
-    c.hline(0.92, C["plate_dk"])
-    c.vline(0.5, C["plate_hi"], 1, 0.13, 0.92)      # the keel
-    c.vline(0.51, C["plate_dk"], 1, 0.13, 0.92)
-    for v in (0.30, 0.45):                            # abdomen lames
-        c.hline(v, C["plate_dk"])
-        c.hline(v - 0.03, shade(C["plate"], 1.25))
-    for u in (0.25, 0.75):                            # side straps with buckles
-        c.box(u - 0.02, 0.15, u + 0.02, 0.9, C["leather"])
-        c.box(u - 0.025, 0.55, u + 0.025, 0.62, C["buckle"])
-    for k in range(12):                               # rivets along the neck edge
-        c.dot(0.04 + k * 0.083, 0.88, C["rivet"])
-    c.box(0.585, 0.70, 0.66, 0.74, C["mark"])         # the Agency mark on the left breast
-    c.box(0.30, 0.58, 0.36, 0.60, C["scuff"])         # old dents
-    c.box(0.70, 0.36, 0.74, 0.38, C["scuff"])
-    if "pauldron" in R:
-        R["pauldron"].box(0, 0.9, 1, 1.0, C["plate_dk"])
-        for k in range(6):
-            R["pauldron"].dot(0.1 + k * 0.16, 0.2, C["rivet"])
-    R["plate_in"].fill(C["plate_dk"])
-
-
-def paint_lower(R):
-    """Gauntlets, gloves, trousers, boots (dusty at the foot), feet, belt and pouches."""
-    g = R["gauntlet"]
-    g.fill(C["leather"])
-    g.box(0.56, 0.22, 0.94, 0.8, C["plate"])        # the steel plate on the back of the forearm
-    g.hline(0.8, C["plate_hi"])
-    g.hline(0.22, C["plate_dk"])
-    g.box(0, 0.86, 1, 1.0, C["leather_hi"])           # flared cuff edge
-    R["hand"].fill(C["leather"])
-    R["hand"].hline(0.62, C["leather_hi"], 2)        # knuckle ridge
-    R["neck"].fill(C["suit"])
-    R["trousers"].fill(C["suit"])
-    R["trousers"].seam(0.0, shade(C["suit"], 0.7), shade(C["suit"], 1.4))
-    R["trousers"].seam(0.5, shade(C["suit"], 0.7), shade(C["suit"], 1.4))
-    b = R["boot"]
-    b.fill(C["boot"])
-    b.box(0, 0.88, 1, 1.0, C["leather_hi"])           # boot top
-    for v in (0.35, 0.6):                             # straps with buckles
-        b.hline(v, C["leather_hi"], 2)
-        b.box(0.70, v - 0.02, 0.78, v + 0.05, C["buckle"])
-    b.seam(0.5, shade(C["boot"], 0.6), shade(C["boot"], 1.8), 0.0, 0.86)
-    ap.weather(b, 0.30, C["dust"], seed=7, strength=0.45, flip=True)   # road dust at the foot
-    f = R["foot"]
-    f.fill(shade(C["boot"], 1.0) * 0.6 + C["dust"] * 0.4)
-    f.box(0.0, 0.0, 0.2, 1.0, C["sole"])
-    f.box(0.8, 0.0, 1.0, 1.0, C["sole"])
-    f.box(0.0, 0.0, 1.0, 0.1, C["sole"])
-    R["belt"].fill(C["leather"])
-    R["belt"].hline(0.15, C["leather_hi"])
-    R["belt"].hline(0.8, C["leather_hi"])
-    R["buckle"].fill(C["buckle"])
-    R["buckle"].box(0.25, 0.25, 0.75, 0.75, C["plate_dk"])
-    R["pouch"].fill(C["leather_hi"])
-    R["pouch"].hline(0.7, C["leather"])
-
-
-def paint(R):
+def paint(R, rank=0):
     """The coat and trim, the armour, the lower body (the helmet paints itself: agency_heads.py)."""
-    paint_armour(R)
+    paint_armour(R, rank=rank)
     # The coat, near-white (guard_look.gd multiplies it by the coat colour), dusty at the hem.
     for n in ("ctorso", "skirt", "sleeve"):
         R[n].fill(K["cloth"])
@@ -236,12 +182,20 @@ def paint(R):
     sk.vline(0.02, K["seam"])                         # back vent edge
     for u in (0.3, 0.62):                             # long folds
         sk.vline(u, K["fold"], 1, 0.08, 0.85)
-    ap.weather(sk, 0.36, K["dust"], K["grime"], seed=3)
+    ap.weather(sk, 0.40, K["dust"], K["grime"], seed=3, strength=0.7)
+    am.ragged_hem(sk, K["grime"], seed=4, notches=6)                     # torn at the foot
+    am.stitches(sk, 0.0, 0.09, 1.0, 0.09, K["seam"])                     # the hem stitched up
+    am.stitches(sk, 0.92, 0.1, 0.92, 1.0, K["seam"])                      # and the front edge
     sk.box(0.44, 0.10, 0.47, 0.16, K["seam"])        # a mended tear
     sk.hline(0.13, K["fold"])
+    am.stitches(sk, 0.40, 0.13, 0.52, 0.13, K["seam"], on=1, off=1)      # its crude darning
     sv = R["sleeve"]
     sv.seam(0.5, K["seam"], K["pipe"], 0.0, 0.85)
+    am.stitches(sv, 0.47, 0.0, 0.47, 0.85, K["seam"])
     sv.hline(0.45, K["fold"])
+    sv.box(0.62, 0.52, 0.74, 0.60, K["fold"])                             # a patch at the elbow
+    am.stitches(sv, 0.62, 0.52, 0.74, 0.52, K["seam"], on=1, off=1)
+    am.stitches(sv, 0.62, 0.60, 0.74, 0.60, K["seam"], on=1, off=1)
     ap.weather(sv, 0.16, K["dust"], seed=5, strength=0.35, flip=True)   # grimy at the wrist
     R["ctorso"].vline(0.5, K["seam"])
     R["lining"].fill(K["lining"])
@@ -249,6 +203,7 @@ def paint(R):
     R["collar"].fill(K["cloth"])
     R["collar"].box(0, 0.8, 1, 1.0, K["pipe"])
     R["collar"].hline(0.78, K["seam"])
+    am.stitches(R["collar"], 0.0, 0.12, 1.0, 0.12, K["seam"])
     R["trim"].fill(K["cloth"])
     R["trim"].hline(0.15, K["seam"])
     R["trim"].hline(0.85, K["seam"])

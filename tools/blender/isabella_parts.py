@@ -131,28 +131,89 @@ def skirt(P, J, profile, rect, lining):
     mesh.loft(P, [ring(*row, inset=0.006, flip=True) for row in profile[:4]], 22, lining.uv)
 
 
+def strip(P, pts, wts, width, thick, uv, s=1.0):
+    """A flat strap lying on the body along 3D points (already scaled), one weight dict per point:
+    its outer face is the texture's u 0..0.25, the sides 0.25..0.5 and 0.75..1, the inside the rest."""
+    rings = []
+    for k, p in enumerate(pts):
+        t = (pts[min(k + 1, len(pts) - 1)] - pts[max(k - 1, 0)]).normalized()
+        n = Vector((p.x, p.y, 0)).normalized()
+        n = (n - t * n.dot(t)).normalized()
+        rings.append({"c": p + n * thick * 0.5 * s, "x": n.cross(t), "y": n, "rx": width * 0.707 * s,
+                      "ry": thick * 0.707 * s, "n": 2.0, "w": wts[k]})
+    mesh.loft(P, rings, 4, uv, start=45.0, cap0="pole", cap1="pole")
+
+
 def band(P, J, profile, path, width, thick, uv, lift, inner=None):
     """A flat strip lying on a trunk profile along (angle, height) points: a collar edge. inner =
     (side, uv, lowest z): a narrower strip beside it on that side, down to that height."""
     s = J["height"] / 1.72
     pts = [body.trunk_point(J, profile, th, z, lift) for th, z in path]
-    rings, cream = [], []
-    for k, (th, z) in enumerate(path):
-        p = pts[k]
-        t = (pts[min(k + 1, len(pts) - 1)] - pts[max(k - 1, 0)]).normalized()
-        n = Vector((p.x, p.y, 0)).normalized()
-        n = (n - t * n.dot(t)).normalized()
-        x = n.cross(t)
-        w = body.spine_w(J, z * s)
-        rings.append({"c": p + n * thick * 0.5 * s, "x": x, "y": n, "rx": width * 0.707 * s,
-                      "ry": thick * 0.707 * s, "n": 2.0, "w": w})
-        if inner and z >= inner[2] - 0.005:
+    wts = [body.spine_w(J, z * s) for th, z in path]
+    strip(P, pts, wts, width, thick, uv, s)
+    if inner:
+        cream = []
+        for k, (th, z) in enumerate(path):
+            if z < inner[2] - 0.005:
+                continue
+            p = pts[k]
+            t = (pts[min(k + 1, len(pts) - 1)] - pts[max(k - 1, 0)]).normalized()
+            n = Vector((p.x, p.y, 0)).normalized()
+            n = (n - t * n.dot(t)).normalized()
+            x = n.cross(t)
             off = inner[0] * (width * 0.5 + 0.007) * s
             cream.append({"c": p + x * off + n * thick * 0.3 * s, "x": x, "y": n, "rx": 0.014 * 0.707 * s,
-                          "ry": thick * 0.5 * s, "n": 2.0, "w": w})
-    mesh.loft(P, rings, 4, uv, start=45.0, cap0="pole", cap1="pole")
-    if len(cream) > 1:
-        mesh.loft(P, cream, 4, inner[1], start=45.0, cap0="pole", cap1="pole")
+                          "ry": thick * 0.5 * s, "n": 2.0, "w": wts[k]})
+        if len(cream) > 1:
+            mesh.loft(P, cream, 4, inner[1], start=45.0, cap0="pole", cap1="pole")
+
+
+def cap(P, head, rect, base_line, rows, z_top, cols=24):
+    """A cloth cap over the head (a headwrap): rows (f, lift) from base_line(theta) (f = 0, on the
+    hair) up toward z_top (f = 1), closing at a pole over the crown. The texture's v runs from the
+    edge (0) to the crown (1), u round the head from the face."""
+    grid = []
+    for f, lift in rows:
+        row = []
+        for j in range(cols):
+            th = 90.0 + 360.0 * j / cols
+            z0 = base_line(th)
+            row.append(P.vert(head.surface(th, z0 + (z_top - z0) * f, lift), {"Head": 1.0}))
+        grid.append(row)
+    top = head.ring(len(head.rows) - 1)["c"] + Vector((0, 0, (0.018 + rows[-1][1]) * head.s))
+    pole = P.vert(top, {"Head": 1.0})
+    u0, v0, u1, v1 = rect.uv
+    U = [u0 + (u1 - u0) * j / cols for j in range(cols + 1)]
+    V = [v0 + (v1 - v0) * k / len(rows) for k in range(len(rows) + 1)]
+    for i in range(len(rows) - 1):
+        for j in range(cols):
+            a, b = grid[i][j], grid[i][(j + 1) % cols]
+            c, d = grid[i + 1][(j + 1) % cols], grid[i + 1][j]
+            P.face((a, b, c, d), [(U[j], V[i]), (U[j + 1], V[i]), (U[j + 1], V[i + 1]), (U[j], V[i + 1])])
+    for j in range(cols):
+        P.face((grid[-1][j], grid[-1][(j + 1) % cols], pole),
+               [(U[j], V[-2]), (U[j + 1], V[-2]), ((U[j] + U[j + 1]) / 2, V[-1])])
+
+
+def satchel(P, base, theta, size, uv, flap_uv, s, w=None):
+    """A soft leather bag standing off the body at `base` (a point on the hip), facing out along
+    angle theta: a rounded box (half width, half height, depth), and a flap over its top that
+    hangs down the outer face. Weighted to the hips."""
+    w = w or {"Hips": 1.0}
+    t = math.radians(theta)
+    n = Vector((math.cos(t), math.sin(t), 0.0))
+    x, up = Vector((-n.y, n.x, 0.0)), Vector((0, 0, 1))
+    hw, hh, depth = size
+    rings = []
+    for d, k in ((0.0, 0.88), (0.015, 1.0), (depth - 0.015, 1.0), (depth, 0.88)):
+        rings.append({"c": base + n * d * s, "x": x, "y": up, "rx": hw * k * s, "ry": hh * k * s, "n": 3.5, "w": w})
+    rings[0]["cap_len"] = 0.004 * s
+    rings[-1]["cap_len"] = 0.006 * s
+    mesh.loft(P, rings, 12, uv, cap0="pole", cap1="pole")
+    top = base + up * (hh + 0.004) * s
+    pts = [top - n * 0.004 * s, top + n * (depth + 0.006) * s, top + n * (depth + 0.012) * s - up * 0.02 * s,
+           base + n * (depth + 0.012) * s + up * 0.005 * s]
+    mesh.strand(P, pts, [(hw + 0.006) * s] * 4, 0.06, flap_uv, w, up=n + up, sides=4)
 
 
 def knot(P, J, rect):

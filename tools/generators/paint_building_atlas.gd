@@ -26,8 +26,13 @@ const ROOF_SEAM := Color(0.34, 0.34, 0.37)
 const DENSE_WALL := Color(0.36, 0.36, 0.41)
 const DENSE_GLASS := Color(0.25, 0.26, 0.32)
 # Window states: 0 dark, 1 warm, 2 TV blue, 3 dim warm, 4 curtain.
-const GLASS := [Color(0.15, 0.17, 0.24), Color(0.9, 0.72, 0.42), Color(0.35, 0.75, 0.85), Color(0.58, 0.42, 0.27), Color(0.6, 0.55, 0.5)]
-const LIGHT := [Color.BLACK, Color(1.0, 0.75, 0.4), Color(0.3, 0.7, 0.85), Color(0.5, 0.32, 0.18), Color(0.3, 0.26, 0.22)]
+const GLASS := [Color(0.15, 0.17, 0.24), Color(0.82, 0.65, 0.38), Color(0.3, 0.66, 0.76), Color(0.52, 0.38, 0.24), Color(0.56, 0.51, 0.46)]
+# Look round (2026-11-05): the glow at about two thirds of what it was, so the towers read as
+# old and half-lit rather than new and full (the bible: "windows at half brightness").
+const LIGHT := [Color.BLACK, Color(0.7, 0.52, 0.28), Color(0.21, 0.49, 0.6), Color(0.35, 0.22, 0.12), Color(0.2, 0.17, 0.14)]
+const BOARD := Color(0.3, 0.26, 0.22)
+const DARK_GLASS := Color(0.12, 0.13, 0.18)
+const CUT := Color(0, 0, 0, 0)  # passed as `lit`: paints the glow black (a crack cuts the light)
 # Per window column (in the order of BF.WINDOW_COLS: 1..7, then 13..15, added in round 5):
 # [state in row 0 (upper storey), state in row 1 (lower storey)].
 const STATES_LIT := [[1, 0], [0, 2], [4, 3], [0, 0], [2, 4], [0, 1], [1, 1], [1, 0], [0, 1], [4, 0]]
@@ -57,6 +62,14 @@ func _atlas(name: String, states: Array, dense_lit: float) -> void:
 	for i in BF.DENSE_COLS.size():
 		_dense(BF.DENSE_COLS[i], 0, i, dense_lit)
 		_dense(BF.DENSE_COLS[i], 1, i + 7, dense_lit)
+	# Look round: the age tiles (unlit storeys, cracked and boarded bays).
+	for i in BF.DARK_COLS.size():
+		_window_dark(BF.DARK_COLS[i], 0, i * 2)
+		_window_dark(BF.DARK_COLS[i], 1, i * 2 + 1)
+	_cracked(BF.COL_CRACKED, 0, true)
+	_cracked(BF.COL_CRACKED, 1, false)
+	_boarded(BF.COL_BOARDED, 0, false)
+	_boarded(BF.COL_BOARDED, 1, true)
 	_base_blank(BF.COL_BASE_BLANK, 1, false)
 	_base_blank(BF.COL_BASE_BLANK, 0, true)
 	_door(BF.COL_DOOR, 1, false)
@@ -105,6 +118,77 @@ func _window(col: int, row: int, state: int) -> void:
 	_rect(o.x, o.y, 31, 10, 33, 42, FRAME)
 	_rect(o.x, o.y, 14, 25, 50, 26, FRAME)
 	_rect(o.x, o.y, 12, 43, 52, 45, SILL)
+
+
+## An unlit storey's window, four looks: 0 a glint in one pane, 1 dark curtain bands, 2 a grey
+## film of dust with one pane wiped, 3 one pane a shade lighter (a reflection). No glow at all.
+func _window_dark(col: int, row: int, look: int) -> void:
+	_window(col, row, 0)
+	var o := _origin(col, row)
+	_rect(o.x, o.y, 14, 10, 50, 42, DARK_GLASS)
+	match look:
+		0:
+			_rect(o.x, o.y, 36, 28, 48, 40, Color(0.17, 0.19, 0.26))
+		1:
+			for k in range(15, 50, 6):
+				_rect(o.x, o.y, k, 10, k + 3, 42, Color(0.09, 0.09, 0.12))
+		2:
+			_rect(o.x, o.y, 14, 10, 50, 42, Color(0.2, 0.2, 0.23))
+			_rect(o.x, o.y, 16, 28, 30, 40, DARK_GLASS)
+		3:
+			_rect(o.x, o.y, 14, 10, 31, 25, Color(0.19, 0.21, 0.28))
+	_rect(o.x, o.y, 31, 10, 33, 42, FRAME)
+	_rect(o.x, o.y, 14, 25, 50, 26, FRAME)
+
+
+## A fat stroke of width `wd` from a to b (tile-local), in the colour and its glow.
+func _stroke(o: Vector2i, a: Vector2i, b: Vector2i, wd: int, c: Color, lit := Color.BLACK) -> void:
+	var n := maxi(absi(b.x - a.x), absi(b.y - a.y))
+	for i in n + 1:
+		var p := Vector2i(roundi(lerpf(a.x, b.x, float(i) / maxi(n, 1))), roundi(lerpf(a.y, b.y, float(i) / maxi(n, 1))))
+		_rect(o.x, o.y, p.x, p.y, p.x + wd, p.y + wd, c, lit)
+
+
+## Cracked glass: a dark hole with five fat cracks running out to the frame. With `lit`, the
+## room behind still glows dimly; the cracks are dark against it. Without, the glass is dark
+## and the cracks catch the light as pale strokes.
+func _cracked(col: int, row: int, lit: bool) -> void:
+	_window(col, row, 3 if lit else 0)
+	var o := _origin(col, row)
+	if not lit:
+		_rect(o.x, o.y, 14, 10, 50, 42, DARK_GLASS)
+	var hit := Vector2i(27, 30) if lit else Vector2i(38, 18)
+	var ink := Color(0.1, 0.09, 0.1) if lit else Color(0.34, 0.36, 0.44)
+	var ends := [Vector2i(14, 12), Vector2i(49, 10), Vector2i(49, 40), Vector2i(20, 41), Vector2i(14, 26)]
+	if not lit:
+		ends = [Vector2i(14, 10), Vector2i(49, 12), Vector2i(49, 36), Vector2i(26, 41), Vector2i(14, 30)]
+	for e in ends:
+		var mid: Vector2i = (hit + e) / 2 + Vector2i(2 if e.y > hit.y else -2, 1)
+		_stroke(o, hit, mid, 2, ink, CUT)
+		_stroke(o, mid, e, 2, ink, CUT)
+	_rect(o.x, o.y, hit.x - 2, hit.y - 2, hit.x + 4, hit.y + 4, Color(0.04, 0.04, 0.05), CUT)
+	_rect(o.x, o.y, 31, 10, 33, 42, FRAME, CUT)
+	_rect(o.x, o.y, 14, 25, 50, 26, FRAME, CUT)
+
+
+## Boarded up: fat planks nailed across the frame (`crossed`: two diagonal ones over a dark room).
+func _boarded(col: int, row: int, crossed: bool) -> void:
+	_window(col, row, 0)
+	var o := _origin(col, row)
+	_rect(o.x, o.y, 14, 10, 50, 42, Color(0.05, 0.05, 0.06))
+	if crossed:
+		_stroke(o, Vector2i(11, 9), Vector2i(47, 37), 6, BOARD)
+		_stroke(o, Vector2i(47, 9), Vector2i(11, 37), 6, BOARD * 0.85)
+		for p in [Vector2i(13, 11), Vector2i(49, 11), Vector2i(13, 39), Vector2i(49, 39)]:
+			_rect(o.x, o.y, p.x, p.y, p.x + 2, p.y + 2, Color(0.6, 0.58, 0.52))
+		return
+	for k in 3:
+		var y := 11 + k * 11
+		var x0 := 11 + (k % 2) * 2
+		_rect(o.x, o.y, x0, y, x0 + 42, y + 8, BOARD * (1.0 - 0.1 * k))
+		_rect(o.x, o.y, x0, y + 7, x0 + 42, y + 8, BOARD * 0.6)
+		_rect(o.x, o.y, x0 + 2, y + 3, x0 + 4, y + 5, Color(0.6, 0.58, 0.52))
+		_rect(o.x, o.y, x0 + 38, y + 3, x0 + 40, y + 5, Color(0.6, 0.58, 0.52))
 
 
 ## Ground-floor wall: a cornice along the top, a darker foot; optionally a vent box.

@@ -133,7 +133,8 @@ KAEL: Spend it well. It cost you.
 [fade out]
 # DRAFT
 Some time in the night, the capsule begins to slow.
-[level res://scenes/ui/title_screen.tscn]
+# Act 1 begins where the capsule stops: the Horus road (docs/act1_horus.md).
+[level res://scenes/levels/horus_road.tscn]
 
 # Any other rest: before the launch, and once the nights above are used up. DRAFT.
 === rest ===

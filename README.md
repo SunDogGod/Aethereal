@@ -32,7 +32,7 @@ put together: `docs/customizing.md`, "The big world".
 | Slide (while sprinting, hold crouch; let go or jump to break out) | Shift + C | L3 + B |
 | Take down (from behind) | F or left click | X |
 | Lock on / off | Q | Click the right stick |
-| Attack: with the sword sheathed, the first attack is a quick draw (tap = draw and cut at once; hold = the draw stance, feet planted, release = a harder cut); he puts it away about 4 s after a fight. With it drawn: tap = instant light swing; hold to wind up, release to swing (longer = harder, up to 0.6 s). Tap again as soon as a swing lands to chain the next; swings alternate sides | F or left click | X |
+| Attack: with the sword sheathed, the first attack is a quick draw (tap = draw and cut at once; hold = the draw stance, feet planted, release = a harder cut); he puts it away about 4 s after a fight. With it drawn: tap = instant light swing; hold to wind up, release to swing (longer = harder, up to 0.6 s; at a full charge the blade rises over his shoulder and the release is a cleave: a diagonal cut with a lunge). Tap again as soon as a swing lands to chain the next; swings alternate sides | F or left click | X |
 | Full-power swing at once | G | Y |
 | Block (hold) / parry (tap as the blade lands) | Right click | LB |
 | Dodge roll (with an agent fighting you close by, or while locked on) | Space | B |

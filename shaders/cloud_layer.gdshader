@@ -77,9 +77,13 @@ void fragment() {
 	vec3 color = mix(light_color, shade_color, smoothstep(0.3, 1.0, density));
 	float a = density * opacity;
 
-	// Fade out at the deck's border, close to the camera, and against the walls it meets.
-	vec2 edge = half_size - abs(local_xz);
-	a *= clamp(min(edge.x, edge.y) / edge_fade, 0.0, 1.0);
+	// Fade out at the deck's border (a rounded border, each sheet a little smaller than the one
+	// below, so the deck never shows a rectangle from underneath), close to the camera, and
+	// against the walls it meets.
+	vec2 shrink = half_size * (1.0 - 0.12 * sheet);
+	vec2 edge = max(shrink - abs(local_xz), vec2(0.0));
+	float corner = length(vec2(edge_fade) - min(edge, vec2(edge_fade)));
+	a *= clamp(1.0 - corner / edge_fade, 0.0, 1.0);
 	float distance_to_camera = length(world_pos - CAMERA_POSITION_WORLD);
 	a *= clamp((distance_to_camera - 2.0) / near_fade, 0.0, 1.0);
 	float depth = texture(depth_texture, SCREEN_UV).r;

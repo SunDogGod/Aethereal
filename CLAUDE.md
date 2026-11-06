@@ -68,6 +68,13 @@
 - Lock-on is only a helper (the author, 2026-10-25): without it a swing or quick draw turns him
   toward the nearest enemy roughly ahead and steps in a little (`scripts/swing_assist.gd`); the
   camera is never moved by it.
+- Cuts are deep (the author, 2026-11-05): light taps are low cuts (knees bent, hips driving in,
+  `SWEEP_LR/RL` in tools/blender/anims_swings.py); a full charge raises the blade over his shoulder
+  (`windup_high`) and releases the `cleave`, a diagonal cut with a lunge, hit at `CLEAVE_HIT` (same
+  number in character_animator.gd). The heavy button is the cleave at once. `swing_heavy.wav` is its whoosh.
+- Walk cycles (tools/blender/anims_loco.py): the body rises and falls for real (`bob_at`: a walk
+  peaks over the standing leg, a run in the air), hips barely sway. The author hated the "penguin
+  waddle" and "weightless robot" of the old cycles; keep sway and roll tiny and the bob visible.
 - A Fight with a `choreography_file` (`data/fights/*.txt`, parsed by `choreography_file.gd`, run
   by `choreography.gd` in place of the Fighter's AI) plays authored beats: the captain's set piece.
   Hits don't break a choreographed beat; a parry does. Phase 2 starts when the boss is empowered.
@@ -151,6 +158,17 @@
 - Test scripts that show the title screen or set `SaveGame.recording` must first point
   `SaveGame.folder` at a scratch folder, so a test (or a test killed by a timeout) never touches the
   author's save.
+
+## The look round (2026-11-05)
+- `docs/look_bible.md` is the proposal distilled from the author's 600 reference pictures: black,
+  enormous, old and wired; one hot colour per place; eyes and halos as the cult mark; violet is
+  the one Aether colour. Dressing follows its ranked list. `scripts/props_kit/` holds the shared
+  look props (light shafts, drifting lights, halo lamps, neon signs, giant fans, rooftop clutter,
+  megastructure pieces, rubble, stain strips): use those before writing a new prop.
+- Act 1 starts in `scenes/levels/horus_road.tscn` (the Horus arc's rough cut, docs/act1_horus.md),
+  generated once by tools/generators/build_horus.gd; after that the scene file is the source of
+  truth. Its props are `scripts/props_horus/`; `scripts/vfx/quake.gd` shakes the showing camera
+  for a scene (`[call Quake shake 3.0]`).
 
 ## Rough-cut levels (Act 0 onward)
 - Each story location gets a rough walkable level first: signature space, landmark, its own fog

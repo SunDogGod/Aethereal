@@ -18,15 +18,23 @@ extends RefCounted
 ## "faces_dense_above" (world metres) use the DENSE_COLS tiles instead: dark wall with rows of tiny
 ## slit windows (none lit in the town's lit atlas, a few in the skyline's unlit one). Unchanged without it.
 ##
-## THE ATLAS (1280 x 128): 20 columns of 64 px, 2 rows of 64 px. One column is one 3 m bay.
+## Age (look round, 2026-11-05): every third storey is unlit (which third varies per building,
+## from its position), and each storey mixes in a few blank, cracked, boarded or dark tiles,
+## so no two floors match and the towers read as thousands of years old and half-empty.
+##
+## THE ATLAS (1536 x 128): 24 columns of 64 px, 2 rows of 64 px. One column is one 3 m bay.
 ## A window column holds two storeys (row 0 sits above row 1) and repeats vertically, so a whole
-## stack of storeys is one quad whose v runs past 1. The painter (scratchpad
-## paint_building_atlas.gd) reads these constants, so the mesh and the paint always agree.
-const ATLAS_W := 1280
+## stack of storeys is one quad whose v runs past 1. The painter
+## (tools/generators/paint_building_atlas.gd) reads these constants, so the mesh and the paint
+## always agree.
+const ATLAS_W := 1536
 const ATLAS_H := 128
 const TILE := 64
 const COL_BLANK := 0  # plain wall in both rows: corner piers, margins, small faces
 const WINDOW_COLS: Array[int] = [1, 2, 3, 4, 5, 6, 7, 13, 14, 15]  # window bays, two looks each
+const DARK_COLS: Array[int] = [20, 21]  # unlit storeys: dark glass in both rows, two looks each
+const COL_CRACKED := 22  # row 0 cracked glass with a dim room behind, row 1 cracked and dark
+const COL_BOARDED := 23  # planks nailed over the frame, dark; row 1 crossed planks
 const COL_BASE_BLANK := 8  # ground-floor wall: row 1 plain, row 0 with a vent box
 const COL_DOOR := 9  # row 1 a metal door with a lamp, row 0 a wider second door
 const COL_SHOP := 10  # row 1 shutter down, row 0 dark glass under a sign plate
@@ -44,6 +52,7 @@ const MIN_FACE_W := 5.0
 const MIN_FACE_H := 4.0
 const ROOF_SPLIT := 6.0
 const Context := preload("res://scripts/building_context.gd")
+const Storeys := preload("res://scripts/building_storeys.gd")
 
 ## Set before build() to get a list of what went where (used by placement and audit scripts):
 ## {face, kind ("window"/"blank"/"door"/"shop"/"plinth"), u0, u1, y0, y1, col}, in face metres.
@@ -223,39 +232,9 @@ func _base_tile(col: int, row: int, u0: float, u1: float, y0: float, f0: float, 
 	_quad(u0, u1, y0 + split, y0 + BASE_H, _u(col, f0), _u(col, f1), vs, vb - 0.5)
 
 
-## Window bays in vertical runs of a few storeys each; every run picks its own lit pattern.
-## A run with a blocked window in it is laid storey by storey, with plain wall where blocked.
+## The window storeys: dark floors, mixed tiles (scripts/building_storeys.gd).
 func _storeys(bays: int, margin: float, w: float, y0: float, storeys: int, storey_h: float, dense := false) -> void:
-	var seg := maxi(3, ceili(storeys / 12.0))
-	var s := 0
-	while s < storeys:
-		var count := mini(seg, storeys - s)
-		var ya := y0 + s * storey_h
-		var yb := ya + count * storey_h
-		var vb := _v(s)
-		var vt := _v(s + count)
-		# Plain piers at both corners (the blank tile has no features, so any v works).
-		_quad(0.0, margin, ya, yb, _u(COL_BLANK, 0.0), _u(COL_BLANK, margin / BAY), vb, vt)
-		_quad(w - margin, w, ya, yb, _u(COL_BLANK, 0.0), _u(COL_BLANK, margin / BAY), vb, vt)
-		for i in bays:
-			var col := _window_col(i + 7, s + 3)
-			if dense:
-				col = DENSE_COLS[int(_rnd(i + 3, s + 5) * DENSE_COLS.size())]
-			var x := margin + i * BAY
-			var blocked: Array[int] = []
-			if _ctx:
-				blocked = _ctx.blocked_run(x, BAY, ya, count, storey_h)
-			if blocked.is_empty():
-				_quad(x, x + BAY, ya, yb, _u(col, 0.0), _u(col, 1.0), vb, vt)
-				for k in count:
-					_note("window", x, x + BAY, ya + k * storey_h, ya + (k + 1) * storey_h, col)
-				continue
-			for k in count:
-				var c := COL_BLANK if blocked.has(k) else col
-				var y := ya + k * storey_h
-				_quad(x, x + BAY, y, y + storey_h, _u(c, 0.0), _u(c, 1.0), _v(s + k), _v(s + k + 1))
-				_note("blank" if c == COL_BLANK else "window", x, x + BAY, y, y + storey_h, c)
-		s += count
+	Storeys.new(self).lay(bays, margin, w, y0, storeys, storey_h, dense)
 
 
 func _parapet(w: float, y0: float, y1: float) -> void:
