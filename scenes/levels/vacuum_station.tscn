@@ -88,6 +88,10 @@
 [ext_resource type="Script" path="res://scripts/interactable.gd" id="vs_interactable"]
 [ext_resource type="Script" path="res://scripts/rest_bed.gd" id="vs_rest_bed"]
 [ext_resource type="PackedScene" path="res://scenes/characters/grey_alien_model.tscn" id="vs_grey_alien"]
+[ext_resource type="Script" path="res://scripts/props_kit/wall_lamp_sodium.gd" id="lk_sodium"]
+[ext_resource type="Script" path="res://scripts/props_kit/stain_strips.gd" id="lk_stain"]
+[ext_resource type="Script" path="res://scripts/props_kit/light_shaft.gd" id="lk_shaft"]
+[ext_resource type="Script" path="res://scripts/props_kit/drift_lights.gd" id="lk_drift"]
 
 [sub_resource type="Environment" id="Environment_eil6x"]
 background_mode = 1
@@ -6117,3 +6121,155 @@ reach = 2.8
 [node name="Zone" type="CollisionShape3D" parent="Inspect/RestBed"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.8, 0, 0)
 shape = SubResource("BoxShape3D_restbed")
+
+[node name="LookDressing" type="Node3D" parent="."]
+
+[node name="Lamps" type="Node3D" parent="LookDressing"]
+
+[node name="LampW-30" type="Node3D" parent="LookDressing/Lamps"]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -13, 5.5, -30)
+script = ExtResource("lk_sodium")
+light_energy = 2.8
+light_range = 9.5
+
+
+[node name="LampW0" type="Node3D" parent="LookDressing/Lamps"]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -13, 5.5, 0)
+script = ExtResource("lk_sodium")
+light_energy = 2.8
+light_range = 9.5
+
+
+[node name="LampW24" type="Node3D" parent="LookDressing/Lamps"]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -13, 5.5, 24)
+script = ExtResource("lk_sodium")
+light_energy = 2.8
+light_range = 9.5
+flicker = 3
+
+[node name="LampE-30" type="Node3D" parent="LookDressing/Lamps"]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 13, 5.5, -30)
+script = ExtResource("lk_sodium")
+light_energy = 2.8
+light_range = 9.5
+
+
+[node name="LampE0" type="Node3D" parent="LookDressing/Lamps"]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 13, 5.5, 0)
+script = ExtResource("lk_sodium")
+light_energy = 2.8
+light_range = 9.5
+
+
+[node name="LampE28_0" type="Node3D" parent="LookDressing/Lamps"]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 27, 5.5, 0)
+script = ExtResource("lk_sodium")
+light_energy = 2.8
+light_range = 9.5
+flicker = 2
+
+[node name="LampE28_24" type="Node3D" parent="LookDressing/Lamps"]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 27, 5.5, 24)
+script = ExtResource("lk_sodium")
+light_energy = 2.8
+light_range = 9.5
+
+
+[node name="Rust" type="Node3D" parent="LookDressing"]
+
+[node name="RustNorthA" type="Node3D" parent="LookDressing/Rust"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 28, -69.99)
+script = ExtResource("lk_stain")
+length = 20
+random_seed = 3
+spacing = 2.4
+drop = 8.0
+width = 0.6
+rust_share = 0.55
+
+[node name="RustSouthW" type="Node3D" parent="LookDressing/Rust"]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, -21, 28, 39.99)
+script = ExtResource("lk_stain")
+length = 18
+random_seed = 5
+spacing = 2.4
+drop = 7.0
+width = 0.6
+rust_share = 0.55
+
+[node name="RustSouthE" type="Node3D" parent="LookDressing/Rust"]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 21, 28, 39.99)
+script = ExtResource("lk_stain")
+length = 18
+random_seed = 6
+spacing = 2.4
+drop = 7.0
+width = 0.6
+rust_share = 0.55
+
+[node name="RustEastA" type="Node3D" parent="LookDressing/Rust"]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 39.99, 28, -6)
+script = ExtResource("lk_stain")
+length = 9
+random_seed = 7
+spacing = 2.4
+drop = 8.0
+width = 0.6
+rust_share = 0.55
+
+[node name="RustEastB" type="Node3D" parent="LookDressing/Rust"]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 39.99, 28, 18)
+script = ExtResource("lk_stain")
+length = 9
+random_seed = 8
+spacing = 2.4
+drop = 8.0
+width = 0.6
+rust_share = 0.55
+
+[node name="HoleShafts" type="Node3D" parent="LookDressing"]
+
+[node name="Shaft" type="Node3D" parent="LookDressing/HoleShafts"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -27, 31, 4)
+script = ExtResource("lk_shaft")
+length = 31.0
+radius_top = 3.0
+radius_bottom = 6.5
+color = Color(0.62, 0.7, 0.92, 1)
+strength = 0.38
+mote_count = 26
+mote_size = 0.07
+
+[node name="Pool" type="OmniLight3D" parent="LookDressing/HoleShafts"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -27, 3, 4)
+light_color = Color(0.62, 0.7, 0.92, 1)
+light_energy = 0.7
+omni_range = 9.0
+
+[node name="ShaftNorth" type="Node3D" parent="LookDressing/HoleShafts"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -26, 31, -44)
+script = ExtResource("lk_shaft")
+length = 29.8
+radius_top = 2.5
+radius_bottom = 5.5
+color = Color(0.62, 0.7, 0.92, 1)
+strength = 0.32
+mote_count = 18
+mote_size = 0.07
+
+[node name="PoolNorth" type="OmniLight3D" parent="LookDressing/HoleShafts"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -26, 4, -44)
+light_color = Color(0.62, 0.7, 0.92, 1)
+light_energy = 0.6
+omni_range = 8.0
+
+[node name="HighLights" type="Node3D" parent="LookDressing"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 20, -15)
+script = ExtResource("lk_drift")
+count = 6
+box_size = Vector3(44, 10, 70)
+speed = 0.3
+size = 0.3
+brightness = 0.6
+light_energy = 0.6
+light_range = 10.0
