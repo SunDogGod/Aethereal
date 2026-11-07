@@ -8,8 +8,8 @@
 [ext_resource type="Material" path="res://materials/ceiling_panel_off.tres" id="6_el8xr"]
 [ext_resource type="Script" path="res://scripts/props_massacre/grow_rigs.gd" id="7_pls7k"]
 [ext_resource type="Material" path="res://materials/precursor_panel.tres" id="8_fv3ww"]
-[ext_resource type="Material" path="res://materials/lantern.tres" id="9_8kpgg"]
-[ext_resource type="Material" path="res://materials/white_plaster.tres" id="10_0f1rt"]
+[ext_resource type="Material" path="res://materials/massacre_lantern.tres" id="9_8kpgg"]
+[ext_resource type="Material" path="res://materials/massacre_plaster.tres" id="10_0f1rt"]
 [ext_resource type="Script" path="res://scripts/props_massacre/lantern_glow.gd" id="11_i7xe5"]
 [ext_resource type="Material" path="res://materials/massacre_stone.tres" id="12_ps5do"]
 [ext_resource type="Script" path="res://scripts/props_massacre/village_house.gd" id="13_tmoo3"]
@@ -56,6 +56,10 @@
 [ext_resource type="Script" path="res://scripts/props_massacre/crowd_figure.gd" id="mas_crowd_figure"]
 
 [ext_resource type="Script" path="res://scripts/props_massacre/hidden_solids.gd" id="mas_hidden_solids"]
+[ext_resource type="Script" path="res://scripts/cloud_layer.gd" id="lk_cloud"]
+[ext_resource type="Material" path="res://materials/clouds_massacre.tres" id="lk_smoke"]
+[ext_resource type="Script" path="res://scripts/props_kit/drift_lights.gd" id="lk_drift"]
+[ext_resource type="Script" path="res://scripts/props_kit/light_shaft.gd" id="lk_shaft"]
 
 [sub_resource type="CapsuleShape3D" id="mas_child_capsule"]
 radius = 0.25
@@ -79,17 +83,19 @@ radius = 0.2
 
 [sub_resource type="Environment" id="Environment_3rxtl"]
 background_mode = 1
-background_color = Color(0.12, 0.095, 0.075, 1)
+background_color = Color(0.035, 0.04, 0.07, 1)
 ambient_light_source = 2
-ambient_light_color = Color(0.62, 0.55, 0.45, 1)
-ambient_light_energy = 0.55
+ambient_light_color = Color(0.44, 0.47, 0.62, 1)
+ambient_light_energy = 0.4
 fog_enabled = true
 fog_mode = 1
-fog_light_color = Color(0.17, 0.135, 0.1, 1)
+fog_light_color = Color(0.05, 0.058, 0.1, 1)
 fog_density = 1.0
-fog_depth_curve = 1.25
-fog_depth_begin = 4.0
-fog_depth_end = 78.0
+fog_depth_curve = 1.1
+fog_depth_begin = 5.0
+fog_depth_end = 64.0
+adjustment_enabled = true
+adjustment_saturation = 0.78
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_el7wc"]
 size = Vector3(6, 3, 6)
@@ -122,8 +128,8 @@ environment = SubResource("Environment_3rxtl")
 
 [node name="Sun" type="DirectionalLight3D" parent="." unique_id=673693471]
 transform = Transform3D(0.921061, -0.37996456, 0.08528521, 0, 0.21900666, 0.9757234, -0.38941833, -0.8987007, 0.20171848, 0, 0, 0)
-light_color = Color(1, 0.9, 0.7, 1)
-light_energy = 0.5
+light_color = Color(0.62, 0.7, 1, 1)
+light_energy = 0.28
 
 [node name="Hall" type="Node3D" parent="." unique_id=1813637429]
 
@@ -227,8 +233,8 @@ material = ExtResource("5_i7v6g")
 
 [node name="LampLight0" type="OmniLight3D" parent="GrowLamps" unique_id=1192724254]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -60, 20.4, -60)
-light_color = Color(1, 0.92, 0.75, 1)
-light_energy = 0.75
+light_color = Color(0.7, 0.78, 1, 1)
+light_energy = 0.4
 omni_range = 30.0
 
 [node name="Lamp1" type="StaticBody3D" parent="GrowLamps" unique_id=1950338611]
@@ -251,8 +257,8 @@ material = ExtResource("5_i7v6g")
 
 [node name="LampLight3" type="OmniLight3D" parent="GrowLamps" unique_id=2082625921]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -60, 20.4, -15)
-light_color = Color(1, 0.92, 0.75, 1)
-light_energy = 0.75
+light_color = Color(0.7, 0.78, 1, 1)
+light_energy = 0.4
 omni_range = 30.0
 
 [node name="Lamp4" type="StaticBody3D" parent="GrowLamps" unique_id=344115780]
@@ -275,8 +281,8 @@ material = ExtResource("5_i7v6g")
 
 [node name="LampLight6" type="OmniLight3D" parent="GrowLamps" unique_id=1353728131]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -60, 20.4, 30)
-light_color = Color(1, 0.92, 0.75, 1)
-light_energy = 0.75
+light_color = Color(0.7, 0.78, 1, 1)
+light_energy = 0.4
 omni_range = 30.0
 
 [node name="Lamp7" type="StaticBody3D" parent="GrowLamps" unique_id=2145343014]
@@ -299,8 +305,8 @@ material = ExtResource("5_i7v6g")
 
 [node name="LampLight9" type="OmniLight3D" parent="GrowLamps" unique_id=1238167657]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -45, 20.4, -60)
-light_color = Color(1, 0.92, 0.75, 1)
-light_energy = 0.75
+light_color = Color(0.7, 0.78, 1, 1)
+light_energy = 0.4
 omni_range = 30.0
 
 [node name="Lamp10" type="StaticBody3D" parent="GrowLamps" unique_id=250912832]
@@ -323,8 +329,8 @@ material = ExtResource("5_i7v6g")
 
 [node name="LampLight12" type="OmniLight3D" parent="GrowLamps" unique_id=820285350]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -45, 20.4, -15)
-light_color = Color(1, 0.92, 0.75, 1)
-light_energy = 0.75
+light_color = Color(0.7, 0.78, 1, 1)
+light_energy = 0.4
 omni_range = 30.0
 
 [node name="Lamp13" type="StaticBody3D" parent="GrowLamps" unique_id=898925717]
@@ -347,8 +353,8 @@ material = ExtResource("5_i7v6g")
 
 [node name="LampLight15" type="OmniLight3D" parent="GrowLamps" unique_id=423018404]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -45, 20.4, 30)
-light_color = Color(1, 0.92, 0.75, 1)
-light_energy = 0.75
+light_color = Color(0.7, 0.78, 1, 1)
+light_energy = 0.4
 omni_range = 30.0
 
 [node name="Lamp16" type="StaticBody3D" parent="GrowLamps" unique_id=1509903128]
@@ -371,8 +377,8 @@ material = ExtResource("5_i7v6g")
 
 [node name="LampLight18" type="OmniLight3D" parent="GrowLamps" unique_id=566428682]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -30, 20.4, -60)
-light_color = Color(1, 0.92, 0.75, 1)
-light_energy = 0.75
+light_color = Color(0.7, 0.78, 1, 1)
+light_energy = 0.4
 omni_range = 30.0
 
 [node name="Lamp19" type="StaticBody3D" parent="GrowLamps" unique_id=189930126]
@@ -395,8 +401,8 @@ material = ExtResource("5_i7v6g")
 
 [node name="LampLight21" type="OmniLight3D" parent="GrowLamps" unique_id=915941969]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -30, 20.4, -15)
-light_color = Color(1, 0.92, 0.75, 1)
-light_energy = 0.75
+light_color = Color(0.7, 0.78, 1, 1)
+light_energy = 0.4
 omni_range = 30.0
 
 [node name="Lamp22" type="StaticBody3D" parent="GrowLamps" unique_id=1130523179]
@@ -419,8 +425,8 @@ material = ExtResource("5_i7v6g")
 
 [node name="LampLight24" type="OmniLight3D" parent="GrowLamps" unique_id=1630602606]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -30, 20.4, 30)
-light_color = Color(1, 0.92, 0.75, 1)
-light_energy = 0.75
+light_color = Color(0.7, 0.78, 1, 1)
+light_energy = 0.4
 omni_range = 30.0
 
 [node name="Lamp25" type="StaticBody3D" parent="GrowLamps" unique_id=1949776762]
@@ -443,8 +449,8 @@ material = ExtResource("5_i7v6g")
 
 [node name="LampLight27" type="OmniLight3D" parent="GrowLamps" unique_id=1993413279]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15, 20.4, -60)
-light_color = Color(1, 0.92, 0.75, 1)
-light_energy = 0.75
+light_color = Color(0.7, 0.78, 1, 1)
+light_energy = 0.4
 omni_range = 30.0
 
 [node name="Lamp28" type="StaticBody3D" parent="GrowLamps" unique_id=226224123]
@@ -467,8 +473,8 @@ material = ExtResource("5_i7v6g")
 
 [node name="LampLight30" type="OmniLight3D" parent="GrowLamps" unique_id=376018704]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15, 20.4, -15)
-light_color = Color(1, 0.92, 0.75, 1)
-light_energy = 0.75
+light_color = Color(0.7, 0.78, 1, 1)
+light_energy = 0.4
 omni_range = 30.0
 
 [node name="Lamp31" type="StaticBody3D" parent="GrowLamps" unique_id=1100238176]
@@ -491,8 +497,8 @@ material = ExtResource("5_i7v6g")
 
 [node name="LampLight33" type="OmniLight3D" parent="GrowLamps" unique_id=652181737]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15, 20.4, 30)
-light_color = Color(1, 0.92, 0.75, 1)
-light_energy = 0.75
+light_color = Color(0.7, 0.78, 1, 1)
+light_energy = 0.4
 omni_range = 30.0
 
 [node name="Lamp34" type="StaticBody3D" parent="GrowLamps" unique_id=1203297484]
@@ -515,8 +521,8 @@ material = ExtResource("5_i7v6g")
 
 [node name="LampLight36" type="OmniLight3D" parent="GrowLamps" unique_id=27028991]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 20.4, -60)
-light_color = Color(1, 0.92, 0.75, 1)
-light_energy = 0.75
+light_color = Color(0.7, 0.78, 1, 1)
+light_energy = 0.4
 omni_range = 30.0
 
 [node name="Lamp37" type="StaticBody3D" parent="GrowLamps" unique_id=1538129181]
@@ -539,8 +545,8 @@ material = ExtResource("5_i7v6g")
 
 [node name="LampLight39" type="OmniLight3D" parent="GrowLamps" unique_id=100474129]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 20.4, -15)
-light_color = Color(1, 0.92, 0.75, 1)
-light_energy = 0.75
+light_color = Color(0.7, 0.78, 1, 1)
+light_energy = 0.4
 omni_range = 30.0
 
 [node name="Lamp40" type="StaticBody3D" parent="GrowLamps" unique_id=403513070]
@@ -563,8 +569,8 @@ material = ExtResource("5_i7v6g")
 
 [node name="LampLight42" type="OmniLight3D" parent="GrowLamps" unique_id=262715240]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 20.4, 30)
-light_color = Color(1, 0.92, 0.75, 1)
-light_energy = 0.75
+light_color = Color(0.7, 0.78, 1, 1)
+light_energy = 0.4
 omni_range = 30.0
 
 [node name="Lamp43" type="StaticBody3D" parent="GrowLamps" unique_id=1392341146]
@@ -587,8 +593,8 @@ material = ExtResource("5_i7v6g")
 
 [node name="LampLight45" type="OmniLight3D" parent="GrowLamps" unique_id=1370434698]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 20.4, -60)
-light_color = Color(1, 0.92, 0.75, 1)
-light_energy = 0.75
+light_color = Color(0.7, 0.78, 1, 1)
+light_energy = 0.4
 omni_range = 30.0
 
 [node name="Lamp46" type="StaticBody3D" parent="GrowLamps" unique_id=893234682]
@@ -611,8 +617,8 @@ material = ExtResource("5_i7v6g")
 
 [node name="LampLight48" type="OmniLight3D" parent="GrowLamps" unique_id=688510554]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 20.4, -15)
-light_color = Color(1, 0.92, 0.75, 1)
-light_energy = 0.75
+light_color = Color(0.7, 0.78, 1, 1)
+light_energy = 0.4
 omni_range = 30.0
 
 [node name="Lamp49" type="StaticBody3D" parent="GrowLamps" unique_id=1346730420]
@@ -635,8 +641,8 @@ material = ExtResource("5_i7v6g")
 
 [node name="LampLight51" type="OmniLight3D" parent="GrowLamps" unique_id=897579431]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 20.4, 30)
-light_color = Color(1, 0.92, 0.75, 1)
-light_energy = 0.75
+light_color = Color(0.7, 0.78, 1, 1)
+light_energy = 0.4
 omni_range = 30.0
 
 [node name="Lamp52" type="StaticBody3D" parent="GrowLamps" unique_id=506934373]
@@ -659,8 +665,8 @@ material = ExtResource("5_i7v6g")
 
 [node name="LampLight54" type="OmniLight3D" parent="GrowLamps" unique_id=1101536885]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30, 20.4, -60)
-light_color = Color(1, 0.92, 0.75, 1)
-light_energy = 0.75
+light_color = Color(0.7, 0.78, 1, 1)
+light_energy = 0.4
 omni_range = 30.0
 
 [node name="Lamp55" type="StaticBody3D" parent="GrowLamps" unique_id=2020331165]
@@ -683,8 +689,8 @@ material = ExtResource("5_i7v6g")
 
 [node name="LampLight57" type="OmniLight3D" parent="GrowLamps" unique_id=986244252]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30, 20.4, -15)
-light_color = Color(1, 0.92, 0.75, 1)
-light_energy = 0.75
+light_color = Color(0.7, 0.78, 1, 1)
+light_energy = 0.4
 omni_range = 30.0
 
 [node name="Lamp58" type="StaticBody3D" parent="GrowLamps" unique_id=562791257]
@@ -707,8 +713,8 @@ material = ExtResource("5_i7v6g")
 
 [node name="LampLight60" type="OmniLight3D" parent="GrowLamps" unique_id=284470867]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30, 20.4, 30)
-light_color = Color(1, 0.92, 0.75, 1)
-light_energy = 0.75
+light_color = Color(0.7, 0.78, 1, 1)
+light_energy = 0.4
 omni_range = 30.0
 
 [node name="Lamp61" type="StaticBody3D" parent="GrowLamps" unique_id=662072703]
@@ -731,8 +737,8 @@ material = ExtResource("5_i7v6g")
 
 [node name="LampLight63" type="OmniLight3D" parent="GrowLamps" unique_id=1783541702]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 45, 20.4, -60)
-light_color = Color(1, 0.92, 0.75, 1)
-light_energy = 0.75
+light_color = Color(0.7, 0.78, 1, 1)
+light_energy = 0.4
 omni_range = 30.0
 
 [node name="Lamp64" type="StaticBody3D" parent="GrowLamps" unique_id=1245351713]
@@ -755,8 +761,8 @@ material = ExtResource("5_i7v6g")
 
 [node name="LampLight66" type="OmniLight3D" parent="GrowLamps" unique_id=417493520]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 45, 20.4, -15)
-light_color = Color(1, 0.92, 0.75, 1)
-light_energy = 0.75
+light_color = Color(0.7, 0.78, 1, 1)
+light_energy = 0.4
 omni_range = 30.0
 
 [node name="Lamp67" type="StaticBody3D" parent="GrowLamps" unique_id=591077717]
@@ -779,8 +785,8 @@ material = ExtResource("5_i7v6g")
 
 [node name="LampLight69" type="OmniLight3D" parent="GrowLamps" unique_id=1351961095]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 45, 20.4, 30)
-light_color = Color(1, 0.92, 0.75, 1)
-light_energy = 0.75
+light_color = Color(0.7, 0.78, 1, 1)
+light_energy = 0.4
 omni_range = 30.0
 
 [node name="Lamp70" type="StaticBody3D" parent="GrowLamps" unique_id=1215987053]
@@ -803,8 +809,8 @@ material = ExtResource("5_i7v6g")
 
 [node name="LampLight72" type="OmniLight3D" parent="GrowLamps" unique_id=746157590]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 60, 20.4, -60)
-light_color = Color(1, 0.92, 0.75, 1)
-light_energy = 0.75
+light_color = Color(0.7, 0.78, 1, 1)
+light_energy = 0.4
 omni_range = 30.0
 
 [node name="Lamp73" type="StaticBody3D" parent="GrowLamps" unique_id=305747361]
@@ -827,8 +833,8 @@ material = ExtResource("5_i7v6g")
 
 [node name="LampLight75" type="OmniLight3D" parent="GrowLamps" unique_id=1197557752]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 60, 20.4, -15)
-light_color = Color(1, 0.92, 0.75, 1)
-light_energy = 0.75
+light_color = Color(0.7, 0.78, 1, 1)
+light_energy = 0.4
 omni_range = 30.0
 
 [node name="Lamp76" type="StaticBody3D" parent="GrowLamps" unique_id=536145083]
@@ -851,8 +857,8 @@ material = ExtResource("5_i7v6g")
 
 [node name="LampLight78" type="OmniLight3D" parent="GrowLamps" unique_id=616502822]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 60, 20.4, 30)
-light_color = Color(1, 0.92, 0.75, 1)
-light_energy = 0.75
+light_color = Color(0.7, 0.78, 1, 1)
+light_energy = 0.4
 omni_range = 30.0
 
 [node name="Lamp79" type="StaticBody3D" parent="GrowLamps" unique_id=165265902]
@@ -923,8 +929,9 @@ material = ExtResource("9_8kpgg")
 
 [node name="GateLight" type="OmniLight3D" parent="Corridor" unique_id=561649705]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.5, 76)
-light_color = Color(1, 0.75, 0.45, 1)
+light_color = Color(1, 0.6, 0.27, 1)
 omni_range = 12.0
+light_energy = 1.6
 
 [node name="Estates" type="Node3D" parent="." unique_id=1721795041]
 
@@ -998,8 +1005,8 @@ material = ExtResource("9_8kpgg")
 
 [node name="StringLight0" type="OmniLight3D" parent="Estates/EstateA" unique_id=308169088]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -38, 2.8, 35.8)
-light_color = Color(1, 0.72, 0.4, 1)
-light_energy = 0.9
+light_color = Color(1, 0.6, 0.27, 1)
+light_energy = 1.5
 omni_range = 8.0
 script = ExtResource("11_i7xe5")
 waver = 0.1
@@ -1036,8 +1043,8 @@ material = ExtResource("9_8kpgg")
 
 [node name="StringLight1" type="OmniLight3D" parent="Estates/EstateA" unique_id=1808314956]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -38, 2.8, 40.8)
-light_color = Color(1, 0.72, 0.4, 1)
-light_energy = 0.9
+light_color = Color(1, 0.6, 0.27, 1)
+light_energy = 1.5
 omni_range = 8.0
 script = ExtResource("11_i7xe5")
 waver = 0.1
@@ -1292,8 +1299,8 @@ material = ExtResource("9_8kpgg")
 
 [node name="StringLight0" type="OmniLight3D" parent="Estates/EstateB" unique_id=1858187456]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 36, 2.8, 41.8)
-light_color = Color(1, 0.72, 0.4, 1)
-light_energy = 0.9
+light_color = Color(1, 0.6, 0.27, 1)
+light_energy = 1.5
 omni_range = 8.0
 script = ExtResource("11_i7xe5")
 waver = 0.1
@@ -1330,8 +1337,8 @@ material = ExtResource("9_8kpgg")
 
 [node name="StringLight1" type="OmniLight3D" parent="Estates/EstateB" unique_id=451009411]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 36, 2.8, 46.8)
-light_color = Color(1, 0.72, 0.4, 1)
-light_energy = 0.9
+light_color = Color(1, 0.6, 0.27, 1)
+light_energy = 1.5
 omni_range = 8.0
 script = ExtResource("11_i7xe5")
 waver = 0.1
@@ -1615,8 +1622,8 @@ material = ExtResource("9_8kpgg")
 
 [node name="StringLight0" type="OmniLight3D" parent="Estates/EstateC" unique_id=1582867216]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -44, 2.8, -2.6)
-light_color = Color(1, 0.72, 0.4, 1)
-light_energy = 0.9
+light_color = Color(1, 0.6, 0.27, 1)
+light_energy = 1.5
 omni_range = 8.0
 script = ExtResource("11_i7xe5")
 waver = 0.1
@@ -1653,8 +1660,8 @@ material = ExtResource("9_8kpgg")
 
 [node name="StringLight1" type="OmniLight3D" parent="Estates/EstateC" unique_id=1897651527]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -44, 2.8, 2.4)
-light_color = Color(1, 0.72, 0.4, 1)
-light_energy = 0.9
+light_color = Color(1, 0.6, 0.27, 1)
+light_energy = 1.5
 omni_range = 8.0
 script = ExtResource("11_i7xe5")
 waver = 0.1
@@ -1925,8 +1932,8 @@ material = ExtResource("9_8kpgg")
 
 [node name="StringLight0" type="OmniLight3D" parent="Estates/EstateD" unique_id=1251781941]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 40, 2.8, -8.6)
-light_color = Color(1, 0.72, 0.4, 1)
-light_energy = 0.9
+light_color = Color(1, 0.6, 0.27, 1)
+light_energy = 1.5
 omni_range = 8.0
 script = ExtResource("11_i7xe5")
 waver = 0.1
@@ -1963,8 +1970,8 @@ material = ExtResource("9_8kpgg")
 
 [node name="StringLight1" type="OmniLight3D" parent="Estates/EstateD" unique_id=1028453483]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 40, 2.8, -3.6)
-light_color = Color(1, 0.72, 0.4, 1)
-light_energy = 0.9
+light_color = Color(1, 0.6, 0.27, 1)
+light_energy = 1.5
 omni_range = 8.0
 script = ExtResource("11_i7xe5")
 waver = 0.1
@@ -2233,8 +2240,8 @@ material = ExtResource("9_8kpgg")
 
 [node name="StringLight0" type="OmniLight3D" parent="Estates/EstateE" unique_id=1140150591]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -34, 2.8, -44.2)
-light_color = Color(1, 0.72, 0.4, 1)
-light_energy = 0.9
+light_color = Color(1, 0.6, 0.27, 1)
+light_energy = 1.5
 omni_range = 8.0
 script = ExtResource("11_i7xe5")
 waver = 0.1
@@ -2271,8 +2278,8 @@ material = ExtResource("9_8kpgg")
 
 [node name="StringLight1" type="OmniLight3D" parent="Estates/EstateE" unique_id=1494395840]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -34, 2.8, -39.2)
-light_color = Color(1, 0.72, 0.4, 1)
-light_energy = 0.9
+light_color = Color(1, 0.6, 0.27, 1)
+light_energy = 1.5
 omni_range = 8.0
 script = ExtResource("11_i7xe5")
 waver = 0.1
@@ -2556,8 +2563,8 @@ material = ExtResource("9_8kpgg")
 
 [node name="StringLight0" type="OmniLight3D" parent="Estates/EstateF" unique_id=231382412]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 44, 2.8, -46.2)
-light_color = Color(1, 0.72, 0.4, 1)
-light_energy = 0.9
+light_color = Color(1, 0.6, 0.27, 1)
+light_energy = 1.5
 omni_range = 8.0
 script = ExtResource("11_i7xe5")
 waver = 0.1
@@ -2594,8 +2601,8 @@ material = ExtResource("9_8kpgg")
 
 [node name="StringLight1" type="OmniLight3D" parent="Estates/EstateF" unique_id=2129678324]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 44, 2.8, -41.2)
-light_color = Color(1, 0.72, 0.4, 1)
-light_energy = 0.9
+light_color = Color(1, 0.6, 0.27, 1)
+light_energy = 1.5
 omni_range = 8.0
 script = ExtResource("11_i7xe5")
 waver = 0.1
@@ -2924,8 +2931,8 @@ material = ExtResource("9_8kpgg")
 
 [node name="LaneLight60" type="OmniLight3D" parent="Estates" unique_id=576603331]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 3.2, 60)
-light_color = Color(1, 0.72, 0.4, 1)
-light_energy = 0.8
+light_color = Color(1, 0.6, 0.27, 1)
+light_energy = 1.4
 omni_range = 10.0
 script = ExtResource("11_i7xe5")
 
@@ -2943,8 +2950,8 @@ material = ExtResource("9_8kpgg")
 
 [node name="LaneLight30" type="OmniLight3D" parent="Estates" unique_id=1343138602]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 3.2, 30)
-light_color = Color(1, 0.72, 0.4, 1)
-light_energy = 0.8
+light_color = Color(1, 0.6, 0.27, 1)
+light_energy = 1.4
 omni_range = 10.0
 script = ExtResource("11_i7xe5")
 
@@ -2962,8 +2969,8 @@ material = ExtResource("9_8kpgg")
 
 [node name="LaneLight0" type="OmniLight3D" parent="Estates" unique_id=2083651238]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 3.2, 0)
-light_color = Color(1, 0.72, 0.4, 1)
-light_energy = 0.8
+light_color = Color(1, 0.6, 0.27, 1)
+light_energy = 1.4
 omni_range = 10.0
 script = ExtResource("11_i7xe5")
 
@@ -3055,8 +3062,8 @@ material = ExtResource("9_8kpgg")
 
 [node name="StringLight0" type="OmniLight3D" parent="Estates/GreatEstate" unique_id=1803736044]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.8, -39.9)
-light_color = Color(1, 0.72, 0.4, 1)
-light_energy = 0.9
+light_color = Color(1, 0.6, 0.27, 1)
+light_energy = 1.5
 omni_range = 12.0
 script = ExtResource("11_i7xe5")
 waver = 0.1
@@ -3111,8 +3118,8 @@ material = ExtResource("9_8kpgg")
 
 [node name="StringLight1" type="OmniLight3D" parent="Estates/GreatEstate" unique_id=148243739]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.8, -33.9)
-light_color = Color(1, 0.72, 0.4, 1)
-light_energy = 0.9
+light_color = Color(1, 0.6, 0.27, 1)
+light_energy = 1.5
 omni_range = 12.0
 script = ExtResource("11_i7xe5")
 waver = 0.1
@@ -3167,8 +3174,8 @@ material = ExtResource("9_8kpgg")
 
 [node name="StringLight2" type="OmniLight3D" parent="Estates/GreatEstate" unique_id=1203602792]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.8, -27.9)
-light_color = Color(1, 0.72, 0.4, 1)
-light_energy = 0.9
+light_color = Color(1, 0.6, 0.27, 1)
+light_energy = 1.5
 omni_range = 12.0
 script = ExtResource("11_i7xe5")
 waver = 0.1
@@ -5320,15 +5327,15 @@ script = ExtResource("11_i7xe5")
 
 [node name="StallLightW" type="OmniLight3D" parent="Village/Market" unique_id=618438542]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.5, 2.6, 66)
-light_color = Color(1, 0.72, 0.42, 1)
-light_energy = 0.8
+light_color = Color(1, 0.6, 0.27, 1)
+light_energy = 1.3
 omni_range = 9.0
 script = ExtResource("11_i7xe5")
 
 [node name="StallLightE" type="OmniLight3D" parent="Village/Market" unique_id=700800035]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.5, 2.6, 66)
-light_color = Color(1, 0.72, 0.42, 1)
-light_energy = 0.8
+light_color = Color(1, 0.6, 0.27, 1)
+light_energy = 1.3
 omni_range = 9.0
 script = ExtResource("11_i7xe5")
 
@@ -5848,7 +5855,7 @@ length = 4.6
 
 [node name="Candles" type="OmniLight3D" parent="Village/Shrine" unique_id=713562355]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32.4, 1.3, -62.5)
-light_color = Color(1, 0.65, 0.3, 1)
+light_color = Color(1, 0.6, 0.27, 1)
 light_energy = 0.7
 script = ExtResource("11_i7xe5")
 
@@ -7977,3 +7984,45 @@ reach = 2.6
 [node name="Zone" type="CollisionShape3D" parent="Inspect/Paddy" unique_id=273219457]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.25, 0)
 shape = SubResource("BoxShape3D_akyrh")
+
+[node name="LookDressing" type="Node3D" parent="." unique_id=1907714001]
+
+[node name="Smoke" type="Node3D" parent="LookDressing" unique_id=1907714002]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 13, 5)
+script = ExtResource("lk_cloud")
+size = Vector2(150, 150)
+sheets = 2
+spacing = 4.0
+material = ExtResource("lk_smoke")
+
+[node name="Embers" type="Node3D" parent="LookDressing" unique_id=1907714003]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, -36)
+script = ExtResource("lk_drift")
+count = 8
+box_size = Vector3(26, 6, 14)
+color = Color(1, 0.6, 0.28, 1)
+speed = 0.25
+size = 0.08
+brightness = 1.2
+cast_light = false
+random_seed = 7
+
+[node name="ShaftGate" type="Node3D" parent="LookDressing" unique_id=1907714004]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 21.4, -15)
+script = ExtResource("lk_shaft")
+length = 21.4
+radius_top = 2.6
+radius_bottom = 6.0
+color = Color(0.6, 0.68, 0.95, 1)
+strength = 0.2
+mote_count = 18
+
+[node name="ShaftWest" type="Node3D" parent="LookDressing" unique_id=1907714005]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -30, 21.4, 30)
+script = ExtResource("lk_shaft")
+length = 21.4
+radius_top = 2.6
+radius_bottom = 6.0
+color = Color(0.6, 0.68, 0.95, 1)
+strength = 0.18
+mote_count = 14

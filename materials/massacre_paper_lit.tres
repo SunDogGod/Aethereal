@@ -4,6 +4,6 @@
 
 [resource]
 shader = ExtResource("1_ps1")
-shader_parameter/albedo_color = Color(1, 0.92, 0.75, 1)
-shader_parameter/emission_color = Color(1, 0.78, 0.45, 1)
-shader_parameter/emission_energy = 1.1
+shader_parameter/albedo_color = Color(1, 0.8, 0.6, 1)
+shader_parameter/emission_color = Color(1, 0.55, 0.22, 1)
+shader_parameter/emission_energy = 1.0

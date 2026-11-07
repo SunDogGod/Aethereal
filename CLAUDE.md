@@ -52,7 +52,12 @@
 - Cloud decks (asked 2026-10-30, the town's "soft grey clouds at the tops of buildings"): a `Clouds`
   node with `scripts/cloud_layer.gd` (stacked see-through sheets, `shaders/cloud_layer.gdshader`, its
   own shader like the hall effects, snapping to the same wobble grid). Look and wind live in
-  `materials/clouds_*.tres`. Black Sand and the Massacre are under ceilings and have none.
+  `materials/clouds_*.tres`. Black Sand is under a ceiling and has none; the Massacre uses one as
+  a dark smoke haze under its ceiling (`clouds_massacre.tres`).
+- The Massacre's palette (look round, 2026-11-07) is set per level: its Environment (blue-black fog,
+  saturation 0.78), its own copies of shared materials (`massacre_lantern`, `massacre_plaster`) and
+  warmer lantern lights. Village props are shared with Horus and Temek, so don't retint their
+  shared materials for the Massacre's sake.
 - A script that extends Block must be `@tool` too (tool mode is not inherited, so the editor would
   show nothing), and must guard its runtime behaviour with `Engine.is_editor_hint()`.
 - Scripts that change a Block's look while the game runs call `set_runtime_material(copy)`, never

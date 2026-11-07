@@ -6,5 +6,6 @@
 [resource]
 shader = ExtResource("1_ps1")
 shader_parameter/albedo_texture = ExtResource("2_tex")
+shader_parameter/albedo_color = Color(0.84, 0.72, 0.56, 1)
 shader_parameter/world_uv = true
 shader_parameter/texture_world_size = 2.0

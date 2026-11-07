@@ -1,0 +1,18 @@
+[gd_resource type="ShaderMaterial" format=3]
+
+[ext_resource type="Shader" path="res://shaders/cloud_layer.gdshader" id="1_cloud"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_cloud")
+shader_parameter/light_color = Color(0.2, 0.2, 0.27, 1)
+shader_parameter/shade_color = Color(0.07, 0.07, 0.11, 1)
+shader_parameter/opacity = 0.55
+shader_parameter/cover = 0.55
+shader_parameter/softness = 0.32
+shader_parameter/cloud_size = 40.0
+shader_parameter/texel = 0.3
+shader_parameter/wind = Vector2(0.25, 0.1)
+shader_parameter/soft_contact = 4.0
+shader_parameter/near_fade = 6.0
+shader_parameter/edge_fade = 20.0
