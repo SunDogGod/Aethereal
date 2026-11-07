@@ -1,0 +1,84 @@
+# 1.1 HORUS: TEMEK, the city on the lake. DRAFT, all of it: every line below is mine, written
+# from the Notion beats (1-1 Horus (Temek)) and your notes; rewrite them in your voice. The
+# command list is in the header of empty_town.txt. Narration only: the people's own words are yours.
+#
+# Beats (canon): beggars crowd them; a nobleman, an advisor to the Pharaoh, offers hospitality;
+# the water has disappeared; the nobles and the Pharaoh must each sacrifice their firstborn; the
+# noble is relieved to hear about the centipede; the Pharaoh sends them with elite forces to kill
+# the centipede and repair the pipe, and sends his eldest daughter Kira with them; the broken
+# sword is reforged into two daggers. The black pyramid hangs from the roof over the lake and
+# lowers a little with every sacrifice (your note). The rough cut stops when they leave the city.
+
+=== arrival ===
+[camera CausewayShot]
+# DRAFT
+Temek stands in its lake: streets of stone on the water, derricks burning on every corner.
+# DRAFT
+And over the middle of it, hanging from the roof with its point down, the black pyramid.
+[wait 2.0]
+[camera]
+
+=== the_market ===
+[camera MarketShot]
+# DRAFT
+The market street is half shut. The beggars are not.
+# DRAFT
+The man in linen walks them through without slowing, toward his master's house on the left.
+[camera]
+
+=== the_nobleman ===
+[camera CourtShot]
+# DRAFT
+The nobleman keeps a courtyard with a roof round it and shade in it, and he gives them both.
+# DRAFT
+He is one of the Pharaoh's advisors, and he asks about the road before he asks their names.
+[camera PoolShot]
+# DRAFT
+His pool is dry. All the water in Temek is going the same way.
+# DRAFT
+The lake is sinking, and the priests have the answer they always have: the nobles and the Pharaoh will each give their firstborn.
+[wait 1.5]
+[camera CourtShot]
+# DRAFT
+When Aeneas tells him what came up through the sand and took the pipe, the nobleman goes quiet, and then he smiles. Something to blame is something to fix.
+# DRAFT
+He sends word to the palace across the water.
+[camera]
+
+=== the_pyramid ===
+[camera UnderShot]
+# DRAFT
+Under the pyramid the people of Temek come one at a time to put a hand on it.
+[camera UpShot]
+# DRAFT
+It is cold, and it goes up into the smog further than the eye can follow.
+# DRAFT
+They say it comes down a little with every sacrifice.
+[wait 1.5]
+[camera]
+
+=== the_pharaoh ===
+[camera PorchShot]
+# DRAFT
+The Pharaoh meets them on the steps of his own pyramid, with his guard behind him.
+# DRAFT
+He cannot stop the ceremony. His firstborn son is to be given with the others.
+# DRAFT
+What he can do is send soldiers: his best, to kill the centipede and mend the pipe before the day comes.
+[camera KiraShot]
+# DRAFT
+And he sends his eldest daughter with them. Kira.
+[wait 1.5]
+[camera]
+
+=== the_smith ===
+[camera ForgeShot]
+# DRAFT
+The palace smith looks at the two halves of the sword for a long time.
+# DRAFT
+He doesn't mend it. He makes two daggers of it.
+[wait 1.5]
+[fade out]
+# DRAFT
+They leave by the north road at first light, with Kira and the Pharaoh's soldiers, back toward the pipe. (The rough cut ends here.)
+[level res://scenes/ui/title_screen.tscn]

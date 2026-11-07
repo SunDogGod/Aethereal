@@ -165,6 +165,10 @@
   the one Aether colour. Dressing follows its ranked list. `scripts/props_kit/` holds the shared
   look props (light shafts, drifting lights, halo lamps, neon signs, giant fans, rooftop clutter,
   megastructure pieces, rubble, stain strips): use those before writing a new prop.
+- Temek (`scenes/levels/temek.tscn`, docs/act1_temek.md) follows the desert road: a bright desert
+  city in its lake, the black pyramid hanging point-down from the roof over the inner water, a
+  bridge to the platform under it. Generated once by tools/generators/build_temek.gd (reuses
+  build_horus.gd's helpers); after that the scene file is the source of truth.
 - Act 1 starts in `scenes/levels/horus_road.tscn` (the Horus arc's rough cut, docs/act1_horus.md),
   generated once by tools/generators/build_horus.gd; after that the scene file is the source of
   truth. Its props are `scripts/props_horus/`; `scripts/vfx/quake.gd` shakes the showing camera

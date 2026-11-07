@@ -114,8 +114,8 @@ BEGGAR: Water, travellers. Water, for the children.
 A man in clean linen steps between. His master, he says, keeps a house with a roof.
 [fade out]
 # DRAFT
-Temek takes them in. (The rough cut ends here: the city is designed next.)
-[level res://scenes/ui/title_screen.tscn]
+Temek takes them in.
+[level res://scenes/levels/temek.tscn]
 
 === rest ===
 [fade out]

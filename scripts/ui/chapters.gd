@@ -12,6 +12,7 @@ const LIST := [
 	["0.3", "Black Sand", "res://scenes/levels/black_sand.tscn"],
 	["0.4", "The Vacuum Station", "res://scenes/levels/vacuum_station.tscn"],
 	["1.1", "Horus: the road to Temek", "res://scenes/levels/horus_road.tscn"],
+	["1.2", "Temek: the city on the lake", "res://scenes/levels/temek.tscn"],
 	["", "Test yard (movement)", "res://scenes/test_yard.tscn"],
 ]
 

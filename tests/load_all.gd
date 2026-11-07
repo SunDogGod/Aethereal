@@ -8,7 +8,8 @@ func _initialize() -> void:
 
 func _run() -> void:
 	for path in ["res://scenes/levels/empty_town.tscn", "res://scenes/levels/massacre.tscn",
-			"res://scenes/levels/black_sand.tscn", "res://scenes/levels/vacuum_station.tscn", "res://scenes/test_yard.tscn",
+			"res://scenes/levels/black_sand.tscn", "res://scenes/levels/vacuum_station.tscn", "res://scenes/levels/horus_road.tscn",
+			"res://scenes/levels/temek.tscn", "res://scenes/test_yard.tscn",
 			"res://scenes/world/world.tscn"]:
 		var level: Node = load(path).instantiate()
 		root.add_child(level)
@@ -18,7 +19,7 @@ func _run() -> void:
 		var blocks := 0
 		var trims := 0
 		for b in level.find_children("*", "StaticBody3D", true, false):
-			if "size" in b:
+			if b is Block:
 				blocks += 1
 				if b.trim:
 					trims += 1
