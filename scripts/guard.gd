@@ -14,9 +14,13 @@ enum State { PATROL, SUSPICIOUS, SPOTTED, DOWN, FIGHTING, STAGGERED }
 
 const GRAVITY := 22.0
 
+const GuardHunt := preload("res://scripts/guard_hunt.gd")
+
 @export var data: GuardData
 @export var fights := false  ## true: being spotted starts a fight instead of a restart
 @export var dormant := false ## true: he ignores Aeneas until a story scene starts his fight
+@export var hunts := false  ## true: while shown he runs at Aeneas, and a grab sends him back to the checkpoint (guard_hunt.gd)
+@export var hunt_speed := 3.2  ## metres per second while hunting
 
 @onready var model: Node3D = $Model
 @onready var eyes: Node3D = $Model/Eyes
@@ -76,6 +80,11 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	if state == State.DOWN:
 		return
+	if hunts and not dormant:
+		velocity.y = 0.0 if is_on_floor() else velocity.y - GRAVITY * delta
+		GuardHunt.tick(self, delta)
+		move_and_slide()
+		return
 	if _player and _player.in_cutscene and state in [State.FIGHTING, State.STAGGERED]:
 		_stop()
 		move_and_slide()
@@ -118,7 +127,7 @@ func sees_point(point: Vector3, crouched := false) -> float:
 
 ## True if Aeneas, standing at this point, is outside his view (so he can be taken down).
 func is_unaware_of(point: Vector3) -> bool:
-	if dormant:
+	if dormant or hunts:
 		return false  # waiting for his story fight: not a target until it starts
 	if state in [State.DOWN, State.SPOTTED, State.FIGHTING, State.STAGGERED]:
 		return false  # no quiet takedowns on a man who's already fighting you
@@ -147,7 +156,7 @@ func engage() -> void:
 
 
 func can_be_locked() -> bool:
-	return state != State.DOWN and not dormant
+	return state != State.DOWN and not dormant and not hunts
 
 
 ## Fed to the cube: he drops where he stands, no blood, and stays down.
@@ -176,7 +185,7 @@ func empower() -> void:
 
 ## Aeneas's sword. Fighting back if he wasn't already.
 func take_hit(damage: float, from: Vector3) -> void:
-	if state == State.DOWN or dormant:
+	if state == State.DOWN or dormant or hunts:
 		return  # a fight that hasn't started can't be cut short (or shocked awake by the eruption)
 	if invulnerable:
 		_tint(Color(0.42, 0.44, 0.55))  # it lands, and it doesn't matter

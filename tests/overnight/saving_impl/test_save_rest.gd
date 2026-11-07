@@ -24,7 +24,7 @@ func _run() -> void:
 	check("the Massacre loads with an Autosave", m.scene_file_path == MASSACRE and m.has_node("Autosave"))
 	await wait_story()
 	await skip()
-	await put(Vector3(0, 0, -25))
+	await put(Vector3(0, 0, 4))
 	await wait_story()
 	await skip()
 	var data := await wait_save("story")
@@ -35,14 +35,22 @@ func _run() -> void:
 	check("Continue: the Massacre, where he was %s vs %s" % [p.global_position, men_spot],
 			m.scene_file_path == MASSACRE and near(p.global_position, men_spot))
 	check("Continue: no scene replays, both triggers done", not story.playing and trigger_done(MASSACRE, "StoryTriggers/Memory")
-			and trigger_done(MASSACRE, "StoryTriggers/TheMen") and not trigger_done(MASSACRE, "StoryTriggers/BehindTheHouse"))
-	check("Continue: the raiders are there, the crowd gone", (m.get_node("Figures/Raiders") as Node3D).visible
+			and trigger_done(MASSACRE, "StoryTriggers/TheMen") and not trigger_done(MASSACRE, "StoryTriggers/TheHouse"))
+	check("Continue: the Agency is there, the crowd gone", (m.get_node("Agency/Hunters") as Node3D).visible
 			and not (m.get_node("Figures/Crowd") as Node3D).visible)
 
-	# 2. The whiteout: Black Sand in the world. Waking, the cube, the road checkpoints.
-	await put(Vector3(14, 0, -82))
+	# 2. The capsule, then the whiteout: Black Sand in the world. Waking, the cube, the road checkpoints.
+	await put(Vector3(21, -4.5, -8.6))
 	await wait_story()
-	var w := await next_scene(m)
+	await skip()  # the capsule scene has lines; it ends in the whiteout
+	var w: Node = null
+	for i in 900:  # the Massacre may already be gone (the skip reads to the [level] line)
+		if current_scene != null and (not is_instance_valid(m) or current_scene != m) and current_scene.is_inside_tree():
+			w = current_scene
+			break
+		await process_frame
+	await seconds(0.8)
+	w = current_scene
 	check("the whiteout leads to the world at Black Sand", w is World and World.current_level == BS)
 	check("a fresh save of Black Sand's start", SaveGame.load_save().get("fresh", false) and SaveGame.last_level() == BS)
 	await wait_story()

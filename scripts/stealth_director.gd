@@ -82,8 +82,8 @@ static func _rank_of(checkpoint: Node) -> int:
 	return checkpoint.get_index()
 
 
-func _on_guard_spotted(_guard: Guard) -> void:
-	restart("SPOTTED")
+func _on_guard_spotted(guard: Guard) -> void:
+	restart("CAUGHT" if guard.hunts else "SPOTTED")  # a hunter (the Massacre) grabs, he doesn't just see
 
 
 ## Killed in a fight that is not a story Fight (an agent he cut while sneaking fights back):

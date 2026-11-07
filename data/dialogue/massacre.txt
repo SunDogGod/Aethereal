@@ -1,6 +1,10 @@
 # 0.2 THE MASSACRE: a memory, played as a four-year-old.
-# DRAFT lines. Per the Notion rule, this is a FRAGMENT: noise, running, a hand on his arm.
-# No tithe, no horse, no faces, no father's death. Those wait for Agartha.
+# DRAFT lines. Your telling of 2026-11-07: the Agency breaks the courtyard gate during the
+# festival while the clan's men fight them; the family runs home; his father holds the door; his
+# brother takes Aeneas and Isabella down to the cellar, where the capsule waits, and holds the
+# ramp so it can leave. Lines marked "# DRAFT" are mine, written from those beats: rewrite them.
+# Still withheld (the vault: Agartha): the tithe, the horse, faces, how his father died.
+# The command list is in the header of empty_town.txt.
 
 === memory ===
 [camera CourtyardShot]
@@ -12,23 +16,77 @@ He is four years old, and this is all he will remember for ten years.
 [camera]
 
 === the_men ===
-[camera CorridorShot]
+[camera GateShot]
 Noise, from the only way in.
-# The raiders show on this shot, so the line plays over them; the crowd goes at the cut.
-[show Raiders]
-Men come through the corridor. They start killing.
+[call Quake shake 1.2]
+[hide GateShut]
+[show GateBroken]
+[show Hunters]
+[show CourtFight]
+[show Defenders]
 [hide Crowd]
-[camera IsabellaShot]
+[pose CourtAgent1 windup_high]
+[pose CourtAgent2 stab]
+[pose CourtAgent3 windup_L]
+[pose CourtAgent4 stagger]
+# DRAFT
+The gate gives. Men in white come through it, and they start killing.
+[camera FightShot]
+# DRAFT
+The men of the clan meet them in the courtyard.
+[frame Isabella]
 A hand closes on his arm.
 ISABELLA: Don't look. Run.
+[show DoorFamily]
+[camera HomeShot]
+# DRAFT
+His father and his brother are already at the door of their house. Home is across the courtyard.
 [camera]
 
-=== the_drain ===
-[camera DrainShot]
-Behind the great house, a drain under the wall. The way out nobody was meant to use.
+=== the_house ===
+[camera DoorShot]
+[hide DoorFamily]
+[hide Hunters]
+[show HouseStand]
+[show DoorFight]
+[pose DoorAgent1 windup_high]
+[pose DoorAgent2 stab]
+# DRAFT
+Home. The Agency is at the door behind them.
+[camera StandShot]
+# DRAFT
+His father turns in the doorway and meets them there.
+[show BrotherHouse]
+[show HouseHunter]
+# DRAFT
+His brother pulls them toward the cellar. One of the men gets past.
 [camera]
 
-=== whiteout ===
+=== the_pod ===
+[camera PodShot]
+[hide HouseHunter]
+[hide BrotherHouse]
+[show CellarStand]
+[show CellarAgents]
+[pose CellarAgent1 windup_R]
+# DRAFT
+The capsule is in the cellar, on its line, where it has always been.
+[camera StairShot]
+# DRAFT
+Men come down the ramp. His brother turns at the foot of it to hold them.
+[hide Player]
+[hide Isabella]
+[camera PodShot]
+# DRAFT
+Isabella lifts him in, and the capsule goes.
+[call Pod launch 2.5 45]
+[camera LaunchShot]
+[wait 2.0]
 [fade white]
 # Black Sand is part of the big world (scenes/world/world.tscn): he wakes at its Start marker.
+[level res://scenes/levels/black_sand.tscn]
+
+=== whiteout ===
+# The old ending (the drain); kept so the world test can play the hand-off on its own.
+[fade white]
 [level res://scenes/levels/black_sand.tscn]

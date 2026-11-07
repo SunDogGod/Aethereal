@@ -182,6 +182,10 @@
 ## Rough-cut levels (Act 0 onward)
 - Each story location gets a rough walkable level first: signature space, landmark, its own fog
   and light, beats told through dialogue scenes. Detail comes later, after the author walks it.
+- The Massacre (rebuilt 2026-11-07, tools/generators/build_massacre.gd + massacre_layout.gd) is a chase:
+  agents with `Guard.hunts` run at the child over its navmesh and a grab restarts (`scripts/guard_hunt.gd`).
+  The generator keeps the scene's Player (marked editable, so his child setup survives) and builds the
+  rest out of the tree, then bakes the navmesh from a running copy. Re-run it after layout changes.
 - Levels chain with `[level ...]` at the end of a dialogue scene; the title screen's Chapters page lists them all.
 - The town, Black Sand and the station are one big world (`scenes/world/world.tscn`, the author asked
   2026-10-25): each level is instanced as a WorldZone and stays runnable alone (F6). The world removes
@@ -237,7 +241,9 @@
 - Close-the-editor rule: if Godot is open on this project, ask me to close it before editing project.godot.
 
 ## Canon
-- Story canon lives in Notion (Aethereal → 📖 Story → ⭐ THE SPINE). Do not invent lore.
+- Story canon lives in the author's Obsidian vault, `C:\Users\ArmandoSanchez\Documents\Aethereal Obsidian`
+  (`Story/The Spine.md`, the arcs under `Story/Act *`, `Characters/`, `Settings/`), not Notion any more
+  (the author, 2026-11-07). Do not invent lore. Its "My take" callouts are proposals, not canon.
 - My notes are old and messy. I design each location with you: ask me how a place looks and plays
   instead of building it from the notes alone.
 - Ability behavior must match the Aether system as written. Ask if unclear.

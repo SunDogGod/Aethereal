@@ -7,6 +7,8 @@ extends "res://scripts/props_vacuum_station/station_prop_base.gd"
 ## below the hatchway. Through it: two seats side by side, one of them small.
 ## Origin on the floor under the middle of the capsule; its nose points +Z, the hatch is on +X.
 ## Solid (a box round the hull; the flat hatch is walk-through). Change Roll and it rebuilds.
+## Wrecked off: the same capsule the night it left the village (the Massacre): upright, both skids,
+## no torn panel, the hatch swung open on its hinge. launch() sends it off along its nose.
 
 const M := {
 	pod = preload("res://materials/vacuum_station_oldpod.tres"), liner = preload("res://materials/metal_worn.tres"),
@@ -24,12 +26,17 @@ const THICK := 0.07
 	set(value):
 		roll = value
 		_rebuild()
+## Off: whole, upright, the hatch open on its hinge (the capsule as it was, years before).
+@export var wrecked := true:
+	set(value):
+		wrecked = value
+		_rebuild()
 
 var _frame := Transform3D()  # the capsule's own frame: axis along Z through (0, R, 0), rolled
 
 
 func _build() -> void:
-	_frame = Transform3D(Basis(Vector3.BACK, roll), Vector3(0, R * 1.01, 0))
+	_frame = Transform3D(Basis(Vector3.BACK, roll if wrecked else 0.0), Vector3(0, R * 1.01, 0))
 	_hull()
 	_ends()
 	_inside()
@@ -58,7 +65,7 @@ func _hull() -> void:
 		for i in SIDES:
 			var ang := -PI * 0.5 + (i + 0.5) * step
 			var hatchway := (i == 3 or i == 4) and (j == 2 or j == 3)
-			var torn := i == 8 and j == 0
+			var torn := wrecked and i == 8 and j == 0
 			if hatchway:
 				continue
 			var w := 2.0 * R * tan(step * 0.5) * 1.04
@@ -72,6 +79,8 @@ func _hull() -> void:
 	for ang in [deg_to_rad(-12.9), deg_to_rad(38.6)]:  # the hatchway's long edges
 		var p := Vector3(cos(ang), sin(ang), 0) * (R + 0.02)
 		pm.stick(M.rib, _frame * (p + Vector3(0, 0, -0.7)), _frame * (p + Vector3(0, 0, 0.7)), 0.08)
+	if not wrecked:
+		return
 	var tb := _on_hull(-PI * 0.5 + 8.5 * step)  # ribs showing through the torn panel, and the panel
 	for zz in [-1.85, -1.6]:
 		_box(M.rib, Vector3(0.6, 0.06, 0.05), Transform3D(tb, tb.y * (R - 0.05) + Vector3(0, 0, zz)))
@@ -120,14 +129,19 @@ func _details() -> void:
 	for side in [-1.0, 1.0]:
 		var ang: float = -PI * 0.5 + side * deg_to_rad(40.0)
 		var b := _on_hull(ang)
-		var reach: float = 4.6 if side > 0.0 else 2.3  # the -X skid snapped halfway
+		var reach: float = 4.6 if side > 0.0 or not wrecked else 2.3  # the -X skid snapped halfway
 		var z0 := HALF + 0.4 - reach
 		_box(M.rib, Vector3(0.12, 0.14, reach), Transform3D(b, b.y * (R + 0.09) + Vector3(0, 0, z0 + reach * 0.5)))
 		for z in [1.5, -1.5]:
 			if z > z0:
 				_box(M.rib, Vector3(0.08, 0.12, 0.08), Transform3D(b, b.y * (R + 0.02) + Vector3(0, 0, z)))
 	# The snapped half on the deck (prop space, not the rolled frame), a little skewed.
-	pm.box(M.rib, Vector3(0.14, 0.12, 2.2), Transform3D(Basis(Vector3.UP, 0.22), Vector3(-1.45, 0.06, -1.3)))
+	if wrecked:
+		pm.box(M.rib, Vector3(0.14, 0.12, 2.2), Transform3D(Basis(Vector3.UP, 0.22), Vector3(-1.45, 0.06, -1.3)))
+	else:  # whole, it sits in two cradles on its line
+		for z in [-1.5, 1.5]:
+			pm.box(M.rib, Vector3(2.3, 0.3, 0.3), Transform3D(Basis(), Vector3(0, 0.15, z)))
+			pm.box(M.dark, Vector3(2.0, 0.06, 0.32), Transform3D(Basis(), Vector3(0, 0.33, z)))
 	var top := _on_hull(PI * 0.5 + 0.2)
 	_box(M.rib, Vector3(0.05, 0.35, 0.05), Transform3D(top, top.y * (R + 0.17) + Vector3(0, 0, -1.0)))
 	var side_b := _on_hull(PI)
@@ -137,6 +151,9 @@ func _details() -> void:
 ## The hatch, torn off its hinges, lying face down on the deck below the hatchway (prop space),
 ## its inner lining and locking wheel up, one edge propped on the bent hinge arm.
 func _hatch() -> void:
+	if not wrecked:
+		_hatch_open()
+		return
 	var lie := Basis(Vector3.UP, 0.35) * Basis(Vector3.BACK, 0.1)
 	var c := Vector3(2.25, 0.12, -0.1)
 	pm.box(M.pod, Vector3(1.15, 0.08, 1.36), Transform3D(lie, c))
@@ -146,3 +163,20 @@ func _hatch() -> void:
 	pm.stick(M.rib, c + lie.y * 0.08 + lie.z * -0.22, c + lie.y * 0.08 + lie.z * 0.22, 0.04)
 	var edge := c + lie.x * 0.6
 	pm.stick(M.rib, edge + Vector3(0, -0.08, -0.4), edge + Vector3(0.05, 0.02, 0.3), 0.07)  # bent hinge arm under it
+
+
+## The hatch whole, swung open on its front hinge: it stands out from the hull beside the
+## hatchway like a door, its lining and locking wheel facing the way in.
+func _hatch_open() -> void:
+	var c := Vector3(R + 0.62, 0.3, 0.78)  # in the capsule's frame, off the hatchway's front edge
+	_box(M.pod, Vector3(1.3, 1.15, 0.08), Transform3D(Basis(), c))
+	_box(M.liner, Vector3(1.15, 1.0, 0.03), Transform3D(Basis(), c + Vector3(0, 0, -0.055)))
+	pm.ring(M.rib, 0.16, 0.24, _frame * Transform3D(Basis(Vector3.RIGHT, PI * 0.5), c + Vector3(0, 0, -0.09)), 10, 4)
+	pm.stick(M.rib, _frame * Vector3(R + 0.02, 0.85, 0.72), _frame * Vector3(R + 0.02, -0.25, 0.72), 0.06)  # the hinge
+
+
+## Off it goes: nose first along its line, `distance` metres in `seconds` (a story [call]).
+func launch(seconds := 2.5, distance := 45.0) -> void:
+	var to := global_position + global_basis.z.normalized() * distance
+	var tween := create_tween()
+	tween.tween_property(self, "global_position", to, seconds).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)

@@ -31,58 +31,39 @@ walks through from the town to the end of the station.
   New checkpoints: Black Sand past the road, and the middle of the station's hall.
 
 ## 0.2 The Massacre (a memory) — `scenes/levels/massacre.tscn`
+Rebuilt 2026-11-07 to the author's telling, by `tools/generators/build_massacre.gd` (the buildings
+are in `massacre_layout.gd`); after that the scene file is the source of truth. Canon: the vault,
+`Story/Act 0/0.2 The Massacre of the Third Eye Tribe.md`.
 - **Decided:** plays as the blackout dream after the Empty Town; you are four years old.
-- **Decided:** the Third Eye Tribe village is an enclosed hall inside the megastructure: walled
-  compounds laid out like Japanese estates with Spanish white walls, each with a courtyard; a great
-  estate at the end where the scene takes place; grass, lit by grow-lamp panels in the ceiling.
-- **Proposed:** it's the festival night, so most grow lamps are dimmed and the courtyards are strung
-  with lanterns. (A daytime version would turn every panel on.)
-- **Proposed:** six small estates along one lane, the Great Estate at the north end, the only
-  corridor in at the south. The ceremony is only hinted at: a crowd, a dais, a fire basin. Per the
-  Notion rule, no tithe, no horse, no faces, no father's death.
-- **Decided (2026-10-23):** Isabella only follows Aeneas in the Empty Town, until she dies. In the
-  memory she is narration only ("a hand closes on his arm"); no follower.
-- **Proposed:** the way out is a drain under the north wall behind the Great Estate. (Notion leaves the extraction
-  unassigned; "Anchises holds the lane" is only implied by a figure labelled Father at the gate.)
-- **Proposed:** the raiders are stand-in figures and fires that appear when "the men" scene plays.
-  No chase AI yet; it's a memory, and the fragment is short.
-- Child Aeneas: smaller, slower, lower camera, no knife or rifle. The whiteout at the drain leads
-  into Black Sand.
-- Beats: `memory` (courtyard), `the_men` (the Great Estate gate), `the_drain`, `whiteout`.
-- **Dressed (overnight 2026-10-26), detail like the town's; no new story beats.** All of it is
-  **Proposed**: change, move or delete anything. The props are in `scripts/props_massacre/`.
-  - The houses: dark stone footings, timber posts and beam bands on the white plaster, terracotta
-    gable roofs laid with round tiles (in the style of the family house in Black Sand), a raised plank
-    veranda along each courtyard front under the eave, lattice paper windows lit warm from inside, a
-    sliding door left a hand open, a noren curtain, red paper lanterns on the veranda posts. The Great
-    Estate's hall has a gabled entrance porch over its door.
-  - Each estate gate is a small roofed gate with its two plank doors swung open against the wall.
-  - The courtyards: a tree (pine, maple, persimmon; a pink blossom tree in the Great Estate), the
-    basin made a stone water trough with a bamboo spout dripping into it, stepping stones from the
-    gate, a vegetable bed, a washing line, a stone lantern, a well or a woodpile, hens, a cat on
-    the veranda, potted geraniums and a bonsai, persimmons drying under the eave, birds and pots on
-    the wall tops. The Great Estate's courtyard has festival banners, two drums by the dais, barrels
-    and sacks, low tables and a red parasol.
-  - The lane is packed earth, with paths to every gate; lantern posts down both sides and strings of
-    paper lanterns across it.
-  - **Proposed landmark: the market** by the way in: seven stalls (fruit and greens, cloth, pottery,
-    lanterns, a food stall with a steaming pot), parasols, benches, banners.
-  - **Proposed landmark: the village shrine** at the foot of the pillar behind the Great Estate, on
-    the way to the drain: a vermilion torii, two stone lanterns, a small shrine with candles and rice
-    cakes, a row of jizo with red bibs.
-  - Fields under the lamps: rice paddies, vegetable beds, low grow-lamp frames, irrigation channels
-    with plank bridges (one runs along the back to a sump by the drain), field sheds, drying racks,
-    a persimmon orchard, bamboo along the hall walls.
-  - The megastructure: pilasters and two ledges on the hall walls, concrete beams across the
-    ceiling, ten free-standing pillars with conduits, big pipes along the walls, tiny lit windows far
-    up the walls. The grow-lamp panels now hang 4 m below the ceiling on steel rigs with cable trays.
-  - The haze is warmer and paler (the fog is a dim amber, not black). Lantern lights breathe like
-    candles; birds peck, cats look round or breathe, chimes sway; running water by the channels and
-    the fire basin crackles.
-  - Look-at spots (draft lines in `data/inspect/massacre.txt`): the drum, the shrine, the food
-    stall, a paddy.
-  - Fixed: the two roof fires that show when the men come hung in the courtyards' air; they now sit
-    on the roofs of the first two houses. The wall copings and the corridor mouth no longer flicker.
+- **Decided:** the Third Eye Tribe village is an enclosed hall inside the megastructure, grass under
+  grow-lamp panels, Japanese-estate houses with white walls; one corridor in.
+- **Decided (2026-11-07):** the houses stand close together; the main courtyard is big, and the
+  Agency breaks through its gate into it during the festival, while the clan's men fight them there.
+- **Decided (2026-11-07):** they escape to their own house, and down to its cellar, where the capsule
+  waits by itself: the same capsule that lies wrecked at the Vacuum Station. Just as they get inside,
+  the Agency breaks in. His father (Anchises) holds the door; his brother takes Isabella and Aeneas
+  down to the capsule, then holds the ramp so it can leave. We see them stand and fight; nothing after.
+- **Decided (2026-11-07):** a chase he can lose: agents run at him, and a grab sends him back to the
+  last checkpoint ("CAUGHT").
+- **Changed (2026-11-07):** Isabella now follows him through the memory (before, she was narration
+  only), since the brother escorts her and Aeneas to the capsule.
+- **Proposed:** the layout. A 92 × 100 m hall; the courtyard is 56 × 42 m with the Great House on
+  its north side and the family house in its east corner (door 20 m from the middle); rows of houses
+  outside its walls along narrow lanes; the street from the corridor up to the gate. Only the
+  courtyard, the house and the cellar are walked; the rest is seen over the walls.
+- **Proposed:** the brother is a new character (no name yet; a stub is in the vault). He and Anchises
+  wear the clan fighters' black coats with blades; in the festival crowd they are in robes.
+- **Proposed:** the cellar is reached by a ramp through a hole in the house floor (rails round it);
+  the capsule sits in two cradles on its rails at the mouth of a vacuum tube; it leaves nose first.
+- Beats: `memory` (the festival), `the_men` (the gate breaks: a trigger all round the start, so a
+  few steps in any direction sets it off), `the_house` (inside the door), `the_pod` (at the hatch),
+  then the whiteout into Black Sand. Checkpoints: the house door, the foot of the ramp.
+- Stand-ins: the villagers, Anchises, the brother and the clan fighters are the simple crowd
+  figures; the Agency are the town's agents. Posed fighters hold one pose each (no fight motion).
+- Look: a lantern pool in blue-black fog (the look round): amber lanterns, dim cool lamp panels,
+  smoke under the ceiling, embers over the courtyard, two faint light shafts.
+- Look-at spots: the drum, the shrine, the food stall (lines in `data/inspect/massacre.txt`).
+- The hunters path over `data/nav/massacre_navmesh.tres` (rebuilt by the generator).
 
 ## 0.3 Black Sand — `scenes/levels/black_sand.tscn`
 - **Decided 2026-10-25 (the author):** dark and foggy (Blame! is an inspiration). The family home is a giant steel module repurposed into a shed with two beds ("No one was going to build that house for them"); Isabella's body lies inside. Sand drifts up the steel side walls; the south side is the town as a solid black block with windows starting high up.
@@ -197,7 +178,7 @@ walks through from the town to the end of the station.
   grow lamps, hologram, wood, brass, fire.
 
 ## Known gaps (not bugs, just not built)
-- No chase or fight in the Massacre; the raiders are set dressing.
+- The Massacre's fighters hold still poses; nobody fights in motion yet.
 - The Black Sand road agents use the Empty Town's stealth rules; nothing special for the dawn.
 - No sword training mechanics in the capsule; the room is there for them.
 - Companions sometimes stand between the camera and Aeneas when the camera is low (child Aeneas).
