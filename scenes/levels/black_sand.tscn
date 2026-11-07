@@ -61,6 +61,11 @@
 [ext_resource type="Script" path="res://scripts/props_black_sand/black_sand_town_wall.gd" id="59_kd0v7"]
 [ext_resource type="Material" path="res://materials/lamp_cool.tres" id="60_wl4tc"]
 [ext_resource type="Script" path="res://scripts/interactable.gd" id="61_lg28e"]
+[ext_resource type="Script" uid="uid://ki6c8toj0wlt" path="res://scripts/props_black_sand/dawn_shafts.gd" id="lk_dshafts"]
+[ext_resource type="Script" uid="uid://dnm226at8itkk" path="res://scripts/props_black_sand/beacon.gd" id="lk_beacon"]
+[ext_resource type="Script" uid="uid://sl3t33iv610h" path="res://scripts/props_kit/light_shaft.gd" id="lk_shaft"]
+[ext_resource type="Script" uid="uid://cuv5q2o8agbs4" path="res://scripts/props_kit/drift_lights.gd" id="lk_drift"]
+[ext_resource type="Script" uid="uid://bvm2imjatjnqm" path="res://scripts/props_kit/wall_lamp_sodium.gd" id="lk_sodium"]
 
 [sub_resource type="Environment" id="Environment_5cid2"]
 background_mode = 1
@@ -471,6 +476,9 @@ size = Vector3(12, 3, 12)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_a4hfp"]
 size = Vector3(7, 3, 7)
+
+[sub_resource type="BoxMesh" id="lk_edge_mesh"]
+size = Vector3(0.12, 4.6, 0.12)
 
 [node name="BlackSand" type="Node3D" unique_id=388668477]
 
@@ -6028,3 +6036,178 @@ reach = 3.0
 [node name="Zone" type="CollisionShape3D" parent="Inspect/TownCables" unique_id=1149002960]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
 shape = SubResource("BoxShape3D_a4hfp")
+
+[node name="LookDressing" type="Node3D" parent="."]
+
+[node name="Shafts" type="Node3D" parent="LookDressing"]
+script = ExtResource("lk_dshafts")
+dawn = NodePath("../../ArtificialDawn")
+
+[node name="Shaft1" type="Node3D" parent="LookDressing/Shafts"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20, 74.8, 70)
+script = ExtResource("lk_shaft")
+length = 70.55
+radius_top = 2.5
+radius_bottom = 6.0
+strength = 0.22
+mote_count = 20
+mote_size = 0.12
+
+[node name="Pool" type="OmniLight3D" parent="LookDressing/Shafts/Shaft1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -68.05, 0)
+light_color = Color(0.75, 0.7, 0.95, 1)
+light_energy = 0.7
+omni_range = 12.0
+
+[node name="Shaft2" type="Node3D" parent="LookDressing/Shafts"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 74.8, 50)
+script = ExtResource("lk_shaft")
+length = 71.96
+radius_top = 2.5
+radius_bottom = 6.0
+strength = 0.22
+mote_count = 20
+mote_size = 0.12
+
+[node name="Pool" type="OmniLight3D" parent="LookDressing/Shafts/Shaft2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -69.46, 0)
+light_color = Color(0.75, 0.7, 0.95, 1)
+light_energy = 0.7
+omni_range = 12.0
+
+[node name="Shaft3" type="Node3D" parent="LookDressing/Shafts"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 74.8, 10)
+script = ExtResource("lk_shaft")
+length = 68.64
+radius_top = 2.5
+radius_bottom = 6.0
+strength = 0.22
+mote_count = 20
+mote_size = 0.12
+
+[node name="Pool" type="OmniLight3D" parent="LookDressing/Shafts/Shaft3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -66.14, 0)
+light_color = Color(0.75, 0.7, 0.95, 1)
+light_energy = 0.7
+omni_range = 12.0
+
+[node name="Shaft4" type="Node3D" parent="LookDressing/Shafts"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 74.8, -10)
+script = ExtResource("lk_shaft")
+length = 70.43
+radius_top = 2.5
+radius_bottom = 6.0
+strength = 0.22
+mote_count = 20
+mote_size = 0.12
+
+[node name="Pool" type="OmniLight3D" parent="LookDressing/Shafts/Shaft4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -67.93, 0)
+light_color = Color(0.75, 0.7, 0.95, 1)
+light_energy = 0.7
+omni_range = 12.0
+
+[node name="Shaft5" type="Node3D" parent="LookDressing/Shafts"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20, 74.8, -30)
+script = ExtResource("lk_shaft")
+length = 68.53
+radius_top = 2.5
+radius_bottom = 6.0
+strength = 0.22
+mote_count = 20
+mote_size = 0.12
+
+[node name="Pool" type="OmniLight3D" parent="LookDressing/Shafts/Shaft5"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -66.03, 0)
+light_color = Color(0.75, 0.7, 0.95, 1)
+light_energy = 0.7
+omni_range = 12.0
+
+[node name="Shaft6" type="Node3D" parent="LookDressing/Shafts"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 74.8, -70)
+script = ExtResource("lk_shaft")
+length = 71.76
+radius_top = 2.5
+radius_bottom = 6.0
+strength = 0.22
+mote_count = 20
+mote_size = 0.12
+
+[node name="Pool" type="OmniLight3D" parent="LookDressing/Shafts/Shaft6"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -69.26, 0)
+light_color = Color(0.75, 0.7, 0.95, 1)
+light_energy = 0.7
+omni_range = 12.0
+
+[node name="Beacon-80" type="Node3D" parent="LookDressing"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -80, 7.15, -40.5)
+script = ExtResource("lk_beacon")
+
+[node name="Beacon-40" type="Node3D" parent="LookDressing"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -40, 7.15, -40.5)
+script = ExtResource("lk_beacon")
+
+[node name="Beacon0" type="Node3D" parent="LookDressing"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 7.15, -40.5)
+script = ExtResource("lk_beacon")
+
+[node name="Beacon40" type="Node3D" parent="LookDressing"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 40, 7.15, -40.5)
+script = ExtResource("lk_beacon")
+
+[node name="Beacon80" type="Node3D" parent="LookDressing"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 80, 7.15, -40.5)
+script = ExtResource("lk_beacon")
+
+[node name="CampFlood19" type="Node3D" parent="LookDressing"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 19, 5.5, -2.25)
+script = ExtResource("lk_sodium")
+light_energy = 1.6
+light_range = 12.0
+scale_factor = 2.2
+
+[node name="CampFlood29" type="Node3D" parent="LookDressing"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 29, 5.5, -2.25)
+script = ExtResource("lk_sodium")
+light_energy = 1.6
+light_range = 12.0
+scale_factor = 2.2
+
+[node name="MonolithStep1" type="StaticBody3D" parent="LookDressing"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -42, 5.4, 22)
+script = ExtResource("2_0bg6e")
+size = Vector3(9, 1, 9)
+material = ExtResource("4_2gs8r")
+
+[node name="MonolithStep2" type="StaticBody3D" parent="LookDressing"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -42, 6.4, 22)
+script = ExtResource("2_0bg6e")
+size = Vector3(6.5, 1, 6.5)
+material = ExtResource("4_2gs8r")
+
+[node name="Monolith" type="StaticBody3D" parent="LookDressing"]
+transform = Transform3D(0.9781476, -0.20791169, 0, 0.20791169, 0.9781476, 0, 0, 0, 1, -42, 9.0, 22)
+script = ExtResource("2_0bg6e")
+size = Vector3(4.5, 4.5, 4.5)
+material = ExtResource("10_ddp0p")
+grime = 0.0
+
+[node name="ColdEdge" type="MeshInstance3D" parent="LookDressing/Monolith"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.27, 0, 2.27)
+mesh = SubResource("lk_edge_mesh")
+material_override = ExtResource("16_c8jan")
+
+[node name="EdgeLight" type="OmniLight3D" parent="LookDressing/Monolith"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.2, 0, 3.2)
+light_color = Color(0.75, 0.85, 1, 1)
+light_energy = 0.8
+omni_range = 7.0
+
+[node name="CeilingLights" type="Node3D" parent="LookDressing"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 55, 0)
+script = ExtResource("lk_drift")
+count = 6
+box_size = Vector3(140, 20, 180)
+size = 0.5
+brightness = 1.2
+cast_light = false
